@@ -1,7 +1,7 @@
 import { defineConfig, devices } from "@playwright/test";
 
-const port = Number(process.env.TRUFRAME_E2E_PORT ?? 3000);
-const baseURL = process.env.TRUFRAME_E2E_BASE_URL ?? `http://localhost:${port}`;
+// `pnpm dev` serves the web app on 3000 (see docs/runbooks/cloudflare-setup.md).
+const baseURL = process.env.TRUFRAME_E2E_BASE_URL ?? "http://localhost:3000";
 
 export default defineConfig({
   testDir: "e2e",
@@ -15,8 +15,9 @@ export default defineConfig({
   webServer: process.env.TRUFRAME_E2E_BASE_URL
     ? undefined
     : {
-        command: `pnpm --filter @truframe/web dev --port ${port}`,
-        url: baseURL,
+        // All workers too, so Durable Object and queue bindings resolve through the dev registry.
+        command: "pnpm dev",
+        url: `${baseURL}/api/health`,
         reuseExistingServer: !process.env.CI,
         timeout: 180_000,
       },
