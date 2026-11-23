@@ -1,8 +1,24 @@
-# Truframe: agent docs (v2)
+# Truframe
 
 Truframe is a hosted visual website builder that writes real code. Design on a canvas and watch the code update live (design → code, Code View is read-only), choose Next.js or Astro per project, preview on Desktop/Tablet/Mobile, share temporary links for client approval, and publish to Vercel (through GitHub if connected). An agent with selectable Skills, and external agents over MCP, can design and code too.
 
-These files go at the root of the Truframe repo and are written for coding agents.
+## Quick start
+
+Requirements: Node >= 22.18, pnpm 11 (`corepack enable`), Rust (the version in `rust-toolchain.toml` is installed automatically), and `cargo install cargo-deny --locked` for the license check.
+
+```sh
+pnpm i
+cp apps/web/.dev.vars.example apps/web/.dev.vars
+pnpm dev            # web on http://localhost:3000 + all workers on Miniflare (D1, R2, KV, Queues, DO)
+pnpm lint && pnpm typecheck && pnpm test && cargo test
+pnpm e2e            # Playwright; starts `pnpm dev` if it is not running
+```
+
+`http://localhost:3000/api/health` reports whether every Cloudflare binding answers. Staging and production setup: `docs/runbooks/cloudflare-setup.md`.
+
+## Docs for agents and humans
+
+These root files are written for coding agents. Read `AGENTS.md` first.
 
 | File | What it is |
 |---|---|
@@ -16,6 +32,7 @@ These files go at the root of the Truframe repo and are written for coding agent
 | `PLAN.md` | Phases P0–P10, milestones, exit criteria, risks |
 | `TASKS.md` | Task backlog, one PR per task |
 | `prompts/` | One prompt per phase + single-task template |
-| `archive/v1-local-first/` | Earlier plan (local tool for existing repos), kept for reference |
+| `docs/runbooks/` | Operational runbooks (Cloudflare environments, deploys) |
+| `LICENSE` | Proprietary (owner default; see `MEMORY.md` open questions) |
 
 Start with `prompts/phase-00-foundations.md`.
