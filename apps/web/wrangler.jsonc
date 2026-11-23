@@ -1,0 +1,195 @@
+// Truframe web: Cloudflare config for dev (top level, Miniflare), staging and production.
+// Bindings are not inherited by environments in wrangler, so each env repeats them.
+// Resource IDs are omitted: `wrangler dev` simulates everything locally, and the first deploy of
+// each env provisions/links resources (see docs/runbooks/cloudflare-setup.md). Commit the IDs
+// wrangler writes back. scripts/lib/wrangler-config.test.ts checks that envs stay consistent.
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "truframe-web-dev",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2026-11-01",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "images": {
+    "binding": "IMAGES"
+  },
+  "observability": {
+    "enabled": true
+  },
+  "vars": {
+    "TRUFRAME_ENV": "local"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "truframe-dev",
+      "migrations_dir": "../../packages/db/migrations"
+    }
+  ],
+  "kv_namespaces": [
+    {
+      "binding": "CONFIG"
+    }
+  ],
+  "services": [
+    {
+      "binding": "WORKER_SELF_REFERENCE",
+      "service": "truframe-web-dev"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "FILES",
+      "bucket_name": "truframe-dev-files"
+    },
+    {
+      "binding": "NEXT_INC_CACHE_R2_BUCKET",
+      "bucket_name": "truframe-dev-next-cache"
+    }
+  ],
+  "queues": {
+    "producers": [
+      {
+        "binding": "JOBS",
+        "queue": "truframe-dev-jobs"
+      }
+    ]
+  },
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "PROJECT_ROOM",
+        "class_name": "ProjectRoom",
+        "script_name": "truframe-realtime-dev"
+      },
+      {
+        "name": "AGENT_SESSION",
+        "class_name": "AgentSession",
+        "script_name": "truframe-agent-dev"
+      }
+    ]
+  },
+  "env": {
+    "staging": {
+      "name": "truframe-web-staging",
+      "images": {
+        "binding": "IMAGES"
+      },
+      "vars": {
+        "TRUFRAME_ENV": "staging"
+      },
+      "d1_databases": [
+        {
+          "binding": "DB",
+          "database_name": "truframe-staging",
+          "migrations_dir": "../../packages/db/migrations"
+        }
+      ],
+      "kv_namespaces": [
+        {
+          "binding": "CONFIG"
+        }
+      ],
+      "services": [
+        {
+          "binding": "WORKER_SELF_REFERENCE",
+          "service": "truframe-web-staging"
+        }
+      ],
+      "r2_buckets": [
+        {
+          "binding": "FILES",
+          "bucket_name": "truframe-staging-files"
+        },
+        {
+          "binding": "NEXT_INC_CACHE_R2_BUCKET",
+          "bucket_name": "truframe-staging-next-cache"
+        }
+      ],
+      "queues": {
+        "producers": [
+          {
+            "binding": "JOBS",
+            "queue": "truframe-staging-jobs"
+          }
+        ]
+      },
+      "durable_objects": {
+        "bindings": [
+          {
+            "name": "PROJECT_ROOM",
+            "class_name": "ProjectRoom",
+            "script_name": "truframe-realtime-staging"
+          },
+          {
+            "name": "AGENT_SESSION",
+            "class_name": "AgentSession",
+            "script_name": "truframe-agent-staging"
+          }
+        ]
+      }
+    },
+    "production": {
+      "name": "truframe-web-production",
+      "images": {
+        "binding": "IMAGES"
+      },
+      "vars": {
+        "TRUFRAME_ENV": "production"
+      },
+      "d1_databases": [
+        {
+          "binding": "DB",
+          "database_name": "truframe-production",
+          "migrations_dir": "../../packages/db/migrations"
+        }
+      ],
+      "kv_namespaces": [
+        {
+          "binding": "CONFIG"
+        }
+      ],
+      "services": [
+        {
+          "binding": "WORKER_SELF_REFERENCE",
+          "service": "truframe-web-production"
+        }
+      ],
+      "r2_buckets": [
+        {
+          "binding": "FILES",
+          "bucket_name": "truframe-production-files"
+        },
+        {
+          "binding": "NEXT_INC_CACHE_R2_BUCKET",
+          "bucket_name": "truframe-production-next-cache"
+        }
+      ],
+      "queues": {
+        "producers": [
+          {
+            "binding": "JOBS",
+            "queue": "truframe-production-jobs"
+          }
+        ]
+      },
+      "durable_objects": {
+        "bindings": [
+          {
+            "name": "PROJECT_ROOM",
+            "class_name": "ProjectRoom",
+            "script_name": "truframe-realtime-production"
+          },
+          {
+            "name": "AGENT_SESSION",
+            "class_name": "AgentSession",
+            "script_name": "truframe-agent-production"
+          }
+        ]
+      }
+    }
+  }
+}

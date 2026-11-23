@@ -1,10 +1,18 @@
+import { fileURLToPath } from "node:url";
 import { defineConfig } from "vitest/config";
 
-// Each workspace folder is its own Vitest project; worker tests move to
-// @cloudflare/vitest-pool-workers when workers gain real bindings (P2).
 export default defineConfig({
+  resolve: {
+    alias: {
+      // Worker stubs import `cloudflare:workers`; real workerd tests arrive with
+      // @cloudflare/vitest-pool-workers in P2.
+      "cloudflare:workers": fileURLToPath(
+        new URL("./test/cloudflare-workers-shim.ts", import.meta.url),
+      ),
+    },
+  },
   test: {
-    projects: ["packages/*", "workers/*", "apps/web", "scripts"],
-    passWithNoTests: false,
+    include: ["{apps,packages,workers,scripts}/**/*.test.{ts,tsx}"],
+    exclude: ["**/node_modules/**", "**/.next/**", "**/.open-next/**", "**/dist/**"],
   },
 });

@@ -96,6 +96,9 @@ truframe/
 └─ fixtures/                   Model documents + expected compiled output (golden)
 ```
 Dependency rule: `model`, `ops`, `layout`, `protocol` have no internal deps except each other (`ops`→`model`). UI packages never import workers. Workers import `agent-tools`, `billing`, `db`, `integrations` but not UI.
+Enforced by `scripts/check-deps.ts` (part of `pnpm lint`). Apps and workers are deploy units and are never imported by other packages; every `@truframe/*` import must be declared in `package.json`.
+
+**Cloudflare environments and bindings (P0).** Each deployable (`apps/web` via OpenNext, `workers/*`) has its own `wrangler.jsonc` with three environments: dev (top level, simulated by Miniflare), `staging` and `production`. Workers are named `truframe-<worker>-<env>`. Binding names are the same everywhere: `DB` (D1), `FILES` (R2), `NEXT_INC_CACHE_R2_BUCKET` (R2, web only), `CONFIG` (KV), `JOBS` (queue), `PROJECT_ROOM` (DO class `ProjectRoom`, hosted by `realtime`), `AGENT_SESSION` (DO class `AgentSession`, hosted by `agent`). `docs/runbooks/cloudflare-setup.md` has the full table and setup steps. A worker's main module may export only Worker entrypoints (default handler, DO classes, `WorkerEntrypoint`s): workerd rejects any other named export.
 
 ## 5. Design document model
 Stored as a Loro doc per project. TypeScript is the reference (`packages/model`); Rust mirrors it with serde, and parity tests in CI catch drift.

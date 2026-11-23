@@ -20,3 +20,4 @@ test-results/
 .DS_Store
 next-env.d.ts
 worker-configuration.d.ts
+cloudflare-env.d.ts

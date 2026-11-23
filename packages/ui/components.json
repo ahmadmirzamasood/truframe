@@ -1,0 +1,20 @@
+{
+  "$schema": "https://ui.shadcn.com/schema.json",
+  "style": "new-york",
+  "rsc": true,
+  "tsx": true,
+  "tailwind": {
+    "config": "",
+    "css": "src/styles/globals.css",
+    "baseColor": "neutral",
+    "cssVariables": true
+  },
+  "iconLibrary": "lucide",
+  "aliases": {
+    "components": "@truframe/ui/components",
+    "utils": "@truframe/ui/lib/utils",
+    "hooks": "@truframe/ui/hooks",
+    "lib": "@truframe/ui/lib",
+    "ui": "@truframe/ui/components"
+  }
+}

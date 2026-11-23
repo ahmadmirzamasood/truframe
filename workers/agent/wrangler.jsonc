@@ -1,7 +1,119 @@
+// Truframe agent: Cloudflare config for dev (top level, Miniflare), staging and production.
+// Bindings are not inherited by environments in wrangler, so each env repeats them.
+// Resource IDs are omitted: `wrangler dev` simulates everything locally, and the first deploy of
+// each env provisions/links resources (see docs/runbooks/cloudflare-setup.md). Commit the IDs
+// wrangler writes back. scripts/lib/wrangler-config.test.ts checks that envs stay consistent.
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "truframe-agent",
+  "name": "truframe-agent-dev",
   "main": "src/index.ts",
   "compatibility_date": "2026-11-01",
-  "compatibility_flags": ["nodejs_compat"]
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": {
+    "enabled": true
+  },
+  "dev": {
+    "port": 8788
+  },
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": ["AgentSession"]
+    }
+  ],
+  "vars": {
+    "TRUFRAME_ENV": "local"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "truframe-dev",
+      "migrations_dir": "../../packages/db/migrations"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "FILES",
+      "bucket_name": "truframe-dev-files"
+    }
+  ],
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "AGENT_SESSION",
+        "class_name": "AgentSession"
+      },
+      {
+        "name": "PROJECT_ROOM",
+        "class_name": "ProjectRoom",
+        "script_name": "truframe-realtime-dev"
+      }
+    ]
+  },
+  "env": {
+    "staging": {
+      "name": "truframe-agent-staging",
+      "vars": {
+        "TRUFRAME_ENV": "staging"
+      },
+      "d1_databases": [
+        {
+          "binding": "DB",
+          "database_name": "truframe-staging",
+          "migrations_dir": "../../packages/db/migrations"
+        }
+      ],
+      "r2_buckets": [
+        {
+          "binding": "FILES",
+          "bucket_name": "truframe-staging-files"
+        }
+      ],
+      "durable_objects": {
+        "bindings": [
+          {
+            "name": "AGENT_SESSION",
+            "class_name": "AgentSession"
+          },
+          {
+            "name": "PROJECT_ROOM",
+            "class_name": "ProjectRoom",
+            "script_name": "truframe-realtime-staging"
+          }
+        ]
+      }
+    },
+    "production": {
+      "name": "truframe-agent-production",
+      "vars": {
+        "TRUFRAME_ENV": "production"
+      },
+      "d1_databases": [
+        {
+          "binding": "DB",
+          "database_name": "truframe-production",
+          "migrations_dir": "../../packages/db/migrations"
+        }
+      ],
+      "r2_buckets": [
+        {
+          "binding": "FILES",
+          "bucket_name": "truframe-production-files"
+        }
+      ],
+      "durable_objects": {
+        "bindings": [
+          {
+            "name": "AGENT_SESSION",
+            "class_name": "AgentSession"
+          },
+          {
+            "name": "PROJECT_ROOM",
+            "class_name": "ProjectRoom",
+            "script_name": "truframe-realtime-production"
+          }
+        ]
+      }
+    }
+  }
 }
