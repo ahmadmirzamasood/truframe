@@ -63,6 +63,7 @@
 - 2026-11-24: `@opennextjs/cloudflare build` fails on Windows with `EPERM symlink` (needs Developer Mode). Build/deploy the web worker on Linux (CI) or in Docker (`node:22-bookworm`). `next build` and `next dev` work on Windows.
 - 2026-11-24: shadcn CLI in `packages/ui` resolves aliases via the package's tsconfig `paths` (`@truframe/ui/*` → `./src/*`) and needs a `hooks` export. It once rewrote an import to `from "cn"` and **installed an unrelated npm package `cn`**: review every `shadcn add` diff and package.json change.
 - 2026-11-24: Wrangler bindings are not inherited by `env.*`; `scripts/lib/wrangler-config.test.ts` checks each env repeats them and points only at its own `truframe-<env>*` resources. Local dev ports: web 3000, realtime 8787, agent 8788, mcp 8789, jobs 8790, sites 8791.
+- 2026-11-24: CI (`.github/workflows/ci.yml`): jobs lint, typecheck, unit, rust, build (incl. OpenNext + `wrangler deploy --dry-run --env staging`), e2e (Playwright starts `pnpm dev` and waits for `/api/health` = 200, i.e. all bindings up), deploy-staging (push to main, GitHub environment `staging`, then smoke e2e against `vars.STAGING_URL`). Actions are pinned to commit SHAs; Dependabot updates them weekly. Check workflow edits with `docker run --rm -v <repo>/.github:/w rhysd/actionlint -no-color /w/workflows/ci.yml`.
 
 ## Dependencies added (name, license, why)
 - turbo 2.11.13 (MIT): task runner. typescript 5.9.3 (Apache-2.0). wrangler 4.166.0 (MIT OR Apache-2.0): Workers dev/deploy. [P0-1]
