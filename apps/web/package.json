@@ -1,0 +1,10 @@
+{
+  "name": "@truframe/web",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Next.js app: marketing, auth, dashboard, editor, settings (scaffolded in P0-3)",
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  }
+}

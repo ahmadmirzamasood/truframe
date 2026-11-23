@@ -1,0 +1,13 @@
+{
+  "name": "@truframe/layout",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Pure layout math: snapping, inference, measurement",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "name": "@truframe/protocol",
+  "version": "0.0.0",
+  "private": true,
+  "description": "zod schemas for HTTP, WS, ops on the wire",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  }
+}

@@ -3,7 +3,7 @@
 > Agent-facing backlog. One task ≈ one PR. IDs are stable (`P<phase>-<n>`); never renumber. Mark `[~] <branch>` when starting and `[x]` when done; `[-]` dropped (say why). Each task has a **Done when** check. ∥ = can run in parallel with the previous task.
 
 ## P0 Foundations
-- [ ] **P0-1** pnpm + Turborepo + Cargo workspace; Node 22; TS strict base; layout per `ARCHITECTURE.md §4` with stub packages. *Done when* `pnpm build` and `cargo build` run.
+- [x] **P0-1** pnpm + Turborepo + Cargo workspace; Node 22; TS strict base; layout per `ARCHITECTURE.md §4` with stub packages. *Done when* `pnpm build` and `cargo build` run.
 - [ ] **P0-2** Biome, Vitest, Playwright, cargo fmt/clippy/deny; `scripts/check-deps.ts` enforcing the dependency rule. *Done when* `pnpm lint && pnpm test && cargo test` pass with sample tests.
 - [ ] **P0-3** `apps/web` Next.js 16 + Tailwind v4 + shadcn; OpenNext Cloudflare adapter; wrangler config with D1, R2, KV, Queues, DO bindings for local, staging, production. *Done when* `pnpm dev` runs locally with Miniflare and staging deploy serves a page.
 - [ ] **P0-4** CI: lint, typecheck, unit, Rust, e2e, deploy staging on main; secrets via GitHub environments. *Done when* green on main.
