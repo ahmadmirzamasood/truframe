@@ -54,7 +54,13 @@ Run from a Linux or macOS shell, or from CI. OpenNext's build does not work on W
 
 ## CI secrets (GitHub environments)
 
-Create GitHub environments `staging` and `production`. Production needs a required reviewer. Add these to each:
+The GitHub environments `staging` and `production` already exist. `production` requires the owner's review and accepts deployments from `main` only. The `deploy-staging` CI job is skipped until the repository variable `CLOUDFLARE_DEPLOY_ENABLED` is `true`. Set it after adding the secrets below:
+
+```sh
+gh variable set CLOUDFLARE_DEPLOY_ENABLED --body true
+```
+
+Add these to each environment:
 
 - `CLOUDFLARE_API_TOKEN`: an API token with Workers Scripts, D1, R2, KV, Queues: Edit and Account Settings: Read, limited to the Truframe account.
 - `CLOUDFLARE_ACCOUNT_ID`.

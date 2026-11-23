@@ -5,7 +5,7 @@
 ## Current state
 - **Phase:** P0 Foundations: code complete locally; P0-3 (staging deploy) and P0-4 (CI run on GitHub) blocked on owner accounts
 - **Last updated:** 2026-11-24
-- **Repo:** local git repo at `truframe/` (default branch `main`), **no GitHub remote yet**. Task branches are merged locally until a remote exists. `archive/v1-local-first/` is not in this repo.
+- **Repo:** https://github.com/ahmadmirzamasood/truframe (public, default branch `main`). Work on `tf/<task-id>-<slug>` branches and open PRs. `archive/v1-local-first/` is not in this repo.
 
 ## Decisions log
 | Date | Decision | Why | Alternatives |
@@ -31,14 +31,15 @@
 | 2026-11-24 | TypeScript pinned to **5.9.3**, not 7.x | TS 7 (native) is new; Next 16 and tooling are proven on 5.9. Revisit in a later phase | TS 7.0 |
 | 2026-11-24 | Rust pinned to **1.99.1** stable via `rust-toolchain.toml` (rustfmt, clippy) | AGENTS.md requires stable; the local default is nightly | `stable` channel (floats) |
 | 2026-11-24 | Internal TS packages are source-only (`exports: ./src/index.ts`), no build step; only `apps/web` and `workers/*` build | Less tooling, Next/wrangler bundle TS directly | tsc/tsup per package |
+| 2026-11-24 | License exceptions **approved** by the owner: `@img/sharp-*` (LGPL-3.0 libvips binary, dev/build only), `caniuse-lite` (CC-BY-4.0 data), BlueOak-1.0.0 packages (`glob`, `graceful-fs`, `lru-cache`, `minimatch`, `minipass`, `path-scurry`). These are recorded by name in `licenses.exceptions.json`. New packages under these licenses still need asking | Transitive deps of next, OpenNext and wrangler; permissive or dev-only | Widening the allowlist itself |
+| 2026-11-24 | GitHub repo `ahmadmirzamasood/truframe` is **public**, with a proprietary `LICENSE` (source-visible, all rights reserved) | Owner decision | Private repo |
+| 2026-11-24 | CI `deploy-staging` is gated on repository variable `CLOUDFLARE_DEPLOY_ENABLED=true` | Cloudflare is not connected yet, and main must stay green | Failing deploy job |
 | 2026-11-24 | Inspector simplified: no At rest/Hover state, no margin, no Block display, Align is a dropdown (not a 3×3 matrix) and Space between/around/evenly are separate Distribute buttons; keep blend modes, image features, guides, export | Owner decision | Mockup version |
 
 ## Open questions (owner; defaults in place)
 - Pricing numbers and limits in `BILLING.md` (proposal).
 - Truframe's own license (default: proprietary). `LICENSE` (all rights reserved, holder "Truframe") and `"license": "UNLICENSED"` were committed in P0-5; the owner should confirm the legal entity name.
-- **Doc conflict (2026-11-24):** `C:\Users\being\CLAUDE.md`, the user-level file above this repo, describes a *different* Truframe stack: Supabase Postgres/Auth, Next.js-only TypeScript output, Zustand, CSS Modules, its own plan limits and billing rules. This repo's docs (Cloudflare D1/DO, Better Auth, Rust compiler, Next.js or Astro, Tailwind output, `BILLING.md`) take precedence for work in this repo. The owner should retire or update the outer file so agents don't mix them up.
-- License exceptions pending approval (`licenses.exceptions.json`): `@img/sharp-*` (Apache-2.0 AND LGPL-3.0-or-later libvips binary, dev/build tooling only, via wrangler and next); `caniuse-lite` (CC-BY-4.0 data, via next); `glob`, `graceful-fs`, `lru-cache`, `minimatch`, `minipass`, `path-scurry` (BlueOak-1.0.0, permissive, via next/OpenNext). Proposed default: add BlueOak-1.0.0 and CC-BY-4.0 (data only) to the allowlist and accept sharp as dev-only.
-- To finish P0-3/P0-4: a GitHub remote, the Cloudflare account and resource IDs, and the CI secrets (see `docs/runbooks/cloudflare-setup.md`).
+- Cloudflare: the account exists but is not connected yet (owner, 2026-11-24). Work stays local until then. P0-3's staging deploy and the CI `deploy-staging` job wait on it (see `docs/runbooks/cloudflare-setup.md`).
 - Domain names: `truframe.com` (app) and a separate domain for user content (`truframe.site` assumed). Must be a different registrable domain.
 - Payments provider final choice depends on where the company is registered.
 
