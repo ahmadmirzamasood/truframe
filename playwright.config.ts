@@ -19,6 +19,8 @@ export default defineConfig({
         command: "pnpm dev",
         url: `${baseURL}/api/health`,
         reuseExistingServer: !process.env.CI,
+        // Show dev server logs so a worker that fails to start is diagnosable in CI.
+        stdout: "pipe",
         timeout: 180_000,
       },
 });

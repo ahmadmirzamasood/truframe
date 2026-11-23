@@ -7,6 +7,11 @@
       "reason": "APPROVED by owner 2026-11-24. Prebuilt libvips binary pulled in by wrangler/miniflare (local image binding) and next (image optimization at build). Dev/build tooling only, dynamically linked, unmodified, never bundled into Workers or generated projects."
     },
     {
+      "name": "@img/sharp-libvips-*",
+      "license": "LGPL-3.0-or-later",
+      "reason": "APPROVED by owner 2026-11-24 (same approval as @img/sharp-*). On Linux the libvips binary ships as its own package with a plain LGPL-3.0-or-later license. Dev/build tooling only, never bundled."
+    },
+    {
       "name": "caniuse-lite",
       "license": "CC-BY-4.0",
       "reason": "APPROVED by owner 2026-11-24. Browser-support data used by next/browserslist at build time (transitive via next and @opennextjs/cloudflare). CC-BY is a permissive attribution license for data, not copyleft."
