@@ -1,5 +1,5 @@
 /**
- * The internal dependency rule from ARCHITECTURE.md §4, as pure functions so it can be unit tested.
+ * The internal dependency rule from docs/engineering/ARCHITECTURE.md §4, as pure functions so it can be unit tested.
  *
  * - `model`, `ops`, `layout`, `protocol` (core) depend only on each other.
  * - UI packages never import workers; workers never import UI packages.

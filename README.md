@@ -16,23 +16,18 @@ pnpm e2e            # Playwright; starts `pnpm dev` if it is not running
 
 `http://localhost:3000/api/health` reports whether every Cloudflare binding answers. Staging and production setup: `docs/runbooks/cloudflare-setup.md`.
 
-## Docs for agents and humans
+## Docs
 
-These root files are written for coding agents. Read `AGENTS.md` first.
+Only the files that tools expect at the repo root stay there: `README.md`, `AGENTS.md`, `CLAUDE.md` and `LICENSE`. Every other doc lives in [`docs/`](docs/README.md).
 
-| File | What it is |
+Coding agents: read `AGENTS.md` first. `CLAUDE.md` imports it.
+
+| Folder | Contents |
 |---|---|
-| `AGENTS.md` (+ `CLAUDE.md`) | How to work in this repo: workflow, rules, clean-room rule, definition of done |
-| `MEMORY.md` | Decisions log, open questions, glossary, gotchas |
-| `PRD.md` | Product requirements F1–F29 (incl. layer code classes, accessibility, panel options), design → code rules, Doop ideas adopted |
-| `ARCHITECTURE.md` | Cloudflare + Next.js stack, document model, Rust compiler, realtime, agent/MCP, publish |
-| `BILLING.md` | Free vs Pro, agent credits, MCP call quotas, payments provider |
-| `INTEGRATIONS.md` | v1 and next integrations and the integration interfaces |
-| `SECURITY.md` | Threat model, controls, test gates T1–T12 |
-| `PLAN.md` | Phases P0–P10, milestones, exit criteria, risks |
-| `TASKS.md` | Task backlog, one PR per task |
-| `prompts/` | One prompt per phase + single-task template |
-| `docs/runbooks/` | Operational runbooks (Cloudflare environments, deploys) |
-| `LICENSE` | Proprietary (owner default; see `MEMORY.md` open questions) |
+| [`docs/product/`](docs/product) | What we build: `PRD.md`, `BILLING.md`, `INTEGRATIONS.md` |
+| [`docs/engineering/`](docs/engineering) | How it's built: `ARCHITECTURE.md`, `SECURITY.md` |
+| [`docs/project/`](docs/project) | Where we are: `PLAN.md`, `TASKS.md`, `MEMORY.md` |
+| [`docs/prompts/`](docs/prompts) | One prompt per phase, plus a single-task template |
+| [`docs/runbooks/`](docs/runbooks) | Operations: Cloudflare environments and deploys |
 
-Start with `prompts/phase-00-foundations.md`.
+`LICENSE` is proprietary (owner default; see the open questions in `docs/project/MEMORY.md`).

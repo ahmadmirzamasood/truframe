@@ -1,6 +1,6 @@
 # Phase prompts (v2)
 
-Paste one prompt into a fresh agent session (Claude Code or similar) at the repo root to run that phase. Run them in order; a phase starts only when the previous phase's exit criteria in `PLAN.md` pass. You can rerun a prompt in a new session: the agent resumes from `TASKS.md` and `MEMORY.md`.
+Paste one prompt into a fresh agent session (Claude Code or similar) at the repo root to run that phase. Run them in order; a phase starts only when the previous phase's exit criteria in `docs/project/PLAN.md` pass. You can rerun a prompt in a new session: the agent resumes from `docs/project/TASKS.md` and `docs/project/MEMORY.md`.
 
 | File | Phase |
 |---|---|
@@ -16,4 +16,4 @@ Paste one prompt into a fresh agent session (Claude Code or similar) at the repo
 | `phase-08-comments-history.md` | P8 Comments and history |
 | `phase-09-publish-export.md` | P9 Temp links, GitHub, Vercel, image and code export |
 | `phase-10-billing-hardening-beta.md` | P10 Billing, security review, beta |
-| `task-template.md` | Run a single task from `TASKS.md` |
+| `task-template.md` | Run a single task from `docs/project/TASKS.md` |

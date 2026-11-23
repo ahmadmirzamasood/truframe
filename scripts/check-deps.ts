@@ -1,5 +1,5 @@
 /**
- * Enforces the internal dependency rule (ARCHITECTURE.md §4) across the pnpm workspace.
+ * Enforces the internal dependency rule (docs/engineering/ARCHITECTURE.md §4) across the pnpm workspace.
  * Usage: `node scripts/check-deps.ts` (run by `pnpm lint`).
  */
 import { readdirSync, readFileSync, statSync } from "node:fs";
@@ -79,7 +79,7 @@ const violations = checkDependencyRule(pkgs);
 if (violations.length > 0) {
   console.error(`Dependency rule: ${violations.length} violation(s)`);
   for (const v of violations) console.error(`  ${v.pkg}: ${v.message}`);
-  console.error("See ARCHITECTURE.md §4 for the rule.");
+  console.error("See docs/engineering/ARCHITECTURE.md §4 for the rule.");
   process.exit(1);
 }
 console.log(`Dependency rule: ${pkgs.length} workspace packages OK`);

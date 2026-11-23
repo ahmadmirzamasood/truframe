@@ -1,6 +1,6 @@
 # Truframe Security (v2: hosted)
 
-> Agent-facing. Truframe is a multi-tenant SaaS. It stores customers' designs and code, runs builds of user-written code, holds GitHub and Vercel tokens, and lets LLM agents and external MCP clients act on projects. This file defines the threat model, the required controls, and the test checklist that gates phases in `PLAN.md`.
+> Agent-facing. Truframe is a multi-tenant SaaS. It stores customers' designs and code, runs builds of user-written code, holds GitHub and Vercel tokens, and lets LLM agents and external MCP clients act on projects. This file defines the threat model, the required controls, and the test checklist that gates phases in `docs/project/PLAN.md`.
 
 ## 1. Assets
 1. Customer projects (design docs, code, assets): integrity and confidentiality across tenants.
@@ -23,7 +23,7 @@
 | Third-party tokens | Token theft from DB or logs | Encrypt at rest with AES-256-GCM using a key in Workers secrets (envelope: per-row data key wrapped by the master key, key version stored for rotation); never log; never send to the model, the browser or containers; GitHub App installation tokens fetched just-in-time (1-hour expiry); minimal scopes |
 | Publish | Pushing to the wrong repo, overwriting user work | Only from a user click (never agents/MCP); repo + branch confirmed in the dialog; commits only (no force push, no history rewrite); if the branch has commits not made by Truframe since our last push, stop and ask |
 | Agent | Prompt injection via page text, comments, skills, uploaded file names, code | Tools operate only inside the current project; no network, no shell, no publish, no billing, no cross-project access; tool outputs labeled as untrusted data; per-turn op budget (nodes, files, bytes) with pause for confirmation; user skills sanitized and shown to the user before activation; secrets redacted from code sent to the model |
-| MCP | Stolen OAuth tokens, over-broad access | OAuth 2.1 with PKCE; consent lists workspace + projects + scopes (`read`, `write`); tokens short-lived with refresh rotation; revoke in Settings; per-client rate limits and monthly quotas (`BILLING.md`); audit log of every write call |
+| MCP | Stolen OAuth tokens, over-broad access | OAuth 2.1 with PKCE; consent lists workspace + projects + scopes (`read`, `write`); tokens short-lived with refresh rotation; revoke in Settings; per-client rate limits and monthly quotas (`docs/product/BILLING.md`); audit log of every write call |
 | Billing | Webhook spoofing, plan bypass | Verify provider signature; idempotent by event id; plan limits enforced server-side in the ops validator, job enqueuers and agent/MCP meters, never only in the UI |
 | Abuse / cost | Free-tier farming, build or agent abuse, DoS | Cloudflare Rate Limiting bindings per user/IP; Turnstile on signup; email verification before agent and publish; per-plan concurrency limits; Browser Rendering and build quotas; anomaly alerts on spend |
 | Supply chain | Malicious or vulnerable dependencies | Lockfiles; `pnpm audit` and `cargo audit` in CI; Renovate with review; license allowlist (see `AGENTS.md`); pinned template dependencies for generated projects |
