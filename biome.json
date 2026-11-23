@@ -45,5 +45,36 @@
     "parser": {
       "tailwindDirectives": true
     }
-  }
+  },
+  "overrides": [
+    {
+      "includes": ["**", "!packages/db/**"],
+      "linter": {
+        "rules": {
+          "style": {
+            "noRestrictedImports": {
+              "level": "error",
+              "options": {
+                "paths": {
+                  "drizzle-orm": "Tables and Drizzle live in packages/db. Use the workspace-scoped repos from @truframe/db (docs/engineering/SECURITY.md, tenant isolation)."
+                },
+                "patterns": [
+                  {
+                    "group": [
+                      "drizzle-orm/**",
+                      "**/db/src/**",
+                      "@truframe/db/src/**",
+                      "@truframe/db/schema",
+                      "@truframe/db/schema/**"
+                    ],
+                    "message": "Tables and Drizzle live in packages/db. Use the workspace-scoped repos from @truframe/db (docs/engineering/SECURITY.md, tenant isolation)."
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
 }

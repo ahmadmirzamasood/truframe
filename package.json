@@ -18,7 +18,9 @@
     "check:deps": "node scripts/check-deps.ts",
     "check:licenses": "node scripts/check-licenses.ts && cargo deny check licenses bans sources",
     "deploy:staging": "node scripts/deploy.ts staging",
-    "deploy:production": "node scripts/deploy.ts production"
+    "deploy:production": "node scripts/deploy.ts production",
+    "db:generate": "pnpm --filter @truframe/db db:generate",
+    "db:migrate": "pnpm --filter @truframe/web db:migrate"
   },
   "devDependencies": {
     "@biomejs/biome": "2.6.8",

@@ -1,0 +1,6 @@
+// Only for tests: `@truframe/db/testing` reads this through wrangler's getPlatformProxy.
+{
+  "name": "truframe-db-test",
+  "compatibility_date": "2026-11-01",
+  "d1_databases": [{ "binding": "DB", "database_name": "truframe-test" }]
+}
