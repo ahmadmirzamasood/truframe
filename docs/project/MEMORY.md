@@ -3,7 +3,7 @@
 > Agent-facing, long-lived project memory. Read at the start of every session; append in the same PR as the work that taught you something. Keep entries short, dated (YYYY-MM-DD) and factual. Fix or strike entries that become wrong.
 
 ## Current state
-- **Phase:** P0 Foundations: code complete locally; P0-3 (staging deploy) and P0-4 (CI run on GitHub) blocked on owner accounts
+- **Phase:** P1 Accounts, dashboard, project creation (local only; staging parts wait on Cloudflare). P0 is done except the P0-3 staging deploy.
 - **Last updated:** 2026-11-24
 - **Repo:** https://github.com/ahmadmirzamasood/truframe (public, default branch `main`). Work on `tf/<task-id>-<slug>` branches and open PRs. `archive/v1-local-first/` is not in this repo.
 
@@ -72,12 +72,17 @@
 - 2026-11-24: Wrangler bindings are not inherited by `env.*`; `scripts/lib/wrangler-config.test.ts` checks each env repeats them and points only at its own `truframe-<env>*` resources. Local dev ports: web 3000, realtime 8787, agent 8788, mcp 8789, jobs 8790, sites 8791.
 - 2026-11-24: First GitHub CI run caught three Linux-only problems that local Windows runs missed. (1) Concurrent `wrangler dev` processes fail with `Address already in use (socket "direct:1:default")` unless each worker has a fixed `dev.inspector_port` (9230 to 9234). (2) `next build` type-checks against the gitignored `cloudflare-env.d.ts`, so the web `build` script runs `wrangler types` first. (3) On Linux, sharp's libvips is a separate `@img/sharp-libvips-<platform>` package licensed plain `LGPL-3.0-or-later`. Reproduce CI locally in `node:22-bookworm` via Docker before pushing infra changes.
 - 2026-11-24: CI (`.github/workflows/ci.yml`): jobs lint, typecheck, unit, rust, build (incl. OpenNext + `wrangler deploy --dry-run --env staging`), e2e (Playwright starts `pnpm dev` and waits for `/api/health` = 200, i.e. all bindings up), deploy-staging (push to main, GitHub environment `staging`, then smoke e2e against `vars.STAGING_URL`). Actions are pinned to commit SHAs; Dependabot updates them weekly. Check workflow edits with `docker run --rm -v <repo>/.github:/w rhysd/actionlint -no-color /w/workflows/ci.yml`.
+- 2026-11-24: D1 access: `createDb(env.DB)` per request, then `workspacesRepo(db)` (user → workspace memberships) and `forWorkspace(db, workspaceId)` (projects, usage, audit; every query filters on `workspace_id`). `@truframe/db` exports no tables except `authAdapterSchema` for Better Auth. A Biome `noRestrictedImports` override in `biome.json` blocks `drizzle-orm*` and `**/db/src/**` imports outside `packages/db`; `scripts/lib/table-imports.test.ts` proves it fires.
+- 2026-11-24: Migrations: edit `packages/db/src/schema/*`, run `pnpm db:generate` (drizzle-kit writes `packages/db/migrations/NNNN_*.sql` and `meta/`), apply with `pnpm db:migrate` (wrangler, local). The web `dev` script applies local migrations before `next dev`. Wrangler ignores drizzle's `meta/` folder. D1 has no interactive transactions, so use `db.batch([...])`.
+- 2026-11-24: DB tests use wrangler's `getPlatformProxy({ persist: false })` (a real workerd D1, in memory) through `@truframe/db/testing`. Miniflare 5 (the beta that wrangler 4.166 ships) changed its constructor API, so don't call `new Miniflare()` directly.
+- 2026-11-24: `biome lint --stdin-file-path` does not apply `overrides` the way a real file does. Test lint rules against real temp files.
 
 ## Dependencies added (name, license, why)
 - turbo 2.11.13 (MIT): task runner. typescript 5.9.3 (Apache-2.0). wrangler 4.166.0 (MIT OR Apache-2.0): Workers dev/deploy. [P0-1]
 - @biomejs/biome 2.6.8 (MIT OR Apache-2.0), vitest 5.1.1 (MIT), @playwright/test 1.65.1 (Apache-2.0), @types/node 22.20.5 (MIT). cargo-deny (MIT OR Apache-2.0) is a dev tool installed with `cargo install cargo-deny --locked`. [P0-2]
 - next 16.4.6 (MIT), react/react-dom 19.3.1 (MIT), @opennextjs/cloudflare 1.20.18 (MIT), tailwindcss + @tailwindcss/postcss 4.3.5 (MIT), @types/react(-dom) 19.3.0 (MIT); in `packages/ui`: radix-ui 1.8.1 (MIT), class-variance-authority 0.7.1 (Apache-2.0), clsx 2.1.1 (MIT), tailwind-merge 3.7.1 (MIT), lucide-react 1.77.0 (ISC), tw-animate-css 1.4.0 (MIT). Vitest moved 5.1.1 → 4.1.12 (MIT). [P0-3]
 - **License exception pending owner approval:** `@img/sharp-*` (Apache-2.0 AND LGPL-3.0-or-later), the libvips binary pulled in by wrangler/miniflare and next. Dev/build tooling only, never bundled. Recorded in `licenses.exceptions.json`. [P0-2]
+- drizzle-orm 0.45.4 (Apache-2.0): typed D1 queries. drizzle-kit 0.31.11 (MIT, dev): migration generation. wrangler 4.166.0 added as a `packages/db` dev dependency for the test D1. [P1-1]
 
 ## Benchmarks
 - 2026-11-24: `truframe-web` OpenNext bundle (P0 skeleton: home page + `/api/health`), `wrangler deploy --dry-run --env staging` in `node:22-bookworm`: **4,546 KiB raw / 959 KiB gzip** (Workers limit 3 MiB free / 10 MiB paid, compressed).
