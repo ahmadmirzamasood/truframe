@@ -1,0 +1,106 @@
+# Truframe Tasks (v2)
+
+> Agent-facing backlog. One task ≈ one PR. IDs are stable (`P<phase>-<n>`); never renumber. Mark `[~] <branch>` when starting and `[x]` when done; `[-]` dropped (say why). Each task has a **Done when** check. ∥ = can run in parallel with the previous task.
+
+## P0 Foundations
+- [ ] **P0-1** pnpm + Turborepo + Cargo workspace; Node 22; TS strict base; layout per `ARCHITECTURE.md §4` with stub packages. *Done when* `pnpm build` and `cargo build` run.
+- [ ] **P0-2** Biome, Vitest, Playwright, cargo fmt/clippy/deny; `scripts/check-deps.ts` enforcing the dependency rule. *Done when* `pnpm lint && pnpm test && cargo test` pass with sample tests.
+- [ ] **P0-3** `apps/web` Next.js 16 + Tailwind v4 + shadcn; OpenNext Cloudflare adapter; wrangler config with D1, R2, KV, Queues, DO bindings for local, staging, production. *Done when* `pnpm dev` runs locally with Miniflare and staging deploy serves a page.
+- [ ] **P0-4** CI: lint, typecheck, unit, Rust, e2e, deploy staging on main; secrets via GitHub environments. *Done when* green on main.
+- [ ] **P0-5** Agent docs at repo root + `CLAUDE.md`; `LICENSE` per owner. *Done when* committed.
+
+## P1 Accounts, dashboard, project creation
+- [ ] **P1-1** `packages/db`: Drizzle schema for auth tables, workspaces, members, projects, usage, audit_log; repos layer requiring `workspaceId`; lint rule forbidding table imports elsewhere. *Done when* migrations apply locally and on staging.
+- [ ] **P1-2** Better Auth: Google, GitHub, email magic link + password with verification; account linking by verified email; Resend + React Email templates; Turnstile on signup; rate limits. *Done when* e2e signs in with each method (OAuth mocked in CI, real on staging).
+- [ ] **P1-3** Personal workspace on signup; session → workspace context helper. *Done when* tests pass.
+- [ ] **P1-4** Dashboard: list, create, duplicate, rename, soft delete (30-day restore), thumbnails placeholder. *Done when* e2e passes.
+- [ ] **P1-5** New Project dialog: framework (Next.js / Astro) + template (blank, landing, portfolio, SaaS as doc JSON fixtures). *Done when* project row stores framework and template id.
+- [ ] **P1-6** `packages/billing/plans.ts` (limits from `BILLING.md`), `assertWithinLimit()` helpers, usage counters. *Done when* project-count limit is enforced server-side (test).
+- [ ] **P1-7** T1 API isolation tests. *Done when* green.
+
+## P2 Document core and realtime
+- [ ] **P2-1** `packages/model`: schema per `ARCHITECTURE.md §5` (zod), defaults (Desktop 1200, Tablet 810, Mobile 390), breakpoint range validation (desktop ≥ 1200 and not deletable). *Done when* unit tests cover valid/invalid docs.
+- [ ] **P2-2** Rust model mirror in `crates/compiler/src/model` + JSON parity test against TS fixtures. *Done when* CI parity job passes.
+- [ ] **P2-3** `packages/ops`: op types, validation (schema + plan limits), transactions, inverse ops. *Done when* property test (random ops keep doc valid; undo restores) passes 1,000 runs.
+- [ ] **P2-4** Loro binding: doc layout in Loro containers, op → Loro mutation, export/import updates. *Done when* round-trip tests pass.
+- [ ] **P2-5** ProjectRoom DO: room tokens (HMAC, 5 min), WebSocket hibernation API, apply/broadcast, SQLite persistence, R2 snapshot compaction, revision rows in D1. *Done when* T2 passes and two clients converge.
+- [ ] **P2-6** Editor client store: Loro replica, IndexedDB cache, reconnect sync, undo/redo stacks per user. *Done when* offline edit then reconnect converges (e2e).
+
+## P3 Compiler v1
+- [ ] **P3-1** Compiler skeleton: `compile(project) → files, spans, css`; deterministic printer; wasm-bindgen wrapper `packages/compiler-wasm`. *Done when* blank project compiles in Rust and JS tests.
+- [ ] **P3-2** Style engine: Props → Tailwind v4 classes with scale snapping, arbitrary fallback, `tablet`/`mobile` custom variants, variable references; per-node canvas CSS. *Done when* ≥ 60 unit cases. Also: layer `codeClass` as first class with Tailwind-collision guard, `tokens.css` with per-breakpoint variable values.
+- [ ] **P3-3** Next.js adapter: layout, pages (nested routes from page folders), components, globals.css (`@theme`, `:root`, variants), `next/image`, `next/font`, config files, README. *Done when* golden fixtures pass.
+- [ ] **P3-4** ∥ Astro adapter: pages, layout, components, global.css, `astro:assets`, config. *Done when* golden fixtures pass.
+- [ ] **P3-5** CI job: build and type-check generated projects for every fixture in both frameworks. *Done when* green.
+- [ ] **P3-6** Benchmark WASM compile per page. *Done when* < 30 ms recorded in `MEMORY.md`.
+
+## P4 Design View I
+- [ ] **P4-1** Editor shell route `/p/[id]`: top bar (pages menu, Design/Code toggle, breakpoint bar, Preview, Publish), left tabs (Pages, Layers, Components, Variables, Assets), right tabs (Inspect, Agent, History, Comments). *Done when* layout renders with placeholders.
+- [ ] **P4-2** Canvas camera (pan, zoom 10–800%, fit), breakpoint frames side by side. *Done when* camera math unit tests pass.
+- [ ] **P4-3** `packages/renderer`: model → DOM using compiler CSS; per-breakpoint rendering at frame width. *Done when* renders fixtures identically to built output (screenshot parity ≤ 1%).
+- [ ] **P4-4** Breakpoint management: Desktop width ≥ 1200 editable, not deletable; Tablet/Mobile add/remove/resize within ranges. *Done when* e2e + validation errors shown.
+- [ ] **P4-5** Insert tools: Frame (Stack/Grid), Text, Image placeholder, Link/Button, Icon. *Done when* each inserts valid nodes via ops.
+- [ ] **P4-6** Selection, multi-select, hover, drag to reorder/reparent in auto layout, absolute opt-in, resize with Fixed/Fill/Fit, snapping and measurement (`packages/layout`). *Done when* each gesture = one transaction (tests).
+- [ ] **P4-7** Inspector core: layout (stack/grid controls), size, spacing, typography, fill, border, radius, shadow, opacity, visibility per breakpoint, semantic tag; scrub fields; override markers + reset to inherited. *Done when* e2e per section. Must include every option in `PRD.md` F29 for Section, Text, Image and Page including Overflow, Display Grid/Stack/Free, Align dropdown + Distribute buttons (Space between/around/evenly), blend, image fit and ratio, Guides and Export. No margin and no hover state in v1.
+- [ ] **P4-8** Layers panel with Desktop/Tablet/Mobile groups, rename, hide, lock, drag. *Done when* selection syncs both ways. Each row shows the layer code class (`PRD.md` F27).
+- [ ] **P4-9** Pages panel: add, rename, reorder, folders, duplicate, delete, home, page settings (slug, SEO). *Done when* compiled routes match.
+- [ ] **P4-10** Command registry + Cmd+K + shortcut sheet. *Done when* all editor commands registered there.
+- [-] **P4-11** Transitions: dropped 2026-11-24 with hover state (owner decision); timing lives in the P6A Animation section.
+
+## P5 Design View II
+- [ ] **P5-1** Variables panel (color, text style, spacing/number; groups; rename; delete with usage count). *Done when* compiled CSS variables and `@theme` update. Tabs Colors/Spacing/Font, per-breakpoint values, New variable dialog with live code preview (`PRD.md` F29).
+- [ ] **P5-2** Variable binding in inspector for colors, spacing, radius, size, text. *Done when* editing a variable updates all bound nodes (e2e).
+- [ ] **P5-3** Components: create from selection, edit main, instances, overrides (text, image, link, visibility, bindings), exposed props, detach. *Done when* compiled to component files with imports in both frameworks. Plus **variants** (variant properties, variant dropdowns on instances, override dots, Reset override) per `PRD.md` F29.
+- [ ] **P5-4** Assets: signed upload to R2, magic-byte sniffing, SVG sanitizer, size limits per plan, Cloudflare Images variants, folders, search, replace everywhere, alt text, delete with usage count. *Done when* T4 green. Panel per `PRD.md` F29 with storage + file-count meter.
+- [ ] **P5-8** Accessibility Checks per `PRD.md` F28: contrast (text and focus ring, every breakpoint), missing alt text, heading order, unnamed links/buttons, small tap targets, shown in the inspector per `PRD.md` F28. *Done when* unit tests on known failing/passing pairs and e2e.
+- [ ] **P5-9** Page inspector extras: Selection colors (change a literal color everywhere on the page), layout Guides per breakpoint, Export section wired to image export. *Done when* e2e.
+- [ ] **P5-5** ∥ Pickers: Google Fonts, Iconify icons, Unsplash photos (Worker proxies, caching). *Done when* inserted items compile correctly.
+- [ ] **P5-6** "Add auto layout" and "Group into stack" inference (direction, gap, align). *Done when* ≥ 40 layout unit tests.
+- [ ] **P5-7** Preview: full-screen on usercontent origin, Desktop/Tablet/Mobile/side by side, links between pages. *Done when* e2e passes and T3 isolation test passes.
+
+## P6 Code View (read-only, live)
+- [ ] **P6-1** Code View: file tree, read-only CodeMirror 6 (TSX, Astro, CSS, JSON), search across files. *Done when* shows the compiled project for both frameworks.
+- [ ] **P6-2** Live compile in a Web Worker, incremental per page/component. *Done when* design→code < 300 ms p50 on a 300-layer page.
+- [ ] **P6-3** Reveal in design (click code → select layer) and reveal in code (select layer → scroll to code) using `spans`. *Done when* e2e both directions.
+- [ ] **P6-4** Read-only UX: lock indicator, copy rules per plan (see `BILLING.md`), "Export / push to GitHub to edit code" call to action. *Done when* e2e.
+- [ ] **P6-5** Embed node (sanitized HTML or URL) + page head/body snippets, rendered in sandboxed iframes on the usercontent origin. *Done when* T3 green.
+
+## P6A Animation: entrance and scroll-in effects
+- [ ] **P6A-1** Model + ops: `animation` field per `ARCHITECTURE.md §5` with validation. *Done when* property tests include animation ops.
+- [ ] **P6A-2** Compiler: `animations.css` keyframes, classes with CSS variables, `view()` timeline behind `@supports`, IntersectionObserver fallback (Next.js client component, Astro inline script), stagger, per-breakpoint disable, reduced-motion wrapper. *Done when* goldens for every trigger and preset in both frameworks.
+- [ ] **P6A-3** Inspector Animation section (Trigger, From state, Duration, Delay, Easing, Once, Stagger children, presets, disable on Tablet/Mobile). *Done when* e2e per control.
+- [ ] **P6A-4** Canvas ▶ Play for the selection and real playback in Preview. *Done when* e2e.
+- [ ] **P6A-5** Cross-browser check on built fixture sites (Chrome, Safari, Firefox) + reduced-motion test + Lighthouse ≥ 90 on an animated template. *Done when* CI job green.
+
+## P7 Agent, Skills, MCP
+- [ ] **P7-1** `packages/agent-tools`: zod schemas per `ARCHITECTURE.md §9` with compact outputs and examples. *Done when* schema tests pass. Includes `set_animation`.
+- [ ] **P7-2** AgentSession DO: Anthropic SDK streaming loop, tools → ops via ProjectRoom (one transaction per turn), stop, budgets, credit metering, BYO key (Pro, encrypted). *Done when* scripted task completes and credits decrement.
+- [ ] **P7-3** Screenshot tool via Browser Rendering (page, breakpoint, node crop). *Done when* matches canvas within tolerance.
+- [ ] **P7-4** Agent tab UI: chat, selection chips, skill picker, live highlights, tool activity, stop, undo turn. *Done when* e2e passes.
+- [ ] **P7-5** Skills: built-in packs (Landing page, Portfolio, SaaS pricing, SEO pass, Accessibility review, Copywriting, Brand from logo); user skills (Pro) upload/edit with sanitization and preview. *Done when* skill content reaches the system prompt (test) and user skill limit enforced.
+- [ ] **P7-6** MCP Worker: McpAgent + OAuth 2.1 consent (workspace, projects, scopes), metering and rate limits per plan, audit log. *Done when* Claude Code connects and edits a staging project; T9 green.
+- [ ] **P7-7** Eval harness ≥ 30 tasks + prompt-injection fixtures. *Done when* ≥ 80% built-in, ≥ 70% external; T8 green.
+
+## P8 Collaboration and history
+- [ ] **P8-1** Comments: D1 schema, pinned anchors (page, node, breakpoint, offset), threads, mentions, resolve, DO broadcast, email notifications. *Done when* comments survive node moves (test).
+- [ ] **P8-2** History tab: revisions grouped by session, preview, restore as new revision, compare two revisions. *Done when* restore is non-destructive (test).
+- [ ] **P8-3** Named versions + plan retention compaction job. *Done when* Free keeps 7 days + 3 named (test).
+
+## P9 Publish and export
+- [ ] **P9-1** Build job: compile → Cloudflare Container `npm ci && npm run build` (static) with limits and egress allowlist → R2. *Done when* T5 green and build < 90 s p50.
+- [ ] **P9-2** `workers/sites`: temp links with slug, password, expiry, noindex, badge (Free), takedown flag. *Done when* T6 green.
+- [ ] **P9-3** Client review on temp links: comment widget (name + email), Approve button, owner email. *Done when* e2e passes.
+- [ ] **P9-4** GitHub App: install flow, repo create/select, commit via Git Data API, conflict stop if branch moved. *Done when* e2e on a test repo.
+- [ ] **P9-5** Vercel integration: OAuth, project create/link to repo, direct deploy fallback, status/log stream, Free = 1 project + badge. *Done when* nightly e2e reaches a live URL both ways.
+- [ ] **P9-6** Token encryption (envelope, rotation) for all integrations; log redaction. *Done when* T7 green.
+- [ ] **P9-7** Image export PNG/JPEG/WebP via Browser Rendering at 1×–4× per plan. *Done when* exports match preview.
+- [ ] **P9-8** ZIP code export (Pro). *Done when* ZIP builds with `npm i && npm run build`.
+
+## P10 Billing, hardening, beta
+- [ ] **P10-1** Polar products, checkout, portal, webhooks (verified, idempotent), plan sync, 14-day trial, downgrade read-only rules. *Done when* sandbox e2e + T10.
+- [ ] **P10-2** Usage meters UI and 80%/100% warnings; top-up packs. *Done when* e2e.
+- [ ] **P10-3** Server-side limit audit across ops, jobs, agent, MCP. *Done when* T11 green.
+- [ ] **P10-4** Security review of every `SECURITY.md` control; fixes; `security.txt`. *Done when* checklist green.
+- [ ] **P10-5** Account deletion and data export. *Done when* T12 green.
+- [ ] **P10-6** Templates polish + Lighthouse ≥ 90; onboarding tour; empty states. *Done when* audits pass.
+- [ ] **P10-7** Backups/restore runbook (D1 Time Travel, R2 versioning), spend alerts, status page. *Done when* restore drill recorded in `MEMORY.md`.
