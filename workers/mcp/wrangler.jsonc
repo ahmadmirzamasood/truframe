@@ -13,7 +13,8 @@
     "enabled": true
   },
   "dev": {
-    "port": 8789
+    "port": 8789,
+    "inspector_port": 9232
   },
   "vars": {
     "TRUFRAME_ENV": "local"
