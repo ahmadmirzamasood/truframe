@@ -1,6 +1,6 @@
 # Truframe Architecture (v2: hosted)
 
-> Agent-facing map of the system. Change it in the same PR as any change that moves a boundary, adds a service or swaps a dependency, and log the decision in `MEMORY.md`. v1 (local tool) is archived in `archive/v1-local-first/`.
+> Agent-facing map of the system. Change it in the same PR as any change that moves a boundary, adds a service or swaps a dependency, and log the decision in `docs/project/MEMORY.md`. v1 (local tool) is archived in `archive/v1-local-first/`.
 
 ## 1. Overview
 
@@ -47,7 +47,7 @@ Browser (app.truframe.com)
 | Screenshots/export | **Cloudflare Browser Rendering** (Puppeteer) | Exact PNG/JPEG/WebP of the real render for export and agent verification | html-to-image in the browser (inaccurate) |
 | Auth | **Better Auth** (Google, GitHub, email magic link + password) with Drizzle/D1 adapter | MIT, runs on Workers, owns our user table, account linking | Auth.js, Clerk (hosted, cost) |
 | Email | **Resend** + React Email | Simple API, good deliverability | Postmark |
-| Payments | **Polar** (merchant of record), see `BILLING.md` | Handles tax; available beyond Stripe countries | Paddle, Lemon Squeezy, Stripe |
+| Payments | **Polar** (merchant of record), see `docs/product/BILLING.md` | Handles tax; available beyond Stripe countries | Paddle, Lemon Squeezy, Stripe |
 | Agent | **Anthropic TypeScript SDK** tool loop inside a Durable Object; default `claude-sonnet-5-5`, deep mode `claude-opus-5-5` | Runs on workerd; streaming; we control tools and metering. (The Claude Agent SDK needs a Node process, so it doesn't fit Workers.) | Cloudflare Agents SDK + AI SDK (good option for the DO plumbing; can combine) |
 | MCP | **Cloudflare Agents SDK `McpAgent`** + **workers-oauth-provider** | Remote MCP with OAuth on Workers | @modelcontextprotocol/sdk on a Node server |
 | Compiler | **Rust** crate `truframe-compiler` using **oxc** (parser), compiled to WASM | One fast, deterministic implementation for browser, agent and build workers | TypeScript (slower, two implementations drift) |
@@ -150,7 +150,7 @@ Editor: a Web Worker runs compile incrementally (per page/component, debounced 5
 
 ## 7. Realtime and persistence
 - **ProjectRoom DO**: one per project, accepts WebSocket connections after verifying a short-lived signed room token issued by the web app (user + project + role + plan). It applies validated ops to the Loro doc, broadcasts updates, persists Loro updates to DO SQLite, compacts them into a snapshot in R2 every N ops or 5 minutes, and records revisions.
-- **History:** a revision = a Loro version (frontiers) plus metadata (author: user|agent, summary, timestamp) in D1. Restore = checkout the old version into a new transaction (never destructive). Named versions are pinned revisions. Retention by plan (`BILLING.md`): revisions older than retention are compacted, named versions are kept.
+- **History:** a revision = a Loro version (frontiers) plus metadata (author: user|agent, summary, timestamp) in D1. Restore = checkout the old version into a new transaction (never destructive). Named versions are pinned revisions. Retention by plan (`docs/product/BILLING.md`): revisions older than retention are compacted, named versions are kept.
 - **Comments:** stored in D1 (`comments`, `comment_threads`) anchored to `{pageId, nodeId, breakpoint, offset}`; the DO broadcasts changes. Anchors survive node moves; if a node is deleted the thread is kept as "detached".
 - **Offline:** the editor keeps the Loro doc in IndexedDB and syncs on reconnect.
 
@@ -163,7 +163,7 @@ Editor: a Web Worker runs compile incrementally (per page/component, debounced 5
 - **Layout tools** (`packages/layout`): snapping (parent, siblings, equal spacing), "Add auto layout" (infer direction and gap from children), "Group into stack", resize with Fixed/Fill/Fit semantics.
 
 ## 9. Agent, Skills and MCP
-- **AgentSession DO** per run: loads the active skills into the system prompt, calls the Anthropic API with streaming and Truframe tools, and applies tool results as ops through ProjectRoom in one transaction per turn. It streams progress to the editor (which node it is touching), honors Stop, and meters credits (`BILLING.md`) before and after each model call.
+- **AgentSession DO** per run: loads the active skills into the system prompt, calls the Anthropic API with streaming and Truframe tools, and applies tool results as ops through ProjectRoom in one transaction per turn. It streams progress to the editor (which node it is touching), honors Stop, and meters credits (`docs/product/BILLING.md`) before and after each model call.
 - **Tools** (`packages/agent-tools`, zod schemas, shared with MCP):
   - Read: `get_project`, `list_pages`, `get_page_tree` (compact), `get_node`, `find_nodes`, `get_variables`, `get_components`, `list_assets`, `read_code_file` (generated code, read-only), `get_comments`.
   - Design ops: `insert_nodes` (accepts a compact JSX-like tree for bulk insert), `update_node` (props per breakpoint), `move_node`, `delete_nodes`, `bind_variable`, `set_animation` (entrance/scroll effects on nodes), `upsert_variables`, `create_component`, `set_instance_overrides`, `add_page`, `update_page`.
@@ -171,7 +171,7 @@ Editor: a Web Worker runs compile incrementally (per page/component, debounced 5
   - Verify: `screenshot` (page, breakpoint, optional node), `get_compile_diagnostics`.
   - Not available to agents: publish, GitHub, Vercel, billing, deleting projects, inviting people.
 - **Skills** (`packages/skills`): folders with `SKILL.md` (frontmatter: name, description, when to use) plus optional `components.json` / `variables.json` starter assets. Built-in skills ship with the app; user skills (Pro) are stored in D1/R2 and sanitized. Active skills are listed in the chat header.
-- **MCP Worker**: remote MCP (streamable HTTP) with OAuth 2.1 (workers-oauth-provider). Consent screen picks workspace and projects; scopes `read` and `write`. Same tools as the agent; every call is metered and rate-limited per `BILLING.md`.
+- **MCP Worker**: remote MCP (streamable HTTP) with OAuth 2.1 (workers-oauth-provider). Consent screen picks workspace and projects; scopes `read` and `write`. Same tools as the agent; every call is metered and rate-limited per `docs/product/BILLING.md`.
 
 ## 10. Builds, temporary links, publish, export
 - **Origins:** app at `app.truframe.com`; user content at a separate registrable domain, `*.truframe.site` (temporary links) and `usercontent.truframe.site` (Preview, Embeds). The app origin never runs user code.

@@ -1,6 +1,6 @@
 # Truframe Integrations
 
-> Agent-facing. Every integration lives in `packages/integrations/<name>` behind a small interface. OAuth tokens are encrypted at rest (see `SECURITY.md`), scoped to a workspace, and revocable from Settings → Integrations.
+> Agent-facing. Every integration lives in `packages/integrations/<name>` behind a small interface. OAuth tokens are encrypted at rest (see `docs/engineering/SECURITY.md`), scoped to a workspace, and revocable from Settings → Integrations.
 
 ## v1 (launch)
 

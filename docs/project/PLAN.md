@@ -1,6 +1,6 @@
 # Truframe Build Plan (v2)
 
-> Agent-facing. Phases run in order; each has a goal, deliverables and **exit criteria that must pass before the next phase starts**. Tasks are in `TASKS.md`; the prompt to start each phase is in `prompts/`.
+> Agent-facing. Phases run in order; each has a goal, deliverables and **exit criteria that must pass before the next phase starts**. Tasks are in `docs/project/TASKS.md`; the prompt to start each phase is in `docs/prompts/`.
 
 ## Milestones
 | Milestone | Phases | What a user can do |
@@ -16,7 +16,7 @@
 
 ### P0 Foundations
 - **Goal:** a monorepo and platform every later phase builds on.
-- **Deliverables:** pnpm + Turborepo + Cargo workspace per `ARCHITECTURE.md §4`; Biome, Vitest, Playwright, cargo fmt/clippy/deny; Next.js app deployed to Cloudflare with OpenNext (staging + production environments); wrangler configs for D1, R2, KV, DO, Queues bindings; GitHub Actions (lint, typecheck, unit, Rust, e2e, deploy to staging on main); agent docs at the repo root.
+- **Deliverables:** pnpm + Turborepo + Cargo workspace per `docs/engineering/ARCHITECTURE.md §4`; Biome, Vitest, Playwright, cargo fmt/clippy/deny; Next.js app deployed to Cloudflare with OpenNext (staging + production environments); wrangler configs for D1, R2, KV, DO, Queues bindings; GitHub Actions (lint, typecheck, unit, Rust, e2e, deploy to staging on main); agent docs at the repo root.
 - **Exit:** `pnpm i && pnpm build && pnpm test && cargo test` green in CI; staging URL serves the app; local dev runs with Miniflare.
 
 ### P1 Accounts, dashboard, project creation
@@ -71,8 +71,8 @@
 
 ### P10 Billing, hardening, beta
 - **Goal:** a paid product 50 beta users can rely on.
-- **Deliverables:** Polar checkout, portal, webhooks, plan sync, usage meters UI, 80%/100% warnings, downgrade rules, 14-day trial; full security review against `SECURITY.md`; rate limits and spend alerts; onboarding and templates polish; Lighthouse ≥ 90 on templates; backups/restore runbook; status page; docs site.
-- **Exit:** every `SECURITY.md` checklist item and T10–T12 green; 5 real sites designed and published by testers; billing tested in sandbox end to end.
+- **Deliverables:** Polar checkout, portal, webhooks, plan sync, usage meters UI, 80%/100% warnings, downgrade rules, 14-day trial; full security review against `docs/engineering/SECURITY.md`; rate limits and spend alerts; onboarding and templates polish; Lighthouse ≥ 90 on templates; backups/restore runbook; status page; docs site.
+- **Exit:** every `docs/engineering/SECURITY.md` checklist item and T10–T12 green; 5 real sites designed and published by testers; billing tested in sandbox end to end.
 
 ## Later
 Teams/roles and live multiplayer cursors; component variants; variable modes (dark mode); CMS collections; forms; advanced animation (parallax, page transitions, timeline, Lottie/Rive, spring physics); Netlify and Cloudflare publishing; custom domains; Figma import; import existing repos (v1 idea); pull from GitHub; framework switching.
@@ -84,6 +84,6 @@ Teams/roles and live multiplayer cursors; component variants; variable modes (da
 | Canvas ≠ generated site | Renderer uses the compiler's CSS; screenshot parity test in CI |
 | Cloudflare platform limits (Worker size, DO memory, Containers availability, Browser Rendering quotas) | Size budgets; snapshot compaction; quotas per plan; keep platform code behind adapters so hosting can change |
 | Desktop-first output vs Tailwind's mobile-first defaults | Custom `tablet`/`mobile` variants declared in generated CSS; documented in generated README |
-| Agent cost vs pricing | Credit sizing in `BILLING.md`; BYO key for Pro; monitor cost per credit in beta |
+| Agent cost vs pricing | Credit sizing in `docs/product/BILLING.md`; BYO key for Pro; monitor cost per credit in beta |
 | Abuse of free builds and temp links | Quotas, Turnstile, email verification, takedown switch, phishing scan |
 | AGPL contamination | Clean-room rule; no Doop repo in agent context |

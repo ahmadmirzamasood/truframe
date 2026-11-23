@@ -9,7 +9,7 @@ updates:
     schedule:
       interval: weekly
     open-pull-requests-limit: 5
-    # Deliberate pins (see MEMORY.md decisions); lift these when the reason goes away.
+    # Deliberate pins (see docs/project/MEMORY.md decisions); lift these when the reason goes away.
     ignore:
       # TypeScript 7 (native) is new; Next.js tooling is proven on 5.x.
       - dependency-name: typescript

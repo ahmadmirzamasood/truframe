@@ -1,6 +1,6 @@
 # Truframe PRD (v2)
 
-> Product requirements. Agent-facing: read the sections for your task before building, and check your work against the acceptance criteria. If this conflicts with `ARCHITECTURE.md`, `BILLING.md` or `SECURITY.md`, stop and raise it. v1 of this PRD (local tool editing existing repos) is archived in `archive/v1-local-first/`; editing an existing repo is now a "Later" item.
+> Product requirements. Agent-facing: read the sections for your task before building, and check your work against the acceptance criteria. If this conflicts with `docs/engineering/ARCHITECTURE.md`, `docs/product/BILLING.md` or `docs/engineering/SECURITY.md`, stop and raise it. v1 of this PRD (local tool editing existing repos) is archived in `archive/v1-local-first/`; editing an existing repo is now a "Later" item.
 
 ## 1. Pitch
 
@@ -25,7 +25,7 @@ Truframe is a hosted visual website builder for people who want **real code**. Y
 
 ## 4. Features
 
-Feature IDs are stable. Plan gating is defined in `BILLING.md`; "Pro" below means a paid plan.
+Feature IDs are stable. Plan gating is defined in `docs/product/BILLING.md`; "Pro" below means a paid plan.
 
 ### Accounts and projects
 **F1. Auth.** Sign in with Google, GitHub, or email (magic link and email + password, verified email). Acceptance: all three work; accounts with the same verified email are linked, not duplicated.
@@ -71,7 +71,7 @@ Feature IDs are stable. Plan gating is defined in `BILLING.md`; "Pro" below mean
 
 **F18. Comments tab.** Comments pinned to an element or canvas point, threads, @mentions, resolve. Clients viewing a temporary link can comment (name + email, no account) when the owner allows. Email notification via the email integration.
 
-**F19. History tab.** Automatic revisions (every change grouped into sessions), named versions ("v1 sent to client"), preview any revision, restore (creates a new revision, never destroys), compare two revisions. Retention by plan (`BILLING.md`).
+**F19. History tab.** Automatic revisions (every change grouped into sessions), named versions ("v1 sent to client"), preview any revision, restore (creates a new revision, never destroys), compare two revisions. Retention by plan (`docs/product/BILLING.md`).
 
 ### Output
 **F20. Publish.** The Publish button offers:
@@ -82,14 +82,14 @@ Feature IDs are stable. Plan gating is defined in `BILLING.md`; "Pro" below mean
 
 **F22. Image export.** Export a selection, frame or whole page per breakpoint as **PNG, JPEG or WebP** at 1×/2×/3× with quality for JPEG/WebP.
 
-**F23. Code export (Pro).** Download the project as a ZIP. GitHub push and Vercel publish are also code delivery and follow the same gating (see `BILLING.md` §2 for the recommended rule).
+**F23. Code export (Pro).** Download the project as a ZIP. GitHub push and Vercel publish are also code delivery and follow the same gating (see `docs/product/BILLING.md` §2 for the recommended rule).
 
 ### Platform
-**F24. MCP server.** Remote MCP endpoint so external agents can read and edit projects with OAuth consent per workspace, metered per `BILLING.md`.
+**F24. MCP server.** Remote MCP endpoint so external agents can read and edit projects with OAuth consent per workspace, metered per `docs/product/BILLING.md`.
 
-**F25. Billing.** Free and Pro plans (`BILLING.md`), checkout, upgrade/downgrade, invoices, usage meters (agent, MCP, storage, temporary links) visible in settings.
+**F25. Billing.** Free and Pro plans (`docs/product/BILLING.md`), checkout, upgrade/downgrade, invoices, usage meters (agent, MCP, storage, temporary links) visible in settings.
 
-**F26. Integrations.** See `INTEGRATIONS.md`.
+**F26. Integrations.** See `docs/product/INTEGRATIONS.md`.
 
 ### Layer classes, accessibility and panel options
 **F27. Layer code classes.** Every layer row in the Layers panel shows its code class next to the name in muted monospace (e.g. `Hero Section  .hero-section`). The generated code puts that class first on the element, before the Tailwind utilities (`className="hero-section flex gap-6"`; Astro `class=`). Rules:
@@ -143,7 +143,7 @@ Feature IDs are stable. Plan gating is defined in `BILLING.md`; "Pro" below mean
 | Performance | Canvas 60 fps with 500 layers on a page; design→code update < 300 ms p50; editor load < 3 s on broadband |
 | Reliability | No data loss: every change persisted within 2 s; offline edits sync when back online |
 | Output quality | Generated projects pass `tsc`/`astro check`, ESLint defaults, and Lighthouse ≥ 90 performance/accessibility on templates |
-| Security | See `SECURITY.md` (multi-tenant isolation, user-code sandboxing, token encryption) |
+| Security | See `docs/engineering/SECURITY.md` (multi-tenant isolation, user-code sandboxing, token encryption) |
 | Accessibility | Editor keyboard-navigable; generated sites use semantic tags and alt text prompts |
 | Browsers | Editor: latest Chrome, Edge, Safari, Firefox (desktop). Viewing previews: all modern browsers incl. mobile |
 
