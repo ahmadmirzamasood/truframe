@@ -5,6 +5,41 @@
       "name": "@img/sharp-*",
       "license": "Apache-2.0 AND LGPL-3.0-or-later",
       "reason": "PENDING OWNER APPROVAL (2026-11-24). Prebuilt libvips binary pulled in by wrangler/miniflare (local image binding) and next (image optimization at build). Dev/build tooling only, dynamically linked, unmodified, never bundled into Workers or generated projects."
+    },
+    {
+      "name": "caniuse-lite",
+      "license": "CC-BY-4.0",
+      "reason": "PENDING OWNER APPROVAL (2026-11-24). Browser-support data used by next/browserslist at build time (transitive via next and @opennextjs/cloudflare). CC-BY is a permissive attribution license for data, not copyleft."
+    },
+    {
+      "name": "glob",
+      "license": "BlueOak-1.0.0",
+      "reason": "PENDING OWNER APPROVAL (2026-11-24). Blue Oak Model License is OSI-approved and permissive (MIT-like). Transitive via @opennextjs/cloudflare and next build tooling."
+    },
+    {
+      "name": "graceful-fs",
+      "license": "BlueOak-1.0.0",
+      "reason": "PENDING OWNER APPROVAL (2026-11-24). Permissive Blue Oak license; transitive build tooling."
+    },
+    {
+      "name": "lru-cache",
+      "license": "BlueOak-1.0.0",
+      "reason": "PENDING OWNER APPROVAL (2026-11-24). Permissive Blue Oak license; transitive via next/OpenNext."
+    },
+    {
+      "name": "minimatch",
+      "license": "BlueOak-1.0.0",
+      "reason": "PENDING OWNER APPROVAL (2026-11-24). Permissive Blue Oak license; transitive build tooling."
+    },
+    {
+      "name": "minipass",
+      "license": "BlueOak-1.0.0",
+      "reason": "PENDING OWNER APPROVAL (2026-11-24). Permissive Blue Oak license; transitive build tooling."
+    },
+    {
+      "name": "path-scurry",
+      "license": "BlueOak-1.0.0",
+      "reason": "PENDING OWNER APPROVAL (2026-11-24). Permissive Blue Oak license; transitive build tooling."
     }
   ]
 }
