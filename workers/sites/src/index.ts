@@ -1,5 +1,5 @@
-/** Serves temporary links from R2. Stub until its phase lands. */
-export const workerName = "truframe-sites" as const;
+/** Serves temporary links from R2. Stub until its phase lands. Only Worker entrypoints may be exported from this module. */
+const workerName = "truframe-sites" as const;
 
 export default {
   async fetch(): Promise<Response> {

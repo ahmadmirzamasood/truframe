@@ -5,7 +5,7 @@
 ## P0 Foundations
 - [x] **P0-1** pnpm + Turborepo + Cargo workspace; Node 22; TS strict base; layout per `ARCHITECTURE.md §4` with stub packages. *Done when* `pnpm build` and `cargo build` run.
 - [x] **P0-2** Biome, Vitest, Playwright, cargo fmt/clippy/deny; `scripts/check-deps.ts` enforcing the dependency rule. *Done when* `pnpm lint && pnpm test && cargo test` pass with sample tests.
-- [ ] **P0-3** `apps/web` Next.js 16 + Tailwind v4 + shadcn; OpenNext Cloudflare adapter; wrangler config with D1, R2, KV, Queues, DO bindings for local, staging, production. *Done when* `pnpm dev` runs locally with Miniflare and staging deploy serves a page.
+- [~] **P0-3** `apps/web` Next.js 16 + Tailwind v4 + shadcn; OpenNext Cloudflare adapter; wrangler config with D1, R2, KV, Queues, DO bindings for local, staging, production. *Done when* `pnpm dev` runs locally with Miniflare and staging deploy serves a page. **Status 2026-11-24:** local half done (merged; `pnpm dev` + Miniflare bindings verified, `/api/health` all ok, Linux OpenNext build verified). **Blocked:** staging deploy needs the owner's Cloudflare account; steps in `docs/runbooks/cloudflare-setup.md`.
 - [ ] **P0-4** CI: lint, typecheck, unit, Rust, e2e, deploy staging on main; secrets via GitHub environments. *Done when* green on main.
 - [ ] **P0-5** Agent docs at repo root + `CLAUDE.md`; `LICENSE` per owner. *Done when* committed.
 

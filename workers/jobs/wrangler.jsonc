@@ -1,7 +1,140 @@
+// Truframe jobs: Cloudflare config for dev (top level, Miniflare), staging and production.
+// Bindings are not inherited by environments in wrangler, so each env repeats them.
+// Resource IDs are omitted: `wrangler dev` simulates everything locally, and the first deploy of
+// each env provisions/links resources (see docs/runbooks/cloudflare-setup.md). Commit the IDs
+// wrangler writes back. scripts/lib/wrangler-config.test.ts checks that envs stay consistent.
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "truframe-jobs",
+  "name": "truframe-jobs-dev",
   "main": "src/index.ts",
   "compatibility_date": "2026-11-01",
-  "compatibility_flags": ["nodejs_compat"]
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": {
+    "enabled": true
+  },
+  "dev": {
+    "port": 8790
+  },
+  "vars": {
+    "TRUFRAME_ENV": "local"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "truframe-dev",
+      "migrations_dir": "../../packages/db/migrations"
+    }
+  ],
+  "kv_namespaces": [
+    {
+      "binding": "CONFIG"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "FILES",
+      "bucket_name": "truframe-dev-files"
+    }
+  ],
+  "queues": {
+    "producers": [
+      {
+        "binding": "JOBS",
+        "queue": "truframe-dev-jobs"
+      }
+    ],
+    "consumers": [
+      {
+        "queue": "truframe-dev-jobs",
+        "max_batch_size": 10,
+        "max_batch_timeout": 5,
+        "max_retries": 5,
+        "dead_letter_queue": "truframe-dev-jobs-dlq"
+      }
+    ]
+  },
+  "env": {
+    "staging": {
+      "name": "truframe-jobs-staging",
+      "vars": {
+        "TRUFRAME_ENV": "staging"
+      },
+      "d1_databases": [
+        {
+          "binding": "DB",
+          "database_name": "truframe-staging",
+          "migrations_dir": "../../packages/db/migrations"
+        }
+      ],
+      "kv_namespaces": [
+        {
+          "binding": "CONFIG"
+        }
+      ],
+      "r2_buckets": [
+        {
+          "binding": "FILES",
+          "bucket_name": "truframe-staging-files"
+        }
+      ],
+      "queues": {
+        "producers": [
+          {
+            "binding": "JOBS",
+            "queue": "truframe-staging-jobs"
+          }
+        ],
+        "consumers": [
+          {
+            "queue": "truframe-staging-jobs",
+            "max_batch_size": 10,
+            "max_batch_timeout": 5,
+            "max_retries": 5,
+            "dead_letter_queue": "truframe-staging-jobs-dlq"
+          }
+        ]
+      }
+    },
+    "production": {
+      "name": "truframe-jobs-production",
+      "vars": {
+        "TRUFRAME_ENV": "production"
+      },
+      "d1_databases": [
+        {
+          "binding": "DB",
+          "database_name": "truframe-production",
+          "migrations_dir": "../../packages/db/migrations"
+        }
+      ],
+      "kv_namespaces": [
+        {
+          "binding": "CONFIG"
+        }
+      ],
+      "r2_buckets": [
+        {
+          "binding": "FILES",
+          "bucket_name": "truframe-production-files"
+        }
+      ],
+      "queues": {
+        "producers": [
+          {
+            "binding": "JOBS",
+            "queue": "truframe-production-jobs"
+          }
+        ],
+        "consumers": [
+          {
+            "queue": "truframe-production-jobs",
+            "max_batch_size": 10,
+            "max_batch_timeout": 5,
+            "max_retries": 5,
+            "dead_letter_queue": "truframe-production-jobs-dlq"
+          }
+        ]
+      }
+    }
+  }
 }
