@@ -114,7 +114,8 @@ jobs:
 
   deploy-staging:
     name: Deploy staging
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    # Off until the owner connects Cloudflare: set repository variable CLOUDFLARE_DEPLOY_ENABLED=true.
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && vars.CLOUDFLARE_DEPLOY_ENABLED == 'true'
     needs: [lint, typecheck, unit, rust, build, e2e]
     runs-on: ubuntu-latest
     environment:
