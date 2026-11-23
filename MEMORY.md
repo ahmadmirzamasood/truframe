@@ -34,6 +34,7 @@
 | 2026-11-24 | License exceptions **approved** by the owner: `@img/sharp-*` (LGPL-3.0 libvips binary, dev/build only), `caniuse-lite` (CC-BY-4.0 data), BlueOak-1.0.0 packages (`glob`, `graceful-fs`, `lru-cache`, `minimatch`, `minipass`, `path-scurry`). These are recorded by name in `licenses.exceptions.json`. New packages under these licenses still need asking | Transitive deps of next, OpenNext and wrangler; permissive or dev-only | Widening the allowlist itself |
 | 2026-11-24 | GitHub repo `ahmadmirzamasood/truframe` is **public**, with a proprietary `LICENSE` (source-visible, all rights reserved) | Owner decision | Private repo |
 | 2026-11-24 | CI `deploy-staging` is gated on repository variable `CLOUDFLARE_DEPLOY_ENABLED=true` | Cloudflare is not connected yet, and main must stay green | Failing deploy job |
+| 2026-11-24 | Dependabot ignores major bumps of `typescript`, `vitest`/`@vitest/*` and `@types/node` (`.github/dependabot.yml`) | Those versions are pinned on purpose (TS 5.9, Vitest 4 for vitest-pool-workers, Node 22) | Closing each bump PR by hand |
 | 2026-11-24 | Inspector simplified: no At rest/Hover state, no margin, no Block display, Align is a dropdown (not a 3×3 matrix) and Space between/around/evenly are separate Distribute buttons; keep blend modes, image features, guides, export | Owner decision | Mockup version |
 
 ## Open questions (owner; defaults in place)
