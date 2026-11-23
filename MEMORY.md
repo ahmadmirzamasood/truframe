@@ -3,8 +3,8 @@
 > Agent-facing, long-lived project memory. Read at the start of every session; append in the same PR as the work that taught you something. Keep entries short, dated (YYYY-MM-DD) and factual. Fix or strike entries that become wrong.
 
 ## Current state
-- **Phase:** P0 Foundations (in progress)
-- **Last updated:** 2026-11-23
+- **Phase:** P0 Foundations: code complete locally; P0-3 (staging deploy) and P0-4 (CI run on GitHub) blocked on owner accounts
+- **Last updated:** 2026-11-24
 - **Repo:** local git repo at `truframe/` (default branch `main`), **no GitHub remote yet**. Task branches are merged locally until a remote exists. `archive/v1-local-first/` is not in this repo.
 
 ## Decisions log
@@ -35,7 +35,10 @@
 
 ## Open questions (owner; defaults in place)
 - Pricing numbers and limits in `BILLING.md` (proposal).
-- Truframe's own license (default: proprietary).
+- Truframe's own license (default: proprietary). `LICENSE` (all rights reserved, holder "Truframe") and `"license": "UNLICENSED"` were committed in P0-5; the owner should confirm the legal entity name.
+- **Doc conflict (2026-11-24):** `C:\Users\being\CLAUDE.md`, the user-level file above this repo, describes a *different* Truframe stack: Supabase Postgres/Auth, Next.js-only TypeScript output, Zustand, CSS Modules, its own plan limits and billing rules. This repo's docs (Cloudflare D1/DO, Better Auth, Rust compiler, Next.js or Astro, Tailwind output, `BILLING.md`) take precedence for work in this repo. The owner should retire or update the outer file so agents don't mix them up.
+- License exception for `@img/sharp-*` (Apache-2.0 AND LGPL-3.0-or-later libvips binary, dev/build tooling only, pulled in by wrangler and next): pending approval. See `licenses.exceptions.json`.
+- To finish P0-3/P0-4: a GitHub remote, the Cloudflare account and resource IDs, and the CI secrets (see `docs/runbooks/cloudflare-setup.md`).
 - Domain names: `truframe.com` (app) and a separate domain for user content (`truframe.site` assumed). Must be a different registrable domain.
 - Payments provider final choice depends on where the company is registered.
 
