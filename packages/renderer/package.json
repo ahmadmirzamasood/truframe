@@ -1,0 +1,13 @@
+{
+  "name": "@truframe/renderer",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Model to DOM for canvas and Preview",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  }
+}

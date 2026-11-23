@@ -1,0 +1,13 @@
+{
+  "name": "@truframe/auth",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Better Auth configuration",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  }
+}

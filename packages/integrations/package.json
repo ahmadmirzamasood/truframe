@@ -1,0 +1,13 @@
+{
+  "name": "@truframe/integrations",
+  "version": "0.0.0",
+  "private": true,
+  "description": "GitHub, Vercel, Unsplash, Iconify, fonts, Resend",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  }
+}

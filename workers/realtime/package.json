@@ -1,0 +1,16 @@
+{
+  "name": "@truframe/worker-realtime",
+  "version": "0.0.0",
+  "private": true,
+  "description": "ProjectRoom Durable Object: doc sync, revisions",
+  "type": "module",
+  "scripts": {
+    "build": "wrangler deploy --dry-run --outdir dist",
+    "dev": "wrangler dev",
+    "typecheck": "wrangler types && tsc --noEmit",
+    "cf-typegen": "wrangler types"
+  },
+  "devDependencies": {
+    "wrangler": "4.166.0"
+  }
+}

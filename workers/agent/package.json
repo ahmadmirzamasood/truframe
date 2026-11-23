@@ -1,0 +1,16 @@
+{
+  "name": "@truframe/worker-agent",
+  "version": "0.0.0",
+  "private": true,
+  "description": "AgentSession Durable Object: model loop, tools, metering",
+  "type": "module",
+  "scripts": {
+    "build": "wrangler deploy --dry-run --outdir dist",
+    "dev": "wrangler dev",
+    "typecheck": "wrangler types && tsc --noEmit",
+    "cf-typegen": "wrangler types"
+  },
+  "devDependencies": {
+    "wrangler": "4.166.0"
+  }
+}
