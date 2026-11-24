@@ -118,6 +118,12 @@ importers:
 
   packages/codeview: {}
 
+  packages/compiler-wasm:
+    dependencies:
+      '@truframe/model':
+        specifier: workspace:*
+        version: link:../model
+
   packages/crdt:
     dependencies:
       '@truframe/model':

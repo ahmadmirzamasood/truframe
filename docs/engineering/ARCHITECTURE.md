@@ -157,6 +157,13 @@ Instance overrides: { variant: {prop: value}, props: {name: value}, nodes: {node
 - **Determinism:** same document gives byte-identical output; stable attribute and class ordering; our own printer with Prettier-compatible style. A golden test suite (`fixtures/`) checks this.
 - **Parity:** the canvas renderer uses the `css` output from the same compile step, so what you see in Design View equals the generated site's CSS.
 
+**Output contract (P3-1).** `compile(doc)` returns `{ files, spans, css, assets }` (`OUTPUT_VERSION` 1):
+- `files`: path → text, sorted by path (`BTreeMap`).
+- `spans`: `{ node, path, start, end }` per element that renders a layer. Offsets are **UTF-16 code units** (JS strings, CodeMirror), `end` exclusive, covering the whole element from `<` to the closing `>`.
+- `css`: node id → `{ desktop, tablet?, mobile? }` CSS declarations for the canvas; tablet/mobile hold only changes, like the classes.
+- `assets`: `{ assetId, key, path }` for every uploaded asset the project references; the build job copies `key` from R2 to `path`.
+The printer (`crates/compiler/src/printer.rs`) lays out an element tree: two-space indent, double quotes, 80 columns, attributes one per line when the opening tag doesn't fit, text content never re-wrapped (so designed whitespace survives). The WASM build is `packages/compiler-wasm` (`initCompiler(module | bytes)`, `compile(doc, framework?)`); the generated glue in `pkg/` is built by `pnpm compiler:build`, not committed.
+
 ### 6.2 One way only
 There is no parse-back. Generated files are never edited by users or agents; every change is a design op, and the compiler regenerates the affected files. `spans` exist only for "reveal in code / reveal in design" in Code View and for agents reading code.
 

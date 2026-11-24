@@ -3,7 +3,7 @@
 > Agent-facing, long-lived project memory. Read at the start of every session; append in the same PR as the work that taught you something. Keep entries short, dated (YYYY-MM-DD) and factual. Fix or strike entries that become wrong.
 
 ## Current state
-- **Phase:** P2 Document core and realtime (in progress; P2-1 to P2-6 done: model, Rust mirror, ops, Loro binding, ProjectRoom, editor store; Phase 2 exit report next). P1 Accounts, dashboard, project creation is **done locally** (P1-1 to P1-7 merged with green CI). The P1 exit criteria that need staging are blocked: sign-in with all three methods on staging, and D1 migrations on staging. They wait on the Cloudflare connection and on the owner's OAuth apps, Resend and Turnstile keys (`docs/runbooks/auth-setup.md`). P0 is done except the P0-3 staging deploy. 
+- **Phase:** P3 Compiler v1 (in progress; see `docs/project/TASKS.md`). P2 Document core and realtime is **done** (P2-1 to P2-6 merged with green CI: model, Rust mirror, ops, Loro binding, ProjectRoom, editor store). P1 is done locally; its staging exit criteria (sign-in with all three methods on staging, D1 migrations on staging) wait on the Cloudflare connection and the owner's OAuth apps, Resend and Turnstile keys (`docs/runbooks/auth-setup.md`). P0 is done except the P0-3 staging deploy.
 - **Last updated:** 2026-11-24
 - **Repo:** https://github.com/ahmadmirzamasood/truframe (public, default branch `main`). Work on `tf/<task-id>-<slug>` branches and open PRs. `archive/v1-local-first/` is not in this repo.
 
@@ -113,6 +113,9 @@
 - 2026-11-24: e2e starts the web app and the realtime worker (`playwright.config.ts` has two `webServer`s). CI copies both `.dev.vars.example` files. The realtime worker gets its own `WRANGLER_REGISTRY_PATH`, because the web app never calls the DO itself.
 - 2026-11-24: Windows reload loop, P2-6 measurements (full suite, 4 workers, both servers started by Playwright): with a shared dev registry, 3 of 16 passed (150 rebuilds); with the realtime worker on its own registry, 13 passed (34 rebuilds); with its own registry and no `--persist-to`, 3 passed (78 rebuilds). `e2e/editor-sync.spec.ts` alone passes. The loop is noisy and still unexplained, and Linux CI is the gate. On Windows, run single specs or start the servers yourself.
 
+- 2026-11-24: Compiler WASM: `pnpm compiler:build` (`scripts/build-compiler.ts`) runs `cargo build --release --target wasm32-unknown-unknown` and `wasm-bindgen --target web` into `packages/compiler-wasm/pkg/` (gitignored, so CI builds it in the typecheck and unit jobs). The wasm-bindgen CLI must equal the crate version (`cargo install wasm-bindgen-cli --version 0.2.130 --locked`); the script checks. `--target web` + `initSync({ module })` lets Node (`@truframe/compiler-wasm/node` reads the file), Web Workers and workerd load the same glue. JSON strings cross the boundary; errors become JS `Error`s. `pnpm lint` also runs clippy for the wasm32 target, since `wasm.rs` only compiles there.
+- 2026-11-24: Windows: a hung `cargo test` binary (e.g. an infinite loop, killed by a shell timeout) keeps running and locks `target/debug/deps/*.exe`, so the next build fails with `ld.lld: failed to write output … Permission denied`. Stop it (`Get-Process | ? Path -like '*truframe_compiler-*' | Stop-Process`).
+
 ## Dependencies added (name, license, why)
 - turbo 2.11.13 (MIT): task runner. typescript 5.9.3 (Apache-2.0). wrangler 4.166.0 (MIT OR Apache-2.0): Workers dev/deploy. [P0-1]
 - @biomejs/biome 2.6.8 (MIT OR Apache-2.0), vitest 5.1.1 (MIT), @playwright/test 1.65.1 (Apache-2.0), @types/node 22.20.5 (MIT). cargo-deny (MIT OR Apache-2.0) is a dev tool installed with `cargo install cargo-deny --locked`. [P0-2]
@@ -123,6 +126,7 @@
 - zod 4.6.7 (MIT) added to `packages/model` (already used by protocol and auth). [P2-1]
 - Rust: serde 1.0.229 (derive) and serde_json 1.0.154 (MIT OR Apache-2.0) in `truframe-compiler`. [P2-2]
 - fast-check 4.10.3 (MIT, dev): property tests in `packages/ops`. zod 4.6.7 (MIT) in `packages/ops`. [P2-3]
+- Rust: wasm-bindgen 0.2.130 (MIT OR Apache-2.0), wasm32 target only, pinned exactly; wasm-bindgen-cli 0.2.130 (same) is a dev tool. [P3-1]
 - loro-crdt 1.18.0 (MIT): the document CRDT (`packages/crdt`), chosen in ARCHITECTURE §2. 1.19.0 was one day old, so pnpm's release-age rule applies. [P2-4]
 
 ## Benchmarks

@@ -16,3 +16,10 @@ all = { level = "deny", priority = -1 }
 unwrap_used = "deny"
 expect_used = "deny"
 panic = "deny"
+
+# The compiler ships as WASM; compile time per page is a product budget (< 30 ms).
+[profile.release]
+lto = true
+codegen-units = 1
+opt-level = 3
+panic = "abort"
