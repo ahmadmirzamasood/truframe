@@ -23,15 +23,13 @@ import {
   TabletIcon,
   Undo2Icon,
 } from "lucide-react";
+import { BreakpointSettings } from "./breakpoint-settings.tsx";
 import type { EditorHost } from "./host.ts";
+import { BREAKPOINT_LABEL } from "./labels.ts";
+
+export { BREAKPOINT_LABEL };
 
 export type EditorView = "design" | "code";
-
-export const BREAKPOINT_LABEL: Record<BreakpointId, string> = {
-  desktop: "Desktop",
-  tablet: "Tablet",
-  mobile: "Mobile",
-};
 
 const BREAKPOINT_ICON = { desktop: MonitorIcon, tablet: TabletIcon, mobile: SmartphoneIcon };
 
@@ -154,6 +152,7 @@ export function TopBar(props: {
             );
           })}
         </fieldset>
+        {doc ? <BreakpointSettings breakpoints={doc.breakpoints} apply={host.apply} /> : null}
       </div>
 
       <div className="flex flex-1 items-center justify-end gap-1">
