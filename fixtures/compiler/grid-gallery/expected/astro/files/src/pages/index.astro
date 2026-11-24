@@ -1,0 +1,43 @@
+---
+import Base from "../layouts/Base.astro";
+import { Image } from "astro:assets";
+import photo1Jpg from "../assets/photo-1.jpg";
+import photo2Jpg from "../assets/photo-2.jpg";
+import photo3Jpg from "../assets/photo-3.jpg";
+import photo4Jpg from "../assets/photo-4.jpg";
+import photo5Jpg from "../assets/photo-5.jpg";
+---
+
+<Base title="Home">
+  <main class="body flex flex-col w-full h-fit">
+    <section
+      class="gallery grid grid-cols-4 gap-4 p-16 tablet:grid-cols-2 mobile:grid-cols-1 mobile:gap-2 mobile:px-4 mobile:py-6"
+    >
+      <figure
+        class="one col-span-2 row-span-2 aspect-square overflow-clip rounded-xl mobile:col-span-1 mobile:row-span-1"
+      >
+        <Image src={photo1Jpg} alt="Photo 1" class="size-full object-cover" />
+      </figure>
+      <figure
+        class="two col-span-1 row-span-1 aspect-[1.3333] overflow-clip rounded-xl"
+      >
+        <Image src={photo2Jpg} alt="Photo 2" class="size-full object-contain" />
+      </figure>
+      <figure
+        class="three col-span-1 row-span-1 aspect-[1.3333] overflow-clip rounded-xl"
+      >
+        <Image src={photo3Jpg} alt="Photo 3" class="size-full object-cover" />
+      </figure>
+      <figure
+        class="four col-span-1 row-span-1 aspect-[1.3333] overflow-clip rounded-xl"
+      >
+        <Image src={photo4Jpg} alt="Photo 4" class="size-full object-contain" />
+      </figure>
+      <figure
+        class="five col-span-1 row-span-1 aspect-[1.3333] overflow-clip rounded-xl"
+      >
+        <Image src={photo5Jpg} alt="Photo 5" class="size-full object-cover" />
+      </figure>
+    </section>
+  </main>
+</Base>

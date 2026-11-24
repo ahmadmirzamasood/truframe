@@ -1,0 +1,83 @@
+{
+  "assets": [],
+  "css": {
+    "id2": {
+      "desktop": "display: flex; flex-direction: column; width: 100%; height: fit-content;"
+    },
+    "n1": {
+      "desktop": "font-size: 1.25rem; line-height: calc(1.75 / 1.25); font-weight: 600;"
+    },
+    "n2": {
+      "desktop": "font-size: 2.25rem; line-height: calc(2.5 / 2.25); font-weight: 700;"
+    },
+    "n3": {
+      "desktop": "flex-direction: column; gap: 8px; padding: 24px; border-width: 1px; border-color: #e4e4e7; border-radius: 16px;"
+    },
+    "n4": {
+      "desktop": "display: flex; flex: none; width: 280px;",
+      "mobile": "flex: 0 1 auto;"
+    },
+    "n5": {
+      "desktop": "display: flex; flex: 1 1 0%;",
+      "mobile": "flex: 0 1 auto; align-self: stretch;"
+    },
+    "n6": {
+      "desktop": "display: flex; flex: none; width: 280px;",
+      "mobile": "flex: 0 1 auto;"
+    },
+    "n7": {
+      "desktop": "display: flex; justify-content: center; gap: 24px;",
+      "mobile": "flex-direction: column; align-items: center;"
+    }
+  },
+  "spans": [
+    {
+      "end": 400,
+      "node": "n3",
+      "path": "src/components/PricingCard.astro",
+      "start": 110
+    },
+    {
+      "end": 311,
+      "node": "n1",
+      "path": "src/components/PricingCard.astro",
+      "start": 218
+    },
+    {
+      "end": 389,
+      "node": "n2",
+      "path": "src/components/PricingCard.astro",
+      "start": 314
+    },
+    {
+      "end": 661,
+      "node": "id2",
+      "path": "src/pages/index.astro",
+      "start": 132
+    },
+    {
+      "end": 651,
+      "node": "n7",
+      "path": "src/pages/index.astro",
+      "start": 183
+    },
+    {
+      "end": 356,
+      "node": "n4",
+      "path": "src/pages/index.astro",
+      "start": 288
+    },
+    {
+      "end": 496,
+      "node": "n5",
+      "path": "src/pages/index.astro",
+      "start": 363
+    },
+    {
+      "end": 636,
+      "node": "n6",
+      "path": "src/pages/index.astro",
+      "start": 503
+    }
+  ]
+}

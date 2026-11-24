@@ -1,0 +1,117 @@
+{
+  "assets": [
+    {
+      "assetId": "logo",
+      "key": "assets/3598ce6f965b2481fe26316c06b30950c46ac7f8e7229f104aa78f579997668d.svg",
+      "path": "src/assets/logo.svg"
+    },
+    {
+      "assetId": "photo",
+      "key": "assets/55c64d0fcd6f9d5f7c828093857e3fdfda68478bb4e9bd24d481ef391c7804e8.jpg",
+      "path": "src/assets/team.jpg"
+    }
+  ],
+  "css": {
+    "id2": {
+      "desktop": "display: flex; flex-direction: column; width: 100%; height: fit-content;"
+    },
+    "n1": {
+      "desktop": "flex: none; width: 320px; height: 180px; object-fit: cover;"
+    },
+    "n10": {
+      "desktop": "display: flex; flex-wrap: wrap; gap: 16px;"
+    },
+    "n2": {
+      "desktop": "flex: none; width: 320px; height: 180px; object-fit: contain;"
+    },
+    "n3": {
+      "desktop": "flex: none; width: 320px; height: 180px; object-fit: none;"
+    },
+    "n4": {
+      "desktop": "flex: none; width: 320px; height: 180px;"
+    },
+    "n5": {
+      "desktop": "flex: none; width: 320px; height: 180px;"
+    },
+    "n6": {
+      "desktop": "flex: none; width: 320px; height: 180px; object-fit: cover;"
+    },
+    "n7": {
+      "desktop": "flex: none; width: 320px; height: 180px; background-color: #e5e5e5;"
+    },
+    "n8": {
+      "desktop": "flex: none; width: 320px; height: 180px; background-color: #e5e5e5;"
+    },
+    "n9": {
+      "desktop": "flex: none; width: 120px; height: 40px; object-fit: contain;"
+    }
+  },
+  "spans": [
+    {
+      "end": 1577,
+      "node": "id2",
+      "path": "src/pages/index.astro",
+      "start": 195
+    },
+    {
+      "end": 1567,
+      "node": "n10",
+      "path": "src/pages/index.astro",
+      "start": 246
+    },
+    {
+      "end": 412,
+      "node": "n1",
+      "path": "src/pages/index.astro",
+      "start": 294
+    },
+    {
+      "end": 547,
+      "node": "n2",
+      "path": "src/pages/index.astro",
+      "start": 419
+    },
+    {
+      "end": 671,
+      "node": "n3",
+      "path": "src/pages/index.astro",
+      "start": 554
+    },
+    {
+      "end": 857,
+      "node": "n4",
+      "path": "src/pages/index.astro",
+      "start": 678
+    },
+    {
+      "end": 1047,
+      "node": "n5",
+      "path": "src/pages/index.astro",
+      "start": 864
+    },
+    {
+      "end": 1166,
+      "node": "n6",
+      "path": "src/pages/index.astro",
+      "start": 1054
+    },
+    {
+      "end": 1311,
+      "node": "n7",
+      "path": "src/pages/index.astro",
+      "start": 1173
+    },
+    {
+      "end": 1437,
+      "node": "n8",
+      "path": "src/pages/index.astro",
+      "start": 1318
+    },
+    {
+      "end": 1556,
+      "node": "n9",
+      "path": "src/pages/index.astro",
+      "start": 1444
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+---
+import Base from "../layouts/Base.astro";
+import Button from "../components/Button.astro";
+---
+
+<Base title="Home">
+  <main class="body flex flex-col w-full h-fit">
+    <div class="buttons flex items-center gap-3">
+      <Button class="default flex" />
+      <Button class="small flex" size="small" label="Small" />
+      <Button
+        class="large flex"
+        size="large"
+        label="Get started"
+        href="/signup"
+      />
+      <Button
+        class="light flex"
+        tone="light"
+        label="Learn more"
+        href="https://example.com"
+      />
+    </div>
+  </main>
+</Base>

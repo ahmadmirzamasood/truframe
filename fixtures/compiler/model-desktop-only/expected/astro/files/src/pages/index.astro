@@ -1,0 +1,26 @@
+---
+import Base from "../layouts/Base.astro";
+import { Image } from "astro:assets";
+import photoPng from "../assets/photo.png";
+---
+
+<Base title="Home">
+  <main class="body flex flex-col w-full h-fit">
+    <section
+      class="hero flex gap-(--spacing-md) pt-2 pr-2 pb-(--spacing-md) pl-2 bg-(--colors-brand)"
+    >
+      <h1
+        class="text font-(family-name:--text-body-family) text-(length:--text-body-size) [font-weight:var(--text-body-weight)] leading-(--text-body-line-height) tracking-(--text-body-letter-spacing) text-[#111111]"
+      >
+        Hello <strong>world</strong>
+      </h1>
+      <Image src={photoPng} alt="A photo" class="image object-cover" />
+      <a href="/about" class="cta">
+        <span class="text-el-2">About</span>
+      </a>
+      <div class="card p-8 card-2">
+        <h3 class="card__title">Hi</h3>
+      </div>
+    </section>
+  </main>
+</Base>

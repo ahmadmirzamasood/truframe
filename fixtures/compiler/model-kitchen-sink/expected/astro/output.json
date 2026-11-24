@@ -1,0 +1,161 @@
+{
+  "assets": [
+    {
+      "assetId": "photo",
+      "key": "assets/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.png",
+      "path": "public/assets/photo.png"
+    },
+    {
+      "assetId": "photo",
+      "key": "assets/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.png",
+      "path": "src/assets/photo.png"
+    }
+  ],
+  "css": {
+    "aboutBody": {
+      "desktop": ""
+    },
+    "blankPic": {
+      "desktop": "background-color: #e5e5e5;"
+    },
+    "card": {
+      "desktop": ""
+    },
+    "cardRoot": {
+      "desktop": ""
+    },
+    "cardTitle": {
+      "desktop": ""
+    },
+    "cta": {
+      "desktop": ""
+    },
+    "ctaLabel": {
+      "desktop": ""
+    },
+    "hero": {
+      "desktop": "display: flex; gap: var(--spacing-md); padding-top: 8px; padding-right: 8px; padding-bottom: var(--spacing-md); padding-left: 8px; position: relative; background-color: var(--colors-brand);",
+      "tablet": "display: none; align-items: stretch; justify-content: space-between; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: repeat(3, minmax(0, 1fr)); row-gap: 12px; flex: none; height: 640px; min-width: 100px; max-width: 1000px; min-height: 10px; max-height: 900px; overflow: clip; background-color: transparent; background-image: linear-gradient(45deg, #000000 0%, var(--colors-brand) 100%); border-width: 0px; border-top-width: 1px; border-bottom-width: 1px; border-style: dashed; border-color: #11223344; border-top-left-radius: 4px; border-top-right-radius: 8px; border-bottom-right-radius: 0px; border-bottom-left-radius: 2.5px; box-shadow: 0px 4px 12px -2px var(--colors-brand); opacity: 0.9; mix-blend-mode: color-dodge; filter: blur(2px);"
+    },
+    "icon": {
+      "desktop": "position: absolute; top: -4px; right: 0px; bottom: 0px; left: 10px; z-index: 2; width: 24px; aspect-ratio: 1;",
+      "tablet": "grid-column: span 2 / span 2; grid-row: span 1 / span 1;"
+    },
+    "id2": {
+      "desktop": "display: flex; flex-direction: column; width: 100%; height: fit-content;"
+    },
+    "mail": {
+      "desktop": "border-radius: 999px;"
+    },
+    "map": {
+      "desktop": "background-image: url(/assets/photo.png); background-size: auto; background-repeat: repeat;"
+    },
+    "pic": {
+      "desktop": "object-fit: cover;"
+    },
+    "title": {
+      "desktop": "font-family: var(--tf-font-inter, \"Inter\"); font-size: 3rem; font-weight: 700; line-height: 1.1; letter-spacing: -0.02em; text-align: center; text-decoration-line: line-through; text-transform: uppercase; color: #111111;"
+    },
+    "widget": {
+      "desktop": ""
+    }
+  },
+  "spans": [
+    {
+      "end": 453,
+      "node": "cardRoot",
+      "path": "src/components/Card.astro",
+      "start": 284
+    },
+    {
+      "end": 441,
+      "node": "cardTitle",
+      "path": "src/components/Card.astro",
+      "start": 388
+    },
+    {
+      "end": 100,
+      "node": "aboutBody",
+      "path": "src/pages/about.astro",
+      "start": 74
+    },
+    {
+      "end": 2461,
+      "node": "id2",
+      "path": "src/pages/index.astro",
+      "start": 155
+    },
+    {
+      "end": 2451,
+      "node": "hero",
+      "path": "src/pages/index.astro",
+      "start": 206
+    },
+    {
+      "end": 1228,
+      "node": "title",
+      "path": "src/pages/index.astro",
+      "start": 959
+    },
+    {
+      "end": 1300,
+      "node": "pic",
+      "path": "src/pages/index.astro",
+      "start": 1235
+    },
+    {
+      "end": 1392,
+      "node": "cta",
+      "path": "src/pages/index.astro",
+      "start": 1307
+    },
+    {
+      "end": 1381,
+      "node": "ctaLabel",
+      "path": "src/pages/index.astro",
+      "start": 1345
+    },
+    {
+      "end": 1545,
+      "node": "card",
+      "path": "src/pages/index.astro",
+      "start": 1399
+    },
+    {
+      "end": 1532,
+      "node": "cardTitle",
+      "path": "src/pages/index.astro",
+      "start": 1437
+    },
+    {
+      "end": 1869,
+      "node": "icon",
+      "path": "src/pages/index.astro",
+      "start": 1552
+    },
+    {
+      "end": 2143,
+      "node": "map",
+      "path": "src/pages/index.astro",
+      "start": 1876
+    },
+    {
+      "end": 2176,
+      "node": "widget",
+      "path": "src/pages/index.astro",
+      "start": 2150
+    },
+    {
+      "end": 2366,
+      "node": "mail",
+      "path": "src/pages/index.astro",
+      "start": 2183
+    },
+    {
+      "end": 2436,
+      "node": "blankPic",
+      "path": "src/pages/index.astro",
+      "start": 2373
+    }
+  ]
+}

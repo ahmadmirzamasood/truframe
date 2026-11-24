@@ -1,0 +1,112 @@
+{
+  "assets": [],
+  "css": {
+    "about-1": {
+      "desktop": "display: flex; flex-direction: column; align-items: center; gap: 24px; padding-inline: 32px; padding-block: 96px; flex: none; align-self: stretch; height: fit-content;",
+      "mobile": "gap: 16px; padding-inline: 20px; padding-block: 56px;"
+    },
+    "about-2": {
+      "desktop": "font-size: 56px; font-weight: 700; text-align: center; color: var(--neutral-ink);",
+      "mobile": "font-size: 2.25rem; line-height: calc(2.5 / 2.25);"
+    },
+    "about-body": {
+      "desktop": "display: flex; flex-direction: column; width: 100%; height: fit-content;"
+    },
+    "home-1": {
+      "desktop": "display: flex; flex-direction: column; align-items: center; gap: 24px; padding-inline: 32px; padding-block: 96px; flex: none; align-self: stretch; height: fit-content;",
+      "mobile": "gap: 16px; padding-inline: 20px; padding-block: 56px;"
+    },
+    "home-2": {
+      "desktop": "font-size: 56px; font-weight: 700; text-align: center; color: var(--neutral-ink);",
+      "mobile": "font-size: 2.25rem; line-height: calc(2.5 / 2.25);"
+    },
+    "home-3": {
+      "desktop": "font-size: 1.125rem; line-height: calc(1.75 / 1.125); text-align: center; color: var(--neutral-ink);"
+    },
+    "home-4": {
+      "desktop": "display: flex; flex-direction: column; align-items: center; gap: 24px; padding-inline: 32px; padding-block: 96px; flex: none; align-self: stretch; height: fit-content;",
+      "mobile": "gap: 16px; padding-inline: 20px; padding-block: 56px;"
+    },
+    "home-5": {
+      "desktop": "font-size: 2.25rem; line-height: calc(2.5 / 2.25); font-weight: 700; text-align: center; color: var(--neutral-ink);",
+      "mobile": "font-size: 28px;"
+    },
+    "home-6": {
+      "desktop": "align-self: stretch; aspect-ratio: 1.5; border-radius: 12px; background-color: #e5e5e5;"
+    },
+    "home-7": {
+      "desktop": "align-self: stretch; aspect-ratio: 1.5; border-radius: 12px; background-color: #e5e5e5;"
+    },
+    "home-body": {
+      "desktop": "display: flex; flex-direction: column; width: 100%; height: fit-content;"
+    }
+  },
+  "spans": [
+    {
+      "end": 440,
+      "node": "about-body",
+      "path": "src/pages/about.astro",
+      "start": 74
+    },
+    {
+      "end": 430,
+      "node": "about-1",
+      "path": "src/pages/about.astro",
+      "start": 125
+    },
+    {
+      "end": 415,
+      "node": "about-2",
+      "path": "src/pages/about.astro",
+      "start": 277
+    },
+    {
+      "end": 1223,
+      "node": "home-body",
+      "path": "src/pages/index.astro",
+      "start": 73
+    },
+    {
+      "end": 576,
+      "node": "home-1",
+      "path": "src/pages/index.astro",
+      "start": 124
+    },
+    {
+      "end": 437,
+      "node": "home-2",
+      "path": "src/pages/index.astro",
+      "start": 276
+    },
+    {
+      "end": 561,
+      "node": "home-3",
+      "path": "src/pages/index.astro",
+      "start": 444
+    },
+    {
+      "end": 1213,
+      "node": "home-4",
+      "path": "src/pages/index.astro",
+      "start": 581
+    },
+    {
+      "end": 880,
+      "node": "home-5",
+      "path": "src/pages/index.astro",
+      "start": 732
+    },
+    {
+      "end": 1038,
+      "node": "home-6",
+      "path": "src/pages/index.astro",
+      "start": 887
+    },
+    {
+      "end": 1198,
+      "node": "home-7",
+      "path": "src/pages/index.astro",
+      "start": 1045
+    }
+  ]
+}

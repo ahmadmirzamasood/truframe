@@ -1,0 +1,23 @@
+---
+import Base from "../layouts/Base.astro";
+---
+
+<Base title="Home">
+  <main class="body flex flex-col w-full h-fit">
+    <section
+      class="section flex flex-col gap-(--space-stack) p-(--space-gutter) border-b border-(color:--brand-accent)"
+    >
+      <h1
+        class="title font-(family-name:--font-display-family) text-(length:--font-display-size) [font-weight:var(--font-display-weight)] leading-(--font-display-line-height) tracking-(--font-display-letter-spacing) text-(color:--neutral-ink)"
+      >
+        Bound to variables
+      </h1>
+      <a
+        href="#start"
+        class="cta px-(--space-stack) py-3 text-[#ffffff] bg-(--brand-accent) rounded-lg"
+      >
+        <span class="label font-semibold">Start</span>
+      </a>
+    </section>
+  </main>
+</Base>

@@ -1,0 +1,57 @@
+---
+import Base from "../layouts/Base.astro";
+import { Image } from "astro:assets";
+import photoPng from "../assets/photo.png";
+---
+
+<Base title="Home">
+  <main class="body flex flex-col w-full h-fit">
+    <section
+      class="hero flex gap-(--spacing-md) pt-2 pr-2 pb-(--spacing-md) pl-2 relative bg-(--colors-brand) tablet:hidden tablet:items-stretch tablet:justify-between tablet:grid-cols-2 tablet:grid-rows-3 tablet:gap-y-3 tablet:flex-none tablet:h-160 tablet:min-w-25 tablet:max-w-250 tablet:min-h-2.5 tablet:max-h-225 tablet:overflow-clip tablet:bg-transparent tablet:bg-[linear-gradient(45deg,#000000_0%,var(--colors-brand)_100%)] tablet:border-0 tablet:border-t tablet:border-b tablet:border-dashed tablet:border-[#11223344] tablet:rounded-tl-sm tablet:rounded-tr-lg tablet:rounded-br-none tablet:rounded-bl-[2.5px] tablet:shadow-[0px_4px_12px_-2px_var(--colors-brand)] tablet:opacity-90 tablet:mix-blend-color-dodge tablet:blur-[2px]"
+    >
+      <h1
+        class="text font-(family-name:--tf-font-inter) text-5xl font-bold leading-[1.1] tracking-[-0.02em] text-center line-through uppercase text-[#111111]"
+      >
+        Hello <strong>world</strong><a href="https://example.com"><em><u>!</u></em></a>
+      </h1>
+      <Image src={photoPng} alt="A photo" class="image object-cover" />
+      <a href="/about" class="cta">
+        <span class="text-el-2">About</span>
+      </a>
+      <div class="card p-8 card-2">
+        <h3 class="card__title tablet:text-[#ffffff] mobile:hidden">
+          Overridden
+        </h3>
+      </div>
+      <span
+        class="arrow absolute -top-1 right-0 bottom-0 left-2.5 z-2 w-6 aspect-square tablet:col-span-2 tablet:row-span-1"
+        aria-hidden="true"
+      >
+        <img
+          src="https://api.iconify.design/lucide/arrow-right.svg"
+          alt=""
+          class="block size-full"
+        />
+      </span>
+      <figure class="map bg-[url(/assets/photo.png)] bg-auto bg-repeat">
+        <iframe
+          src="https://maps.example.com/embed?q=1"
+          title="Map"
+          loading="lazy"
+          class="block size-full border-0"
+        >
+        </iframe>
+      </figure>
+      <div class="widget"></div>
+      <a
+        href="mailto:hi@example.com"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="mail rounded-[999px]"
+        aria-label="Email us"
+      >
+      </a>
+      <div class="placeholder bg-[#e5e5e5]" aria-hidden="true"></div>
+    </section>
+  </main>
+</Base>

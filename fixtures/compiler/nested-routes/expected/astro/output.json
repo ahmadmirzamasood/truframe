@@ -1,0 +1,97 @@
+{
+  "assets": [],
+  "css": {
+    "id2": {
+      "desktop": "display: flex; flex-direction: column; width: 100%; height: fit-content;"
+    },
+    "n1": {
+      "desktop": ""
+    },
+    "n2": {
+      "desktop": "display: flex; flex-direction: column;"
+    },
+    "n3": {
+      "desktop": ""
+    },
+    "n4": {
+      "desktop": "display: flex; flex-direction: column;"
+    },
+    "n5": {
+      "desktop": ""
+    },
+    "n6": {
+      "desktop": "display: flex; flex-direction: column;"
+    },
+    "n7": {
+      "desktop": ""
+    },
+    "n8": {
+      "desktop": "display: flex; flex-direction: column;"
+    },
+    "n9": {
+      "desktop": ""
+    }
+  },
+  "spans": [
+    {
+      "end": 172,
+      "node": "n2",
+      "path": "src/pages/about.astro",
+      "start": 100
+    },
+    {
+      "end": 162,
+      "node": "n1",
+      "path": "src/pages/about.astro",
+      "start": 138
+    },
+    {
+      "end": 144,
+      "node": "n4",
+      "path": "src/pages/blog.astro",
+      "start": 73
+    },
+    {
+      "end": 134,
+      "node": "n3",
+      "path": "src/pages/blog.astro",
+      "start": 111
+    },
+    {
+      "end": 166,
+      "node": "n6",
+      "path": "src/pages/blog/first-post.astro",
+      "start": 89
+    },
+    {
+      "end": 156,
+      "node": "n5",
+      "path": "src/pages/blog/first-post.astro",
+      "start": 127
+    },
+    {
+      "end": 161,
+      "node": "n8",
+      "path": "src/pages/docs/guides/getting-started.astro",
+      "start": 79
+    },
+    {
+      "end": 151,
+      "node": "n7",
+      "path": "src/pages/docs/guides/getting-started.astro",
+      "start": 117
+    },
+    {
+      "end": 160,
+      "node": "id2",
+      "path": "src/pages/index.astro",
+      "start": 73
+    },
+    {
+      "end": 150,
+      "node": "n9",
+      "path": "src/pages/index.astro",
+      "start": 124
+    }
+  ]
+}

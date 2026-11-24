@@ -1,0 +1,79 @@
+{
+  "assets": [],
+  "css": {
+    "id2": {
+      "desktop": "display: flex; flex-direction: column; width: 100%; height: fit-content;"
+    },
+    "n1": {
+      "desktop": "font-weight: 600;"
+    },
+    "n2": {
+      "desktop": "align-items: center; padding-inline: 16px; padding-block: 10px; color: #ffffff; background-color: #18181b; border-radius: 8px;"
+    },
+    "n3": {
+      "desktop": "display: flex;"
+    },
+    "n4": {
+      "desktop": "display: flex;"
+    },
+    "n5": {
+      "desktop": "display: flex;"
+    },
+    "n6": {
+      "desktop": "display: flex;"
+    },
+    "n7": {
+      "desktop": "display: flex; align-items: center; gap: 12px;"
+    }
+  },
+  "spans": [
+    {
+      "end": 1141,
+      "node": "n2",
+      "path": "src/components/Button.astro",
+      "start": 854
+    },
+    {
+      "end": 1136,
+      "node": "n1",
+      "path": "src/components/Button.astro",
+      "start": 1018
+    },
+    {
+      "end": 595,
+      "node": "id2",
+      "path": "src/pages/index.astro",
+      "start": 122
+    },
+    {
+      "end": 585,
+      "node": "n7",
+      "path": "src/pages/index.astro",
+      "start": 173
+    },
+    {
+      "end": 256,
+      "node": "n3",
+      "path": "src/pages/index.astro",
+      "start": 225
+    },
+    {
+      "end": 319,
+      "node": "n4",
+      "path": "src/pages/index.astro",
+      "start": 263
+    },
+    {
+      "end": 441,
+      "node": "n5",
+      "path": "src/pages/index.astro",
+      "start": 326
+    },
+    {
+      "end": 574,
+      "node": "n6",
+      "path": "src/pages/index.astro",
+      "start": 448
+    }
+  ]
+}

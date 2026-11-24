@@ -1,0 +1,20 @@
+---
+import Base from "../layouts/Base.astro";
+---
+
+<Base title="Home">
+  <main class="body flex flex-col w-full h-fit">
+    <div class="card flex flex-col p-6 relative w-80 rounded-2xl">
+      <div
+        class="backdrop absolute top-0 right-0 bottom-0 left-0 -z-1 bg-[#a5b4fc] opacity-40 blur-[24px]"
+      >
+      </div>
+      <p class="body-2">Positioned children</p>
+      <span
+        class="badge px-2 py-0.5 absolute -top-2 -right-2 z-10 text-xs text-[#ffffff] bg-[#16a34a] rounded-full mobile:static"
+      >
+        New
+      </span>
+    </div>
+  </main>
+</Base>

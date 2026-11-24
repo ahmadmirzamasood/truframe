@@ -1,0 +1,18 @@
+---
+interface Props {
+  class: string;
+  title?: string;
+  price?: string;
+}
+
+const props = Astro.props;
+---
+
+<article
+  class={`pricing-card flex-col gap-2 p-6 border border-[#e4e4e7] rounded-2xl ${props.class}`}
+>
+  <h3 class="pricing-card__title text-xl font-semibold">
+    {props.title ?? "Starter"}
+  </h3>
+  <p class="pricing-card__price text-4xl font-bold">{props.price ?? "$0"}</p>
+</article>

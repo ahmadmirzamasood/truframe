@@ -1,0 +1,46 @@
+---
+import Base from "../layouts/Base.astro";
+---
+
+<Base title="Home">
+  <main class="body flex flex-col w-full h-fit">
+    <nav class="nav flex justify-between gap-6">
+      <a href="/about" class="page-link flex items-center gap-2">
+        <span class="t1">About</span>
+      </a>
+      <a href="/about#team" class="path-link flex items-center gap-2">
+        <span class="t2">Team</span>
+      </a>
+      <a href="#pricing" class="anchor flex items-center gap-2">
+        <span class="t3">Pricing</span>
+      </a>
+      <a
+        href="https://example.com"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="external flex items-center gap-2"
+      >
+        <span class="t4">Docs</span>
+      </a>
+      <a href="mailto:hello@example.com" class="mail flex items-center gap-2">
+        <span class="t5">Email</span>
+      </a>
+      <a href="tel:+1 555 0100" class="phone flex items-center gap-2">
+        <span class="t6">Call</span>
+      </a>
+      <a
+        href="/about"
+        class="icon-only flex items-center gap-2"
+        aria-label="Next page"
+      >
+        <span class="arrow flex-none w-4 h-4" aria-hidden="true">
+          <img
+            src="https://api.iconify.design/lucide/arrow-right.svg"
+            alt=""
+            class="block size-full"
+          />
+        </span>
+      </a>
+    </nav>
+  </main>
+</Base>

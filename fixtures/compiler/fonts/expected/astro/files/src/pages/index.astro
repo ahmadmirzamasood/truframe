@@ -1,0 +1,27 @@
+---
+import Base from "../layouts/Base.astro";
+---
+
+<Base title="Home">
+  <main class="body flex flex-col w-full h-fit">
+    <article
+      class="story flex flex-col gap-3 font-(family-name:--tf-font-inter)"
+    >
+      <h1
+        class="headline font-(family-name:--tf-font-playfair-display) text-5xl font-bold"
+      >
+        Editorial headline
+      </h1>
+      <h2
+        class="subhead font-(family-name:--tf-font-playfair-display) text-2xl font-normal"
+      >
+        With a serif subhead
+      </h2>
+      <p class="body-2 text-base">Body copy inherits Inter from its section.</p>
+      <span class="strong font-semibold">Semibold label</span>
+      <p class="system font-(family-name:--tf-font-georgia)">
+        Georgia is a system font.
+      </p>
+    </article>
+  </main>
+</Base>

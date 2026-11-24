@@ -1,0 +1,20 @@
+---
+import Base from "../layouts/Base.astro";
+import PersonChip from "../components/PersonChip.astro";
+import otherPersonJpg from "../assets/other-person.jpg";
+---
+
+<Base title="Home">
+  <main class="body flex flex-col w-full h-fit">
+    <ul class="people flex flex-col gap-4">
+      <PersonChip class="ada flex" />
+      <PersonChip
+        class="grace flex"
+        photo={otherPersonJpg}
+        name="Grace Hopper"
+        verified={false}
+      />
+      <PersonChip class="nobody flex" photo={null} name="No photo" />
+    </ul>
+  </main>
+</Base>

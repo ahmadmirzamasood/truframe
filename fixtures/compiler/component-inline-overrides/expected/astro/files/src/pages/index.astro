@@ -1,0 +1,36 @@
+---
+import Base from "../layouts/Base.astro";
+import { Image } from "astro:assets";
+import Feature from "../components/Feature.astro";
+import boltSvg from "../assets/bolt.svg";
+---
+
+<Base title="Home">
+  <main class="body flex flex-col w-full h-fit">
+    <section class="features grid grid-cols-3 gap-6">
+      <Feature class="plain flex" />
+      <div
+        class="feature flex-col gap-2 p-4 bg-[#fef3c7] rounded-xl fast flex col-span-2"
+      >
+        <Image
+          src={boltSvg}
+          alt=""
+          class="feature__icon flex-none w-10 h-10 object-contain"
+        />
+        <h3 class="feature__heading text-xl font-semibold">Fast</h3>
+        <p class="feature__body text-[#92400e]">
+          Compiles in <strong>milliseconds</strong>.
+        </p>
+      </div>
+      <div class="feature flex-col gap-2 p-4 hidden-body flex">
+        <div
+          class="feature__icon flex-none w-10 h-10 bg-[#e5e5e5]"
+          aria-hidden="true"
+        >
+        </div>
+        <h3 class="feature__heading text-xl font-semibold">Short</h3>
+        <p class="feature__body hidden text-[#52525b]">Describe the feature.</p>
+      </div>
+    </section>
+  </main>
+</Base>

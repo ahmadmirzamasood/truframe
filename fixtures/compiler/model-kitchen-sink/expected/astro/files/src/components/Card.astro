@@ -1,0 +1,21 @@
+---
+interface Props {
+  class: string;
+  size?: "default" | "large";
+  title?: string;
+  showTitle?: boolean;
+}
+
+const cardVariants: Partial<Record<string, string>> = {
+  "size=large": "card p-8",
+};
+
+const props = Astro.props;
+const variant = `size=${props.size ?? "default"}`;
+---
+
+<div class={`${cardVariants[variant] ?? "card"} ${props.class}`}>
+  {(props.showTitle ?? true) && (
+    <h3 class="card__title">{props.title ?? "Title"}</h3>
+  )}
+</div>

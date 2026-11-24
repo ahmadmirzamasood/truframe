@@ -1,0 +1,17 @@
+---
+import Base from "../layouts/Base.astro";
+---
+
+<Base title="Home">
+  <main class="body flex flex-col w-full h-fit">
+    <header class="header flex items-center justify-between px-8 py-4">
+      <p class="logo font-bold">Acme</p>
+      <nav class="desktop-nav flex gap-6 mobile:hidden">
+        <span class="a">Home</span>
+        <span class="b">Work</span>
+      </nav>
+      <span class="menu hidden font-semibold mobile:inline">Menu</span>
+      <p class="tablet-note hidden tablet:block mobile:hidden">Tablet only</p>
+    </header>
+  </main>
+</Base>

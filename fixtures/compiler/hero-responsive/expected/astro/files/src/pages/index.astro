@@ -1,0 +1,31 @@
+---
+import Base from "../layouts/Base.astro";
+import { Image } from "astro:assets";
+import heroArtPng from "../assets/hero-art.png";
+---
+
+<Base title="Home">
+  <main class="body flex flex-col w-full h-fit">
+    <section
+      class="hero flex items-center gap-16 px-16 py-24 bg-[#fafafa] tablet:gap-8 tablet:px-8 tablet:py-16 mobile:flex-col mobile:gap-6 mobile:px-4 mobile:py-12"
+    >
+      <div
+        class="copy flex flex-col gap-6 flex-1 mobile:items-center mobile:flex-initial mobile:self-stretch"
+      >
+        <h1
+          class="title text-7xl font-bold leading-[1.1] tracking-tight tablet:text-5xl mobile:text-4xl mobile:text-center"
+        >
+          Ship sites people remember
+        </h1>
+        <p class="lede max-w-140 text-xl text-[#52525b] mobile:text-lg">
+          Design on a canvas. Get real code.
+        </p>
+      </div>
+      <Image
+        src={heroArtPng}
+        alt="A canvas with frames for desktop, tablet and mobile"
+        class="hero-art flex-none w-120 h-90 rounded-3xl mobile:self-stretch mobile:w-auto mobile:h-60 object-cover"
+      />
+    </section>
+  </main>
+</Base>

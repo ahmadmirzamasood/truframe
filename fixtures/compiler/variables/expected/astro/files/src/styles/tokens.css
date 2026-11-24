@@ -1,0 +1,46 @@
+/* Design variables. Generated from the design; edits here are overwritten. */
+
+:root {
+  --brand-accent: #ec221f;
+  --font-display-family: var(--tf-font-inter);
+  --font-display-size: 64px;
+  --font-display-weight: 800;
+  --font-display-line-height: 1.05;
+  --font-display-letter-spacing: -0.03em;
+  --neutral-ink: #18181b;
+  --space-gutter: 64px;
+  --space-stack: 24px;
+}
+
+@media (width < 1200px) {
+  :root {
+    --brand-accent: #d11d1a;
+    --font-display-size: 48px;
+    --font-display-line-height: 1.1;
+    --font-display-letter-spacing: -0.02em;
+    --space-gutter: 32px;
+  }
+}
+
+@media (width < 810px) {
+  :root {
+    --brand-accent: #b01815;
+    --font-display-size: 36px;
+    --font-display-weight: 700;
+    --font-display-line-height: 1.15;
+    --font-display-letter-spacing: -0.01em;
+    --space-gutter: 16px;
+  }
+}
+
+@theme inline {
+  --color-brand-accent: var(--brand-accent);
+  --font-font-display: var(--font-display-family);
+  --text-font-display: var(--font-display-size);
+  --text-font-display--line-height: var(--font-display-line-height);
+  --text-font-display--letter-spacing: var(--font-display-letter-spacing);
+  --text-font-display--font-weight: var(--font-display-weight);
+  --color-neutral-ink: var(--neutral-ink);
+  --spacing-space-gutter: var(--space-gutter);
+  --spacing-space-stack: var(--space-stack);
+}

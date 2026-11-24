@@ -1,0 +1,169 @@
+{
+  "assets": [],
+  "css": {
+    "id2": {
+      "desktop": "display: flex; flex-direction: column; width: 100%; height: fit-content;"
+    },
+    "n1": {
+      "desktop": ""
+    },
+    "n10": {
+      "desktop": ""
+    },
+    "n11": {
+      "desktop": "display: flex; align-items: center; gap: 8px;"
+    },
+    "n12": {
+      "desktop": ""
+    },
+    "n13": {
+      "desktop": "display: flex; align-items: center; gap: 8px;"
+    },
+    "n14": {
+      "desktop": ""
+    },
+    "n15": {
+      "desktop": "display: flex; align-items: center; gap: 8px;"
+    },
+    "n16": {
+      "desktop": "display: flex; align-items: center; gap: 8px;"
+    },
+    "n17": {
+      "desktop": "display: flex; justify-content: space-between; gap: 24px;"
+    },
+    "n2": {
+      "desktop": "display: flex; flex-direction: column;"
+    },
+    "n3": {
+      "desktop": "flex: none; width: 16px; height: 16px;"
+    },
+    "n4": {
+      "desktop": ""
+    },
+    "n5": {
+      "desktop": "display: flex; align-items: center; gap: 8px;"
+    },
+    "n6": {
+      "desktop": ""
+    },
+    "n7": {
+      "desktop": "display: flex; align-items: center; gap: 8px;"
+    },
+    "n8": {
+      "desktop": ""
+    },
+    "n9": {
+      "desktop": "display: flex; align-items: center; gap: 8px;"
+    }
+  },
+  "spans": [
+    {
+      "end": 153,
+      "node": "n2",
+      "path": "src/pages/about.astro",
+      "start": 74
+    },
+    {
+      "end": 143,
+      "node": "n1",
+      "path": "src/pages/about.astro",
+      "start": 112
+    },
+    {
+      "end": 1357,
+      "node": "id2",
+      "path": "src/pages/index.astro",
+      "start": 73
+    },
+    {
+      "end": 1347,
+      "node": "n17",
+      "path": "src/pages/index.astro",
+      "start": 124
+    },
+    {
+      "end": 283,
+      "node": "n5",
+      "path": "src/pages/index.astro",
+      "start": 175
+    },
+    {
+      "end": 272,
+      "node": "n4",
+      "path": "src/pages/index.astro",
+      "start": 243
+    },
+    {
+      "end": 402,
+      "node": "n7",
+      "path": "src/pages/index.astro",
+      "start": 290
+    },
+    {
+      "end": 391,
+      "node": "n6",
+      "path": "src/pages/index.astro",
+      "start": 363
+    },
+    {
+      "end": 518,
+      "node": "n9",
+      "path": "src/pages/index.astro",
+      "start": 409
+    },
+    {
+      "end": 507,
+      "node": "n8",
+      "path": "src/pages/index.astro",
+      "start": 476
+    },
+    {
+      "end": 725,
+      "node": "n11",
+      "path": "src/pages/index.astro",
+      "start": 525
+    },
+    {
+      "end": 714,
+      "node": "n10",
+      "path": "src/pages/index.astro",
+      "start": 686
+    },
+    {
+      "end": 853,
+      "node": "n13",
+      "path": "src/pages/index.astro",
+      "start": 732
+    },
+    {
+      "end": 842,
+      "node": "n12",
+      "path": "src/pages/index.astro",
+      "start": 813
+    },
+    {
+      "end": 972,
+      "node": "n15",
+      "path": "src/pages/index.astro",
+      "start": 860
+    },
+    {
+      "end": 961,
+      "node": "n14",
+      "path": "src/pages/index.astro",
+      "start": 933
+    },
+    {
+      "end": 1336,
+      "node": "n16",
+      "path": "src/pages/index.astro",
+      "start": 979
+    },
+    {
+      "end": 1325,
+      "node": "n3",
+      "path": "src/pages/index.astro",
+      "start": 1101
+    }
+  ]
+}

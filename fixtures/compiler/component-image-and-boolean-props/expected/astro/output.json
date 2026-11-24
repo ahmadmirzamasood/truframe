@@ -1,0 +1,99 @@
+{
+  "assets": [
+    {
+      "assetId": "avatar",
+      "key": "assets/87bbe879c7a5f5784a70384bb49fa9513a6a3fbe4c2d388635e3c87611c03fae.png",
+      "path": "src/assets/avatar.png"
+    },
+    {
+      "assetId": "other",
+      "key": "assets/d9298a10d1b0735837dc4bd85dac641b0f3cef27a47e5d53a54f2f3f5b2fcffa.jpg",
+      "path": "src/assets/other-person.jpg"
+    }
+  ],
+  "css": {
+    "id2": {
+      "desktop": "display: flex; flex-direction: column; width: 100%; height: fit-content;"
+    },
+    "n1": {
+      "desktop": "flex: none; width: 64px; height: 64px; border-radius: calc(infinity * 1px); object-fit: cover;"
+    },
+    "n2": {
+      "desktop": "font-weight: 600;"
+    },
+    "n3": {
+      "desktop": "font-size: 0.75rem; line-height: calc(1 / 0.75); color: #16a34a;"
+    },
+    "n4": {
+      "desktop": "align-items: center; gap: 12px;"
+    },
+    "n5": {
+      "desktop": "display: flex;"
+    },
+    "n6": {
+      "desktop": "display: flex;"
+    },
+    "n7": {
+      "desktop": "display: flex;"
+    },
+    "n8": {
+      "desktop": "display: flex; flex-direction: column; gap: 16px;"
+    }
+  },
+  "spans": [
+    {
+      "end": 765,
+      "node": "n4",
+      "path": "src/components/PersonChip.astro",
+      "start": 346
+    },
+    {
+      "end": 559,
+      "node": "n1",
+      "path": "src/components/PersonChip.astro",
+      "start": 431
+    },
+    {
+      "end": 644,
+      "node": "n2",
+      "path": "src/components/PersonChip.astro",
+      "start": 567
+    },
+    {
+      "end": 753,
+      "node": "n3",
+      "path": "src/components/PersonChip.astro",
+      "start": 682
+    },
+    {
+      "end": 543,
+      "node": "id2",
+      "path": "src/pages/index.astro",
+      "start": 187
+    },
+    {
+      "end": 533,
+      "node": "n8",
+      "path": "src/pages/index.astro",
+      "start": 238
+    },
+    {
+      "end": 315,
+      "node": "n5",
+      "path": "src/pages/index.astro",
+      "start": 284
+    },
+    {
+      "end": 453,
+      "node": "n6",
+      "path": "src/pages/index.astro",
+      "start": 322
+    },
+    {
+      "end": 523,
+      "node": "n7",
+      "path": "src/pages/index.astro",
+      "start": 460
+    }
+  ]
+}

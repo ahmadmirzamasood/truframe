@@ -1,0 +1,50 @@
+---
+import Base from "../layouts/Base.astro";
+---
+
+<Base title="Home">
+  <main class="body flex flex-col w-full h-fit">
+    <figure class="map self-stretch aspect-video">
+      <iframe
+        src="https://www.openstreetmap.org/export/embed.html"
+        title="Map"
+        loading="lazy"
+        class="block size-full border-0"
+      >
+      </iframe>
+    </figure>
+    <div class="embed flex-none h-30">
+      <iframe
+        src="https://example.com/widget"
+        title="Embedded content"
+        loading="lazy"
+        class="block size-full border-0"
+      >
+      </iframe>
+    </div>
+    <section class="snippet flex-none h-20"></section>
+    <div class="icons flex gap-2">
+      <span class="star flex-none w-6 h-6 text-[#f59e0b]" aria-hidden="true">
+        <img
+          src="https://api.iconify.design/lucide/star.svg"
+          alt=""
+          class="block size-full"
+        />
+      </span>
+      <span class="heart flex-none w-6 h-6 text-[#f59e0b]" aria-hidden="true">
+        <img
+          src="https://api.iconify.design/lucide/heart.svg"
+          alt=""
+          class="block size-full"
+        />
+      </span>
+      <span class="check flex-none w-6 h-6 text-[#f59e0b]" aria-hidden="true">
+        <img
+          src="https://api.iconify.design/lucide/check.svg"
+          alt=""
+          class="block size-full"
+        />
+      </span>
+    </div>
+  </main>
+</Base>
