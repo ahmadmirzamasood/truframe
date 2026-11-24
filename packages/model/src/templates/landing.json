@@ -12,7 +12,11 @@
           "name": "Hero",
           "children": [
             { "type": "text", "tag": "h1", "text": "Launch something people love" },
-            { "type": "text", "tag": "p", "text": "One sentence on what you do and who it is for." },
+            {
+              "type": "text",
+              "tag": "p",
+              "text": "One sentence on what you do and who it is for."
+            },
             { "type": "link", "text": "Get started", "href": "#signup" }
           ]
         },
