@@ -1,0 +1,5 @@
+{
+  "schemaVersion": 0,
+  "breakpoints": { "desktop": 1200, "tablet": 810, "mobile": 390 },
+  "pages": [{ "id": "home", "name": "Home", "path": "/", "nodes": [] }]
+}

@@ -44,6 +44,9 @@ importers:
       '@truframe/emails':
         specifier: workspace:*
         version: link:../../packages/emails
+      '@truframe/model':
+        specifier: workspace:*
+        version: link:../../packages/model
       '@truframe/protocol':
         specifier: workspace:*
         version: link:../../packages/protocol
@@ -180,7 +183,11 @@ importers:
 
   packages/layout: {}
 
-  packages/model: {}
+  packages/model:
+    devDependencies:
+      '@truframe/protocol':
+        specifier: workspace:*
+        version: link:../protocol
 
   packages/ops:
     dependencies:

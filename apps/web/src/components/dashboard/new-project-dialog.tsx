@@ -1,5 +1,6 @@
 "use client";
 
+import { TEMPLATES, type TemplateMeta } from "@truframe/model";
 import { FRAMEWORK_IDS, type FrameworkId } from "@truframe/protocol";
 import { Button } from "@truframe/ui/components/button";
 import {
@@ -26,12 +27,13 @@ const FRAMEWORK_HINT: Record<FrameworkId, string> = {
 export function NewProjectDialog() {
   const [open, setOpen] = useState(false);
   const [framework, setFramework] = useState<FrameworkId>("nextjs");
+  const [templateId, setTemplateId] = useState<TemplateMeta["id"]>("blank");
   const { pending, error, setError, run } = useMutation();
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const name = String(new FormData(e.currentTarget).get("name") ?? "");
-    if (await run(() => projectsApi.create({ name, framework, templateId: "blank" }))) {
+    if (await run(() => projectsApi.create({ name, framework, templateId }))) {
       setOpen(false);
     }
   };
@@ -41,13 +43,17 @@ export function NewProjectDialog() {
       open={open}
       onOpenChange={(next) => {
         setOpen(next);
-        if (!next) setError(null);
+        if (!next) {
+          setError(null);
+          setFramework("nextjs");
+          setTemplateId("blank");
+        }
       }}
     >
       <DialogTrigger asChild>
         <Button>New project</Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="max-h-[calc(100dvh-2rem)] overflow-y-auto">
         <form onSubmit={onSubmit} className="grid gap-5">
           <DialogHeader>
             <DialogTitle>New project</DialogTitle>
@@ -86,6 +92,30 @@ export function NewProjectDialog() {
                     {FRAMEWORK_LABEL[id]}
                   </span>
                   <span className="text-muted-foreground">{FRAMEWORK_HINT[id]}</span>
+                </label>
+              ))}
+            </div>
+          </fieldset>
+          <fieldset className="grid gap-2">
+            <legend className="mb-2 text-sm font-medium">Template</legend>
+            <div className="grid gap-2 sm:grid-cols-2">
+              {TEMPLATES.map((t) => (
+                <label
+                  key={t.id}
+                  className="flex cursor-pointer flex-col gap-1 rounded-lg border p-3 text-sm has-[:checked]:border-primary has-[:checked]:ring-1 has-[:checked]:ring-primary has-[:focus-visible]:ring-[3px] has-[:focus-visible]:ring-ring/50"
+                >
+                  <span className="flex items-center gap-2 font-medium">
+                    <input
+                      type="radio"
+                      name="template"
+                      value={t.id}
+                      checked={templateId === t.id}
+                      onChange={() => setTemplateId(t.id)}
+                      className="accent-primary"
+                    />
+                    {t.name}
+                  </span>
+                  <span className="text-muted-foreground">{t.description}</span>
                 </label>
               ))}
             </div>
