@@ -136,6 +136,7 @@ Instance overrides: { variant: {prop: value}, props: {name: value}, nodes: {node
 - Variable references are checked for type (`textColor` must point at a color variable, `gap` at spacing, `font` at font).
 - Link hrefs allow only http(s), mailto:, tel:, `/path` and `#anchor`. Asset `key`s are relative (`assets/<sha256>.<ext>`); the server adds the `ws/<workspaceId>/` prefix, so a document can't point at another tenant's objects.
 - Colors are lowercase hex (`#rrggbb`/`#rrggbbaa`) so equal colors are equal strings.
+- The Rust mirror (`crates/compiler/src/model`, serde) reads the same JSON and rejects unknown keys; it trusts the TS validator for ranges and references. `fixtures/model` + the CI parity job keep them in step (P2-2).
 - Starter templates are short JSON outlines expanded by `templateDocument(id, { projectId, framework })` into valid documents with deterministic ids.
 
 **Operations** (`packages/ops`): `insertNode`, `deleteNode`, `moveNode`, `setProp(nodeId, breakpoint, key, value)`, `resetProp`, `setText`, `bindVariable`, `createComponent`, `detachInstance`, `setOverride`, `upsertVariable`, `addPage`, `updatePage`, `addAsset`, `setCodeFile`, etc. Every op is validated against the schema and the user's plan limits before it is applied to the Loro doc. A **transaction** groups the ops of one gesture or one agent turn, and is one undo step.

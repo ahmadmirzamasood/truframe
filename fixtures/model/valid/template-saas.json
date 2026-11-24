@@ -1,0 +1,405 @@
+{
+  "schemaVersion": 1,
+  "id": "0199a0b2-7c3d-7e4f-8a5b-6c7d8e9f0a1b",
+  "framework": "nextjs",
+  "settings": {
+    "lang": "en"
+  },
+  "breakpoints": {
+    "desktop": {
+      "width": 1200
+    },
+    "tablet": {
+      "width": 810
+    },
+    "mobile": {
+      "width": 390
+    }
+  },
+  "pages": [
+    {
+      "id": "home",
+      "name": "Home",
+      "path": "/",
+      "seo": {
+        "title": "Home",
+        "description": "",
+        "ogImage": null,
+        "noindex": false
+      },
+      "root": "home-body"
+    },
+    {
+      "id": "pricing",
+      "name": "Pricing",
+      "path": "/pricing",
+      "seo": {
+        "title": "Pricing",
+        "description": "",
+        "ogImage": null,
+        "noindex": false
+      },
+      "root": "pricing-body"
+    }
+  ],
+  "nodes": {
+    "home-2": {
+      "id": "home-2",
+      "type": "text",
+      "name": "",
+      "tag": "h1",
+      "style": {
+        "desktop": {
+          "fontWeight": 700,
+          "fontSize": 56,
+          "textAlign": "center",
+          "textColor": {
+            "var": "ink"
+          }
+        },
+        "mobile": {
+          "fontSize": 36
+        }
+      },
+      "content": [
+        {
+          "text": "The simplest way to run your team"
+        }
+      ]
+    },
+    "home-4": {
+      "id": "home-4",
+      "type": "text",
+      "name": "Label",
+      "tag": "span",
+      "style": {
+        "desktop": {
+          "fontWeight": 600,
+          "textColor": "#ffffff"
+        }
+      },
+      "content": [
+        {
+          "text": "Start a free trial"
+        }
+      ]
+    },
+    "home-3": {
+      "id": "home-3",
+      "type": "link",
+      "name": "Button",
+      "tag": "a",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "direction": "row",
+          "padding": {
+            "top": 12,
+            "right": 24,
+            "bottom": 12,
+            "left": 24
+          },
+          "fill": {
+            "type": "solid",
+            "color": {
+              "var": "accent"
+            }
+          },
+          "radius": 8
+        }
+      },
+      "target": {
+        "type": "url",
+        "href": "/pricing"
+      },
+      "newTab": false,
+      "children": ["home-4"]
+    },
+    "home-1": {
+      "id": "home-1",
+      "type": "frame",
+      "name": "Hero",
+      "tag": "section",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "direction": "column",
+          "align": "center",
+          "gap": 24,
+          "padding": {
+            "top": 96,
+            "right": 32,
+            "bottom": 96,
+            "left": 32
+          },
+          "width": {
+            "type": "fill"
+          },
+          "height": {
+            "type": "fit"
+          }
+        },
+        "mobile": {
+          "gap": 16,
+          "padding": {
+            "top": 56,
+            "right": 20,
+            "bottom": 56,
+            "left": 20
+          }
+        }
+      },
+      "children": ["home-2", "home-3"]
+    },
+    "home-6": {
+      "id": "home-6",
+      "type": "text",
+      "name": "",
+      "tag": "p",
+      "style": {
+        "desktop": {
+          "fontSize": 18,
+          "textAlign": "center",
+          "textColor": {
+            "var": "ink"
+          }
+        }
+      },
+      "content": [
+        {
+          "text": "Trusted by teams at"
+        }
+      ]
+    },
+    "home-5": {
+      "id": "home-5",
+      "type": "frame",
+      "name": "Logos",
+      "tag": "section",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "direction": "column",
+          "align": "center",
+          "gap": 24,
+          "padding": {
+            "top": 96,
+            "right": 32,
+            "bottom": 96,
+            "left": 32
+          },
+          "width": {
+            "type": "fill"
+          },
+          "height": {
+            "type": "fit"
+          }
+        },
+        "mobile": {
+          "gap": 16,
+          "padding": {
+            "top": 56,
+            "right": 20,
+            "bottom": 56,
+            "left": 20
+          }
+        }
+      },
+      "children": ["home-6"]
+    },
+    "home-body": {
+      "id": "home-body",
+      "type": "frame",
+      "name": "Body",
+      "tag": "main",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "direction": "column",
+          "width": {
+            "type": "fill"
+          },
+          "height": {
+            "type": "fit"
+          }
+        }
+      },
+      "children": ["home-1", "home-5"]
+    },
+    "pricing-2": {
+      "id": "pricing-2",
+      "type": "text",
+      "name": "",
+      "tag": "h1",
+      "style": {
+        "desktop": {
+          "fontWeight": 700,
+          "fontSize": 56,
+          "textAlign": "center",
+          "textColor": {
+            "var": "ink"
+          }
+        },
+        "mobile": {
+          "fontSize": 36
+        }
+      },
+      "content": [
+        {
+          "text": "Pricing"
+        }
+      ]
+    },
+    "pricing-3": {
+      "id": "pricing-3",
+      "type": "text",
+      "name": "",
+      "tag": "h2",
+      "style": {
+        "desktop": {
+          "fontWeight": 700,
+          "fontSize": 36,
+          "textAlign": "center",
+          "textColor": {
+            "var": "ink"
+          }
+        },
+        "mobile": {
+          "fontSize": 28
+        }
+      },
+      "content": [
+        {
+          "text": "Starter"
+        }
+      ]
+    },
+    "pricing-4": {
+      "id": "pricing-4",
+      "type": "text",
+      "name": "",
+      "tag": "h2",
+      "style": {
+        "desktop": {
+          "fontWeight": 700,
+          "fontSize": 36,
+          "textAlign": "center",
+          "textColor": {
+            "var": "ink"
+          }
+        },
+        "mobile": {
+          "fontSize": 28
+        }
+      },
+      "content": [
+        {
+          "text": "Pro"
+        }
+      ]
+    },
+    "pricing-5": {
+      "id": "pricing-5",
+      "type": "text",
+      "name": "",
+      "tag": "h2",
+      "style": {
+        "desktop": {
+          "fontWeight": 700,
+          "fontSize": 36,
+          "textAlign": "center",
+          "textColor": {
+            "var": "ink"
+          }
+        },
+        "mobile": {
+          "fontSize": 28
+        }
+      },
+      "content": [
+        {
+          "text": "Business"
+        }
+      ]
+    },
+    "pricing-1": {
+      "id": "pricing-1",
+      "type": "frame",
+      "name": "Pricing",
+      "tag": "section",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "direction": "column",
+          "align": "center",
+          "gap": 24,
+          "padding": {
+            "top": 96,
+            "right": 32,
+            "bottom": 96,
+            "left": 32
+          },
+          "width": {
+            "type": "fill"
+          },
+          "height": {
+            "type": "fit"
+          }
+        },
+        "mobile": {
+          "gap": 16,
+          "padding": {
+            "top": 56,
+            "right": 20,
+            "bottom": 56,
+            "left": 20
+          }
+        }
+      },
+      "children": ["pricing-2", "pricing-3", "pricing-4", "pricing-5"]
+    },
+    "pricing-body": {
+      "id": "pricing-body",
+      "type": "frame",
+      "name": "Body",
+      "tag": "main",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "direction": "column",
+          "width": {
+            "type": "fill"
+          },
+          "height": {
+            "type": "fit"
+          }
+        }
+      },
+      "children": ["pricing-1"]
+    }
+  },
+  "components": {},
+  "variables": {
+    "accent": {
+      "id": "accent",
+      "name": "Accent",
+      "group": "Brand",
+      "cssName": "--brand-accent",
+      "type": "color",
+      "value": {
+        "desktop": "#4f46e5"
+      }
+    },
+    "ink": {
+      "id": "ink",
+      "name": "Ink",
+      "group": "Neutral",
+      "cssName": "--neutral-ink",
+      "type": "color",
+      "value": {
+        "desktop": "#111827"
+      }
+    }
+  },
+  "assets": {}
+}
