@@ -76,3 +76,18 @@ test("capture breakpoint settings", async ({ page, context }) => {
   await input.press("Enter");
   await page.screenshot({ path: `${dir}/breakpoint-settings.png` });
 });
+
+test("capture selection and measurements", async ({ page, context }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await openNewProject(page, context, { name: "Landing", templateId: "landing" });
+  const heading = page.locator('[data-frame="desktop"] main section h1');
+  const h = await heading.boundingBox();
+  if (!h) throw new Error("no heading");
+  await page.mouse.dblclick(h.x + h.width / 2, h.y + h.height / 2);
+  await page.mouse.move(h.x + 5, h.y + 5);
+  await page.keyboard.down("Alt");
+  await page.mouse.move(h.x + 6, h.y + 6);
+  await expect(page.getByTestId("measure-label").first()).toBeVisible();
+  await page.screenshot({ path: `${dir}/selection.png` });
+  await page.keyboard.up("Alt");
+});

@@ -3,7 +3,7 @@
 > Agent-facing, long-lived project memory. Read at the start of every session; append in the same PR as the work that taught you something. Keep entries short, dated (YYYY-MM-DD) and factual. Fix or strike entries that become wrong.
 
 ## Current state
-- **Phase:** P4 Design View I is **in progress** (P4-1 shell, P4-2 camera, P4-3 renderer, P4-4 breakpoints, P4-5 insert tools done). P3 Compiler v1 is **done** (P3-1 to P3-6 merged with green CI; exit criteria met: 60 golden fixtures over both frameworks, every one built and type-checked in CI by the `generated` job, a 300-layer page compiles in 11.9 ms median in WASM). P2 is done. P1 is done locally; its staging exit criteria (sign-in with all three methods on staging, D1 migrations on staging) wait on the Cloudflare connection and the owner's OAuth apps, Resend and Turnstile keys (`docs/runbooks/auth-setup.md`). P0 is done except the P0-3 staging deploy.
+- **Phase:** P4 Design View I is **in progress** (P4-1 shell, P4-2 camera, P4-3 renderer, P4-4 breakpoints, P4-5 insert tools, P4-6 gestures done). P3 Compiler v1 is **done** (P3-1 to P3-6 merged with green CI; exit criteria met: 60 golden fixtures over both frameworks, every one built and type-checked in CI by the `generated` job, a 300-layer page compiles in 11.9 ms median in WASM). P2 is done. P1 is done locally; its staging exit criteria (sign-in with all three methods on staging, D1 migrations on staging) wait on the Cloudflare connection and the owner's OAuth apps, Resend and Turnstile keys (`docs/runbooks/auth-setup.md`). P0 is done except the P0-3 staging deploy.
 - **Last updated:** 2026-11-25
 - **Repo:** https://github.com/ahmadmirzamasood/truframe (public, default branch `main`). Work on `tf/<task-id>-<slug>` branches and open PRs. `archive/v1-local-first/` is not in this repo.
 
@@ -134,6 +134,10 @@
 - 2026-11-25: Windows: running `next build` in `apps/web` while `next dev` is up sent the dev server into the reload loop until it was stopped and `.next` removed.
 
 - 2026-11-25: Before `git add -A` after switching branches, run `git status`: untracked files from the next task's work are added too. That happened once (P4-4 files landed in a P4-3 commit and had to be removed in a follow-up).
+
+- 2026-11-25: Canvas geometry: layer boxes are measured from the rendered frames (`getBoundingClientRect` relative to the frame, divided by the frame's own scale = rect width / offsetWidth) into frame-local world pixels, so they don't change when the camera moves; overlays convert back with the camera. Hit testing walks the model tree over those boxes, not the DOM.
+- 2026-11-25: Playwright: `page.mouse.click(x, y, { modifiers })` does not hold the modifier for pointer events; use `keyboard.down("Shift")` around the click.
+- 2026-11-25: Tailwind 4.3.5's default `--font-sans` is `-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', 'Noto Sans', Arial, sans-serif, …`, not `ui-sans-serif, system-ui`. The canvas frame must use the same stack: on Windows both resolve to Segoe UI, on Linux they don't (Arimo vs DejaVu), which only the CI parity job showed. `renderer.test.ts` now compares the constant with `tailwindcss/theme.css`.
 
 ## Dependencies added (name, license, why)
 - turbo 2.11.13 (MIT): task runner. typescript 5.9.3 (Apache-2.0). wrangler 4.166.0 (MIT OR Apache-2.0): Workers dev/deploy. [P0-1]

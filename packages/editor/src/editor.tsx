@@ -11,6 +11,7 @@ import {
   type ReactNode,
   useCallback,
   useEffect,
+  useMemo,
   useState,
 } from "react";
 import { Canvas } from "./canvas.tsx";
@@ -18,6 +19,7 @@ import type { EditorHost } from "./host.ts";
 import { createNodes, type InsertTool, insertOps, insertTarget } from "./insert.ts";
 import { InsertToolbar } from "./insert-toolbar.tsx";
 import { ComingSoon, LeftPanel, type LeftTab, RightPanel, type RightTab } from "./panels.tsx";
+import { SelectionLayer } from "./selection-layer.tsx";
 import { BREAKPOINT_LABEL, type EditorView, TopBar } from "./top-bar.tsx";
 import { useCompiled } from "./use-compiled.ts";
 
@@ -58,17 +60,22 @@ export function DesignEditor({ host, backHref, Link }: DesignEditorProps) {
 
   const page = doc?.pages.find((p) => p.id === activePageId);
   const compiled = useCompiled(doc);
+  // Layers removed by undo or by someone else drop out of the selection.
+  const liveSelection = useMemo(
+    () => (doc ? selection.filter((id) => doc.nodes[id]) : []),
+    [doc, selection],
+  );
   const output = compiled.status === "loading" ? null : compiled.output;
 
   const insert = useCallback(
     (tool: InsertTool) => {
       if (!doc || !page) return;
       const nodes = createNodes(tool);
-      const target = insertTarget(doc, page.root, selection.at(-1) ?? null, tool);
+      const target = insertTarget(doc, page.root, liveSelection.at(-1) ?? null, tool);
       const failure = host.apply(insertOps(nodes, target));
       if (!failure && nodes[0]) setSelection([nodes[0].id]);
     },
-    [doc, page, selection, host],
+    [doc, page, liveSelection, host],
   );
 
   return (
@@ -130,6 +137,19 @@ export function DesignEditor({ host, backHref, Link }: DesignEditorProps) {
                 onEditingChange={setBreakpoint}
                 fitKey={page.id}
                 contentReady={compiled.status !== "loading"}
+                overlay={(ctx) => (
+                  <SelectionLayer
+                    {...ctx}
+                    doc={doc}
+                    pageRoot={page.root}
+                    renderKey={output}
+                    editing={activeBreakpoint}
+                    onEditingChange={setBreakpoint}
+                    selection={liveSelection}
+                    onSelectionChange={setSelection}
+                    apply={host.apply}
+                  />
+                )}
                 renderFrame={(bp) =>
                   output ? (
                     <RenderedFrame doc={doc} output={output} pageId={page.id} breakpoint={bp} />
