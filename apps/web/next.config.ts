@@ -10,6 +10,7 @@ const nextConfig: NextConfig = {
     "@truframe/emails",
     "@truframe/protocol",
     "@truframe/model",
+    "@truframe/billing",
   ],
   poweredByHeader: false,
 };

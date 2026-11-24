@@ -93,6 +93,10 @@
 
 - 2026-11-24: Templates: `TEMPLATES` and `templateDocument(id)` in `@truframe/model`, with JSON fixtures in `packages/model/src/templates/`. Template ids are also an enum in `@truframe/protocol` (`TEMPLATE_IDS`); a model test keeps the two lists equal. The fixture format is provisional until P2-1.
 
+- 2026-11-24: Plan limits: read them only through `@truframe/billing` (`limitFor`, `planForWorkspace`). Enforce counts inside the write: the repo methods take the limit (`createWithinLimit(input, max)`, `duplicate(..., { maxActive })`, `restore(id, now, max)`) and put `(select count(*) ...) < max` in the same statement. A count-then-insert in two queries lets concurrent requests overshoot. `UNLIMITED` is `Infinity`, which the repos treat as no check.
+- 2026-11-24: Open issue (Windows only): when Playwright (or the whole `pnpm dev` stack) launches `next dev`, pages sometimes full-reload in a loop (`[HMR] connected` → `[Fast Refresh] rebuilding` → reload), with no file changes on disk. Plain `next dev`, started by hand, doesn't loop, and Linux CI passes. Workaround: start `pnpm --filter @truframe/web dev` yourself, then run `pnpm e2e` (it reuses a running server). Playwright starts only the web app; the health check needs bindings declared, not other workers running.
+- 2026-11-24: Radix dialogs set `aria-hidden` on the rest of the page while open. Close the dialog before asserting on page content by role.
+
 ## Dependencies added (name, license, why)
 - turbo 2.11.13 (MIT): task runner. typescript 5.9.3 (Apache-2.0). wrangler 4.166.0 (MIT OR Apache-2.0): Workers dev/deploy. [P0-1]
 - @biomejs/biome 2.6.8 (MIT OR Apache-2.0), vitest 5.1.1 (MIT), @playwright/test 1.65.1 (Apache-2.0), @types/node 22.20.5 (MIT). cargo-deny (MIT OR Apache-2.0) is a dev tool installed with `cargo install cargo-deny --locked`. [P0-2]

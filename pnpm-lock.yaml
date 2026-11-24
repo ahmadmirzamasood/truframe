@@ -38,6 +38,9 @@ importers:
       '@truframe/auth':
         specifier: workspace:*
         version: link:../../packages/auth
+      '@truframe/billing':
+        specifier: workspace:*
+        version: link:../../packages/billing
       '@truframe/db':
         specifier: workspace:*
         version: link:../../packages/db
