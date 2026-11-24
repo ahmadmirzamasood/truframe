@@ -42,7 +42,10 @@ test("capture auth and dashboard screens", async ({ page, context }) => {
   await page.screenshot({ path: `${dir}/new-project-dialog.png` });
 
   await page.keyboard.press("Escape");
-  await list.getByRole("listitem", { name: "Pricing site" }).getByRole("link", { name: "Open" }).click();
+  await list
+    .getByRole("listitem", { name: "Pricing site" })
+    .getByRole("link", { name: "Open" })
+    .click();
   await expect(page.getByTestId("sync-status")).toHaveText("Online");
   await page.getByLabel("Add a text layer").fill("Added from the editor");
   await page.getByRole("button", { name: "Add", exact: true }).click();
