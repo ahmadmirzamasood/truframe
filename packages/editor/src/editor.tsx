@@ -5,9 +5,18 @@ import { RenderedFrame } from "@truframe/renderer";
 import { Button } from "@truframe/ui/components/button";
 import { Input } from "@truframe/ui/components/input";
 import { Label } from "@truframe/ui/components/label";
-import { type ComponentType, type FormEvent, type ReactNode, useEffect, useState } from "react";
+import {
+  type ComponentType,
+  type FormEvent,
+  type ReactNode,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 import { Canvas } from "./canvas.tsx";
 import type { EditorHost } from "./host.ts";
+import { createNodes, type InsertTool, insertOps, insertTarget } from "./insert.ts";
+import { InsertToolbar } from "./insert-toolbar.tsx";
 import { ComingSoon, LeftPanel, type LeftTab, RightPanel, type RightTab } from "./panels.tsx";
 import { BREAKPOINT_LABEL, type EditorView, TopBar } from "./top-bar.tsx";
 import { useCompiled } from "./use-compiled.ts";
@@ -26,6 +35,8 @@ export function DesignEditor({ host, backHref, Link }: DesignEditorProps) {
   const [breakpoint, setBreakpoint] = useState<BreakpointId>("desktop");
   const [leftTab, setLeftTab] = useState<LeftTab>("layers");
   const [rightTab, setRightTab] = useState<RightTab>("inspect");
+  /** Selected layer ids; the last one is the focus (P4-6 adds pointer selection). */
+  const [selection, setSelection] = useState<string[]>([]);
 
   // Follow the document: keep the active page if it still exists, otherwise show the first.
   const activePageId =
@@ -48,6 +59,17 @@ export function DesignEditor({ host, backHref, Link }: DesignEditorProps) {
   const page = doc?.pages.find((p) => p.id === activePageId);
   const compiled = useCompiled(doc);
   const output = compiled.status === "loading" ? null : compiled.output;
+
+  const insert = useCallback(
+    (tool: InsertTool) => {
+      if (!doc || !page) return;
+      const nodes = createNodes(tool);
+      const target = insertTarget(doc, page.root, selection.at(-1) ?? null, tool);
+      const failure = host.apply(insertOps(nodes, target));
+      if (!failure && nodes[0]) setSelection([nodes[0].id]);
+    },
+    [doc, page, selection, host],
+  );
 
   return (
     <div className="flex h-dvh flex-col overflow-hidden bg-background text-foreground">
@@ -98,7 +120,8 @@ export function DesignEditor({ host, backHref, Link }: DesignEditorProps) {
             }}
           />
         </aside>
-        <main aria-label={view === "design" ? "Canvas" : "Code"} className="min-h-0">
+        <main aria-label={view === "design" ? "Canvas" : "Code"} className="relative min-h-0">
+          {view === "design" ? <InsertToolbar onInsert={insert} disabled={!doc || !page} /> : null}
           {view === "design" ? (
             doc && page ? (
               <Canvas
