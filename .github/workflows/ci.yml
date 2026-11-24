@@ -122,6 +122,26 @@ jobs:
       - run: pnpm --filter @truframe/web cf:build
       - run: pnpm --filter @truframe/web exec wrangler deploy --dry-run --env staging --outdir dist
 
+  generated:
+    name: Generated projects (${{ matrix.framework }})
+    # Every golden fixture's expected project must install from its lockfile, build and
+    # type-check (P3-5). The Rust golden test keeps the expected files in step with the
+    # compiler, so this job builds what the compiler emits today.
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        framework: [nextjs, astro]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: crates/compiler/templates/*/package-lock.json
+      - run: node scripts/build-fixtures.ts ${{ matrix.framework }} --dir "$RUNNER_TEMP/generated"
+
   e2e:
     name: E2E (Playwright against pnpm dev + Miniflare)
     runs-on: ubuntu-latest
@@ -147,7 +167,7 @@ jobs:
     name: Deploy staging
     # Off until the owner connects Cloudflare: set repository variable CLOUDFLARE_DEPLOY_ENABLED=true.
     if: github.event_name == 'push' && github.ref == 'refs/heads/main' && vars.CLOUDFLARE_DEPLOY_ENABLED == 'true'
-    needs: [lint, typecheck, unit, rust, build, e2e]
+    needs: [lint, typecheck, unit, rust, build, generated, e2e]
     runs-on: ubuntu-latest
     environment:
       name: staging
