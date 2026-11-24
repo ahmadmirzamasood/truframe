@@ -1,5 +1,11 @@
 /** Better Auth configuration (Google, GitHub, email magic link + password). */
-export { AUTH_RATE_LIMITS, type Auth, CAPTCHA_ENDPOINTS, createAuth } from "./auth.ts";
+export {
+  AUTH_RATE_LIMITS,
+  type Auth,
+  CAPTCHA_ENDPOINTS,
+  createAuth,
+  PERSONAL_WORKSPACE_NAME,
+} from "./auth.ts";
 export {
   AuthConfigError,
   type AuthEnv,
@@ -17,3 +23,9 @@ export {
   type MockProfile,
   mockProfileSchema,
 } from "./mock-oauth.ts";
+export {
+  resolveWorkspace,
+  type SessionUser,
+  WorkspaceAccessError,
+  type WorkspaceContext,
+} from "./workspace-context.ts";
