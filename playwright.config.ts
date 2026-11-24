@@ -18,8 +18,10 @@ export default defineConfig({
   webServer: process.env.TRUFRAME_E2E_BASE_URL
     ? undefined
     : {
-        // All workers too, so Durable Object and queue bindings resolve through the dev registry.
-        command: "pnpm dev",
+        // Web app only. Its Durable Object and queue bindings are still declared (the health check
+        // needs no running worker), and with every worker's `wrangler dev` running, next dev on
+        // Windows keeps full-reloading pages (see docs/project/MEMORY.md).
+        command: "pnpm --filter @truframe/web dev",
         url: `${baseURL}/api/health`,
         reuseExistingServer: !process.env.CI,
         // Show dev server logs so a worker that fails to start is diagnosable in CI.

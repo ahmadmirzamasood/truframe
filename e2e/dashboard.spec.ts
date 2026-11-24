@@ -76,3 +76,24 @@ test("New Project dialog stores the chosen framework and template", async ({ pag
     templateId: "saas",
   });
 });
+
+test("Free plan: a fourth project is refused with a clear message", async ({ page }) => {
+  for (const name of ["One", "Two", "Three"]) {
+    const res = await page.request.post("/api/projects", {
+      data: { name, framework: "nextjs" },
+      headers: { origin: new URL(page.url()).origin },
+    });
+    expect(res.status()).toBe(201);
+  }
+  await page.reload();
+  await expect(page.getByTestId("project-usage")).toHaveText("3 of 3 projects · Free plan");
+  const dialog = await openDialog(page, "New project", "New project");
+  await dialog.getByLabel("Name").fill("Four");
+  await dialog.getByRole("button", { name: "Create project" }).click();
+  await expect(dialog.getByRole("alert")).toHaveText(
+    "The Free plan includes 3 projects. Delete a project you no longer need, or upgrade to Pro when it's available.",
+  );
+  await page.keyboard.press("Escape");
+  await expect(dialog).toBeHidden();
+  await expect(page.getByRole("list", { name: "Projects" }).getByRole("listitem")).toHaveCount(3);
+});

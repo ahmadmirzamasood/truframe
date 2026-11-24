@@ -1,6 +1,7 @@
 import "server-only";
 import type { WorkspaceContext } from "@truframe/auth";
-import type { Project } from "@truframe/db";
+import { LimitError, limitFor, planForWorkspace } from "@truframe/billing";
+import { LIMIT_REACHED, type LimitReached, type Project } from "@truframe/db";
 import {
   type CreateProjectInput,
   type ProjectDto,
@@ -8,6 +9,22 @@ import {
   RESTORE_WINDOW_DAYS,
 } from "@truframe/protocol";
 import { ApiFailure, notFound } from "./api";
+
+/** The caller's plan limit on active projects (Free: 3). */
+function maxProjects(ctx: WorkspaceContext): number {
+  return limitFor(planForWorkspace(ctx.workspace), "projects");
+}
+
+/** Turns the repo's LIMIT_REACHED into the typed API error (403 LIMIT_REACHED). */
+function withinLimit<T extends Project | null>(ctx: WorkspaceContext, result: T | LimitReached): T {
+  if (result === LIMIT_REACHED) {
+    const plan = planForWorkspace(ctx.workspace);
+    const limit = limitFor(plan, "projects");
+    const e = new LimitError(plan, "projects", limit, limit);
+    throw new ApiFailure("LIMIT_REACHED", e.message, 403, { plan, limit: "projects", max: limit });
+  }
+  return result as T;
+}
 
 export function toDto(p: Project): ProjectDto {
   return {
@@ -31,7 +48,13 @@ export function parseProjectId(id: string): string {
 }
 
 export async function createProject(ctx: WorkspaceContext, input: CreateProjectInput) {
-  const project = await ctx.repos.projects.create({ ...input, createdBy: ctx.user.id });
+  const project = withinLimit(
+    ctx,
+    await ctx.repos.projects.createWithinLimit(
+      { ...input, createdBy: ctx.user.id },
+      maxProjects(ctx),
+    ),
+  );
   await ctx.repos.audit.record({
     actorUserId: ctx.user.id,
     action: "project.create",
@@ -53,10 +76,14 @@ export async function duplicateProject(ctx: WorkspaceContext, id: string, name?:
   const source = await ctx.repos.projects.get(projectId);
   if (!source) throw notFound();
   const copyName = name ?? `${source.name} copy`.slice(0, 80);
-  const copy = await ctx.repos.projects.duplicate(projectId, {
-    name: copyName,
-    createdBy: ctx.user.id,
-  });
+  const copy = withinLimit(
+    ctx,
+    await ctx.repos.projects.duplicate(projectId, {
+      name: copyName,
+      createdBy: ctx.user.id,
+      maxActive: maxProjects(ctx),
+    }),
+  );
   if (!copy) throw notFound();
   await ctx.repos.audit.record({
     actorUserId: ctx.user.id,
@@ -81,7 +108,10 @@ export async function deleteProject(ctx: WorkspaceContext, id: string) {
 }
 
 export async function restoreProject(ctx: WorkspaceContext, id: string) {
-  const project = await ctx.repos.projects.restore(parseProjectId(id));
+  const project = withinLimit(
+    ctx,
+    await ctx.repos.projects.restore(parseProjectId(id), new Date(), maxProjects(ctx)),
+  );
   if (!project) {
     throw new ApiFailure(
       "RESTORE_EXPIRED",

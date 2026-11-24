@@ -6,7 +6,12 @@ import { usageRepo } from "./usage.ts";
 import { workspacesRepo } from "./workspaces.ts";
 
 export type { AuditEntry } from "./audit.ts";
-export { type Project, RESTORE_WINDOW_MS } from "./projects.ts";
+export {
+  LIMIT_REACHED,
+  type LimitReached,
+  type Project,
+  RESTORE_WINDOW_MS,
+} from "./projects.ts";
 export type { Membership, Workspace } from "./workspaces.ts";
 
 /**

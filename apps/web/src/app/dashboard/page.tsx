@@ -1,3 +1,4 @@
+import { limitFor, PLANS, planForWorkspace } from "@truframe/billing";
 import type { Metadata } from "next";
 import { SignOutButton } from "@/components/auth/auth-forms";
 import { NewProjectDialog } from "@/components/dashboard/new-project-dialog";
@@ -15,6 +16,8 @@ export default async function DashboardPage() {
   const { user, workspace, repos } = await requireWorkspace();
   const [projects, trash] = await Promise.all([repos.projects.list(), repos.projects.listTrash()]);
   const now = Date.now();
+  const plan = planForWorkspace(workspace);
+  const max = limitFor(plan, "projects");
   return (
     <main className="mx-auto flex min-h-dvh w-full max-w-5xl flex-col gap-8 px-4 py-8">
       <header className="flex items-center justify-between gap-4">
@@ -34,9 +37,16 @@ export default async function DashboardPage() {
 
       <section aria-labelledby="projects-heading" className="grid gap-4">
         <div className="flex items-center justify-between gap-4">
-          <h1 id="projects-heading" className="text-2xl font-semibold tracking-tight">
-            Projects
-          </h1>
+          <div className="grid gap-1">
+            <h1 id="projects-heading" className="text-2xl font-semibold tracking-tight">
+              Projects
+            </h1>
+            <p className="text-xs text-muted-foreground" data-testid="project-usage">
+              {Number.isFinite(max)
+                ? `${projects.length} of ${max} projects · ${PLANS[plan].name} plan`
+                : `${projects.length} projects · ${PLANS[plan].name} plan`}
+            </p>
+          </div>
           <NewProjectDialog />
         </div>
         {projects.length === 0 ? (
