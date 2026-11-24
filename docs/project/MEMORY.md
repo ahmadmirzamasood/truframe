@@ -3,8 +3,8 @@
 > Agent-facing, long-lived project memory. Read at the start of every session; append in the same PR as the work that taught you something. Keep entries short, dated (YYYY-MM-DD) and factual. Fix or strike entries that become wrong.
 
 ## Current state
-- **Phase:** P3 Compiler v1 is **done** (P3-1 to P3-6 merged with green CI; exit criteria met: 60 golden fixtures over both frameworks, every one built and type-checked in CI by the `generated` job, a 300-layer page compiles in 11.9 ms median in WASM). P4 Design View I is next. P2 is done. P1 is done locally; its staging exit criteria (sign-in with all three methods on staging, D1 migrations on staging) wait on the Cloudflare connection and the owner's OAuth apps, Resend and Turnstile keys (`docs/runbooks/auth-setup.md`). P0 is done except the P0-3 staging deploy.
-- **Last updated:** 2026-11-24
+- **Phase:** P4 Design View I is **in progress** (P4-1 editor shell done). P3 Compiler v1 is **done** (P3-1 to P3-6 merged with green CI; exit criteria met: 60 golden fixtures over both frameworks, every one built and type-checked in CI by the `generated` job, a 300-layer page compiles in 11.9 ms median in WASM). P2 is done. P1 is done locally; its staging exit criteria (sign-in with all three methods on staging, D1 migrations on staging) wait on the Cloudflare connection and the owner's OAuth apps, Resend and Turnstile keys (`docs/runbooks/auth-setup.md`). P0 is done except the P0-3 staging deploy.
+- **Last updated:** 2026-11-25
 - **Repo:** https://github.com/ahmadmirzamasood/truframe (public, default branch `main`). Work on `tf/<task-id>-<slug>` branches and open PRs. `archive/v1-local-first/` is not in this repo.
 
 ## Decisions log
@@ -123,6 +123,8 @@
 - 2026-11-24: Generated projects' own dependencies (next, astro, sharp…) are the user's, not Truframe's: the license allowlist applies to our dependencies. Their lockfiles include the usual LGPL `@img/sharp-libvips-*` binaries, as any create-next-app project does.
 
 - 2026-11-24: Astro is at **7.x** (not 5 as early docs said); the Fonts API is stable and top-level (`fonts: [{ provider: fontProviders.google(), name, cssVariable, weights, subsets }]`, `<Font cssVariable preload />` from `astro:assets`); `weights` defaults to `[400]`, so the compiler always lists them. Tailwind v4 uses `@tailwindcss/vite`, not `@astrojs/tailwind`.
+
+- 2026-11-25: Editor split: `@truframe/editor` (UI package) owns the Design View and talks to the app only through `EditorHost` (`doc`, `sync`, `apply(ops)`, `undo`, `redo`, plus the app's `Link`). `apps/web/src/components/editor/project-editor.tsx` builds it from `DocClient`. Editor classes are Tailwind, so `apps/web/src/app/globals.css` has `@source` for `packages/editor/src`; new UI packages need the same line. Shared shadcn pieces (`tabs`, `dropdown-menu`) were written by hand into `packages/ui`, not with the CLI.
 
 ## Dependencies added (name, license, why)
 - turbo 2.11.13 (MIT): task runner. typescript 5.9.3 (Apache-2.0). wrangler 4.166.0 (MIT OR Apache-2.0): Workers dev/deploy. [P0-1]

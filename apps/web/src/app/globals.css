@@ -1,3 +1,5 @@
 @import "@truframe/ui/globals.css";
 
 @source "../";
+/* The editor package ships its own Tailwind classes. */
+@source "../../../../packages/editor/src";

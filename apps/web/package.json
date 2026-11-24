@@ -21,6 +21,7 @@
     "@truframe/auth": "workspace:*",
     "@truframe/billing": "workspace:*",
     "@truframe/db": "workspace:*",
+    "@truframe/editor": "workspace:*",
     "@truframe/emails": "workspace:*",
     "@truframe/model": "workspace:*",
     "@truframe/protocol": "workspace:*",
