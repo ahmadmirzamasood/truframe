@@ -3,7 +3,7 @@
 > Agent-facing, long-lived project memory. Read at the start of every session; append in the same PR as the work that taught you something. Keep entries short, dated (YYYY-MM-DD) and factual. Fix or strike entries that become wrong.
 
 ## Current state
-- **Phase:** P1 Accounts, dashboard, project creation is **done locally** (P1-1 to P1-7 merged with green CI). The P1 exit criteria that need staging are blocked: sign-in with all three methods on staging, and D1 migrations on staging. They wait on the Cloudflare connection and on the owner's OAuth apps, Resend and Turnstile keys (`docs/runbooks/auth-setup.md`). P0 is done except the P0-3 staging deploy. Next: P2.
+- **Phase:** P2 Document core and realtime (in progress; P2-1 model schema done). P1 Accounts, dashboard, project creation is **done locally** (P1-1 to P1-7 merged with green CI). The P1 exit criteria that need staging are blocked: sign-in with all three methods on staging, and D1 migrations on staging. They wait on the Cloudflare connection and on the owner's OAuth apps, Resend and Turnstile keys (`docs/runbooks/auth-setup.md`). P0 is done except the P0-3 staging deploy. 
 - **Last updated:** 2026-11-24
 - **Repo:** https://github.com/ahmadmirzamasood/truframe (public, default branch `main`). Work on `tf/<task-id>-<slug>` branches and open PRs. `archive/v1-local-first/` is not in this repo.
 
@@ -97,6 +97,7 @@
 - 2026-11-24: Plan limits: read them only through `@truframe/billing` (`limitFor`, `planForWorkspace`). Enforce counts inside the write: the repo methods take the limit (`createWithinLimit(input, max)`, `duplicate(..., { maxActive })`, `restore(id, now, max)`) and put `(select count(*) ...) < max` in the same statement. A count-then-insert in two queries lets concurrent requests overshoot. `UNLIMITED` is `Infinity`, which the repos treat as no check.
 - 2026-11-24: Open issue (Windows only): when Playwright (or the whole `pnpm dev` stack) launches `next dev`, pages sometimes full-reload in a loop (`[HMR] connected` → `[Fast Refresh] rebuilding` → reload), with no file changes on disk. Plain `next dev`, started by hand, doesn't loop, and Linux CI passes. Workaround: start `pnpm --filter @truframe/web dev` yourself, then run `pnpm e2e` (it reuses a running server). Playwright starts only the web app; the health check needs bindings declared, not other workers running.
 - 2026-11-24: Radix dialogs set `aria-hidden` on the rest of the page while open. Close the dialog before asserting on page content by role.
+- 2026-11-24: Document model (`@truframe/model`): `validateDocument(x)` returns `{ ok, doc | issues[] }` with every problem (path + message), `parseDocument` throws for trusted input. zod checks shape (strict objects), `checkIntegrity` checks references. Layout and sizing are per-breakpoint style props. Templates are JSON outlines expanded by `templateDocument(id, { projectId, framework })`.
 
 ## Dependencies added (name, license, why)
 - turbo 2.11.13 (MIT): task runner. typescript 5.9.3 (Apache-2.0). wrangler 4.166.0 (MIT OR Apache-2.0): Workers dev/deploy. [P0-1]
@@ -105,6 +106,7 @@
 - **License exception pending owner approval:** `@img/sharp-*` (Apache-2.0 AND LGPL-3.0-or-later), the libvips binary pulled in by wrangler/miniflare and next. Dev/build tooling only, never bundled. Recorded in `licenses.exceptions.json`. [P0-2]
 - drizzle-orm 0.45.4 (Apache-2.0): typed D1 queries. drizzle-kit 0.31.11 (MIT, dev): migration generation. wrangler 4.166.0 added as a `packages/db` dev dependency for the test D1. [P1-1]
 - better-auth 1.7.27 (MIT): auth. zod 4.6.7 (MIT): env and boundary validation. @react-email/{render,html,head,body,container,text,button,preview,heading,link,hr} (MIT): email templates. server-only 0.0.1 (MIT): keeps server modules out of client bundles. [P1-2]
+- zod 4.6.7 (MIT) added to `packages/model` (already used by protocol and auth). [P2-1]
 
 ## Benchmarks
 - 2026-11-24: `truframe-web` OpenNext bundle (P0 skeleton: home page + `/api/health`), `wrangler deploy --dry-run --env staging` in `node:22-bookworm`: **4,546 KiB raw / 959 KiB gzip** (Workers limit 3 MiB free / 10 MiB paid, compressed).

@@ -1,6 +1,4 @@
 {
-  "schemaVersion": 0,
-  "breakpoints": { "desktop": 1200, "tablet": 810, "mobile": 390 },
   "pages": [
     {
       "id": "home",
@@ -11,27 +9,49 @@
           "type": "section",
           "name": "Hero",
           "children": [
-            { "type": "text", "tag": "h1", "text": "Launch something people love" },
+            {
+              "type": "text",
+              "tag": "h1",
+              "text": "Launch something people love"
+            },
             {
               "type": "text",
               "tag": "p",
               "text": "One sentence on what you do and who it is for."
             },
-            { "type": "link", "text": "Get started", "href": "#signup" }
+            {
+              "type": "link",
+              "text": "Get started",
+              "href": "#signup"
+            }
           ]
         },
         {
           "type": "section",
           "name": "Features",
           "children": [
-            { "type": "text", "tag": "h2", "text": "Why it works" },
-            { "type": "text", "tag": "p", "text": "Three short reasons, each with a heading." }
+            {
+              "type": "text",
+              "tag": "h2",
+              "text": "Why it works"
+            },
+            {
+              "type": "text",
+              "tag": "p",
+              "text": "Three short reasons, each with a heading."
+            }
           ]
         },
         {
           "type": "section",
           "name": "Call to action",
-          "children": [{ "type": "link", "text": "Start free", "href": "#signup" }]
+          "children": [
+            {
+              "type": "link",
+              "text": "Start free",
+              "href": "#signup"
+            }
+          ]
         }
       ]
     }

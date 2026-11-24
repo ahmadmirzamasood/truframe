@@ -1,6 +1,4 @@
 {
-  "schemaVersion": 0,
-  "breakpoints": { "desktop": 1200, "tablet": 810, "mobile": 390 },
   "pages": [
     {
       "id": "home",
@@ -11,17 +9,35 @@
           "type": "section",
           "name": "Intro",
           "children": [
-            { "type": "text", "tag": "h1", "text": "Hi, I design and build websites" },
-            { "type": "text", "tag": "p", "text": "A short line about your work." }
+            {
+              "type": "text",
+              "tag": "h1",
+              "text": "Hi, I design and build websites"
+            },
+            {
+              "type": "text",
+              "tag": "p",
+              "text": "A short line about your work."
+            }
           ]
         },
         {
           "type": "section",
           "name": "Work",
           "children": [
-            { "type": "text", "tag": "h2", "text": "Selected work" },
-            { "type": "image", "alt": "Project cover" },
-            { "type": "image", "alt": "Project cover" }
+            {
+              "type": "text",
+              "tag": "h2",
+              "text": "Selected work"
+            },
+            {
+              "type": "image",
+              "alt": "Project cover"
+            },
+            {
+              "type": "image",
+              "alt": "Project cover"
+            }
           ]
         }
       ]
@@ -34,7 +50,13 @@
         {
           "type": "section",
           "name": "About",
-          "children": [{ "type": "text", "tag": "h1", "text": "About me" }]
+          "children": [
+            {
+              "type": "text",
+              "tag": "h1",
+              "text": "About me"
+            }
+          ]
         }
       ]
     }

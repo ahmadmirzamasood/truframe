@@ -126,6 +126,18 @@ Instance overrides: { variant: {prop: value}, props: {name: value}, nodes: {node
 
 **Breakpoint semantics.** Desktop styles apply at ≥ 1200 px. Desktop's width setting (≥ 1200) is the width you design at on the canvas, not a media query. Tablet styles apply below 1200 px. Mobile styles apply below the tablet width's lower bound (default `< 810px`; the mobile breakpoint's media query is `width < tablet.width`). Removing Tablet makes Mobile inherit from Desktop directly.
 
+**Schema details (P2-1, `packages/model`).** The sketch above is implemented with these concrete choices:
+- One JSON shape, strict everywhere (unknown keys are rejected), `schemaVersion: 1`. `validateDocument()` = zod shape check + `checkIntegrity()` (references between parts); every boundary calls it.
+- Nodes live in one flat map `nodes{id → Node}`; frames and links list `children` by id. Pages and components each own one tree (`root`). Every node belongs to exactly one tree: no shared, orphaned or cyclic nodes. A link can't contain a link.
+- Layout and sizing (`display`, `direction`, `gap`, `padding`, `width`/`height` Fixed/Fill/Fit, `position`, insets…) are **style props**, not node fields, because they change per breakpoint (a row that stacks on mobile). `Style = { desktop: Props, tablet?: Props, mobile?: Props }`, every prop optional.
+- `codeClass` is derived from the layer name at compile/display time and not stored.
+- Pages have a `path` (`/`, `/about`, `/blog/post`) instead of `slug` + `parentId`; a home page `/` is required.
+- Removing Tablet or Mobile deletes only the breakpoint entry. Overrides stored for it stay in the doc, inactive, and come back if it is re-added.
+- Variable references are checked for type (`textColor` must point at a color variable, `gap` at spacing, `font` at font).
+- Link hrefs allow only http(s), mailto:, tel:, `/path` and `#anchor`. Asset `key`s are relative (`assets/<sha256>.<ext>`); the server adds the `ws/<workspaceId>/` prefix, so a document can't point at another tenant's objects.
+- Colors are lowercase hex (`#rrggbb`/`#rrggbbaa`) so equal colors are equal strings.
+- Starter templates are short JSON outlines expanded by `templateDocument(id, { projectId, framework })` into valid documents with deterministic ids.
+
 **Operations** (`packages/ops`): `insertNode`, `deleteNode`, `moveNode`, `setProp(nodeId, breakpoint, key, value)`, `resetProp`, `setText`, `bindVariable`, `createComponent`, `detachInstance`, `setOverride`, `upsertVariable`, `addPage`, `updatePage`, `addAsset`, `setCodeFile`, etc. Every op is validated against the schema and the user's plan limits before it is applied to the Loro doc. A **transaction** groups the ops of one gesture or one agent turn, and is one undo step.
 
 ## 6. Compiler (design ⇄ code)
