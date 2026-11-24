@@ -5,7 +5,8 @@
   "description": "Design document schema (zod), integrity checks, defaults and templates",
   "type": "module",
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./testing": "./src/testing/fixtures.ts"
   },
   "scripts": {
     "typecheck": "tsc --noEmit"
