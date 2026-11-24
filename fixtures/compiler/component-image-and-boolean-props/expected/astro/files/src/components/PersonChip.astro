@@ -1,0 +1,29 @@
+---
+import { Image } from "astro:assets";
+import avatarPng from "../assets/avatar.png";
+import type { ImageMetadata } from "astro";
+
+interface Props {
+  class: string;
+  photo?: ImageMetadata | null;
+  name?: string;
+  verified?: boolean;
+}
+
+const props = Astro.props;
+const photoImage = props.photo !== undefined ? props.photo : avatarPng;
+---
+
+<div class={`person-chip items-center gap-3 ${props.class}`}>
+  {photoImage && (
+    <Image
+      src={photoImage}
+      alt=""
+      class="person-chip__photo flex-none w-16 h-16 rounded-full object-cover"
+    />
+  )}
+  <p class="person-chip__name font-semibold">{props.name ?? "Ada Lovelace"}</p>
+  {(props.verified ?? true) && (
+    <span class="person-chip__badge text-xs text-[#16a34a]">Verified</span>
+  )}
+</div>

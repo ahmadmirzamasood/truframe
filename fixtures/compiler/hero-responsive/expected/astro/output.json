@@ -1,0 +1,74 @@
+{
+  "assets": [
+    {
+      "assetId": "heroart",
+      "key": "assets/032a2efa3ede14b554b74195012c6f1522a7c45903745b885da95d496ac335a8.png",
+      "path": "src/assets/hero-art.png"
+    }
+  ],
+  "css": {
+    "id2": {
+      "desktop": "display: flex; flex-direction: column; width: 100%; height: fit-content;"
+    },
+    "n1": {
+      "desktop": "font-size: 4.5rem; font-weight: 700; line-height: 1.1; letter-spacing: -0.025em;",
+      "mobile": "font-size: 2.25rem; text-align: center;",
+      "tablet": "font-size: 3rem;"
+    },
+    "n2": {
+      "desktop": "max-width: 560px; font-size: 1.25rem; line-height: calc(1.75 / 1.25); color: #52525b;",
+      "mobile": "font-size: 1.125rem; line-height: calc(1.75 / 1.125);"
+    },
+    "n3": {
+      "desktop": "display: flex; flex-direction: column; gap: 24px; flex: 1 1 0%;",
+      "mobile": "align-items: center; flex: 0 1 auto; align-self: stretch;"
+    },
+    "n4": {
+      "desktop": "flex: none; width: 480px; height: 360px; border-radius: 24px; object-fit: cover;",
+      "mobile": "align-self: stretch; width: auto; height: 240px;"
+    },
+    "n5": {
+      "desktop": "display: flex; align-items: center; gap: 64px; padding-inline: 64px; padding-block: 96px; background-color: #fafafa;",
+      "mobile": "flex-direction: column; gap: 24px; padding-inline: 16px; padding-block: 48px;",
+      "tablet": "gap: 32px; padding-inline: 32px; padding-block: 64px;"
+    }
+  },
+  "spans": [
+    {
+      "end": 1108,
+      "node": "id2",
+      "path": "src/pages/index.astro",
+      "start": 160
+    },
+    {
+      "end": 1098,
+      "node": "n5",
+      "path": "src/pages/index.astro",
+      "start": 211
+    },
+    {
+      "end": 853,
+      "node": "n3",
+      "path": "src/pages/index.astro",
+      "start": 393
+    },
+    {
+      "end": 709,
+      "node": "n1",
+      "path": "src/pages/index.astro",
+      "start": 522
+    },
+    {
+      "end": 840,
+      "node": "n2",
+      "path": "src/pages/index.astro",
+      "start": 718
+    },
+    {
+      "end": 1083,
+      "node": "n4",
+      "path": "src/pages/index.astro",
+      "start": 860
+    }
+  ]
+}

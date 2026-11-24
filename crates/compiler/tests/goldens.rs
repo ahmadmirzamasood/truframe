@@ -16,7 +16,7 @@ use truframe_compiler::model::Project;
 use truframe_compiler::{Framework, Output, compile_for};
 
 /// Frameworks with goldens.
-const FRAMEWORKS: &[Framework] = &[Framework::Next];
+const FRAMEWORKS: &[Framework] = &[Framework::Next, Framework::Astro];
 
 /// The lockfile is the same for every project of a framework; it's checked once, not stored
 /// per fixture.

@@ -1,0 +1,47 @@
+---
+import Base from "../layouts/Base.astro";
+---
+
+<Base title="Home">
+  <main class="body flex flex-col w-full h-fit">
+    <div class="layouts flex flex-col gap-8 p-8">
+      <div class="row flex items-stretch gap-3 flex-none h-30">
+        <div class="fixed-el p-2 flex-none w-30 bg-[#e0e7ff]">
+          <span class="fixed-label">Fixed</span>
+        </div>
+        <div class="fill p-2 flex-1 bg-[#e0e7ff]">
+          <span class="fill-label">Fill</span>
+        </div>
+        <div class="fit p-2 flex-none w-fit bg-[#e0e7ff]">
+          <span class="fit-label">Fit</span>
+        </div>
+        <div class="stretch p-2 flex-none self-stretch w-20 bg-[#e0e7ff]">
+          <span class="stretch-label">Stretch</span>
+        </div>
+      </div>
+      <div class="column flex flex-col items-start gap-3">
+        <div class="full-width p-2 self-stretch bg-[#e0e7ff]">
+          <span class="full-width-label">Full width</span>
+        </div>
+        <div class="grow-el p-2 flex-1 bg-[#e0e7ff]">
+          <span class="grow-label">Grow</span>
+        </div>
+        <div class="fixed-height p-2 flex-none h-12 bg-[#e0e7ff]">
+          <span class="fixed-height-label">Fixed height</span>
+        </div>
+      </div>
+      <div class="responsive flex gap-4 mobile:flex-col">
+        <div
+          class="left p-2 flex-1 bg-[#e0e7ff] mobile:flex-initial mobile:self-stretch"
+        >
+          <span class="left-label">Left</span>
+        </div>
+        <div
+          class="right p-2 flex-1 bg-[#e0e7ff] mobile:flex-initial mobile:self-stretch"
+        >
+          <span class="right-label">Right</span>
+        </div>
+      </div>
+    </div>
+  </main>
+</Base>

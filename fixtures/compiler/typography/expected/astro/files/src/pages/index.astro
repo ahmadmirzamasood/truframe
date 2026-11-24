@@ -1,0 +1,23 @@
+---
+import Base from "../layouts/Base.astro";
+---
+
+<Base title="Home">
+  <main class="body flex flex-col w-full h-fit">
+    <article class="article flex flex-col gap-4 p-12">
+      <h1 class="heading-1 text-6xl">Heading level 1</h1>
+      <h2 class="heading-2 text-5xl">Heading level 2</h2>
+      <h3 class="heading-3 text-4xl">Heading level 3</h3>
+      <h4 class="heading-4 text-3xl">Heading level 4</h4>
+      <h5 class="heading-5 text-2xl">Heading level 5</h5>
+      <h6 class="heading-6 text-xl">Heading level 6</h6>
+      <p class="rich text-lg leading-relaxed text-justify">
+        Plain, <strong>bold</strong>, <em>italic</em>, <u>underlined</u>, <strong><em><u>all three</u></em></strong> and <a href="https://example.com/docs">a link</a>.<br />A second line.
+      </p>
+      <blockquote class="quote text-2xl tracking-widest no-underline uppercase">
+        Simplicity is the ultimate sophistication.
+      </blockquote>
+      <span class="fine-print text-xs text-[#71717a]">Prices exclude tax.</span>
+    </article>
+  </main>
+</Base>

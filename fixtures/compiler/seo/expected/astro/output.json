@@ -1,0 +1,43 @@
+{
+  "assets": [],
+  "css": {
+    "id2": {
+      "desktop": "display: flex; flex-direction: column; width: 100%; height: fit-content;"
+    },
+    "n1": {
+      "desktop": ""
+    },
+    "n2": {
+      "desktop": "display: flex; flex-direction: column;"
+    },
+    "n3": {
+      "desktop": ""
+    }
+  },
+  "spans": [
+    {
+      "end": 245,
+      "node": "id2",
+      "path": "src/pages/index.astro",
+      "start": 158
+    },
+    {
+      "end": 235,
+      "node": "n3",
+      "path": "src/pages/index.astro",
+      "start": 209
+    },
+    {
+      "end": 195,
+      "node": "n2",
+      "path": "src/pages/private.astro",
+      "start": 117
+    },
+    {
+      "end": 185,
+      "node": "n1",
+      "path": "src/pages/private.astro",
+      "start": 155
+    }
+  ]
+}

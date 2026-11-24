@@ -1,0 +1,110 @@
+{
+  "assets": [
+    {
+      "assetId": "photo",
+      "key": "assets/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.png",
+      "path": "src/assets/photo.png"
+    }
+  ],
+  "css": {
+    "aboutBody": {
+      "desktop": ""
+    },
+    "card": {
+      "desktop": ""
+    },
+    "cardRoot": {
+      "desktop": ""
+    },
+    "cardTitle": {
+      "desktop": ""
+    },
+    "cta": {
+      "desktop": ""
+    },
+    "ctaLabel": {
+      "desktop": ""
+    },
+    "hero": {
+      "desktop": "display: flex; gap: var(--spacing-md); padding-top: 8px; padding-right: 8px; padding-bottom: var(--spacing-md); padding-left: 8px; background-color: var(--colors-brand);",
+      "mobile": "flex-direction: column;"
+    },
+    "id2": {
+      "desktop": "display: flex; flex-direction: column; width: 100%; height: fit-content;"
+    },
+    "pic": {
+      "desktop": "object-fit: cover;"
+    },
+    "title": {
+      "desktop": "font-family: var(--text-body-family); font-size: var(--text-body-size); font-weight: var(--text-body-weight); line-height: var(--text-body-line-height); letter-spacing: var(--text-body-letter-spacing); color: #111111;"
+    }
+  },
+  "spans": [
+    {
+      "end": 389,
+      "node": "cardRoot",
+      "path": "src/components/Card.astro",
+      "start": 261
+    },
+    {
+      "end": 382,
+      "node": "cardTitle",
+      "path": "src/components/Card.astro",
+      "start": 329
+    },
+    {
+      "end": 100,
+      "node": "aboutBody",
+      "path": "src/pages/about.astro",
+      "start": 74
+    },
+    {
+      "end": 907,
+      "node": "id2",
+      "path": "src/pages/index.astro",
+      "start": 155
+    },
+    {
+      "end": 897,
+      "node": "hero",
+      "path": "src/pages/index.astro",
+      "start": 206
+    },
+    {
+      "end": 614,
+      "node": "title",
+      "path": "src/pages/index.astro",
+      "start": 339
+    },
+    {
+      "end": 686,
+      "node": "pic",
+      "path": "src/pages/index.astro",
+      "start": 621
+    },
+    {
+      "end": 778,
+      "node": "cta",
+      "path": "src/pages/index.astro",
+      "start": 693
+    },
+    {
+      "end": 767,
+      "node": "ctaLabel",
+      "path": "src/pages/index.astro",
+      "start": 731
+    },
+    {
+      "end": 882,
+      "node": "card",
+      "path": "src/pages/index.astro",
+      "start": 785
+    },
+    {
+      "end": 869,
+      "node": "cardTitle",
+      "path": "src/pages/index.astro",
+      "start": 823
+    }
+  ]
+}

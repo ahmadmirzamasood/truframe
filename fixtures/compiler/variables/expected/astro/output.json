@@ -1,0 +1,52 @@
+{
+  "assets": [],
+  "css": {
+    "id2": {
+      "desktop": "display: flex; flex-direction: column; width: 100%; height: fit-content;"
+    },
+    "n1": {
+      "desktop": "font-family: var(--font-display-family); font-size: var(--font-display-size); font-weight: var(--font-display-weight); line-height: var(--font-display-line-height); letter-spacing: var(--font-display-letter-spacing); color: var(--neutral-ink);"
+    },
+    "n2": {
+      "desktop": "font-weight: 600;"
+    },
+    "n3": {
+      "desktop": "padding-inline: var(--space-stack); padding-block: 12px; color: #ffffff; background-color: var(--brand-accent); border-radius: 8px;"
+    },
+    "n4": {
+      "desktop": "display: flex; flex-direction: column; gap: var(--space-stack); padding: var(--space-gutter); border-bottom-width: 1px; border-color: var(--brand-accent);"
+    }
+  },
+  "spans": [
+    {
+      "end": 772,
+      "node": "id2",
+      "path": "src/pages/index.astro",
+      "start": 73
+    },
+    {
+      "end": 762,
+      "node": "n4",
+      "path": "src/pages/index.astro",
+      "start": 124
+    },
+    {
+      "end": 552,
+      "node": "n1",
+      "path": "src/pages/index.astro",
+      "start": 259
+    },
+    {
+      "end": 747,
+      "node": "n3",
+      "path": "src/pages/index.astro",
+      "start": 559
+    },
+    {
+      "end": 736,
+      "node": "n2",
+      "path": "src/pages/index.astro",
+      "start": 690
+    }
+  ]
+}

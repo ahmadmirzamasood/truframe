@@ -1,0 +1,16 @@
+---
+import Base from "../layouts/Base.astro";
+---
+
+<Base title="Home">
+  <main class="body flex flex-col w-full h-fit">
+    <section
+      class="split flex gap-12 p-20 mobile:flex-col mobile:gap-4 mobile:px-4 mobile:py-6"
+    >
+      <p class="left text-xl mobile:text-base">
+        Tablet overrides stay in the document but are inactive.
+      </p>
+      <p class="right">Mobile applies below 1200px.</p>
+    </section>
+  </main>
+</Base>

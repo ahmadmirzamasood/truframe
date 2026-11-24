@@ -1,0 +1,63 @@
+---
+import Base from "../layouts/Base.astro";
+import { Image } from "astro:assets";
+import logoSvg from "../assets/logo.svg";
+import teamJpg from "../assets/team.jpg";
+---
+
+<Base title="Home">
+  <main class="body flex flex-col w-full h-fit">
+    <div class="images flex flex-wrap gap-4">
+      <Image
+        src={teamJpg}
+        alt="Plain photo"
+        class="plain flex-none w-80 h-45 object-cover"
+      />
+      <Image
+        src={teamJpg}
+        alt="Contained photo"
+        class="contained flex-none w-80 h-45 object-contain"
+      />
+      <Image
+        src={teamJpg}
+        alt="Tiled photo"
+        class="tiled flex-none w-80 h-45 object-none"
+      />
+      <figure class="figure flex-none w-80 h-45">
+        <Image
+          src={teamJpg}
+          alt="Figure photo"
+          class="size-full object-cover"
+        />
+      </figure>
+      <picture class="picture flex-none w-80 h-45">
+        <Image
+          src={teamJpg}
+          alt="Picture photo"
+          class="size-full object-cover"
+        />
+      </picture>
+      <Image
+        src={teamJpg}
+        alt=""
+        class="decorative flex-none w-80 h-45 object-cover"
+      />
+      <div
+        class="placeholder flex-none w-80 h-45 bg-[#e5e5e5]"
+        role="img"
+        aria-label="Coming soon"
+      >
+      </div>
+      <div
+        class="empty-placeholder flex-none w-80 h-45 bg-[#e5e5e5]"
+        aria-hidden="true"
+      >
+      </div>
+      <Image
+        src={logoSvg}
+        alt="Acme"
+        class="logo flex-none w-30 h-10 object-contain"
+      />
+    </div>
+  </main>
+</Base>

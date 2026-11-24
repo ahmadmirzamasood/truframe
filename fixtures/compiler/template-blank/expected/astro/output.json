@@ -1,0 +1,16 @@
+{
+  "assets": [],
+  "css": {
+    "home-body": {
+      "desktop": "display: flex; flex-direction: column; width: 100%; height: fit-content;"
+    }
+  },
+  "spans": [
+    {
+      "end": 126,
+      "node": "home-body",
+      "path": "src/pages/index.astro",
+      "start": 73
+    }
+  ]
+}

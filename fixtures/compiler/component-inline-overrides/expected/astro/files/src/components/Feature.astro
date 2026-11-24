@@ -1,0 +1,28 @@
+---
+interface Props {
+  class: string;
+  emphasis?: "normal" | "strong";
+  heading?: string;
+}
+
+const featureVariants: Partial<Record<string, string>> = {
+  "emphasis=strong": "feature flex-col gap-2 p-4 bg-[#fef3c7] rounded-xl",
+};
+
+const props = Astro.props;
+const variant = `emphasis=${props.emphasis ?? "normal"}`;
+---
+
+<div
+  class={`${featureVariants[variant] ?? "feature flex-col gap-2 p-4"} ${props.class}`}
+>
+  <div
+    class="feature__icon flex-none w-10 h-10 bg-[#e5e5e5]"
+    aria-hidden="true"
+  >
+  </div>
+  <h3 class="feature__heading text-xl font-semibold">
+    {props.heading ?? "Feature"}
+  </h3>
+  <p class="feature__body text-[#52525b]">Describe the feature.</p>
+</div>

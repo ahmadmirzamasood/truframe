@@ -115,6 +115,11 @@ pub fn is_void(tag: &str) -> bool {
     )
 }
 
+/// Components (`Image`, `PricingCard`) may self-close in Astro too; HTML elements may not.
+fn is_component(tag: &str) -> bool {
+    tag.starts_with(|c: char| c.is_ascii_uppercase())
+}
+
 /// Escapes text content. `{` and `}` start expressions in both JSX and Astro.
 pub fn escape_text(s: &str) -> String {
     let mut out = String::with_capacity(s.len());
@@ -211,7 +216,7 @@ impl Writer {
         let open_flat = open_tag_flat(&el.tag, &attrs);
         let empty = el.children.is_empty();
         let void = is_void(&el.tag);
-        let self_closing = empty && (void || syntax == Syntax::Jsx);
+        let self_closing = empty && (void || syntax == Syntax::Jsx || is_component(&el.tag));
 
         if self_closing {
             let flat = format!("{} />", &open_flat[..open_flat.len() - 1]);
@@ -359,7 +364,9 @@ fn inline_children(children: &[Child], syntax: Syntax) -> String {
             Child::El(el) => {
                 let attrs: Vec<String> = el.attrs.iter().map(|a| attr_text(a, syntax)).collect();
                 let open = open_tag_flat(&el.tag, &attrs);
-                if el.children.is_empty() && (is_void(&el.tag) || syntax == Syntax::Jsx) {
+                if el.children.is_empty()
+                    && (is_void(&el.tag) || syntax == Syntax::Jsx || is_component(&el.tag))
+                {
                     s.push_str(&open[..open.len() - 1]);
                     s.push_str(" />");
                 } else {

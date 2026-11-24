@@ -1,0 +1,26 @@
+---
+import Base from "../layouts/Base.astro";
+---
+
+<Base title="Home">
+  <main class="body flex flex-col w-full h-fit">
+    <div class="backgrounds grid grid-cols-3 gap-4">
+      <div class="solid h-30 bg-[#0ea5e9]"></div>
+      <div class="alpha h-30 bg-[#0ea5e980]"></div>
+      <div
+        class="gradient h-30 bg-[linear-gradient(135deg,#6366f1_0%,#ec4899_60%,#f59e0b_100%)]"
+      >
+      </div>
+      <div class="tile h-30 bg-[url(/assets/pattern.png)] bg-auto bg-repeat">
+      </div>
+      <div
+        class="cover h-30 bg-[url(/assets/cover.webp)] bg-cover bg-center bg-no-repeat mobile:bg-none mobile:bg-[#111827]"
+      >
+      </div>
+      <div
+        class="contain h-30 bg-[url(/assets/cover.webp)] bg-contain bg-center bg-no-repeat mix-blend-multiply"
+      >
+      </div>
+    </div>
+  </main>
+</Base>

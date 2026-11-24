@@ -1,0 +1,120 @@
+{
+  "assets": [],
+  "css": {
+    "home-1": {
+      "desktop": "display: flex; flex-direction: column; align-items: center; gap: 24px; padding-inline: 32px; padding-block: 96px; flex: none; align-self: stretch; height: fit-content;",
+      "mobile": "gap: 16px; padding-inline: 20px; padding-block: 56px;"
+    },
+    "home-10": {
+      "desktop": "display: flex; padding-inline: 24px; padding-block: 12px; background-color: var(--brand-accent); border-radius: 8px;"
+    },
+    "home-11": {
+      "desktop": "font-weight: 600; color: #ffffff;"
+    },
+    "home-2": {
+      "desktop": "font-size: 56px; font-weight: 700; text-align: center; color: var(--neutral-ink);",
+      "mobile": "font-size: 2.25rem; line-height: calc(2.5 / 2.25);"
+    },
+    "home-3": {
+      "desktop": "font-size: 1.125rem; line-height: calc(1.75 / 1.125); text-align: center; color: var(--neutral-ink);"
+    },
+    "home-4": {
+      "desktop": "display: flex; padding-inline: 24px; padding-block: 12px; background-color: var(--brand-accent); border-radius: 8px;"
+    },
+    "home-5": {
+      "desktop": "font-weight: 600; color: #ffffff;"
+    },
+    "home-6": {
+      "desktop": "display: flex; flex-direction: column; align-items: center; gap: 24px; padding-inline: 32px; padding-block: 96px; flex: none; align-self: stretch; height: fit-content;",
+      "mobile": "gap: 16px; padding-inline: 20px; padding-block: 56px;"
+    },
+    "home-7": {
+      "desktop": "font-size: 2.25rem; line-height: calc(2.5 / 2.25); font-weight: 700; text-align: center; color: var(--neutral-ink);",
+      "mobile": "font-size: 28px;"
+    },
+    "home-8": {
+      "desktop": "font-size: 1.125rem; line-height: calc(1.75 / 1.125); text-align: center; color: var(--neutral-ink);"
+    },
+    "home-9": {
+      "desktop": "display: flex; flex-direction: column; align-items: center; gap: 24px; padding-inline: 32px; padding-block: 96px; flex: none; align-self: stretch; height: fit-content;",
+      "mobile": "gap: 16px; padding-inline: 20px; padding-block: 56px;"
+    },
+    "home-body": {
+      "desktop": "display: flex; flex-direction: column; width: 100%; height: fit-content;"
+    }
+  },
+  "spans": [
+    {
+      "end": 1626,
+      "node": "home-body",
+      "path": "src/pages/index.astro",
+      "start": 73
+    },
+    {
+      "end": 785,
+      "node": "home-1",
+      "path": "src/pages/index.astro",
+      "start": 124
+    },
+    {
+      "end": 433,
+      "node": "home-2",
+      "path": "src/pages/index.astro",
+      "start": 275
+    },
+    {
+      "end": 574,
+      "node": "home-3",
+      "path": "src/pages/index.astro",
+      "start": 440
+    },
+    {
+      "end": 770,
+      "node": "home-4",
+      "path": "src/pages/index.astro",
+      "start": 581
+    },
+    {
+      "end": 759,
+      "node": "home-5",
+      "path": "src/pages/index.astro",
+      "start": 692
+    },
+    {
+      "end": 1243,
+      "node": "home-6",
+      "path": "src/pages/index.astro",
+      "start": 790
+    },
+    {
+      "end": 1092,
+      "node": "home-7",
+      "path": "src/pages/index.astro",
+      "start": 945
+    },
+    {
+      "end": 1228,
+      "node": "home-8",
+      "path": "src/pages/index.astro",
+      "start": 1099
+    },
+    {
+      "end": 1616,
+      "node": "home-9",
+      "path": "src/pages/index.astro",
+      "start": 1248
+    },
+    {
+      "end": 1601,
+      "node": "home-10",
+      "path": "src/pages/index.astro",
+      "start": 1409
+    },
+    {
+      "end": 1590,
+      "node": "home-11",
+      "path": "src/pages/index.astro",
+      "start": 1522
+    }
+  ]
+}

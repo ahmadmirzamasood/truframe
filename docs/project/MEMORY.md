@@ -122,6 +122,8 @@
 - 2026-11-24: Biome must not touch `fixtures/compiler` (it reformats `input.json` and the goldens); it is excluded in `biome.json`, as are `crates/compiler/templates`.
 - 2026-11-24: Generated projects' own dependencies (next, astro, sharp…) are the user's, not Truframe's: the license allowlist applies to our dependencies. Their lockfiles include the usual LGPL `@img/sharp-libvips-*` binaries, as any create-next-app project does.
 
+- 2026-11-24: Astro is at **7.x** (not 5 as early docs said); the Fonts API is stable and top-level (`fonts: [{ provider: fontProviders.google(), name, cssVariable, weights, subsets }]`, `<Font cssVariable preload />` from `astro:assets`); `weights` defaults to `[400]`, so the compiler always lists them. Tailwind v4 uses `@tailwindcss/vite`, not `@astrojs/tailwind`.
+
 ## Dependencies added (name, license, why)
 - turbo 2.11.13 (MIT): task runner. typescript 5.9.3 (Apache-2.0). wrangler 4.166.0 (MIT OR Apache-2.0): Workers dev/deploy. [P0-1]
 - @biomejs/biome 2.6.8 (MIT OR Apache-2.0), vitest 5.1.1 (MIT), @playwright/test 1.65.1 (Apache-2.0), @types/node 22.20.5 (MIT). cargo-deny (MIT OR Apache-2.0) is a dev tool installed with `cargo install cargo-deny --locked`. [P0-2]
