@@ -1,0 +1,370 @@
+{
+  "schemaVersion": 1,
+  "id": "0199a0b2-7c3d-7e4f-8a5b-6c7d8e9f0a1b",
+  "framework": "nextjs",
+  "settings": {
+    "lang": "en"
+  },
+  "breakpoints": {
+    "desktop": {
+      "width": 1200
+    },
+    "tablet": {
+      "width": 810
+    },
+    "mobile": {
+      "width": 390
+    }
+  },
+  "pages": [
+    {
+      "id": "home",
+      "name": "Home",
+      "path": "/",
+      "seo": {
+        "title": "Home",
+        "description": "",
+        "ogImage": null,
+        "noindex": false
+      },
+      "root": "home-body"
+    }
+  ],
+  "nodes": {
+    "home-2": {
+      "id": "home-2",
+      "type": "text",
+      "name": "",
+      "tag": "h1",
+      "style": {
+        "desktop": {
+          "fontWeight": 700,
+          "fontSize": 56,
+          "textAlign": "center",
+          "textColor": {
+            "var": "ink"
+          }
+        },
+        "mobile": {
+          "fontSize": 36
+        }
+      },
+      "content": [
+        {
+          "text": "Launch something people love"
+        }
+      ]
+    },
+    "home-3": {
+      "id": "home-3",
+      "type": "text",
+      "name": "",
+      "tag": "p",
+      "style": {
+        "desktop": {
+          "fontSize": 18,
+          "textAlign": "center",
+          "textColor": {
+            "var": "ink"
+          }
+        }
+      },
+      "content": [
+        {
+          "text": "One sentence on what you do and who it is for."
+        }
+      ]
+    },
+    "home-5": {
+      "id": "home-5",
+      "type": "text",
+      "name": "Label",
+      "tag": "span",
+      "style": {
+        "desktop": {
+          "fontWeight": 600,
+          "textColor": "#ffffff"
+        }
+      },
+      "content": [
+        {
+          "text": "Get started"
+        }
+      ]
+    },
+    "home-4": {
+      "id": "home-4",
+      "type": "link",
+      "name": "Button",
+      "tag": "a",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "direction": "row",
+          "padding": {
+            "top": 12,
+            "right": 24,
+            "bottom": 12,
+            "left": 24
+          },
+          "fill": {
+            "type": "solid",
+            "color": {
+              "var": "accent"
+            }
+          },
+          "radius": 8
+        }
+      },
+      "target": {
+        "type": "url",
+        "href": "#signup"
+      },
+      "newTab": false,
+      "children": ["home-5"]
+    },
+    "home-1": {
+      "id": "home-1",
+      "type": "frame",
+      "name": "Hero",
+      "tag": "section",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "direction": "column",
+          "align": "center",
+          "gap": 24,
+          "padding": {
+            "top": 96,
+            "right": 32,
+            "bottom": 96,
+            "left": 32
+          },
+          "width": {
+            "type": "fill"
+          },
+          "height": {
+            "type": "fit"
+          }
+        },
+        "mobile": {
+          "gap": 16,
+          "padding": {
+            "top": 56,
+            "right": 20,
+            "bottom": 56,
+            "left": 20
+          }
+        }
+      },
+      "children": ["home-2", "home-3", "home-4"]
+    },
+    "home-7": {
+      "id": "home-7",
+      "type": "text",
+      "name": "",
+      "tag": "h2",
+      "style": {
+        "desktop": {
+          "fontWeight": 700,
+          "fontSize": 36,
+          "textAlign": "center",
+          "textColor": {
+            "var": "ink"
+          }
+        },
+        "mobile": {
+          "fontSize": 28
+        }
+      },
+      "content": [
+        {
+          "text": "Why it works"
+        }
+      ]
+    },
+    "home-8": {
+      "id": "home-8",
+      "type": "text",
+      "name": "",
+      "tag": "p",
+      "style": {
+        "desktop": {
+          "fontSize": 18,
+          "textAlign": "center",
+          "textColor": {
+            "var": "ink"
+          }
+        }
+      },
+      "content": [
+        {
+          "text": "Three short reasons, each with a heading."
+        }
+      ]
+    },
+    "home-6": {
+      "id": "home-6",
+      "type": "frame",
+      "name": "Features",
+      "tag": "section",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "direction": "column",
+          "align": "center",
+          "gap": 24,
+          "padding": {
+            "top": 96,
+            "right": 32,
+            "bottom": 96,
+            "left": 32
+          },
+          "width": {
+            "type": "fill"
+          },
+          "height": {
+            "type": "fit"
+          }
+        },
+        "mobile": {
+          "gap": 16,
+          "padding": {
+            "top": 56,
+            "right": 20,
+            "bottom": 56,
+            "left": 20
+          }
+        }
+      },
+      "children": ["home-7", "home-8"]
+    },
+    "home-11": {
+      "id": "home-11",
+      "type": "text",
+      "name": "Label",
+      "tag": "span",
+      "style": {
+        "desktop": {
+          "fontWeight": 600,
+          "textColor": "#ffffff"
+        }
+      },
+      "content": [
+        {
+          "text": "Start free"
+        }
+      ]
+    },
+    "home-10": {
+      "id": "home-10",
+      "type": "link",
+      "name": "Button",
+      "tag": "a",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "direction": "row",
+          "padding": {
+            "top": 12,
+            "right": 24,
+            "bottom": 12,
+            "left": 24
+          },
+          "fill": {
+            "type": "solid",
+            "color": {
+              "var": "accent"
+            }
+          },
+          "radius": 8
+        }
+      },
+      "target": {
+        "type": "url",
+        "href": "#signup"
+      },
+      "newTab": false,
+      "children": ["home-11"]
+    },
+    "home-9": {
+      "id": "home-9",
+      "type": "frame",
+      "name": "Call to action",
+      "tag": "section",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "direction": "column",
+          "align": "center",
+          "gap": 24,
+          "padding": {
+            "top": 96,
+            "right": 32,
+            "bottom": 96,
+            "left": 32
+          },
+          "width": {
+            "type": "fill"
+          },
+          "height": {
+            "type": "fit"
+          }
+        },
+        "mobile": {
+          "gap": 16,
+          "padding": {
+            "top": 56,
+            "right": 20,
+            "bottom": 56,
+            "left": 20
+          }
+        }
+      },
+      "children": ["home-10"]
+    },
+    "home-body": {
+      "id": "home-body",
+      "type": "frame",
+      "name": "Body",
+      "tag": "main",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "direction": "column",
+          "width": {
+            "type": "fill"
+          },
+          "height": {
+            "type": "fit"
+          }
+        }
+      },
+      "children": ["home-1", "home-6", "home-9"]
+    }
+  },
+  "components": {},
+  "variables": {
+    "accent": {
+      "id": "accent",
+      "name": "Accent",
+      "group": "Brand",
+      "cssName": "--brand-accent",
+      "type": "color",
+      "value": {
+        "desktop": "#4f46e5"
+      }
+    },
+    "ink": {
+      "id": "ink",
+      "name": "Ink",
+      "group": "Neutral",
+      "cssName": "--neutral-ink",
+      "type": "color",
+      "value": {
+        "desktop": "#111827"
+      }
+    }
+  },
+  "assets": {}
+}

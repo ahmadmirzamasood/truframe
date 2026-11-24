@@ -1,0 +1,513 @@
+{
+  "schemaVersion": 1,
+  "id": "0199a0b2-7c3d-7e4f-8a5b-6c7d8e9f0a1b",
+  "framework": "nextjs",
+  "settings": {
+    "lang": "en"
+  },
+  "breakpoints": {
+    "desktop": {
+      "width": 1200
+    },
+    "tablet": {
+      "width": 810
+    },
+    "mobile": {
+      "width": 390
+    }
+  },
+  "pages": [
+    {
+      "id": "id1",
+      "name": "Home",
+      "path": "/",
+      "seo": {
+        "title": "Home",
+        "description": "",
+        "ogImage": null,
+        "noindex": false
+      },
+      "root": "id2"
+    },
+    {
+      "id": "about",
+      "name": "About",
+      "path": "/about",
+      "seo": {
+        "title": "About",
+        "description": "",
+        "ogImage": "photo",
+        "noindex": false
+      },
+      "root": "aboutBody"
+    }
+  ],
+  "nodes": {
+    "id2": {
+      "id": "id2",
+      "type": "frame",
+      "name": "Body",
+      "tag": "main",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "direction": "column",
+          "width": {
+            "type": "fill"
+          },
+          "height": {
+            "type": "fit"
+          }
+        }
+      },
+      "children": ["hero"]
+    },
+    "aboutBody": {
+      "id": "aboutBody",
+      "type": "frame",
+      "name": "Body",
+      "tag": "main",
+      "style": {
+        "desktop": {}
+      },
+      "children": []
+    },
+    "hero": {
+      "id": "hero",
+      "type": "frame",
+      "name": "Hero",
+      "tag": "section",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "direction": "row",
+          "gap": {
+            "var": "space"
+          },
+          "padding": {
+            "top": 8,
+            "right": 8,
+            "bottom": {
+              "var": "space"
+            },
+            "left": 8
+          },
+          "fill": {
+            "type": "solid",
+            "color": {
+              "var": "brand"
+            }
+          }
+        },
+        "mobile": {
+          "direction": "column"
+        },
+        "tablet": {
+          "display": "grid",
+          "gridColumns": 2,
+          "gridRows": 3,
+          "rowGap": 12,
+          "wrap": true,
+          "align": "stretch",
+          "justify": "between",
+          "overflow": "clip",
+          "minWidth": 100,
+          "maxWidth": 1000,
+          "minHeight": 10,
+          "maxHeight": 900,
+          "height": {
+            "type": "fixed",
+            "value": 640
+          },
+          "fill": {
+            "type": "linearGradient",
+            "angle": 45,
+            "stops": [
+              {
+                "color": "#000000",
+                "position": 0
+              },
+              {
+                "color": {
+                  "var": "brand"
+                },
+                "position": 1
+              }
+            ]
+          },
+          "border": {
+            "width": 1,
+            "color": "#11223344",
+            "style": "dashed",
+            "sides": {
+              "top": true,
+              "right": false,
+              "bottom": true,
+              "left": false
+            }
+          },
+          "radius": {
+            "topLeft": 4,
+            "topRight": 8,
+            "bottomRight": 0,
+            "bottomLeft": 2.5
+          },
+          "shadows": [
+            {
+              "x": 0,
+              "y": 4,
+              "blur": 12,
+              "spread": -2,
+              "color": {
+                "var": "brand"
+              },
+              "inset": false
+            }
+          ],
+          "opacity": 0.9,
+          "blend": "color-dodge",
+          "blur": 2
+        }
+      },
+      "children": ["title", "pic", "cta", "card", "icon", "map", "widget", "mail", "blankPic"],
+      "hidden": {
+        "tablet": true
+      }
+    },
+    "title": {
+      "id": "title",
+      "type": "text",
+      "name": "",
+      "tag": "h1",
+      "style": {
+        "desktop": {
+          "font": {
+            "var": "body"
+          },
+          "textColor": "#111111",
+          "fontFamily": "Inter",
+          "fontWeight": 700,
+          "fontSize": 48,
+          "lineHeight": 1.1,
+          "letterSpacing": -0.02,
+          "textAlign": "center",
+          "textDecoration": "line-through",
+          "textTransform": "uppercase"
+        }
+      },
+      "content": [
+        {
+          "text": "Hello "
+        },
+        {
+          "text": "world",
+          "bold": true
+        },
+        {
+          "text": "!",
+          "italic": true,
+          "underline": true,
+          "href": "https://example.com"
+        }
+      ]
+    },
+    "pic": {
+      "id": "pic",
+      "type": "image",
+      "name": "",
+      "tag": "img",
+      "assetId": "photo",
+      "alt": "A photo",
+      "decorative": false,
+      "fit": "crop",
+      "style": {
+        "desktop": {}
+      }
+    },
+    "cta": {
+      "id": "cta",
+      "type": "link",
+      "name": "CTA",
+      "tag": "a",
+      "target": {
+        "type": "page",
+        "pageId": "about"
+      },
+      "newTab": false,
+      "style": {
+        "desktop": {}
+      },
+      "children": ["ctaLabel"]
+    },
+    "ctaLabel": {
+      "id": "ctaLabel",
+      "type": "text",
+      "name": "",
+      "tag": "span",
+      "style": {
+        "desktop": {}
+      },
+      "content": [
+        {
+          "text": "About"
+        }
+      ]
+    },
+    "card": {
+      "id": "card",
+      "type": "instance",
+      "name": "Card",
+      "tag": "div",
+      "componentId": "Card",
+      "style": {
+        "desktop": {}
+      },
+      "overrides": {
+        "variant": {
+          "size": "large"
+        },
+        "props": {
+          "title": "Hi",
+          "showTitle": false
+        },
+        "nodes": {
+          "cardTitle": {
+            "style": {
+              "tablet": {
+                "textColor": "#ffffff"
+              }
+            },
+            "content": [
+              {
+                "text": "Overridden"
+              }
+            ],
+            "hidden": {
+              "mobile": true
+            }
+          }
+        }
+      }
+    },
+    "cardRoot": {
+      "id": "cardRoot",
+      "type": "frame",
+      "name": "Card",
+      "tag": "div",
+      "style": {
+        "desktop": {}
+      },
+      "children": ["cardTitle"]
+    },
+    "cardTitle": {
+      "id": "cardTitle",
+      "type": "text",
+      "name": "Title",
+      "tag": "h3",
+      "style": {
+        "desktop": {}
+      },
+      "content": [
+        {
+          "text": "Title"
+        }
+      ]
+    },
+    "icon": {
+      "id": "icon",
+      "type": "icon",
+      "name": "Arrow",
+      "tag": "span",
+      "set": "lucide",
+      "icon": "arrow-right",
+      "style": {
+        "desktop": {
+          "position": "absolute",
+          "top": -4,
+          "right": 0,
+          "bottom": 0,
+          "left": 10,
+          "zIndex": 2,
+          "columnSpan": 2,
+          "rowSpan": 1,
+          "aspectRatio": 1,
+          "width": {
+            "type": "fixed",
+            "value": 24
+          }
+        }
+      }
+    },
+    "map": {
+      "id": "map",
+      "type": "embed",
+      "name": "Map",
+      "tag": "figure",
+      "source": {
+        "type": "url",
+        "url": "https://maps.example.com/embed?q=1"
+      },
+      "style": {
+        "desktop": {
+          "fill": {
+            "type": "image",
+            "assetId": "photo",
+            "fit": "tile"
+          }
+        }
+      }
+    },
+    "widget": {
+      "id": "widget",
+      "type": "embed",
+      "name": "Widget",
+      "tag": "div",
+      "source": {
+        "type": "html",
+        "html": "<div class=\"w\">Hi</div>"
+      },
+      "style": {
+        "desktop": {}
+      }
+    },
+    "mail": {
+      "id": "mail",
+      "type": "link",
+      "name": "Mail",
+      "tag": "button",
+      "target": {
+        "type": "url",
+        "href": "mailto:hi@example.com"
+      },
+      "newTab": true,
+      "ariaLabel": "Email us",
+      "children": [],
+      "style": {
+        "desktop": {
+          "radius": 999
+        }
+      }
+    },
+    "blankPic": {
+      "id": "blankPic",
+      "type": "image",
+      "name": "Placeholder",
+      "tag": "figure",
+      "assetId": null,
+      "alt": "",
+      "decorative": true,
+      "fit": "fill",
+      "style": {
+        "desktop": {}
+      }
+    }
+  },
+  "components": {
+    "Card": {
+      "id": "Card",
+      "name": "Card",
+      "root": "cardRoot",
+      "props": [
+        {
+          "name": "title",
+          "type": "text",
+          "default": "Title",
+          "target": {
+            "nodeId": "cardTitle",
+            "field": "content"
+          }
+        },
+        {
+          "name": "showTitle",
+          "type": "boolean",
+          "default": true,
+          "target": {
+            "nodeId": "cardTitle",
+            "field": "visible"
+          }
+        }
+      ],
+      "variantProps": [
+        {
+          "name": "size",
+          "values": ["default", "large"],
+          "default": "default"
+        }
+      ],
+      "variants": {
+        "size=large": {
+          "cardRoot": {
+            "desktop": {
+              "padding": {
+                "top": 32,
+                "right": 32,
+                "bottom": 32,
+                "left": 32
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "variables": {
+    "brand": {
+      "id": "brand",
+      "name": "Brand",
+      "group": "Colors",
+      "cssName": "--colors-brand",
+      "type": "color",
+      "value": {
+        "desktop": "#ff0000",
+        "mobile": "#00ff00"
+      }
+    },
+    "space": {
+      "id": "space",
+      "name": "Md",
+      "group": "Spacing",
+      "cssName": "--spacing-md",
+      "type": "spacing",
+      "value": {
+        "desktop": 24,
+        "tablet": 16
+      }
+    },
+    "body": {
+      "id": "body",
+      "name": "Body",
+      "group": "Text",
+      "cssName": "--text-body",
+      "type": "font",
+      "value": {
+        "desktop": {
+          "family": "Inter",
+          "weight": 400,
+          "size": 16,
+          "lineHeight": 1.5,
+          "letterSpacing": 0
+        }
+      }
+    }
+  },
+  "assets": {
+    "photo": {
+      "id": "photo",
+      "name": "photo.png",
+      "mime": "image/png",
+      "width": 800,
+      "height": 600,
+      "bytes": 1234,
+      "key": "assets/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.png"
+    },
+    "logo": {
+      "id": "logo",
+      "name": "logo.svg",
+      "mime": "image/svg+xml",
+      "width": 64,
+      "height": 64,
+      "bytes": 900,
+      "key": "assets/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb.svg"
+    }
+  }
+}

@@ -1,0 +1,347 @@
+{
+  "schemaVersion": 1,
+  "id": "0199a0b2-7c3d-7e4f-8a5b-6c7d8e9f0a1b",
+  "framework": "nextjs",
+  "settings": {
+    "lang": "en"
+  },
+  "breakpoints": {
+    "desktop": {
+      "width": 1200
+    },
+    "tablet": {
+      "width": 810
+    },
+    "mobile": {
+      "width": 390
+    }
+  },
+  "pages": [
+    {
+      "id": "home",
+      "name": "Home",
+      "path": "/",
+      "seo": {
+        "title": "Home",
+        "description": "",
+        "ogImage": null,
+        "noindex": false
+      },
+      "root": "home-body"
+    },
+    {
+      "id": "about",
+      "name": "About",
+      "path": "/about",
+      "seo": {
+        "title": "About",
+        "description": "",
+        "ogImage": null,
+        "noindex": false
+      },
+      "root": "about-body"
+    }
+  ],
+  "nodes": {
+    "home-2": {
+      "id": "home-2",
+      "type": "text",
+      "name": "",
+      "tag": "h1",
+      "style": {
+        "desktop": {
+          "fontWeight": 700,
+          "fontSize": 56,
+          "textAlign": "center",
+          "textColor": {
+            "var": "ink"
+          }
+        },
+        "mobile": {
+          "fontSize": 36
+        }
+      },
+      "content": [
+        {
+          "text": "Hi, I design and build websites"
+        }
+      ]
+    },
+    "home-3": {
+      "id": "home-3",
+      "type": "text",
+      "name": "",
+      "tag": "p",
+      "style": {
+        "desktop": {
+          "fontSize": 18,
+          "textAlign": "center",
+          "textColor": {
+            "var": "ink"
+          }
+        }
+      },
+      "content": [
+        {
+          "text": "A short line about your work."
+        }
+      ]
+    },
+    "home-1": {
+      "id": "home-1",
+      "type": "frame",
+      "name": "Intro",
+      "tag": "section",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "direction": "column",
+          "align": "center",
+          "gap": 24,
+          "padding": {
+            "top": 96,
+            "right": 32,
+            "bottom": 96,
+            "left": 32
+          },
+          "width": {
+            "type": "fill"
+          },
+          "height": {
+            "type": "fit"
+          }
+        },
+        "mobile": {
+          "gap": 16,
+          "padding": {
+            "top": 56,
+            "right": 20,
+            "bottom": 56,
+            "left": 20
+          }
+        }
+      },
+      "children": ["home-2", "home-3"]
+    },
+    "home-5": {
+      "id": "home-5",
+      "type": "text",
+      "name": "",
+      "tag": "h2",
+      "style": {
+        "desktop": {
+          "fontWeight": 700,
+          "fontSize": 36,
+          "textAlign": "center",
+          "textColor": {
+            "var": "ink"
+          }
+        },
+        "mobile": {
+          "fontSize": 28
+        }
+      },
+      "content": [
+        {
+          "text": "Selected work"
+        }
+      ]
+    },
+    "home-6": {
+      "id": "home-6",
+      "type": "image",
+      "name": "",
+      "tag": "img",
+      "style": {
+        "desktop": {
+          "width": {
+            "type": "fill"
+          },
+          "aspectRatio": 1.5,
+          "radius": 12
+        }
+      },
+      "assetId": null,
+      "alt": "Project cover",
+      "decorative": false,
+      "fit": "crop"
+    },
+    "home-7": {
+      "id": "home-7",
+      "type": "image",
+      "name": "",
+      "tag": "img",
+      "style": {
+        "desktop": {
+          "width": {
+            "type": "fill"
+          },
+          "aspectRatio": 1.5,
+          "radius": 12
+        }
+      },
+      "assetId": null,
+      "alt": "Project cover",
+      "decorative": false,
+      "fit": "crop"
+    },
+    "home-4": {
+      "id": "home-4",
+      "type": "frame",
+      "name": "Work",
+      "tag": "section",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "direction": "column",
+          "align": "center",
+          "gap": 24,
+          "padding": {
+            "top": 96,
+            "right": 32,
+            "bottom": 96,
+            "left": 32
+          },
+          "width": {
+            "type": "fill"
+          },
+          "height": {
+            "type": "fit"
+          }
+        },
+        "mobile": {
+          "gap": 16,
+          "padding": {
+            "top": 56,
+            "right": 20,
+            "bottom": 56,
+            "left": 20
+          }
+        }
+      },
+      "children": ["home-5", "home-6", "home-7"]
+    },
+    "home-body": {
+      "id": "home-body",
+      "type": "frame",
+      "name": "Body",
+      "tag": "main",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "direction": "column",
+          "width": {
+            "type": "fill"
+          },
+          "height": {
+            "type": "fit"
+          }
+        }
+      },
+      "children": ["home-1", "home-4"]
+    },
+    "about-2": {
+      "id": "about-2",
+      "type": "text",
+      "name": "",
+      "tag": "h1",
+      "style": {
+        "desktop": {
+          "fontWeight": 700,
+          "fontSize": 56,
+          "textAlign": "center",
+          "textColor": {
+            "var": "ink"
+          }
+        },
+        "mobile": {
+          "fontSize": 36
+        }
+      },
+      "content": [
+        {
+          "text": "About me"
+        }
+      ]
+    },
+    "about-1": {
+      "id": "about-1",
+      "type": "frame",
+      "name": "About",
+      "tag": "section",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "direction": "column",
+          "align": "center",
+          "gap": 24,
+          "padding": {
+            "top": 96,
+            "right": 32,
+            "bottom": 96,
+            "left": 32
+          },
+          "width": {
+            "type": "fill"
+          },
+          "height": {
+            "type": "fit"
+          }
+        },
+        "mobile": {
+          "gap": 16,
+          "padding": {
+            "top": 56,
+            "right": 20,
+            "bottom": 56,
+            "left": 20
+          }
+        }
+      },
+      "children": ["about-2"]
+    },
+    "about-body": {
+      "id": "about-body",
+      "type": "frame",
+      "name": "Body",
+      "tag": "main",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "direction": "column",
+          "width": {
+            "type": "fill"
+          },
+          "height": {
+            "type": "fit"
+          }
+        }
+      },
+      "children": ["about-1"]
+    }
+  },
+  "components": {},
+  "variables": {
+    "accent": {
+      "id": "accent",
+      "name": "Accent",
+      "group": "Brand",
+      "cssName": "--brand-accent",
+      "type": "color",
+      "value": {
+        "desktop": "#4f46e5"
+      }
+    },
+    "ink": {
+      "id": "ink",
+      "name": "Ink",
+      "group": "Neutral",
+      "cssName": "--neutral-ink",
+      "type": "color",
+      "value": {
+        "desktop": "#111827"
+      }
+    }
+  },
+  "assets": {}
+}
