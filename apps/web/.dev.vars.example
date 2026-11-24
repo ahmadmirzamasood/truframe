@@ -1,3 +1,21 @@
 # Copy to .dev.vars for local development. Never commit .dev.vars.
 NEXTJS_ENV=development
 TRUFRAME_ENV=local
+
+# --- Auth (docs/runbooks/auth-setup.md). Local values only; real ones are Workers secrets. ---
+BETTER_AUTH_URL=http://localhost:3000
+# Local-only placeholder. Generate a real one per environment with: openssl rand -base64 32
+BETTER_AUTH_SECRET=local-dev-only-secret-not-for-deploys-0123456789
+# Cloudflare Turnstile published test keys (always pass). Refused outside local.
+TURNSTILE_SITE_KEY=1x00000000000000000000AA
+TURNSTILE_SECRET_KEY=1x0000000000000000000000000000000AA
+# 1 = mock Google/GitHub sign-in at /api/dev/oauth/authorize (local only; refused elsewhere).
+TRUFRAME_OAUTH_MOCK=1
+# Real OAuth apps (optional locally; clear TRUFRAME_OAUTH_MOCK to use them).
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+GITHUB_CLIENT_ID=
+GITHUB_CLIENT_SECRET=
+# Email. Empty locally: emails go to the dev server log and to /api/dev/mail?to=<email>.
+RESEND_API_KEY=
+EMAIL_FROM=
