@@ -85,6 +85,8 @@
 - 2026-11-24: React Email: use the individual `@react-email/*` packages. The all-in-one `react-email` package now bundles a CLI (socket.io, esbuild, babel). `@react-email/render` has a `workerd` export. Resend is called with one `fetch` (no SDK).
 - 2026-11-24: Better Auth hashes passwords with `node:crypto` scrypt when available, otherwise pure-JS `@noble/hashes`. Measure sign-up/sign-in CPU time on staging (Workers CPU limits).
 
+- 2026-11-24: Pages that read the session or D1 must be `export const dynamic = "force-dynamic"`. Otherwise `next build` prerenders them, several build workers open the local D1 at once, and the build fails with `SQLITE_BUSY` (seen in CI, not on Windows).
+
 ## Dependencies added (name, license, why)
 - turbo 2.11.13 (MIT): task runner. typescript 5.9.3 (Apache-2.0). wrangler 4.166.0 (MIT OR Apache-2.0): Workers dev/deploy. [P0-1]
 - @biomejs/biome 2.6.8 (MIT OR Apache-2.0), vitest 5.1.1 (MIT), @playwright/test 1.65.1 (Apache-2.0), @types/node 22.20.5 (MIT). cargo-deny (MIT OR Apache-2.0) is a dev tool installed with `cargo install cargo-deny --locked`. [P0-2]

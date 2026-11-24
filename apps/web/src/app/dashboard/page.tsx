@@ -2,6 +2,10 @@ import type { Metadata } from "next";
 import { SignOutButton } from "@/components/auth/auth-forms";
 import { requireSession } from "@/lib/server/session";
 
+// Session-dependent: never prerender at build time (it would open the local D1 from several
+// build workers at once and fail with SQLITE_BUSY).
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = { title: "Dashboard · Truframe" };
 
 export default async function DashboardPage() {
