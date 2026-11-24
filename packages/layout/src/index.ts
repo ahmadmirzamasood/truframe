@@ -1,2 +1,2 @@
-/** Pure layout math: snapping, inference, measurement. Stub until its phase lands. */
-export const packageName = "@truframe/layout" as const;
+/** Pure layout math: geometry, snapping, inference, measurement (ARCHITECTURE §8). */
+export * from "./geometry.ts";
