@@ -3,7 +3,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   // Workspace packages ship TypeScript source.
-  transpilePackages: ["@truframe/ui"],
+  transpilePackages: ["@truframe/ui", "@truframe/auth", "@truframe/db", "@truframe/emails"],
   poweredByHeader: false,
 };
 

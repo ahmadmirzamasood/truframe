@@ -9,5 +9,12 @@
   },
   "scripts": {
     "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@truframe/db": "workspace:*",
+    "@truframe/emails": "workspace:*",
+    "better-auth": "1.7.27",
+    "drizzle-orm": "0.45.4",
+    "zod": "4.6.7"
   }
 }

@@ -1,5 +1,6 @@
 import type { Db } from "../client.ts";
 import { auditRepo } from "./audit.ts";
+import { type AuthUser, authUsersRepo } from "./auth-users.ts";
 import { projectsRepo } from "./projects.ts";
 import { usageRepo } from "./usage.ts";
 import { workspacesRepo } from "./workspaces.ts";
@@ -24,4 +25,4 @@ export function forWorkspace(db: Db, workspaceId: string) {
 
 export type WorkspaceRepos = ReturnType<typeof forWorkspace>;
 
-export { workspacesRepo };
+export { type AuthUser, authUsersRepo, workspacesRepo };
