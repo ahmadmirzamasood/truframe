@@ -149,7 +149,7 @@ jobs:
           cache-dependency-path: crates/compiler/templates/*/package-lock.json
       - run: node scripts/build-fixtures.ts ${{ matrix.framework }} --dir "$RUNNER_TEMP/generated"
 
-  parity:
+  canvas-parity:
     name: Canvas parity (renderer vs built site)
     # The canvas renderer and the built Next.js site must look the same at every breakpoint
     # (P4-3): scripts/parity.ts builds the listed golden projects and compares screenshots.
@@ -204,7 +204,7 @@ jobs:
     name: Deploy staging
     # Off until the owner connects Cloudflare: set repository variable CLOUDFLARE_DEPLOY_ENABLED=true.
     if: github.event_name == 'push' && github.ref == 'refs/heads/main' && vars.CLOUDFLARE_DEPLOY_ENABLED == 'true'
-    needs: [lint, typecheck, unit, rust, build, generated, parity, e2e]
+    needs: [lint, typecheck, unit, rust, parity, build, generated, canvas-parity, e2e]
     runs-on: ubuntu-latest
     environment:
       name: staging
