@@ -354,6 +354,42 @@ describe("transactions", () => {
     ]);
   });
 
+  it("returns the parsed ops unchanged by later ops in the transaction", () => {
+    const doc = kitchenSink();
+    const r = ok(
+      applyTransaction(
+        doc,
+        [
+          {
+            op: "addPage",
+            index: 1,
+            page: {
+              id: "p",
+              name: "P",
+              path: "/p",
+              seo: { title: "", description: "", ogImage: null, noindex: false },
+              root: "pBody",
+            },
+            nodes: [
+              {
+                id: "pBody",
+                type: "frame",
+                name: "Body",
+                tag: "main",
+                style: { desktop: {} },
+                children: [],
+              },
+            ],
+          },
+          { op: "insertNodes", parentId: "pBody", index: 0, nodes: [text("pText", "Hi")] },
+          { op: "updatePage", pageId: "p", fields: { name: "Renamed" } },
+        ],
+        limits,
+      ),
+    );
+    expect(r.ops[0]).toMatchObject({ page: { name: "P" }, nodes: [{ children: [] }] });
+  });
+
   it("rejects malformed ops with their index", () => {
     const err = error(
       applyTransaction(

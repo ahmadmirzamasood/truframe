@@ -29,7 +29,7 @@ export type OpError = {
 };
 
 export type ApplyResult =
-  | { ok: true; doc: ProjectDocument; inverse: Op[] }
+  | { ok: true; doc: ProjectDocument; inverse: Op[]; ops: Op[] }
   | { ok: false; error: OpError };
 
 class OpFailure extends Error {
@@ -56,6 +56,7 @@ export function applyTransaction(
 ): ApplyResult {
   const draft = structuredClone(doc);
   const inverses: Op[][] = [];
+  const parsedOps: Op[] = [];
   for (const [i, raw] of ops.entries()) {
     const parsed = opSchema.safeParse(raw);
     if (!parsed.success) {
@@ -71,6 +72,7 @@ export function applyTransaction(
     }
     try {
       inverses.push(applyOp(draft, parsed.data));
+      parsedOps.push(parsed.data);
     } catch (e) {
       if (e instanceof OpFailure) {
         return { ok: false, error: { code: e.code, message: `Op ${i}: ${e.message}`, opIndex: i } };
@@ -99,7 +101,7 @@ export function applyTransaction(
       },
     };
   }
-  return { ok: true, doc: result.doc, inverse: inverses.reverse().flat() };
+  return { ok: true, doc: result.doc, inverse: inverses.reverse().flat(), ops: parsedOps };
 }
 
 /** Applies one parsed op to `doc` in place and returns the ops that undo it. */
@@ -199,7 +201,7 @@ function applyOp(doc: ProjectDocument, op: Op): Op[] {
       const before = map[op.key];
       // No `value` removes the override (a `null` value is meaningful: "no image").
       if (op.value === undefined) delete map[op.key];
-      else map[op.key] = op.value;
+      else map[op.key] = structuredClone(op.value);
       const undo = {
         op: "setInstanceOverride",
         nodeId: op.nodeId,
@@ -215,7 +217,7 @@ function applyOp(doc: ProjectDocument, op: Op): Op[] {
         fail("INVALID_OP", "nodes[0] must be the page root");
       if (op.index > doc.pages.length) fail("INVALID_OP", `Index ${op.index} is out of range`);
       addSubtree(doc, op.nodes);
-      doc.pages.splice(op.index, 0, op.page);
+      doc.pages.splice(op.index, 0, structuredClone(op.page));
       return [{ op: "deletePage", pageId: op.page.id }];
     }
     case "deletePage": {
@@ -256,7 +258,7 @@ function applyOp(doc: ProjectDocument, op: Op): Op[] {
     }
     case "upsertVariable": {
       const before = doc.variables[op.variable.id];
-      doc.variables[op.variable.id] = op.variable;
+      doc.variables[op.variable.id] = structuredClone(op.variable);
       return [
         before
           ? { op: "upsertVariable", variable: before }
@@ -271,7 +273,7 @@ function applyOp(doc: ProjectDocument, op: Op): Op[] {
     }
     case "setSettings": {
       const before = doc.settings;
-      doc.settings = op.settings;
+      doc.settings = structuredClone(op.settings);
       return [{ op: "setSettings", settings: before }];
     }
   }
@@ -322,7 +324,8 @@ function addSubtree(doc: ProjectDocument, nodes: readonly Node[]) {
     if (doc.nodes[n.id] || ids.has(n.id)) fail("INVALID_OP", `Node "${n.id}" already exists`);
     ids.add(n.id);
   }
-  for (const n of nodes) doc.nodes[n.id] = n;
+  // Copies, so later ops in the transaction never modify the op payloads returned to callers.
+  for (const n of nodes) doc.nodes[n.id] = structuredClone(n);
 }
 
 /** Removes a subtree and returns its nodes in pre-order (root first), ready to re-insert. */

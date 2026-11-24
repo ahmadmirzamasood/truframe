@@ -6,7 +6,8 @@
   "type": "module",
   "exports": {
     ".": "./src/index.ts",
-    "./testing": "./src/testing/fixtures.ts"
+    "./testing": "./src/testing/fixtures.ts",
+    "./testing/parity": "./src/testing/parity.ts"
   },
   "scripts": {
     "typecheck": "tsc --noEmit"
