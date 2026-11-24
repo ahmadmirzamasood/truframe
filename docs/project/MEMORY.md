@@ -91,6 +91,8 @@
 - 2026-11-24: App API pattern: route handlers are wrapped in `withWorkspace()` (`apps/web/src/lib/server/api.ts`). Non-GET requests must carry the app's Origin; a session is required; the workspace comes from the session (`?workspace=` only if the user is a member); handlers get only repos bound to that workspace. Expected failures throw `ApiFailure` and become `{ error: { code, message } }` (codes in `packages/protocol`). Unknown project ids and other workspaces' ids both answer 404.
 - 2026-11-24: e2e against `next dev`: the first hit to a route compiles it, which takes seconds, so Playwright's `expect.timeout` is 20 s. A click before hydration does nothing, so open dialogs with `openDialog()` (`e2e/helpers.ts`), which retries the click.
 
+- 2026-11-24: Templates: `TEMPLATES` and `templateDocument(id)` in `@truframe/model`, with JSON fixtures in `packages/model/src/templates/`. Template ids are also an enum in `@truframe/protocol` (`TEMPLATE_IDS`); a model test keeps the two lists equal. The fixture format is provisional until P2-1.
+
 ## Dependencies added (name, license, why)
 - turbo 2.11.13 (MIT): task runner. typescript 5.9.3 (Apache-2.0). wrangler 4.166.0 (MIT OR Apache-2.0): Workers dev/deploy. [P0-1]
 - @biomejs/biome 2.6.8 (MIT OR Apache-2.0), vitest 5.1.1 (MIT), @playwright/test 1.65.1 (Apache-2.0), @types/node 22.20.5 (MIT). cargo-deny (MIT OR Apache-2.0) is a dev tool installed with `cargo install cargo-deny --locked`. [P0-2]

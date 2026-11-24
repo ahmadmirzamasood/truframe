@@ -1,2 +1,2 @@
-/** Document schema (zod) and defaults. Stub until its phase lands. */
-export const packageName = "@truframe/model" as const;
+/** Document schema (zod) and defaults. The schema lands in P2; templates are fixtures for now. */
+export { TEMPLATES, type TemplateMeta, templateDocument } from "./templates.ts";

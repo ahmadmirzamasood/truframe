@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 0,
+  "breakpoints": { "desktop": 1200, "tablet": 810, "mobile": 390 },
+  "pages": [
+    {
+      "id": "home",
+      "name": "Home",
+      "path": "/",
+      "nodes": [
+        {
+          "type": "section",
+          "name": "Hero",
+          "children": [
+            { "type": "text", "tag": "h1", "text": "The simplest way to run your team" },
+            { "type": "link", "text": "Start a free trial", "href": "/pricing" }
+          ]
+        },
+        {
+          "type": "section",
+          "name": "Logos",
+          "children": [{ "type": "text", "tag": "p", "text": "Trusted by teams at" }]
+        }
+      ]
+    },
+    {
+      "id": "pricing",
+      "name": "Pricing",
+      "path": "/pricing",
+      "nodes": [
+        {
+          "type": "section",
+          "name": "Pricing",
+          "children": [
+            { "type": "text", "tag": "h1", "text": "Pricing" },
+            { "type": "text", "tag": "h2", "text": "Starter" },
+            { "type": "text", "tag": "h2", "text": "Pro" },
+            { "type": "text", "tag": "h2", "text": "Business" }
+          ]
+        }
+      ]
+    }
+  ]
+}

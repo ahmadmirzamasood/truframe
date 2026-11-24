@@ -53,3 +53,26 @@ test("shows a clear error for an invalid name", async ({ page }) => {
   await dialog.getByRole("button", { name: "Create project" }).click();
   await expect(dialog.getByRole("alert")).toHaveText("Give the project a name.");
 });
+
+test("New Project dialog stores the chosen framework and template", async ({ page }) => {
+  const dialog = await openDialog(page, "New project", "New project");
+  await dialog.getByLabel("Name").fill("Pricing site");
+  await dialog.getByRole("radio", { name: "Next.js" }).check();
+  await dialog.getByRole("radio", { name: "SaaS" }).check();
+  await dialog.getByRole("button", { name: "Create project" }).click();
+  await expect(dialog).toBeHidden();
+  const card = page
+    .getByRole("list", { name: "Projects" })
+    .getByRole("listitem", { name: "Pricing site" });
+  await expect(card).toContainText("Next.js · SaaS");
+
+  // The project row (API) holds both choices.
+  const res = await page.request.get("/api/projects");
+  const { projects } = (await res.json()) as {
+    projects: { name: string; framework: string; templateId: string }[];
+  };
+  expect(projects.find((p) => p.name === "Pricing site")).toMatchObject({
+    framework: "nextjs",
+    templateId: "saas",
+  });
+});

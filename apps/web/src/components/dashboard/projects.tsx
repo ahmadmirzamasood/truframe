@@ -1,5 +1,6 @@
 "use client";
 
+import { TEMPLATES } from "@truframe/model";
 import type { FrameworkId, ProjectDto } from "@truframe/protocol";
 import { RESTORE_WINDOW_DAYS } from "@truframe/protocol";
 import { Button } from "@truframe/ui/components/button";
@@ -53,6 +54,7 @@ export function ErrorText({ children }: { children: ReactNode }) {
 }
 
 const dateFormat = new Intl.DateTimeFormat("en", { dateStyle: "medium" });
+const templateName = (id: string) => TEMPLATES.find((t) => t.id === id)?.name ?? "Custom";
 
 function RenameDialog({
   project,
@@ -124,7 +126,7 @@ export function ProjectCard({ project }: { project: ProjectDto }) {
           {project.name}
         </h3>
         <p className="text-xs text-muted-foreground">
-          {FRAMEWORK_LABEL[project.framework]} · Edited{" "}
+          {FRAMEWORK_LABEL[project.framework]} · {templateName(project.templateId)} · Edited{" "}
           {dateFormat.format(new Date(project.updatedAt))}
         </p>
       </div>
