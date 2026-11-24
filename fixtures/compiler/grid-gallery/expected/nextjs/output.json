@@ -1,0 +1,99 @@
+{
+  "assets": [
+    {
+      "assetId": "photo0",
+      "key": "assets/358dc26ec8b649867d5bf794efd20145524da18e7b658d01fa445a6e3a848f01.jpg",
+      "path": "public/assets/photo-1.jpg"
+    },
+    {
+      "assetId": "photo1",
+      "key": "assets/3582246f913c0a8437d0a3b0f5dfe6b440e17864eef7d6282c3e80ab771ccef5.jpg",
+      "path": "public/assets/photo-2.jpg"
+    },
+    {
+      "assetId": "photo2",
+      "key": "assets/5c102d7791b70e85179b83eb72e481c7cdf4ddf20c13589f83a18ed403633e60.jpg",
+      "path": "public/assets/photo-3.jpg"
+    },
+    {
+      "assetId": "photo3",
+      "key": "assets/f94137f3be283f1fd30895d4c6d0974c432b3a065ae2c2dfc5f0024c5c53cbda.jpg",
+      "path": "public/assets/photo-4.jpg"
+    },
+    {
+      "assetId": "photo4",
+      "key": "assets/1d37703848848ccd0e5d9e3c1633356c65e3f828e8e91825a7a023dcfca6e06e.jpg",
+      "path": "public/assets/photo-5.jpg"
+    }
+  ],
+  "css": {
+    "id2": {
+      "desktop": "display: flex; flex-direction: column; width: 100%; height: fit-content;"
+    },
+    "n1": {
+      "desktop": "grid-column: span 2 / span 2; grid-row: span 2 / span 2; aspect-ratio: 1; overflow: clip; border-radius: 12px;",
+      "mobile": "grid-column: span 1 / span 1; grid-row: span 1 / span 1;"
+    },
+    "n2": {
+      "desktop": "grid-column: span 1 / span 1; grid-row: span 1 / span 1; aspect-ratio: 1.3333; overflow: clip; border-radius: 12px;"
+    },
+    "n3": {
+      "desktop": "grid-column: span 1 / span 1; grid-row: span 1 / span 1; aspect-ratio: 1.3333; overflow: clip; border-radius: 12px;"
+    },
+    "n4": {
+      "desktop": "grid-column: span 1 / span 1; grid-row: span 1 / span 1; aspect-ratio: 1.3333; overflow: clip; border-radius: 12px;"
+    },
+    "n5": {
+      "desktop": "grid-column: span 1 / span 1; grid-row: span 1 / span 1; aspect-ratio: 1.3333; overflow: clip; border-radius: 12px;"
+    },
+    "n6": {
+      "desktop": "display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; padding: 64px;",
+      "mobile": "grid-template-columns: repeat(1, minmax(0, 1fr)); gap: 8px; padding-inline: 16px; padding-block: 24px;",
+      "tablet": "grid-template-columns: repeat(2, minmax(0, 1fr));"
+    }
+  },
+  "spans": [
+    {
+      "end": 2075,
+      "node": "id2",
+      "path": "app/page.tsx",
+      "start": 180
+    },
+    {
+      "end": 2063,
+      "node": "n6",
+      "path": "app/page.tsx",
+      "start": 237
+    },
+    {
+      "end": 742,
+      "node": "n1",
+      "path": "app/page.tsx",
+      "start": 393
+    },
+    {
+      "end": 1068,
+      "node": "n2",
+      "path": "app/page.tsx",
+      "start": 751
+    },
+    {
+      "end": 1394,
+      "node": "n3",
+      "path": "app/page.tsx",
+      "start": 1077
+    },
+    {
+      "end": 1721,
+      "node": "n4",
+      "path": "app/page.tsx",
+      "start": 1403
+    },
+    {
+      "end": 2046,
+      "node": "n5",
+      "path": "app/page.tsx",
+      "start": 1730
+    }
+  ]
+}

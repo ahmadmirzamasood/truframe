@@ -29,7 +29,7 @@
 ## P3 Compiler v1
 - [x] **P3-1** Compiler skeleton: `compile(project) → files, spans, css`; deterministic printer; wasm-bindgen wrapper `packages/compiler-wasm`. *Done when* blank project compiles in Rust and JS tests.
 - [x] **P3-2** Style engine: Props → Tailwind v4 classes with scale snapping, arbitrary fallback, `tablet`/`mobile` custom variants, variable references; per-node canvas CSS. *Done when* ≥ 60 unit cases. Also: layer `codeClass` as first class with Tailwind-collision guard, `tokens.css` with per-breakpoint variable values.
-- [ ] **P3-3** Next.js adapter: layout, pages (nested routes from page folders), components, globals.css (`@theme`, `:root`, variants), `next/image`, `next/font`, config files, README. *Done when* golden fixtures pass.
+- [x] **P3-3** Next.js adapter: layout, pages (nested routes from page folders), components, globals.css (`@theme`, `:root`, variants), `next/image`, `next/font`, config files, README. *Done when* golden fixtures pass.
 - [ ] **P3-4** ∥ Astro adapter: pages, layout, components, global.css, `astro:assets`, config. *Done when* golden fixtures pass.
 - [ ] **P3-5** CI job: build and type-check generated projects for every fixture in both frameworks. *Done when* green.
 - [ ] **P3-6** Benchmark WASM compile per page. *Done when* < 30 ms recorded in `docs/project/MEMORY.md`.

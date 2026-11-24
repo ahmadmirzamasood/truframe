@@ -1,0 +1,150 @@
+{
+  "schemaVersion": 1,
+  "id": "0199a0b2-7c3d-7e4f-8a5b-6c7d8e9f0a1b",
+  "framework": "nextjs",
+  "settings": {
+    "lang": "de-CH"
+  },
+  "breakpoints": {
+    "desktop": {
+      "width": 1200
+    },
+    "tablet": {
+      "width": 810
+    },
+    "mobile": {
+      "width": 390
+    }
+  },
+  "pages": [
+    {
+      "id": "id1",
+      "name": "Home",
+      "path": "/",
+      "seo": {
+        "title": "Home",
+        "description": "",
+        "ogImage": null,
+        "noindex": false
+      },
+      "root": "id2"
+    }
+  ],
+  "nodes": {
+    "id2": {
+      "id": "id2",
+      "type": "frame",
+      "name": "Body",
+      "tag": "main",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "direction": "column",
+          "width": {
+            "type": "fill"
+          },
+          "height": {
+            "type": "fit"
+          }
+        }
+      },
+      "children": [
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6"
+      ]
+    },
+    "n1": {
+      "type": "text",
+      "name": "Braces",
+      "tag": "p",
+      "style": {
+        "desktop": {}
+      },
+      "content": [
+        {
+          "text": "Use {curly} braces, <angle> brackets & ampersands."
+        }
+      ],
+      "id": "n1"
+    },
+    "n2": {
+      "type": "text",
+      "name": "Quotes",
+      "tag": "p",
+      "style": {
+        "desktop": {}
+      },
+      "content": [
+        {
+          "text": "\"Double\", 'single' and `backticks` \\ backslash."
+        }
+      ],
+      "id": "n2"
+    },
+    "n3": {
+      "type": "text",
+      "name": "Unicode",
+      "tag": "p",
+      "style": {
+        "desktop": {}
+      },
+      "content": [
+        {
+          "text": "Grüezi 👋 — naïve café, 日本語."
+        }
+      ],
+      "id": "n3"
+    },
+    "n4": {
+      "type": "text",
+      "name": "Whitespace",
+      "tag": "p",
+      "style": {
+        "desktop": {
+          "textAlign": "center"
+        }
+      },
+      "content": [
+        {
+          "text": "  leading and trailing  "
+        }
+      ],
+      "id": "n4"
+    },
+    "n5": {
+      "type": "text",
+      "name": "Multiline",
+      "tag": "p",
+      "style": {
+        "desktop": {}
+      },
+      "content": [
+        {
+          "text": "Line one\nLine two\n\nLine four"
+        }
+      ],
+      "id": "n5"
+    },
+    "n6": {
+      "type": "text",
+      "name": "Long",
+      "tag": "p",
+      "style": {
+        "desktop": {}
+      },
+      "content": [
+        {
+          "text": "This sentence is long enough that the printer must move it onto its own line instead of keeping it next to the tag."
+        }
+      ],
+      "id": "n6"
+    }
+  },
+  "components": {},
+  "variables": {},
+  "assets": {}
+}

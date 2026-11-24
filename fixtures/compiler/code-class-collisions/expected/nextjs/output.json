@@ -1,0 +1,160 @@
+{
+  "assets": [],
+  "css": {
+    "id2": {
+      "desktop": "display: flex; flex-direction: column; width: 100%; height: fit-content;"
+    },
+    "n1": {
+      "desktop": ""
+    },
+    "n10": {
+      "desktop": ""
+    },
+    "n11": {
+      "desktop": ""
+    },
+    "n12": {
+      "desktop": ""
+    },
+    "n13": {
+      "desktop": ""
+    },
+    "n14": {
+      "desktop": ""
+    },
+    "n15": {
+      "desktop": ""
+    },
+    "n16": {
+      "desktop": "display: flex;"
+    },
+    "n2": {
+      "desktop": ""
+    },
+    "n3": {
+      "desktop": ""
+    },
+    "n4": {
+      "desktop": ""
+    },
+    "n5": {
+      "desktop": ""
+    },
+    "n6": {
+      "desktop": ""
+    },
+    "n7": {
+      "desktop": ""
+    },
+    "n8": {
+      "desktop": ""
+    },
+    "n9": {
+      "desktop": ""
+    }
+  },
+  "spans": [
+    {
+      "end": 979,
+      "node": "id2",
+      "path": "app/page.tsx",
+      "start": 148
+    },
+    {
+      "end": 967,
+      "node": "n16",
+      "path": "app/page.tsx",
+      "start": 205
+    },
+    {
+      "end": 280,
+      "node": "n1",
+      "path": "app/page.tsx",
+      "start": 249
+    },
+    {
+      "end": 320,
+      "node": "n2",
+      "path": "app/page.tsx",
+      "start": 289
+    },
+    {
+      "end": 364,
+      "node": "n3",
+      "path": "app/page.tsx",
+      "start": 329
+    },
+    {
+      "end": 418,
+      "node": "n4",
+      "path": "app/page.tsx",
+      "start": 373
+    },
+    {
+      "end": 457,
+      "node": "n5",
+      "path": "app/page.tsx",
+      "start": 427
+    },
+    {
+      "end": 498,
+      "node": "n6",
+      "path": "app/page.tsx",
+      "start": 466
+    },
+    {
+      "end": 539,
+      "node": "n7",
+      "path": "app/page.tsx",
+      "start": 507
+    },
+    {
+      "end": 584,
+      "node": "n8",
+      "path": "app/page.tsx",
+      "start": 548
+    },
+    {
+      "end": 632,
+      "node": "n9",
+      "path": "app/page.tsx",
+      "start": 593
+    },
+    {
+      "end": 696,
+      "node": "n10",
+      "path": "app/page.tsx",
+      "start": 641
+    },
+    {
+      "end": 748,
+      "node": "n11",
+      "path": "app/page.tsx",
+      "start": 705
+    },
+    {
+      "end": 791,
+      "node": "n12",
+      "path": "app/page.tsx",
+      "start": 757
+    },
+    {
+      "end": 845,
+      "node": "n13",
+      "path": "app/page.tsx",
+      "start": 800
+    },
+    {
+      "end": 894,
+      "node": "n14",
+      "path": "app/page.tsx",
+      "start": 854
+    },
+    {
+      "end": 954,
+      "node": "n15",
+      "path": "app/page.tsx",
+      "start": 903
+    }
+  ]
+}

@@ -1,0 +1,217 @@
+{
+  "schemaVersion": 1,
+  "id": "0199a0b2-7c3d-7e4f-8a5b-6c7d8e9f0a1b",
+  "framework": "nextjs",
+  "settings": {
+    "lang": "en"
+  },
+  "breakpoints": {
+    "desktop": {
+      "width": 1200
+    },
+    "tablet": {
+      "width": 810
+    },
+    "mobile": {
+      "width": 390
+    }
+  },
+  "pages": [
+    {
+      "id": "id1",
+      "name": "Home",
+      "path": "/",
+      "seo": {
+        "title": "Home",
+        "description": "",
+        "ogImage": null,
+        "noindex": false
+      },
+      "root": "id2"
+    }
+  ],
+  "nodes": {
+    "id2": {
+      "id": "id2",
+      "type": "frame",
+      "name": "Body",
+      "tag": "main",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "direction": "column",
+          "width": {
+            "type": "fill"
+          },
+          "height": {
+            "type": "fit"
+          }
+        }
+      },
+      "children": [
+        "n5"
+      ]
+    },
+    "n1": {
+      "type": "text",
+      "name": "Title",
+      "tag": "h1",
+      "style": {
+        "desktop": {
+          "fontSize": 72,
+          "fontWeight": 700,
+          "lineHeight": 1.1,
+          "letterSpacing": -0.025
+        },
+        "tablet": {
+          "fontSize": 48
+        },
+        "mobile": {
+          "fontSize": 36,
+          "textAlign": "center"
+        }
+      },
+      "content": [
+        {
+          "text": "Ship sites people remember"
+        }
+      ],
+      "id": "n1"
+    },
+    "n2": {
+      "type": "text",
+      "name": "Lede",
+      "tag": "p",
+      "style": {
+        "desktop": {
+          "fontSize": 20,
+          "textColor": "#52525b",
+          "maxWidth": 560
+        },
+        "mobile": {
+          "fontSize": 18
+        }
+      },
+      "content": [
+        {
+          "text": "Design on a canvas. Get real code."
+        }
+      ],
+      "id": "n2"
+    },
+    "n3": {
+      "type": "frame",
+      "name": "Copy",
+      "tag": "div",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "direction": "column",
+          "gap": 24,
+          "width": {
+            "type": "fill"
+          }
+        },
+        "mobile": {
+          "align": "center"
+        }
+      },
+      "children": [
+        "n1",
+        "n2"
+      ],
+      "id": "n3"
+    },
+    "n4": {
+      "type": "image",
+      "name": "Hero art",
+      "tag": "img",
+      "style": {
+        "desktop": {
+          "width": {
+            "type": "fixed",
+            "value": 480
+          },
+          "height": {
+            "type": "fixed",
+            "value": 360
+          },
+          "radius": 24
+        },
+        "mobile": {
+          "width": {
+            "type": "fill"
+          },
+          "height": {
+            "type": "fixed",
+            "value": 240
+          }
+        }
+      },
+      "assetId": "heroart",
+      "alt": "A canvas with frames for desktop, tablet and mobile",
+      "decorative": false,
+      "fit": "fill",
+      "id": "n4"
+    },
+    "n5": {
+      "type": "frame",
+      "name": "Hero",
+      "tag": "section",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "gap": 64,
+          "align": "center",
+          "padding": {
+            "top": 96,
+            "right": 64,
+            "bottom": 96,
+            "left": 64
+          },
+          "fill": {
+            "type": "solid",
+            "color": "#fafafa"
+          }
+        },
+        "tablet": {
+          "gap": 32,
+          "padding": {
+            "top": 64,
+            "right": 32,
+            "bottom": 64,
+            "left": 32
+          }
+        },
+        "mobile": {
+          "direction": "column",
+          "gap": 24,
+          "padding": {
+            "top": 48,
+            "right": 16,
+            "bottom": 48,
+            "left": 16
+          }
+        }
+      },
+      "children": [
+        "n3",
+        "n4"
+      ],
+      "id": "n5"
+    }
+  },
+  "components": {},
+  "variables": {},
+  "assets": {
+    "heroart": {
+      "id": "heroart",
+      "name": "Hero Art.png",
+      "mime": "image/png",
+      "width": 1440,
+      "height": 1080,
+      "bytes": 1000,
+      "key": "assets/032a2efa3ede14b554b74195012c6f1522a7c45903745b885da95d496ac335a8.png"
+    }
+  }
+}

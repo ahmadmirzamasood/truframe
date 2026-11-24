@@ -1,0 +1,370 @@
+{
+  "schemaVersion": 1,
+  "id": "0199a0b2-7c3d-7e4f-8a5b-6c7d8e9f0a1b",
+  "framework": "nextjs",
+  "settings": {
+    "lang": "en"
+  },
+  "breakpoints": {
+    "desktop": {
+      "width": 1200
+    },
+    "tablet": {
+      "width": 810
+    },
+    "mobile": {
+      "width": 390
+    }
+  },
+  "pages": [
+    {
+      "id": "id1",
+      "name": "Home",
+      "path": "/",
+      "seo": {
+        "title": "Home",
+        "description": "",
+        "ogImage": null,
+        "noindex": false
+      },
+      "root": "id2"
+    }
+  ],
+  "nodes": {
+    "id2": {
+      "id": "id2",
+      "type": "frame",
+      "name": "Body",
+      "tag": "main",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "direction": "column",
+          "width": {
+            "type": "fill"
+          },
+          "height": {
+            "type": "fit"
+          }
+        }
+      },
+      "children": [
+        "n11"
+      ]
+    },
+    "n1": {
+      "type": "frame",
+      "name": "Hairline",
+      "tag": "div",
+      "style": {
+        "desktop": {
+          "width": {
+            "type": "fixed",
+            "value": 160
+          },
+          "height": {
+            "type": "fixed",
+            "value": 100
+          },
+          "border": {
+            "width": 1,
+            "color": "#e4e4e7",
+            "style": "solid",
+            "sides": {
+              "top": true,
+              "right": true,
+              "bottom": true,
+              "left": true
+            }
+          },
+          "radius": 8
+        }
+      },
+      "children": [],
+      "id": "n1"
+    },
+    "n2": {
+      "type": "frame",
+      "name": "Dashed",
+      "tag": "div",
+      "style": {
+        "desktop": {
+          "width": {
+            "type": "fixed",
+            "value": 160
+          },
+          "height": {
+            "type": "fixed",
+            "value": 100
+          },
+          "border": {
+            "width": 2,
+            "color": "#a1a1aa",
+            "style": "dashed",
+            "sides": {
+              "top": true,
+              "right": true,
+              "bottom": true,
+              "left": true
+            }
+          },
+          "radius": 12
+        }
+      },
+      "children": [],
+      "id": "n2"
+    },
+    "n3": {
+      "type": "frame",
+      "name": "Underline",
+      "tag": "div",
+      "style": {
+        "desktop": {
+          "width": {
+            "type": "fixed",
+            "value": 160
+          },
+          "height": {
+            "type": "fixed",
+            "value": 100
+          },
+          "border": {
+            "width": 3,
+            "color": "#18181b",
+            "style": "solid",
+            "sides": {
+              "top": false,
+              "right": false,
+              "bottom": true,
+              "left": false
+            }
+          }
+        }
+      },
+      "children": [],
+      "id": "n3"
+    },
+    "n4": {
+      "type": "frame",
+      "name": "Corners",
+      "tag": "div",
+      "style": {
+        "desktop": {
+          "width": {
+            "type": "fixed",
+            "value": 160
+          },
+          "height": {
+            "type": "fixed",
+            "value": 100
+          },
+          "radius": {
+            "topLeft": 24,
+            "topRight": 4,
+            "bottomRight": 24,
+            "bottomLeft": 4
+          }
+        }
+      },
+      "children": [],
+      "id": "n4"
+    },
+    "n5": {
+      "type": "frame",
+      "name": "Pill",
+      "tag": "div",
+      "style": {
+        "desktop": {
+          "width": {
+            "type": "fixed",
+            "value": 160
+          },
+          "height": {
+            "type": "fixed",
+            "value": 100
+          },
+          "radius": 9999,
+          "fill": {
+            "type": "solid",
+            "color": "#f4f4f5"
+          }
+        }
+      },
+      "children": [],
+      "id": "n5"
+    },
+    "n6": {
+      "type": "frame",
+      "name": "Shadow",
+      "tag": "div",
+      "style": {
+        "desktop": {
+          "width": {
+            "type": "fixed",
+            "value": 160
+          },
+          "height": {
+            "type": "fixed",
+            "value": 100
+          },
+          "shadows": [
+            {
+              "x": 0,
+              "y": 10,
+              "blur": 15,
+              "spread": -3,
+              "color": "#0000001a",
+              "inset": false
+            },
+            {
+              "x": 0,
+              "y": 4,
+              "blur": 6,
+              "spread": -4,
+              "color": "#0000001a",
+              "inset": false
+            }
+          ],
+          "radius": 16
+        }
+      },
+      "children": [],
+      "id": "n6"
+    },
+    "n7": {
+      "type": "frame",
+      "name": "Inset",
+      "tag": "div",
+      "style": {
+        "desktop": {
+          "width": {
+            "type": "fixed",
+            "value": 160
+          },
+          "height": {
+            "type": "fixed",
+            "value": 100
+          },
+          "shadows": [
+            {
+              "x": 0,
+              "y": 2,
+              "blur": 4,
+              "spread": 0,
+              "color": "#0000000d",
+              "inset": true
+            }
+          ]
+        }
+      },
+      "children": [],
+      "id": "n7"
+    },
+    "n8": {
+      "type": "frame",
+      "name": "Faded",
+      "tag": "div",
+      "style": {
+        "desktop": {
+          "width": {
+            "type": "fixed",
+            "value": 160
+          },
+          "height": {
+            "type": "fixed",
+            "value": 100
+          },
+          "opacity": 0.5,
+          "fill": {
+            "type": "solid",
+            "color": "#22c55e"
+          }
+        }
+      },
+      "children": [],
+      "id": "n8"
+    },
+    "n9": {
+      "type": "frame",
+      "name": "Blurred",
+      "tag": "div",
+      "style": {
+        "desktop": {
+          "width": {
+            "type": "fixed",
+            "value": 160
+          },
+          "height": {
+            "type": "fixed",
+            "value": 100
+          },
+          "blur": 8,
+          "fill": {
+            "type": "solid",
+            "color": "#22c55e"
+          }
+        }
+      },
+      "children": [],
+      "id": "n9"
+    },
+    "n10": {
+      "type": "frame",
+      "name": "Clipped",
+      "tag": "div",
+      "style": {
+        "desktop": {
+          "width": {
+            "type": "fixed",
+            "value": 160
+          },
+          "height": {
+            "type": "fixed",
+            "value": 100
+          },
+          "overflow": "clip",
+          "minWidth": 100,
+          "maxWidth": 400,
+          "minHeight": 50,
+          "maxHeight": 300
+        }
+      },
+      "children": [],
+      "id": "n10"
+    },
+    "n11": {
+      "type": "frame",
+      "name": "Effects",
+      "tag": "div",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "wrap": true,
+          "gap": 24,
+          "padding": {
+            "top": 32,
+            "right": 32,
+            "bottom": 32,
+            "left": 32
+          }
+        }
+      },
+      "children": [
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8",
+        "n9",
+        "n10"
+      ],
+      "id": "n11"
+    }
+  },
+  "components": {},
+  "variables": {},
+  "assets": {}
+}

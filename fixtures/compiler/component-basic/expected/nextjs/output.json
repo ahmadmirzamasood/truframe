@@ -1,0 +1,83 @@
+{
+  "assets": [],
+  "css": {
+    "id2": {
+      "desktop": "display: flex; flex-direction: column; width: 100%; height: fit-content;"
+    },
+    "n1": {
+      "desktop": "font-size: 1.25rem; line-height: calc(1.75 / 1.25); font-weight: 600;"
+    },
+    "n2": {
+      "desktop": "font-size: 2.25rem; line-height: calc(2.5 / 2.25); font-weight: 700;"
+    },
+    "n3": {
+      "desktop": "flex-direction: column; gap: 8px; padding: 24px; border-width: 1px; border-color: #e4e4e7; border-radius: 16px;"
+    },
+    "n4": {
+      "desktop": "display: flex; flex: none; width: 280px;",
+      "mobile": "flex: 0 1 auto;"
+    },
+    "n5": {
+      "desktop": "display: flex; flex: 1 1 0%;",
+      "mobile": "flex: 0 1 auto; align-self: stretch;"
+    },
+    "n6": {
+      "desktop": "display: flex; flex: none; width: 280px;",
+      "mobile": "flex: 0 1 auto;"
+    },
+    "n7": {
+      "desktop": "display: flex; justify-content: center; gap: 24px;",
+      "mobile": "flex-direction: column; align-items: center;"
+    }
+  },
+  "spans": [
+    {
+      "end": 781,
+      "node": "id2",
+      "path": "app/page.tsx",
+      "start": 200
+    },
+    {
+      "end": 769,
+      "node": "n7",
+      "path": "app/page.tsx",
+      "start": 257
+    },
+    {
+      "end": 444,
+      "node": "n4",
+      "path": "app/page.tsx",
+      "start": 372
+    },
+    {
+      "end": 598,
+      "node": "n5",
+      "path": "app/page.tsx",
+      "start": 453
+    },
+    {
+      "end": 752,
+      "node": "n6",
+      "path": "app/page.tsx",
+      "start": 607
+    },
+    {
+      "end": 515,
+      "node": "n3",
+      "path": "components/PricingCard.tsx",
+      "start": 165
+    },
+    {
+      "end": 398,
+      "node": "n1",
+      "path": "components/PricingCard.tsx",
+      "start": 293
+    },
+    {
+      "end": 500,
+      "node": "n2",
+      "path": "components/PricingCard.tsx",
+      "start": 405
+    }
+  ]
+}

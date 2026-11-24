@@ -1,0 +1,237 @@
+{
+  "schemaVersion": 1,
+  "id": "0199a0b2-7c3d-7e4f-8a5b-6c7d8e9f0a1b",
+  "framework": "nextjs",
+  "settings": {
+    "lang": "en"
+  },
+  "breakpoints": {
+    "desktop": {
+      "width": 1200
+    },
+    "tablet": {
+      "width": 810
+    },
+    "mobile": {
+      "width": 390
+    }
+  },
+  "pages": [
+    {
+      "id": "id1",
+      "name": "Home",
+      "path": "/",
+      "seo": {
+        "title": "Home",
+        "description": "",
+        "ogImage": null,
+        "noindex": false
+      },
+      "root": "id2"
+    },
+    {
+      "id": "page2",
+      "name": "About",
+      "path": "/about",
+      "seo": {
+        "title": "About",
+        "description": "Who we are.",
+        "ogImage": null,
+        "noindex": false
+      },
+      "root": "n2"
+    },
+    {
+      "id": "page3",
+      "name": "Blog",
+      "path": "/blog",
+      "seo": {
+        "title": "Blog",
+        "description": "",
+        "ogImage": null,
+        "noindex": false
+      },
+      "root": "n4"
+    },
+    {
+      "id": "page4",
+      "name": "First post",
+      "path": "/blog/first-post",
+      "seo": {
+        "title": "First post | Blog",
+        "description": "",
+        "ogImage": null,
+        "noindex": false
+      },
+      "root": "n6"
+    },
+    {
+      "id": "page5",
+      "name": "Deep",
+      "path": "/docs/guides/getting-started",
+      "seo": {
+        "title": "Deep",
+        "description": "",
+        "ogImage": null,
+        "noindex": false
+      },
+      "root": "n8"
+    }
+  ],
+  "nodes": {
+    "id2": {
+      "id": "id2",
+      "type": "frame",
+      "name": "Body",
+      "tag": "main",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "direction": "column",
+          "width": {
+            "type": "fill"
+          },
+          "height": {
+            "type": "fit"
+          }
+        }
+      },
+      "children": [
+        "n9"
+      ]
+    },
+    "n1": {
+      "type": "text",
+      "name": "h",
+      "tag": "h1",
+      "style": {
+        "desktop": {}
+      },
+      "content": [
+        {
+          "text": "About"
+        }
+      ],
+      "id": "n1"
+    },
+    "n2": {
+      "type": "frame",
+      "name": "Body",
+      "tag": "main",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "direction": "column"
+        }
+      },
+      "children": [
+        "n1"
+      ],
+      "id": "n2"
+    },
+    "n3": {
+      "type": "text",
+      "name": "h",
+      "tag": "h1",
+      "style": {
+        "desktop": {}
+      },
+      "content": [
+        {
+          "text": "Blog"
+        }
+      ],
+      "id": "n3"
+    },
+    "n4": {
+      "type": "frame",
+      "name": "Body",
+      "tag": "main",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "direction": "column"
+        }
+      },
+      "children": [
+        "n3"
+      ],
+      "id": "n4"
+    },
+    "n5": {
+      "type": "text",
+      "name": "h",
+      "tag": "h1",
+      "style": {
+        "desktop": {}
+      },
+      "content": [
+        {
+          "text": "First post"
+        }
+      ],
+      "id": "n5"
+    },
+    "n6": {
+      "type": "frame",
+      "name": "Body",
+      "tag": "main",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "direction": "column"
+        }
+      },
+      "children": [
+        "n5"
+      ],
+      "id": "n6"
+    },
+    "n7": {
+      "type": "text",
+      "name": "h",
+      "tag": "h1",
+      "style": {
+        "desktop": {}
+      },
+      "content": [
+        {
+          "text": "Getting started"
+        }
+      ],
+      "id": "n7"
+    },
+    "n8": {
+      "type": "frame",
+      "name": "Body",
+      "tag": "main",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "direction": "column"
+        }
+      },
+      "children": [
+        "n7"
+      ],
+      "id": "n8"
+    },
+    "n9": {
+      "type": "text",
+      "name": "Home",
+      "tag": "h1",
+      "style": {
+        "desktop": {}
+      },
+      "content": [
+        {
+          "text": "Home"
+        }
+      ],
+      "id": "n9"
+    }
+  },
+  "components": {},
+  "variables": {},
+  "assets": {}
+}

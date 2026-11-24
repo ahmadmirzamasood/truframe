@@ -54,6 +54,7 @@ fn page_component(project: &Project, page: &Page, out: &mut Emit) -> Result<Writ
     );
     let root = builder.element(&page.root, None)?;
     out.output.css.append(&mut builder.css);
+    out.assets(&builder.take_assets(), project);
     let mut w = Writer::new();
     w.line(0, "---");
     w.line(

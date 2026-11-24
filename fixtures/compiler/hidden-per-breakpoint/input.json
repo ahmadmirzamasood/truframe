@@ -1,0 +1,186 @@
+{
+  "schemaVersion": 1,
+  "id": "0199a0b2-7c3d-7e4f-8a5b-6c7d8e9f0a1b",
+  "framework": "nextjs",
+  "settings": {
+    "lang": "en"
+  },
+  "breakpoints": {
+    "desktop": {
+      "width": 1200
+    },
+    "tablet": {
+      "width": 810
+    },
+    "mobile": {
+      "width": 390
+    }
+  },
+  "pages": [
+    {
+      "id": "id1",
+      "name": "Home",
+      "path": "/",
+      "seo": {
+        "title": "Home",
+        "description": "",
+        "ogImage": null,
+        "noindex": false
+      },
+      "root": "id2"
+    }
+  ],
+  "nodes": {
+    "id2": {
+      "id": "id2",
+      "type": "frame",
+      "name": "Body",
+      "tag": "main",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "direction": "column",
+          "width": {
+            "type": "fill"
+          },
+          "height": {
+            "type": "fit"
+          }
+        }
+      },
+      "children": [
+        "n7"
+      ]
+    },
+    "n1": {
+      "type": "text",
+      "name": "a",
+      "tag": "span",
+      "style": {
+        "desktop": {}
+      },
+      "content": [
+        {
+          "text": "Home"
+        }
+      ],
+      "id": "n1"
+    },
+    "n2": {
+      "type": "text",
+      "name": "b",
+      "tag": "span",
+      "style": {
+        "desktop": {}
+      },
+      "content": [
+        {
+          "text": "Work"
+        }
+      ],
+      "id": "n2"
+    },
+    "n3": {
+      "type": "frame",
+      "name": "Desktop nav",
+      "tag": "nav",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "gap": 24
+        }
+      },
+      "children": [
+        "n1",
+        "n2"
+      ],
+      "id": "n3",
+      "hidden": {
+        "mobile": true
+      }
+    },
+    "n4": {
+      "type": "text",
+      "name": "Menu",
+      "tag": "span",
+      "style": {
+        "desktop": {
+          "fontWeight": 600
+        }
+      },
+      "content": [
+        {
+          "text": "Menu"
+        }
+      ],
+      "id": "n4",
+      "hidden": {
+        "desktop": true,
+        "mobile": false
+      }
+    },
+    "n5": {
+      "type": "text",
+      "name": "Tablet note",
+      "tag": "p",
+      "style": {
+        "desktop": {}
+      },
+      "content": [
+        {
+          "text": "Tablet only"
+        }
+      ],
+      "id": "n5",
+      "hidden": {
+        "desktop": true,
+        "tablet": false,
+        "mobile": true
+      }
+    },
+    "n6": {
+      "type": "text",
+      "name": "Logo",
+      "tag": "p",
+      "style": {
+        "desktop": {
+          "fontWeight": 700
+        }
+      },
+      "content": [
+        {
+          "text": "Acme"
+        }
+      ],
+      "id": "n6"
+    },
+    "n7": {
+      "type": "frame",
+      "name": "Header",
+      "tag": "header",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "justify": "between",
+          "align": "center",
+          "padding": {
+            "top": 16,
+            "right": 32,
+            "bottom": 16,
+            "left": 32
+          }
+        }
+      },
+      "children": [
+        "n6",
+        "n3",
+        "n4",
+        "n5"
+      ],
+      "id": "n7"
+    }
+  },
+  "components": {},
+  "variables": {},
+  "assets": {}
+}

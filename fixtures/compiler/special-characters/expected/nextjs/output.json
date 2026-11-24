@@ -1,0 +1,70 @@
+{
+  "assets": [],
+  "css": {
+    "id2": {
+      "desktop": "display: flex; flex-direction: column; width: 100%; height: fit-content;"
+    },
+    "n1": {
+      "desktop": ""
+    },
+    "n2": {
+      "desktop": ""
+    },
+    "n3": {
+      "desktop": ""
+    },
+    "n4": {
+      "desktop": "text-align: center;"
+    },
+    "n5": {
+      "desktop": ""
+    },
+    "n6": {
+      "desktop": ""
+    }
+  },
+  "spans": [
+    {
+      "end": 785,
+      "node": "id2",
+      "path": "app/page.tsx",
+      "start": 148
+    },
+    {
+      "end": 317,
+      "node": "n1",
+      "path": "app/page.tsx",
+      "start": 205
+    },
+    {
+      "end": 397,
+      "node": "n2",
+      "path": "app/page.tsx",
+      "start": 324
+    },
+    {
+      "end": 459,
+      "node": "n3",
+      "path": "app/page.tsx",
+      "start": 404
+    },
+    {
+      "end": 532,
+      "node": "n4",
+      "path": "app/page.tsx",
+      "start": 466
+    },
+    {
+      "end": 611,
+      "node": "n5",
+      "path": "app/page.tsx",
+      "start": 539
+    },
+    {
+      "end": 773,
+      "node": "n6",
+      "path": "app/page.tsx",
+      "start": 618
+    }
+  ]
+}

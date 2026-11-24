@@ -1,0 +1,374 @@
+{
+  "schemaVersion": 1,
+  "id": "0199a0b2-7c3d-7e4f-8a5b-6c7d8e9f0a1b",
+  "framework": "nextjs",
+  "settings": {
+    "lang": "en"
+  },
+  "breakpoints": {
+    "desktop": {
+      "width": 1200
+    },
+    "tablet": {
+      "width": 810
+    },
+    "mobile": {
+      "width": 390
+    }
+  },
+  "pages": [
+    {
+      "id": "id1",
+      "name": "Home",
+      "path": "/",
+      "seo": {
+        "title": "Home",
+        "description": "",
+        "ogImage": null,
+        "noindex": false
+      },
+      "root": "id2"
+    },
+    {
+      "id": "page2",
+      "name": "About",
+      "path": "/about",
+      "seo": {
+        "title": "About",
+        "description": "",
+        "ogImage": null,
+        "noindex": false
+      },
+      "root": "n2"
+    }
+  ],
+  "nodes": {
+    "id2": {
+      "id": "id2",
+      "type": "frame",
+      "name": "Body",
+      "tag": "main",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "direction": "column",
+          "width": {
+            "type": "fill"
+          },
+          "height": {
+            "type": "fit"
+          }
+        }
+      },
+      "children": [
+        "n17"
+      ]
+    },
+    "n1": {
+      "type": "text",
+      "name": "About",
+      "tag": "h1",
+      "style": {
+        "desktop": {}
+      },
+      "content": [
+        {
+          "text": "About us"
+        }
+      ],
+      "id": "n1"
+    },
+    "n2": {
+      "type": "frame",
+      "name": "Body",
+      "tag": "main",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "direction": "column"
+        }
+      },
+      "children": [
+        "n1"
+      ],
+      "id": "n2"
+    },
+    "n3": {
+      "type": "icon",
+      "name": "Arrow",
+      "tag": "span",
+      "style": {
+        "desktop": {
+          "width": {
+            "type": "fixed",
+            "value": 16
+          },
+          "height": {
+            "type": "fixed",
+            "value": 16
+          }
+        }
+      },
+      "set": "lucide",
+      "icon": "arrow-right",
+      "id": "n3"
+    },
+    "n4": {
+      "type": "text",
+      "name": "t1",
+      "tag": "span",
+      "style": {
+        "desktop": {}
+      },
+      "content": [
+        {
+          "text": "About"
+        }
+      ],
+      "id": "n4"
+    },
+    "n5": {
+      "type": "link",
+      "name": "Page link",
+      "tag": "a",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "gap": 8,
+          "align": "center"
+        }
+      },
+      "target": {
+        "type": "page",
+        "pageId": "page2"
+      },
+      "newTab": false,
+      "children": [
+        "n4"
+      ],
+      "id": "n5"
+    },
+    "n6": {
+      "type": "text",
+      "name": "t2",
+      "tag": "span",
+      "style": {
+        "desktop": {}
+      },
+      "content": [
+        {
+          "text": "Team"
+        }
+      ],
+      "id": "n6"
+    },
+    "n7": {
+      "type": "link",
+      "name": "Path link",
+      "tag": "a",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "gap": 8,
+          "align": "center"
+        }
+      },
+      "target": {
+        "type": "url",
+        "href": "/about#team"
+      },
+      "newTab": false,
+      "children": [
+        "n6"
+      ],
+      "id": "n7"
+    },
+    "n8": {
+      "type": "text",
+      "name": "t3",
+      "tag": "span",
+      "style": {
+        "desktop": {}
+      },
+      "content": [
+        {
+          "text": "Pricing"
+        }
+      ],
+      "id": "n8"
+    },
+    "n9": {
+      "type": "link",
+      "name": "Anchor",
+      "tag": "a",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "gap": 8,
+          "align": "center"
+        }
+      },
+      "target": {
+        "type": "url",
+        "href": "#pricing"
+      },
+      "newTab": false,
+      "children": [
+        "n8"
+      ],
+      "id": "n9"
+    },
+    "n10": {
+      "type": "text",
+      "name": "t4",
+      "tag": "span",
+      "style": {
+        "desktop": {}
+      },
+      "content": [
+        {
+          "text": "Docs"
+        }
+      ],
+      "id": "n10"
+    },
+    "n11": {
+      "type": "link",
+      "name": "External",
+      "tag": "a",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "gap": 8,
+          "align": "center"
+        }
+      },
+      "target": {
+        "type": "url",
+        "href": "https://example.com"
+      },
+      "newTab": true,
+      "children": [
+        "n10"
+      ],
+      "id": "n11"
+    },
+    "n12": {
+      "type": "text",
+      "name": "t5",
+      "tag": "span",
+      "style": {
+        "desktop": {}
+      },
+      "content": [
+        {
+          "text": "Email"
+        }
+      ],
+      "id": "n12"
+    },
+    "n13": {
+      "type": "link",
+      "name": "Mail",
+      "tag": "a",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "gap": 8,
+          "align": "center"
+        }
+      },
+      "target": {
+        "type": "url",
+        "href": "mailto:hello@example.com"
+      },
+      "newTab": false,
+      "children": [
+        "n12"
+      ],
+      "id": "n13"
+    },
+    "n14": {
+      "type": "text",
+      "name": "t6",
+      "tag": "span",
+      "style": {
+        "desktop": {}
+      },
+      "content": [
+        {
+          "text": "Call"
+        }
+      ],
+      "id": "n14"
+    },
+    "n15": {
+      "type": "link",
+      "name": "Phone",
+      "tag": "a",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "gap": 8,
+          "align": "center"
+        }
+      },
+      "target": {
+        "type": "url",
+        "href": "tel:+1 555 0100"
+      },
+      "newTab": false,
+      "children": [
+        "n14"
+      ],
+      "id": "n15"
+    },
+    "n16": {
+      "type": "link",
+      "name": "Icon only",
+      "tag": "button",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "gap": 8,
+          "align": "center"
+        }
+      },
+      "target": {
+        "type": "url",
+        "href": "/about"
+      },
+      "newTab": false,
+      "children": [
+        "n3"
+      ],
+      "ariaLabel": "Next page",
+      "id": "n16"
+    },
+    "n17": {
+      "type": "frame",
+      "name": "Nav",
+      "tag": "nav",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "gap": 24,
+          "justify": "between"
+        }
+      },
+      "children": [
+        "n5",
+        "n7",
+        "n9",
+        "n11",
+        "n13",
+        "n15",
+        "n16"
+      ],
+      "id": "n17"
+    }
+  },
+  "components": {},
+  "variables": {},
+  "assets": {}
+}

@@ -1,0 +1,11 @@
+/* Design variables. Generated from the design; edits here are overwritten. */
+
+:root {
+  --brand-accent: #4f46e5;
+  --neutral-ink: #111827;
+}
+
+@theme inline {
+  --color-brand-accent: var(--brand-accent);
+  --color-neutral-ink: var(--neutral-ink);
+}

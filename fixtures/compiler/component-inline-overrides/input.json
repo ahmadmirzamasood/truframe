@@ -1,0 +1,289 @@
+{
+  "schemaVersion": 1,
+  "id": "0199a0b2-7c3d-7e4f-8a5b-6c7d8e9f0a1b",
+  "framework": "nextjs",
+  "settings": {
+    "lang": "en"
+  },
+  "breakpoints": {
+    "desktop": {
+      "width": 1200
+    },
+    "tablet": {
+      "width": 810
+    },
+    "mobile": {
+      "width": 390
+    }
+  },
+  "pages": [
+    {
+      "id": "id1",
+      "name": "Home",
+      "path": "/",
+      "seo": {
+        "title": "Home",
+        "description": "",
+        "ogImage": null,
+        "noindex": false
+      },
+      "root": "id2"
+    }
+  ],
+  "nodes": {
+    "id2": {
+      "id": "id2",
+      "type": "frame",
+      "name": "Body",
+      "tag": "main",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "direction": "column",
+          "width": {
+            "type": "fill"
+          },
+          "height": {
+            "type": "fit"
+          }
+        }
+      },
+      "children": [
+        "n8"
+      ]
+    },
+    "n1": {
+      "type": "text",
+      "name": "Heading",
+      "tag": "h3",
+      "style": {
+        "desktop": {
+          "fontSize": 20,
+          "fontWeight": 600
+        }
+      },
+      "content": [
+        {
+          "text": "Feature"
+        }
+      ],
+      "id": "n1"
+    },
+    "n2": {
+      "type": "text",
+      "name": "Body",
+      "tag": "p",
+      "style": {
+        "desktop": {
+          "textColor": "#52525b"
+        }
+      },
+      "content": [
+        {
+          "text": "Describe the feature."
+        }
+      ],
+      "id": "n2"
+    },
+    "n3": {
+      "type": "image",
+      "name": "Icon",
+      "tag": "img",
+      "style": {
+        "desktop": {
+          "width": {
+            "type": "fixed",
+            "value": 40
+          },
+          "height": {
+            "type": "fixed",
+            "value": 40
+          }
+        }
+      },
+      "assetId": null,
+      "alt": "",
+      "decorative": true,
+      "fit": "fit",
+      "id": "n3"
+    },
+    "n4": {
+      "type": "frame",
+      "name": "Feature",
+      "tag": "div",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "direction": "column",
+          "gap": 8,
+          "padding": {
+            "top": 16,
+            "right": 16,
+            "bottom": 16,
+            "left": 16
+          }
+        }
+      },
+      "children": [
+        "n3",
+        "n1",
+        "n2"
+      ],
+      "id": "n4"
+    },
+    "n5": {
+      "type": "instance",
+      "name": "Plain",
+      "tag": "div",
+      "style": {
+        "desktop": {}
+      },
+      "componentId": "feature",
+      "overrides": {
+        "variant": {},
+        "props": {},
+        "nodes": {}
+      },
+      "id": "n5"
+    },
+    "n6": {
+      "type": "instance",
+      "name": "Fast",
+      "tag": "div",
+      "style": {
+        "desktop": {
+          "columnSpan": 2
+        }
+      },
+      "componentId": "feature",
+      "overrides": {
+        "variant": {
+          "emphasis": "strong"
+        },
+        "props": {
+          "heading": "Fast"
+        },
+        "nodes": {
+          "n2": {
+            "content": [
+              {
+                "text": "Compiles in "
+              },
+              {
+                "text": "milliseconds",
+                "bold": true
+              },
+              {
+                "text": "."
+              }
+            ],
+            "style": {
+              "desktop": {
+                "textColor": "#92400e"
+              }
+            }
+          },
+          "n3": {
+            "assetId": "bolt",
+            "alt": "Lightning bolt"
+          }
+        }
+      },
+      "id": "n6"
+    },
+    "n7": {
+      "type": "instance",
+      "name": "Hidden body",
+      "tag": "div",
+      "style": {
+        "desktop": {}
+      },
+      "componentId": "feature",
+      "overrides": {
+        "variant": {},
+        "props": {
+          "heading": "Short"
+        },
+        "nodes": {
+          "n2": {
+            "hidden": {
+              "desktop": true
+            }
+          }
+        }
+      },
+      "id": "n7"
+    },
+    "n8": {
+      "type": "frame",
+      "name": "Features",
+      "tag": "section",
+      "style": {
+        "desktop": {
+          "display": "grid",
+          "gridColumns": 3,
+          "gap": 24
+        }
+      },
+      "children": [
+        "n5",
+        "n6",
+        "n7"
+      ],
+      "id": "n8"
+    }
+  },
+  "components": {
+    "feature": {
+      "id": "feature",
+      "name": "Feature",
+      "root": "n4",
+      "props": [
+        {
+          "name": "heading",
+          "type": "text",
+          "default": "Feature",
+          "target": {
+            "nodeId": "n1",
+            "field": "content"
+          }
+        }
+      ],
+      "variantProps": [
+        {
+          "name": "emphasis",
+          "values": [
+            "normal",
+            "strong"
+          ],
+          "default": "normal"
+        }
+      ],
+      "variants": {
+        "emphasis=strong": {
+          "n4": {
+            "desktop": {
+              "fill": {
+                "type": "solid",
+                "color": "#fef3c7"
+              },
+              "radius": 12
+            }
+          }
+        }
+      }
+    }
+  },
+  "variables": {},
+  "assets": {
+    "bolt": {
+      "id": "bolt",
+      "name": "bolt.svg",
+      "mime": "image/svg+xml",
+      "width": 40,
+      "height": 40,
+      "bytes": 1000,
+      "key": "assets/d0b3cba71f725563d316ea3516099328042095d10f4571be25c07f9ce31985a5.svg"
+    }
+  }
+}

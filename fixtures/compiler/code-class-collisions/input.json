@@ -1,0 +1,297 @@
+{
+  "schemaVersion": 1,
+  "id": "0199a0b2-7c3d-7e4f-8a5b-6c7d8e9f0a1b",
+  "framework": "nextjs",
+  "settings": {
+    "lang": "en"
+  },
+  "breakpoints": {
+    "desktop": {
+      "width": 1200
+    },
+    "tablet": {
+      "width": 810
+    },
+    "mobile": {
+      "width": 390
+    }
+  },
+  "pages": [
+    {
+      "id": "id1",
+      "name": "Home",
+      "path": "/",
+      "seo": {
+        "title": "Home",
+        "description": "",
+        "ogImage": null,
+        "noindex": false
+      },
+      "root": "id2"
+    }
+  ],
+  "nodes": {
+    "id2": {
+      "id": "id2",
+      "type": "frame",
+      "name": "Body",
+      "tag": "main",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "direction": "column",
+          "width": {
+            "type": "fill"
+          },
+          "height": {
+            "type": "fit"
+          }
+        }
+      },
+      "children": [
+        "n16"
+      ]
+    },
+    "n1": {
+      "type": "text",
+      "name": "Flex",
+      "tag": "p",
+      "style": {
+        "desktop": {}
+      },
+      "content": [
+        {
+          "text": "Flex"
+        }
+      ],
+      "id": "n1"
+    },
+    "n2": {
+      "type": "text",
+      "name": "Grid",
+      "tag": "p",
+      "style": {
+        "desktop": {}
+      },
+      "content": [
+        {
+          "text": "Grid"
+        }
+      ],
+      "id": "n2"
+    },
+    "n3": {
+      "type": "text",
+      "name": "Hidden",
+      "tag": "p",
+      "style": {
+        "desktop": {}
+      },
+      "content": [
+        {
+          "text": "Hidden"
+        }
+      ],
+      "id": "n3"
+    },
+    "n4": {
+      "type": "text",
+      "name": "Text center",
+      "tag": "p",
+      "style": {
+        "desktop": {}
+      },
+      "content": [
+        {
+          "text": "Text center"
+        }
+      ],
+      "id": "n4"
+    },
+    "n5": {
+      "type": "text",
+      "name": "Card",
+      "tag": "p",
+      "style": {
+        "desktop": {}
+      },
+      "content": [
+        {
+          "text": "Card 1"
+        }
+      ],
+      "id": "n5"
+    },
+    "n6": {
+      "type": "text",
+      "name": "Card",
+      "tag": "p",
+      "style": {
+        "desktop": {}
+      },
+      "content": [
+        {
+          "text": "Card 2"
+        }
+      ],
+      "id": "n6"
+    },
+    "n7": {
+      "type": "text",
+      "name": "Card",
+      "tag": "p",
+      "style": {
+        "desktop": {}
+      },
+      "content": [
+        {
+          "text": "Card 3"
+        }
+      ],
+      "id": "n7"
+    },
+    "n8": {
+      "type": "text",
+      "name": "",
+      "tag": "p",
+      "style": {
+        "desktop": {}
+      },
+      "content": [
+        {
+          "text": "Unnamed text"
+        }
+      ],
+      "id": "n8"
+    },
+    "n9": {
+      "type": "text",
+      "name": "✨",
+      "tag": "p",
+      "style": {
+        "desktop": {}
+      },
+      "content": [
+        {
+          "text": "Emoji name"
+        }
+      ],
+      "id": "n9"
+    },
+    "n10": {
+      "type": "text",
+      "name": "2024 plans",
+      "tag": "p",
+      "style": {
+        "desktop": {}
+      },
+      "content": [
+        {
+          "text": "Starts with a digit"
+        }
+      ],
+      "id": "n10"
+    },
+    "n11": {
+      "type": "text",
+      "name": "HeroSection",
+      "tag": "p",
+      "style": {
+        "desktop": {}
+      },
+      "content": [
+        {
+          "text": "Pascal case"
+        }
+      ],
+      "id": "n11"
+    },
+    "n12": {
+      "type": "text",
+      "name": "P",
+      "tag": "p",
+      "style": {
+        "desktop": {}
+      },
+      "content": [
+        {
+          "text": "Single letter"
+        }
+      ],
+      "id": "n12"
+    },
+    "n13": {
+      "type": "text",
+      "name": "P",
+      "tag": "p",
+      "style": {
+        "desktop": {}
+      },
+      "content": [
+        {
+          "text": "Single letter again"
+        }
+      ],
+      "id": "n13"
+    },
+    "n14": {
+      "type": "text",
+      "name": "Group",
+      "tag": "p",
+      "style": {
+        "desktop": {}
+      },
+      "content": [
+        {
+          "text": "Variant name"
+        }
+      ],
+      "id": "n14"
+    },
+    "n15": {
+      "type": "text",
+      "name": "Mobile",
+      "tag": "p",
+      "style": {
+        "desktop": {}
+      },
+      "content": [
+        {
+          "text": "Our breakpoint variant"
+        }
+      ],
+      "id": "n15"
+    },
+    "n16": {
+      "type": "frame",
+      "name": "Container",
+      "tag": "div",
+      "style": {
+        "desktop": {
+          "display": "stack"
+        }
+      },
+      "children": [
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8",
+        "n9",
+        "n10",
+        "n11",
+        "n12",
+        "n13",
+        "n14",
+        "n15"
+      ],
+      "id": "n16"
+    }
+  },
+  "components": {},
+  "variables": {},
+  "assets": {}
+}

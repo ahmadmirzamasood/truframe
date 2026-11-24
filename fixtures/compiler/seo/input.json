@@ -1,0 +1,114 @@
+{
+  "schemaVersion": 1,
+  "id": "0199a0b2-7c3d-7e4f-8a5b-6c7d8e9f0a1b",
+  "framework": "nextjs",
+  "settings": {
+    "lang": "en"
+  },
+  "breakpoints": {
+    "desktop": {
+      "width": 1200
+    },
+    "tablet": {
+      "width": 810
+    },
+    "mobile": {
+      "width": 390
+    }
+  },
+  "pages": [
+    {
+      "id": "id1",
+      "name": "Home",
+      "path": "/",
+      "seo": {
+        "title": "Acme — \"Quotes\" & <Symbols>",
+        "description": "Line one.\nLine two with 'quotes'.",
+        "ogImage": null,
+        "noindex": false
+      },
+      "root": "id2"
+    },
+    {
+      "id": "page2",
+      "name": "Private",
+      "path": "/private",
+      "seo": {
+        "title": "Private",
+        "description": "Only for the team.",
+        "ogImage": null,
+        "noindex": true
+      },
+      "root": "n2"
+    }
+  ],
+  "nodes": {
+    "id2": {
+      "id": "id2",
+      "type": "frame",
+      "name": "Body",
+      "tag": "main",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "direction": "column",
+          "width": {
+            "type": "fill"
+          },
+          "height": {
+            "type": "fit"
+          }
+        }
+      },
+      "children": [
+        "n3"
+      ]
+    },
+    "n1": {
+      "type": "text",
+      "name": "h",
+      "tag": "h1",
+      "style": {
+        "desktop": {}
+      },
+      "content": [
+        {
+          "text": "Not indexed"
+        }
+      ],
+      "id": "n1"
+    },
+    "n2": {
+      "type": "frame",
+      "name": "Body",
+      "tag": "main",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "direction": "column"
+        }
+      },
+      "children": [
+        "n1"
+      ],
+      "id": "n2"
+    },
+    "n3": {
+      "type": "text",
+      "name": "Title",
+      "tag": "h1",
+      "style": {
+        "desktop": {}
+      },
+      "content": [
+        {
+          "text": "SEO"
+        }
+      ],
+      "id": "n3"
+    }
+  },
+  "components": {},
+  "variables": {},
+  "assets": {}
+}

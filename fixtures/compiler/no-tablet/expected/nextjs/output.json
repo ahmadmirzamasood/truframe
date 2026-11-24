@@ -1,0 +1,45 @@
+{
+  "assets": [],
+  "css": {
+    "id2": {
+      "desktop": "display: flex; flex-direction: column; width: 100%; height: fit-content;"
+    },
+    "n1": {
+      "desktop": "font-size: 1.25rem; line-height: calc(1.75 / 1.25);",
+      "mobile": "font-size: 1rem; line-height: calc(1.5 / 1);"
+    },
+    "n2": {
+      "desktop": ""
+    },
+    "n3": {
+      "desktop": "display: flex; gap: 48px; padding: 80px;",
+      "mobile": "flex-direction: column; gap: 16px; padding-inline: 16px; padding-block: 24px;"
+    }
+  },
+  "spans": [
+    {
+      "end": 541,
+      "node": "id2",
+      "path": "app/page.tsx",
+      "start": 148
+    },
+    {
+      "end": 529,
+      "node": "n3",
+      "path": "app/page.tsx",
+      "start": 205
+    },
+    {
+      "end": 450,
+      "node": "n1",
+      "path": "app/page.tsx",
+      "start": 326
+    },
+    {
+      "end": 512,
+      "node": "n2",
+      "path": "app/page.tsx",
+      "start": 459
+    }
+  ]
+}

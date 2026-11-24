@@ -1,0 +1,196 @@
+{
+  "schemaVersion": 1,
+  "id": "0199a0b2-7c3d-7e4f-8a5b-6c7d8e9f0a1b",
+  "framework": "nextjs",
+  "settings": {
+    "lang": "en"
+  },
+  "breakpoints": {
+    "desktop": {
+      "width": 1200
+    },
+    "tablet": {
+      "width": 810
+    },
+    "mobile": {
+      "width": 390
+    }
+  },
+  "pages": [
+    {
+      "id": "id1",
+      "name": "Home",
+      "path": "/",
+      "seo": {
+        "title": "Home",
+        "description": "",
+        "ogImage": null,
+        "noindex": false
+      },
+      "root": "id2"
+    }
+  ],
+  "nodes": {
+    "id2": {
+      "id": "id2",
+      "type": "frame",
+      "name": "Body",
+      "tag": "main",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "direction": "column",
+          "width": {
+            "type": "fill"
+          },
+          "height": {
+            "type": "fit"
+          }
+        }
+      },
+      "children": [
+        "n1",
+        "n2",
+        "n3",
+        "n7"
+      ]
+    },
+    "n1": {
+      "type": "embed",
+      "name": "Map",
+      "tag": "figure",
+      "style": {
+        "desktop": {
+          "width": {
+            "type": "fill"
+          },
+          "aspectRatio": 1.7777777777777777
+        }
+      },
+      "source": {
+        "type": "url",
+        "url": "https://www.openstreetmap.org/export/embed.html"
+      },
+      "id": "n1"
+    },
+    "n2": {
+      "type": "embed",
+      "name": "",
+      "tag": "div",
+      "style": {
+        "desktop": {
+          "height": {
+            "type": "fixed",
+            "value": 120
+          }
+        }
+      },
+      "source": {
+        "type": "url",
+        "url": "https://example.com/widget"
+      },
+      "id": "n2"
+    },
+    "n3": {
+      "type": "embed",
+      "name": "Snippet",
+      "tag": "section",
+      "style": {
+        "desktop": {
+          "height": {
+            "type": "fixed",
+            "value": 80
+          }
+        }
+      },
+      "source": {
+        "type": "html",
+        "html": "<script>alert(1)</script>"
+      },
+      "id": "n3"
+    },
+    "n4": {
+      "type": "icon",
+      "name": "star",
+      "tag": "span",
+      "style": {
+        "desktop": {
+          "width": {
+            "type": "fixed",
+            "value": 24
+          },
+          "height": {
+            "type": "fixed",
+            "value": 24
+          },
+          "textColor": "#f59e0b"
+        }
+      },
+      "set": "lucide",
+      "icon": "star",
+      "id": "n4"
+    },
+    "n5": {
+      "type": "icon",
+      "name": "heart",
+      "tag": "span",
+      "style": {
+        "desktop": {
+          "width": {
+            "type": "fixed",
+            "value": 24
+          },
+          "height": {
+            "type": "fixed",
+            "value": 24
+          },
+          "textColor": "#f59e0b"
+        }
+      },
+      "set": "lucide",
+      "icon": "heart",
+      "id": "n5"
+    },
+    "n6": {
+      "type": "icon",
+      "name": "check",
+      "tag": "span",
+      "style": {
+        "desktop": {
+          "width": {
+            "type": "fixed",
+            "value": 24
+          },
+          "height": {
+            "type": "fixed",
+            "value": 24
+          },
+          "textColor": "#f59e0b"
+        }
+      },
+      "set": "lucide",
+      "icon": "check",
+      "id": "n6"
+    },
+    "n7": {
+      "type": "frame",
+      "name": "Icons",
+      "tag": "div",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "gap": 8
+        }
+      },
+      "children": [
+        "n4",
+        "n5",
+        "n6"
+      ],
+      "id": "n7"
+    }
+  },
+  "components": {},
+  "variables": {},
+  "assets": {}
+}
