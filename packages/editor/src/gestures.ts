@@ -338,3 +338,46 @@ export function resizeEndOps(ctx: ResizeContext, rect: Rect): Op[] {
     isAbsolute(ctx.doc, ctx.id, ctx.bp),
   );
 }
+
+/** Copies each layer (with its subtree and new ids) right after the original. */
+export function duplicateOps(
+  doc: ProjectDocument,
+  parents: ParentMap,
+  ids: readonly string[],
+  newId: () => string,
+): { ops: Op[]; copies: string[] } {
+  const ops: Op[] = [];
+  const copies: string[] = [];
+  const offset = new Map<string, number>();
+  for (const id of ids) {
+    const parentId = parents.get(id);
+    const parent = parentId ? doc.nodes[parentId] : undefined;
+    if (!parentId || !parent || !("children" in parent)) continue;
+    const map = new Map<string, string>();
+    const nodes: Node[] = [];
+    const walk = (nid: string) => {
+      const n = doc.nodes[nid];
+      if (!n) return;
+      const copy = structuredClone(n) as Node;
+      const fresh = newId();
+      map.set(nid, fresh);
+      copy.id = fresh;
+      nodes.push(copy);
+      if (copy.type === "frame" || copy.type === "link") {
+        const kids = copy.children;
+        copy.children = [];
+        for (const k of kids) {
+          walk(k);
+          copy.children.push(map.get(k) as string);
+        }
+      }
+    };
+    walk(id);
+    const added = offset.get(parentId) ?? 0;
+    const index = parent.children.indexOf(id) + 1 + added;
+    offset.set(parentId, added + 1);
+    ops.push({ op: "insertNodes", parentId, index, nodes });
+    copies.push(nodes[0]?.id as string);
+  }
+  return { ops, copies };
+}

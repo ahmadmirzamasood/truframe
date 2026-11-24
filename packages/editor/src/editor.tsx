@@ -18,9 +18,10 @@ import { Canvas } from "./canvas.tsx";
 import type { EditorHost } from "./host.ts";
 import { createNodes, type InsertTool, insertOps, insertTarget } from "./insert.ts";
 import { InsertToolbar } from "./insert-toolbar.tsx";
+import { type Guides, Inspector } from "./inspector/inspector.tsx";
 import { ComingSoon, LeftPanel, type LeftTab, RightPanel, type RightTab } from "./panels.tsx";
 import { SelectionLayer } from "./selection-layer.tsx";
-import { BREAKPOINT_LABEL, type EditorView, TopBar } from "./top-bar.tsx";
+import { type EditorView, TopBar } from "./top-bar.tsx";
 import { useCompiled } from "./use-compiled.ts";
 
 export type DesignEditorProps = {
@@ -39,6 +40,8 @@ export function DesignEditor({ host, backHref, Link }: DesignEditorProps) {
   const [rightTab, setRightTab] = useState<RightTab>("inspect");
   /** Selected layer ids; the last one is the focus (P4-6 adds pointer selection). */
   const [selection, setSelection] = useState<string[]>([]);
+  /** Column guides per breakpoint: a design aid, not part of the site. */
+  const [guides, setGuides] = useState<Guides>({});
 
   // Follow the document: keep the active page if it still exists, otherwise show the first.
   const activePageId =
@@ -148,6 +151,7 @@ export function DesignEditor({ host, backHref, Link }: DesignEditorProps) {
                     selection={liveSelection}
                     onSelectionChange={setSelection}
                     apply={host.apply}
+                    guides={guides}
                   />
                 )}
                 renderFrame={(bp) =>
@@ -181,17 +185,22 @@ export function DesignEditor({ host, backHref, Link }: DesignEditorProps) {
             tab={rightTab}
             onTabChange={setRightTab}
             content={{
-              inspect: (
-                <div className="grid gap-2 p-3">
-                  <div className="flex items-center justify-between">
-                    <p className="text-sm font-semibold">{page?.name ?? "Page"}</p>
-                    <span className="rounded bg-muted px-1.5 py-0.5 text-[11px] font-medium text-muted-foreground">
-                      {BREAKPOINT_LABEL[activeBreakpoint]}
-                    </span>
-                  </div>
-                  <p className="text-xs text-muted-foreground">Page</p>
-                </div>
-              ),
+              inspect:
+                doc && page ? (
+                  <Inspector
+                    doc={doc}
+                    page={page}
+                    selection={liveSelection}
+                    bp={activeBreakpoint}
+                    onBreakpointChange={setBreakpoint}
+                    onSelectionChange={setSelection}
+                    apply={(ops) => {
+                      host.apply(ops);
+                    }}
+                    guides={guides}
+                    onGuidesChange={setGuides}
+                  />
+                ) : null,
               agent: (
                 <ComingSoon title="Agent">The design agent arrives in a later update.</ComingSoon>
               ),

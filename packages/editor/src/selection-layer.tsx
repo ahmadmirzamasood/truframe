@@ -41,6 +41,7 @@ import {
   resizePreview,
 } from "./gestures.ts";
 import { type Boxes, clickTarget, drillTarget, hitPath } from "./hit.ts";
+import type { Guides } from "./inspector/inspector.tsx";
 import { parentMap } from "./tree.ts";
 
 /** Pointer travel (screen px) before a press becomes a drag. */
@@ -115,6 +116,7 @@ export type SelectionLayerProps = {
   apply: (ops: Op[]) => { message: string } | null;
   /** Space is held: the canvas pans instead. */
   panning: boolean;
+  guides?: Guides;
 };
 
 export function SelectionLayer(props: SelectionLayerProps) {
@@ -317,6 +319,31 @@ export function SelectionLayer(props: SelectionLayerProps) {
 
   // ——— Drawing ———
   const overlays: ReactNode[] = [];
+  // Column guides: equal columns between the side margins, per breakpoint.
+  for (const f of frames) {
+    const g = props.guides?.[f.breakpoint];
+    if (!g?.visible || g.columns < 1) continue;
+    const inner = f.rect.width - 2 * g.margin;
+    const col = (inner - g.gutter * (g.columns - 1)) / g.columns;
+    if (col <= 0) continue;
+    for (let i = 0; i < g.columns; i++) {
+      const r = toScreen(f.breakpoint, {
+        x: g.margin + i * (col + g.gutter),
+        y: 0,
+        width: col,
+        height: f.rect.height,
+      });
+      if (r)
+        overlays.push(
+          <div
+            key={`col-${f.breakpoint}-${i}`}
+            data-testid="column-guide"
+            className="pointer-events-none absolute bg-red-500/8"
+            style={{ left: r.x, top: r.y, width: r.width, height: r.height }}
+          />,
+        );
+    }
+  }
   const outline = (key: string, r: Rect | null, className: string, testId?: string) =>
     r
       ? overlays.push(
