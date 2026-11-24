@@ -3,7 +3,7 @@
 > Agent-facing, long-lived project memory. Read at the start of every session; append in the same PR as the work that taught you something. Keep entries short, dated (YYYY-MM-DD) and factual. Fix or strike entries that become wrong.
 
 ## Current state
-- **Phase:** P1 Accounts, dashboard, project creation (local only; staging parts wait on Cloudflare). P0 is done except the P0-3 staging deploy.
+- **Phase:** P1 Accounts, dashboard, project creation is **done locally** (P1-1 to P1-7 merged with green CI). The P1 exit criteria that need staging are blocked: sign-in with all three methods on staging, and D1 migrations on staging. They wait on the Cloudflare connection and on the owner's OAuth apps, Resend and Turnstile keys (`docs/runbooks/auth-setup.md`). P0 is done except the P0-3 staging deploy. Next: P2.
 - **Last updated:** 2026-11-24
 - **Repo:** https://github.com/ahmadmirzamasood/truframe (public, default branch `main`). Work on `tf/<task-id>-<slug>` branches and open PRs. `archive/v1-local-first/` is not in this repo.
 
@@ -43,6 +43,7 @@
 - Cloudflare: the account exists but is not connected yet (owner, 2026-11-24). Work stays local until then. P0-3's staging deploy and the CI `deploy-staging` job wait on it (see `docs/runbooks/cloudflare-setup.md`).
 - Domain names: `truframe.com` (app) and a separate domain for user content (`truframe.site` assumed). Must be a different registrable domain.
 - Payments provider final choice depends on where the company is registered.
+- Auth accounts for staging and production (2026-11-24): a Google OAuth client, a GitHub OAuth app, a Resend sending domain and key, and a Turnstile widget. Exact steps: `docs/runbooks/auth-setup.md`.
 
 ## Glossary
 - **Design document / doc:** the Loro CRDT holding a project's pages, nodes, components, variables, assets and code files.
