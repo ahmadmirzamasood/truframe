@@ -1,9 +1,10 @@
 import { readdirSync, readFileSync } from "node:fs";
+import { createRequire } from "node:module";
 import { join } from "node:path";
 import { type ProjectDocument, parseDocument } from "@truframe/model";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
-import { cascadeFor, fontSlug, frameStylesheet, parseTokens } from "./css.ts";
+import { cascadeFor, DEFAULT_SANS, fontSlug, frameStylesheet, parseTokens } from "./css.ts";
 import { renderFrame } from "./react.ts";
 import { buildPageTree, type RChild, type RElement } from "./tree.ts";
 
@@ -124,6 +125,15 @@ describe("frame stylesheet", () => {
       desktop: "--a: 1px;",
       mobile: "--a: 2px;",
     });
+  });
+
+  it("uses Tailwind's default sans stack, like the generated site", () => {
+    const theme = readFileSync(
+      createRequire(import.meta.url).resolve("tailwindcss/theme.css"),
+      "utf8",
+    );
+    const stack = /--font-sans:\s*([^;]+);/.exec(theme)?.[1]?.replace(/\s+/g, " ").trim();
+    expect(DEFAULT_SANS).toBe(stack);
   });
 
   it("slugs font families like the compiler", () => {

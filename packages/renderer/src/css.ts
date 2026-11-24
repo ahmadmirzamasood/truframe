@@ -14,8 +14,9 @@ export function cascadeFor(doc: ProjectDocument, breakpoint: BreakpointId): Brea
   return active.slice(0, active.indexOf(breakpoint) + 1);
 }
 
-const DEFAULT_SANS =
-  'ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"';
+/** Tailwind 4.3.5 `--font-sans` (theme.css); `renderer.test.ts` keeps them equal. */
+export const DEFAULT_SANS =
+  "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', 'Noto Sans', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'";
 
 /**
  * Tailwind v4 preflight (MIT, tailwindcss 4.3.5 `preflight.css`), trimmed to the elements the
