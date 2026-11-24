@@ -291,7 +291,29 @@ importers:
         version: 4.166.0(@cloudflare/workers-types@5.20261121.1)(@types/node@22.20.5)(vitest@4.1.12(@types/node@22.20.5)(vite@8.3.8(@types/node@22.20.5)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.46.0)(tsx@4.23.15)(yaml@2.9.1)))
 
   workers/realtime:
+    dependencies:
+      '@truframe/billing':
+        specifier: workspace:*
+        version: link:../../packages/billing
+      '@truframe/crdt':
+        specifier: workspace:*
+        version: link:../../packages/crdt
+      '@truframe/db':
+        specifier: workspace:*
+        version: link:../../packages/db
+      '@truframe/model':
+        specifier: workspace:*
+        version: link:../../packages/model
+      '@truframe/protocol':
+        specifier: workspace:*
+        version: link:../../packages/protocol
+      loro-crdt:
+        specifier: 1.18.0
+        version: 1.18.0
     devDependencies:
+      '@truframe/ops':
+        specifier: workspace:*
+        version: link:../../packages/ops
       wrangler:
         specifier: 4.166.0
         version: 4.166.0(@cloudflare/workers-types@5.20261121.1)(@types/node@22.20.5)(vitest@4.1.12(@types/node@22.20.5)(vite@8.3.8(@types/node@22.20.5)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.46.0)(tsx@4.23.15)(yaml@2.9.1)))

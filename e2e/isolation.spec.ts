@@ -1,6 +1,7 @@
 /**
  * T1 (API part), docs/engineering/SECURITY.md §4: user B cannot read or write user A's project
- * through the HTTP API. Socket, R2, MCP and agent parts of T1 arrive with P2 and P7.
+ * through the HTTP API, nor get a room token for it (socket part; the room itself is tested in
+ * workers/realtime). R2, MCP and agent parts of T1 arrive with P5 and P7.
  */
 import { type APIRequestContext, type Browser, expect, test } from "@playwright/test";
 import { ownClientIp, signInWithMock, unique } from "./helpers";
@@ -108,4 +109,32 @@ test("ids that are not UUIDs and malformed bodies get typed errors", async ({ br
   expect(bad.status()).toBe(400);
   expect(((await bad.json()) as { error: { code: string } }).error.code).toBe("INVALID_INPUT");
   await a.context.close();
+});
+
+test("only the project's workspace gets a room token for its realtime room (T1 socket)", async ({
+  browser,
+}) => {
+  const a = await userSession(browser, "room-a");
+  const b = await userSession(browser, "room-b");
+  const project = await createProject(a.api, a.origin, "A's live doc");
+  const path = `/api/projects/${project.id}/room-token`;
+
+  const res = await a.api.post(path, json(a.origin));
+  expect(res.status()).toBe(200);
+  const body = (await res.json()) as { token: string; url: string; expiresAt: string };
+  expect(body.url).toMatch(new RegExp(`/rooms/${project.id}$`));
+  expect(body.token.split(".")).toHaveLength(2);
+  const ttl = Date.parse(body.expiresAt) - Date.now();
+  expect(ttl).toBeGreaterThan(4 * 60_000);
+  expect(ttl).toBeLessThanOrEqual(5 * 60_000);
+
+  // B can't get one, and a cross-site request can't either.
+  const denied = await b.api.post(path, json(b.origin));
+  expect(denied.status()).toBe(404);
+  expect((await a.api.post(path, json("https://evil.example"))).status()).toBe(403);
+  // A deleted project has no room.
+  expect((await a.api.delete(`/api/projects/${project.id}`, json(a.origin))).status()).toBe(200);
+  expect((await a.api.post(path, json(a.origin))).status()).toBe(404);
+  await a.context.close();
+  await b.context.close();
 });

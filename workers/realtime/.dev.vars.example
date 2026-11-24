@@ -1,0 +1,3 @@
+# Copy to .dev.vars for local development. Never commit .dev.vars.
+# Signs room tokens. Must equal ROOM_TOKEN_SECRET in apps/web/.dev.vars. Real ones are Workers secrets.
+ROOM_TOKEN_SECRET=local-dev-only-room-token-secret-0123456789

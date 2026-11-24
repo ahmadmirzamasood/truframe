@@ -91,3 +91,33 @@ export const auditLog = sqliteTable(
   },
   (t) => [index("audit_log_workspace_id_idx").on(t.workspaceId, t.createdAt)],
 );
+
+/**
+ * Document revisions (ARCHITECTURE §7): a Loro version of a project's document plus who changed
+ * it. ProjectRoom records one per compaction, grouping the changes since the previous one.
+ */
+export const revisions = sqliteTable(
+  "revisions",
+  {
+    id: text("id").primaryKey(),
+    workspaceId: text("workspace_id")
+      .notNull()
+      .references(() => workspaces.id, { onDelete: "cascade" }),
+    projectId: text("project_id")
+      .notNull()
+      .references(() => projects.id, { onDelete: "cascade" }),
+    /** Loro frontiers (`[{ peer, counter }]`) to check the document out at this revision. */
+    frontiers: text("frontiers", { mode: "json" })
+      .notNull()
+      .$type<{ peer: string; counter: number }[]>(),
+    /** R2 key of the snapshot taken with this revision, relative to the workspace prefix. */
+    snapshotKey: text("snapshot_key"),
+    authorKind: text("author_kind", { enum: ["user", "agent"] }).notNull(),
+    /** User ids whose transactions this revision groups. */
+    authorIds: text("author_ids", { mode: "json" }).notNull().$type<string[]>(),
+    changeCount: integer("change_count").notNull(),
+    summary: text("summary"),
+    createdAt: integer("created_at", { mode: "timestamp_ms" }).notNull(),
+  },
+  (t) => [index("revisions_project_id_idx").on(t.projectId, t.createdAt)],
+);

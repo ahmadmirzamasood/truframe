@@ -116,6 +116,10 @@ export function makeOp(doc: ProjectDocument, c: Choice): Op {
       };
     }
     case 6: {
+      // Aim at an instance when there is one: a random node almost never is, and the op would
+      // then be rarely applied at all.
+      const instances = nodes.filter((n) => n.type === "instance");
+      const target = c.a % 4 === 0 || !instances.length ? anyNode : (pick(instances, c.a) as Node);
       const kind = pick(["variant", "props", "nodes"] as const, c.b) ?? "props";
       const values: readonly unknown[] = {
         variant: ["default", "large", "huge"],
@@ -127,8 +131,8 @@ export function makeOp(doc: ProjectDocument, c: Choice): Op {
         c.c,
       ) as string;
       return c.d % 4 === 0
-        ? { op: "setInstanceOverride", nodeId: anyNode.id, kind, key }
-        : { op: "setInstanceOverride", nodeId: anyNode.id, kind, key, value: pick(values, c.d) };
+        ? { op: "setInstanceOverride", nodeId: target.id, kind, key }
+        : { op: "setInstanceOverride", nodeId: target.id, kind, key, value: pick(values, c.d) };
     }
     case 7: {
       const id = fresh("p");

@@ -9,6 +9,10 @@
   "main": "src/index.ts",
   "compatibility_date": "2026-11-01",
   "compatibility_flags": ["nodejs_compat"],
+  // The default loro-crdt entry loads its WASM with fetch(); the base64 entry inlines it.
+  "alias": {
+    "loro-crdt": "loro-crdt/base64"
+  },
   "observability": {
     "enabled": true
   },
