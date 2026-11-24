@@ -35,7 +35,7 @@
 - [x] **P3-6** Benchmark WASM compile per page. *Done when* < 30 ms recorded in `docs/project/MEMORY.md`.
 
 ## P4 Design View I
-- [ ] **P4-1** Editor shell route `/p/[id]`: top bar (pages menu, Design/Code toggle, breakpoint bar, Preview, Publish), left tabs (Pages, Layers, Components, Variables, Assets), right tabs (Inspect, Agent, History, Comments). *Done when* layout renders with placeholders.
+- [x] **P4-1** Editor shell route `/p/[id]`: top bar (pages menu, Design/Code toggle, breakpoint bar, Preview, Publish), left tabs (Pages, Layers, Components, Variables, Assets), right tabs (Inspect, Agent, History, Comments). *Done when* layout renders with placeholders. `@truframe/editor` (`DesignEditor`) renders the shell from an `EditorHost` (document, sync summary, `apply`/`undo`/`redo`) that `apps/web` builds from `DocClient`. Evidence: `e2e/editor-shell.spec.ts`.
 - [ ] **P4-2** Canvas camera (pan, zoom 10–800%, fit), breakpoint frames side by side. *Done when* camera math unit tests pass.
 - [ ] **P4-3** `packages/renderer`: model → DOM using compiler CSS; per-breakpoint rendering at frame width. *Done when* renders fixtures identically to built output (screenshot parity ≤ 1%).
 - [ ] **P4-4** Breakpoint management: Desktop width ≥ 1200 editable, not deletable; Tablet/Mobile add/remove/resize within ranges. *Done when* e2e + validation errors shown.

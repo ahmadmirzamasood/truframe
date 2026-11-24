@@ -14,6 +14,7 @@ const nextConfig: NextConfig = {
     "@truframe/ops",
     "@truframe/crdt",
     "@truframe/sync",
+    "@truframe/editor",
   ],
   poweredByHeader: false,
 };

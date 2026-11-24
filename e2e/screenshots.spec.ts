@@ -52,3 +52,17 @@ test("capture auth and dashboard screens", async ({ page, context }) => {
   await expect(page.getByRole("listitem", { name: "Added from the editor" })).toBeVisible();
   await page.screenshot({ path: `${dir}/editor.png` });
 });
+
+test("capture the editor", async ({ page, context }) => {
+  await ownClientIp(context);
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await signInWithMock(page, unique("shots-editor"));
+  const res = await context.request.post("/api/projects", {
+    data: { name: "Landing", framework: "nextjs", templateId: "landing" },
+    headers: { origin: new URL(page.url()).origin },
+  });
+  const { project } = (await res.json()) as { project: { id: string } };
+  await page.goto(`/p/${project.id}`);
+  await expect(page.getByTestId("sync-status")).toHaveText("Online");
+  await page.screenshot({ path: `${dir}/editor-shell.png` });
+});
