@@ -13,5 +13,9 @@
   },
   "dependencies": {
     "@truframe/model": "workspace:*"
+  },
+  "devDependencies": {
+    "@tailwindcss/node": "4.3.5",
+    "tailwindcss": "4.3.5"
   }
 }

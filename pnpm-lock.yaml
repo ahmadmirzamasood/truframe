@@ -123,6 +123,13 @@ importers:
       '@truframe/model':
         specifier: workspace:*
         version: link:../model
+    devDependencies:
+      '@tailwindcss/node':
+        specifier: 4.3.5
+        version: 4.3.5
+      tailwindcss:
+        specifier: 4.3.5
+        version: 4.3.5
 
   packages/crdt:
     dependencies:
