@@ -2,10 +2,13 @@
 
 use std::collections::BTreeMap;
 
-use crate::CompileError;
-use crate::model::{Node, Project, TextSpan};
-use crate::names::{ClassNamer, class_base};
+use crate::model::{AssetMime, Node, Position, Project, Props, TextSpan};
+use crate::names::{ClassNamer, class_base, kebab};
 use crate::printer::{Attr, Child, El, Syntax, escape_text};
+use crate::style::{
+    AssetUrls, Bp, BpInput, Env, NodeInfo, ParentLayout, SlotFilter, effective, style_element,
+};
+use crate::{CompileError, NodeCss};
 
 /// Per-framework choices while building elements.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -48,18 +51,6 @@ pub fn node_type(n: &Node) -> &'static str {
     }
 }
 
-fn node_name(n: &Node) -> &str {
-    match n {
-        Node::Frame { name, .. }
-        | Node::Text { name, .. }
-        | Node::Image { name, .. }
-        | Node::Link { name, .. }
-        | Node::Icon { name, .. }
-        | Node::Embed { name, .. }
-        | Node::Instance { name, .. } => name,
-    }
-}
-
 /// Code classes (PRD F27) for every layer under `root`, unique in tree order.
 pub fn code_classes(
     project: &Project,
@@ -71,7 +62,7 @@ pub fn code_classes(
     let mut stack = vec![root.to_string()];
     while let Some(id) = stack.pop() {
         let n = node(project, &id)?;
-        let base = class_base(node_name(n), node_type(n));
+        let base = class_base(n.name(), node_type(n));
         let class = match scope {
             // Component layers are scoped: `pricing-card__title`; the root is the block itself.
             Some(block) if id == root => block.to_string(),
@@ -87,33 +78,144 @@ pub fn code_classes(
     Ok(out)
 }
 
-/// Builds the element for `id` and its subtree.
+/// Builds the element for `id` and its subtree, collecting canvas CSS on the way.
 pub struct Builder<'a> {
     pub project: &'a Project,
     pub flavor: Flavor,
     pub classes: BTreeMap<String, String>,
+    pub css: BTreeMap<String, NodeCss>,
+    /// Asset id → file name ([`asset_file_names`]).
+    pub asset_names: BTreeMap<String, String>,
+}
+
+/// Background images live under `public/assets/` in both frameworks.
+struct PublicAssets<'a>(&'a BTreeMap<String, String>);
+
+impl AssetUrls for PublicAssets<'_> {
+    fn background_url(&self, asset_id: &str) -> Option<String> {
+        self.0.get(asset_id).map(|f| format!("/assets/{f}"))
+    }
+}
+
+/// A file name per asset: its kebab-cased name and extension, unique in the project.
+pub fn asset_file_names(project: &Project) -> BTreeMap<String, String> {
+    let mut namer = ClassNamer::new();
+    let mut out = BTreeMap::new();
+    for (id, a) in &project.assets {
+        let ext = match a.mime {
+            AssetMime::Png => "png",
+            AssetMime::Jpeg => "jpg",
+            AssetMime::Webp => "webp",
+            AssetMime::Avif => "avif",
+            AssetMime::Gif => "gif",
+            AssetMime::Svg => "svg",
+        };
+        let stem = a.name.rsplit_once('.').map_or(a.name.as_str(), |(s, _)| s);
+        let mut base = kebab(stem);
+        if base.is_empty() {
+            base = "image".into();
+        }
+        let base = namer.unique(&base);
+        out.insert(id.clone(), format!("{base}.{ext}"));
+    }
+    out
+}
+
+/// Hidden per breakpoint, cascading like style props.
+fn hidden_at(n: &Node, bp: Bp) -> bool {
+    let h = n.hidden();
+    let d = h.and_then(|h| h.desktop).unwrap_or(false);
+    let t = h.and_then(|h| h.tablet).unwrap_or(d);
+    match bp {
+        Bp::Desktop => d,
+        Bp::Tablet => t,
+        Bp::Mobile => h.and_then(|h| h.mobile).unwrap_or(t),
+    }
 }
 
 impl Builder<'_> {
-    pub fn element(&self, id: &str) -> Result<El, CompileError> {
-        let n = node(self.project, id)?;
-        let class = self.classes.get(id).cloned().unwrap_or_default();
-        let tag = match n {
-            Node::Frame { tag, .. }
-            | Node::Text { tag, .. }
-            | Node::Image { tag, .. }
-            | Node::Link { tag, .. }
-            | Node::Icon { tag, .. }
-            | Node::Embed { tag, .. }
-            | Node::Instance { tag, .. } => tag.as_str(),
+    pub fn new(
+        project: &Project,
+        flavor: Flavor,
+        classes: BTreeMap<String, String>,
+    ) -> Builder<'_> {
+        Builder {
+            project,
+            flavor,
+            classes,
+            css: BTreeMap::new(),
+            asset_names: asset_file_names(project),
+        }
+    }
+
+    /// Per-breakpoint style inputs of a node placed in `parent`.
+    fn inputs(&self, n: &Node, parent: Option<&Node>) -> Result<Vec<(Bp, BpInput)>, CompileError> {
+        let bps = &self.project.breakpoints;
+        let mine = effective(n.style(), bps);
+        let parents = parent.map(|p| effective(p.style(), bps));
+        let children: Vec<Vec<(Bp, Props)>> = n
+            .children()
+            .iter()
+            .map(|c| node(self.project, c).map(|c| effective(c.style(), bps)))
+            .collect::<Result<_, _>>()?;
+        Ok(mine
+            .into_iter()
+            .enumerate()
+            .map(|(i, (bp, props))| {
+                let parent = parents
+                    .as_ref()
+                    .and_then(|ps| ps.get(i))
+                    .map(|(_, p)| ParentLayout::of(p));
+                let has_absolute_child = children.iter().any(|c| {
+                    c.get(i)
+                        .is_some_and(|(_, p)| p.position == Some(Position::Absolute))
+                });
+                (
+                    bp,
+                    BpInput {
+                        props,
+                        hidden: hidden_at(n, bp),
+                        parent,
+                        has_absolute_child,
+                    },
+                )
+            })
+            .collect())
+    }
+
+    /// The class list of a node: its code class first, then the utilities (PRD F27).
+    fn class_list(
+        &mut self,
+        id: &str,
+        n: &Node,
+        parent: Option<&Node>,
+    ) -> Result<String, CompileError> {
+        let inputs = self.inputs(n, parent)?;
+        let assets = PublicAssets(&self.asset_names);
+        let env = Env {
+            vars: &self.project.variables,
+            assets: &assets,
         };
-        let mut el = El::new(tag)
+        let styled = style_element(&inputs, NodeInfo { tag: n.tag() }, &env, SlotFilter::All);
+        self.css.insert(id.to_string(), styled.css);
+        let mut list = vec![self.classes.get(id).cloned().unwrap_or_default()];
+        list.extend(styled.classes);
+        Ok(list.join(" "))
+    }
+
+    pub fn element(&mut self, id: &str, parent: Option<&str>) -> Result<El, CompileError> {
+        let project = self.project;
+        let n = node(project, id)?;
+        let parent_node = parent.map(|p| node(project, p)).transpose()?;
+        let class = self.class_list(id, n, parent_node)?;
+        let mut el = El::new(n.tag().as_str())
             .node(id)
             .attr(Attr::str(self.flavor.class_attr(), class));
         match n {
             Node::Frame { children, .. } | Node::Link { children, .. } => {
                 for c in children {
-                    el.children.push(Child::El(self.element(c)?));
+                    let child = self.element(c, Some(id))?;
+                    el.children.push(Child::El(child));
                 }
             }
             Node::Text { content, .. } => {

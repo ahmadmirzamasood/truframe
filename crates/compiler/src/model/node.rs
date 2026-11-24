@@ -258,6 +258,42 @@ impl Node {
         }
     }
 
+    pub fn name(&self) -> &str {
+        match self {
+            Node::Frame { name, .. }
+            | Node::Text { name, .. }
+            | Node::Image { name, .. }
+            | Node::Link { name, .. }
+            | Node::Icon { name, .. }
+            | Node::Embed { name, .. }
+            | Node::Instance { name, .. } => name,
+        }
+    }
+
+    pub fn tag(&self) -> Tag {
+        match self {
+            Node::Frame { tag, .. }
+            | Node::Text { tag, .. }
+            | Node::Image { tag, .. }
+            | Node::Link { tag, .. }
+            | Node::Icon { tag, .. }
+            | Node::Embed { tag, .. }
+            | Node::Instance { tag, .. } => *tag,
+        }
+    }
+
+    pub fn hidden(&self) -> Option<&Hidden> {
+        match self {
+            Node::Frame { hidden, .. }
+            | Node::Text { hidden, .. }
+            | Node::Image { hidden, .. }
+            | Node::Link { hidden, .. }
+            | Node::Icon { hidden, .. }
+            | Node::Embed { hidden, .. }
+            | Node::Instance { hidden, .. } => hidden.as_ref(),
+        }
+    }
+
     /// Children in order (frames and links only).
     pub fn children(&self) -> &[String] {
         match self {

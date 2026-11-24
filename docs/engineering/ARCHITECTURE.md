@@ -164,6 +164,17 @@ Instance overrides: { variant: {prop: value}, props: {name: value}, nodes: {node
 - `assets`: `{ assetId, key, path }` for every uploaded asset the project references; the build job copies `key` from R2 to `path`.
 The printer (`crates/compiler/src/printer.rs`) lays out an element tree: two-space indent, double quotes, 80 columns, attributes one per line when the opening tag doesn't fit, text content never re-wrapped (so designed whitespace survives). The WASM build is `packages/compiler-wasm` (`initCompiler(module | bytes)`, `compile(doc, framework?)`); the generated glue in `pkg/` is built by `pnpm compiler:build`, not committed.
 
+**Style engine (P3-2, `crates/compiler/src/style`).** Each style property maps to a *slot* (display, gap, padding, width, flex, font size, background…). Per breakpoint the engine takes the cascaded props, builds one declaration per slot (classes + CSS), and emits all slots on desktop and, for tablet/mobile, only slots that differ from the breakpoint above. A slot that disappears is reset to its initial value (`tablet:flex-initial`); a declaration that replaces a different kind adds a clear first (a gradient over a solid color adds `bg-transparent`). The canvas CSS is built from the same declarations. Rules:
+- Spacing lengths (gap, padding, insets, fixed sizes, min/max) use Tailwind's `--spacing` scale when the px value is even (`18px` → `gap-4.5`), `px` for 1px, otherwise an arbitrary value (`gap-[13px]`). Font sizes, weights, line heights, letter spacing and radii use theme names only on exact matches.
+- Fill depends on the parent at each breakpoint: in a stack it is `flex-1` on the main axis and `self-stretch` on the cross axis (Fixed/Fit children get `flex-none`, Figma-like); in a grid or block parent it is `w-full`/`h-full`. An absolute child ignores its parent's flex, and a parent with absolute children gets `relative`.
+- Variables are referenced as CSS variables in classes (`bg-(--brand-accent)`, `p-(--space-md)`, `text-(color:--brand-accent)`), so a variable name can never collide with a Tailwind theme name. `tokens.css` still adds `@theme inline` mappings (`--color-brand-accent`, `--spacing-space-md`, `--text-heading…`, `--font-heading`) so exported projects can use them as utilities.
+- A bound text style (`font: { var }`) supplies family, size, weight, line height and letter spacing through `<cssName>-family/-size/-weight/-line-height/-letter-spacing`; a value set on the layer itself wins for that part only.
+- Font families are referenced as `--tf-font-<slug>`: the framework's font loader sets it for web fonts (P3-3/P3-4), `tokens.css` declares system stacks (Arial, Georgia, …).
+- Hidden per breakpoint is part of the display slot (`hidden` / `tablet:flex`, or the tag's natural display).
+- Media queries: `tablet` = `(width < 1200px)`; `mobile` = `(width < <tablet width>px)`, or `(width < 1200px)` when Tablet is removed. Tablet is declared first so mobile wins where both match.
+- Component roots split slots: outer (display, position, insets, spans, flex, size) come from the instance; the rest from the component.
+- `packages/compiler-wasm/src/tailwind.test.ts` runs real Tailwind v4 (`@tailwindcss/node`) over the output: every emitted utility must produce CSS and no layer code class may.
+
 ### 6.2 One way only
 There is no parse-back. Generated files are never edited by users or agents; every change is a design op, and the compiler regenerates the affected files. `spans` exist only for "reveal in code / reveal in design" in Code View and for agents reading code.
 

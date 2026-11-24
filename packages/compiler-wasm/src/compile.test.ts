@@ -14,7 +14,9 @@ const blank = (framework: "nextjs" | "astro") =>
 describe("compiler (WASM)", () => {
   it("compiles a blank Next.js project", () => {
     const out = compile(blank("nextjs"));
-    expect(out.files["app/page.tsx"]).toContain('<main className="body"');
+    expect(out.files["app/page.tsx"]).toContain(
+      '<main className="body flex flex-col w-full h-fit" />',
+    );
     expect(out.files["app/layout.tsx"]).toContain('<html lang="en">');
     expect(out.spans).toContainEqual(
       expect.objectContaining({ node: "id2", path: "app/page.tsx" }),
@@ -23,7 +25,9 @@ describe("compiler (WASM)", () => {
 
   it("compiles a blank Astro project", () => {
     const out = compile(blank("astro"));
-    expect(out.files["src/pages/index.astro"]).toContain('<main class="body"');
+    expect(out.files["src/pages/index.astro"]).toContain(
+      '<main class="body flex flex-col w-full h-fit"></main>',
+    );
   });
 
   it("overrides the framework", () => {

@@ -10,9 +10,15 @@ use super::Emit;
 
 pub fn emit(project: &Project, out: &mut Emit) -> Result<(), CompileError> {
     out.file("src/layouts/Base.astro", layout(project));
+    out.file(
+        "src/styles/global.css",
+        crate::tokens::global_css(project, "./tokens.css"),
+    );
+    out.file("src/styles/tokens.css", crate::tokens::tokens_css(project));
     for page in &project.pages {
         let path = page_file(page);
-        out.writer(&path, page_component(project, page)?);
+        let w = page_component(project, page, out)?;
+        out.writer(&path, w);
     }
     Ok(())
 }
@@ -40,13 +46,14 @@ fn layout(project: &Project) -> String {
     )
 }
 
-fn page_component(project: &Project, page: &Page) -> Result<Writer, CompileError> {
-    let builder = Builder {
+fn page_component(project: &Project, page: &Page, out: &mut Emit) -> Result<Writer, CompileError> {
+    let mut builder = Builder::new(
         project,
-        flavor: Flavor::Astro,
-        classes: code_classes(project, &page.root, None)?,
-    };
-    let root = builder.element(&page.root)?;
+        Flavor::Astro,
+        code_classes(project, &page.root, None)?,
+    );
+    let root = builder.element(&page.root, None)?;
+    out.output.css.append(&mut builder.css);
     let mut w = Writer::new();
     w.line(0, "---");
     w.line(
