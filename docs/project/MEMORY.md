@@ -3,7 +3,7 @@
 > Agent-facing, long-lived project memory. Read at the start of every session; append in the same PR as the work that taught you something. Keep entries short, dated (YYYY-MM-DD) and factual. Fix or strike entries that become wrong.
 
 ## Current state
-- **Phase:** P3 Compiler v1 (in progress; see `docs/project/TASKS.md`). P2 Document core and realtime is **done** (P2-1 to P2-6 merged with green CI: model, Rust mirror, ops, Loro binding, ProjectRoom, editor store). P1 is done locally; its staging exit criteria (sign-in with all three methods on staging, D1 migrations on staging) wait on the Cloudflare connection and the owner's OAuth apps, Resend and Turnstile keys (`docs/runbooks/auth-setup.md`). P0 is done except the P0-3 staging deploy.
+- **Phase:** P3 Compiler v1 is **done** (P3-1 to P3-6 merged with green CI; exit criteria met: 60 golden fixtures over both frameworks, every one built and type-checked in CI by the `generated` job, a 300-layer page compiles in 11.9 ms median in WASM). P4 Design View I is next. P2 is done. P1 is done locally; its staging exit criteria (sign-in with all three methods on staging, D1 migrations on staging) wait on the Cloudflare connection and the owner's OAuth apps, Resend and Turnstile keys (`docs/runbooks/auth-setup.md`). P0 is done except the P0-3 staging deploy.
 - **Last updated:** 2026-11-24
 - **Repo:** https://github.com/ahmadmirzamasood/truframe (public, default branch `main`). Work on `tf/<task-id>-<slug>` branches and open PRs. `archive/v1-local-first/` is not in this repo.
 
