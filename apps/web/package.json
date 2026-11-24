@@ -21,6 +21,7 @@
     "@truframe/auth": "workspace:*",
     "@truframe/db": "workspace:*",
     "@truframe/emails": "workspace:*",
+    "@truframe/protocol": "workspace:*",
     "@truframe/ui": "workspace:*",
     "better-auth": "1.7.27",
     "next": "16.4.6",
