@@ -19,3 +19,7 @@ GITHUB_CLIENT_SECRET=
 # Email. Empty locally: emails go to the dev server log and to /api/dev/mail?to=<email>.
 RESEND_API_KEY=
 EMAIL_FROM=
+
+# --- Realtime (ProjectRoom). Must equal ROOM_TOKEN_SECRET in workers/realtime/.dev.vars. ---
+ROOM_TOKEN_SECRET=local-dev-only-room-token-secret-0123456789
+TRUFRAME_REALTIME_URL=ws://localhost:8787

@@ -6,11 +6,20 @@
   "type": "module",
   "scripts": {
     "build": "wrangler deploy --dry-run --outdir dist",
-    "dev": "wrangler dev",
+    "dev": "wrangler dev --persist-to ../../apps/web/.wrangler/state",
     "typecheck": "wrangler types && tsc --noEmit",
     "cf-typegen": "wrangler types"
   },
   "devDependencies": {
+    "@truframe/ops": "workspace:*",
     "wrangler": "4.166.0"
+  },
+  "dependencies": {
+    "@truframe/billing": "workspace:*",
+    "@truframe/crdt": "workspace:*",
+    "@truframe/db": "workspace:*",
+    "@truframe/model": "workspace:*",
+    "@truframe/protocol": "workspace:*",
+    "loro-crdt": "1.18.0"
   }
 }

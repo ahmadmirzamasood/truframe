@@ -31,7 +31,7 @@
 
 ## 3. Required controls checklist
 - [x] Repository layer enforces `workspaceId` on every query (lint rule forbids importing Drizzle tables outside `packages/db/repos`). (P1-1: `forWorkspace()` repos, Biome `noRestrictedImports`; T1 API e2e in P1-7.)
-- [ ] Room tokens: HMAC-signed, 5-minute expiry, bound to user + project + role.
+- [x] Room tokens: HMAC-signed, 5-minute expiry, bound to user + project + role. (P2-5: `packages/protocol/src/room.ts`, verified in `workers/realtime` before the Durable Object; T2 in `workers/realtime/src/room.integration.test.ts`.)
 - [ ] CSP and security headers on app, usercontent and sites origins (separate policies).
 - [ ] Sandboxed iframes for all user code; postMessage origin + schema checks both ways.
 - [ ] Build container: no secrets, egress allowlist, limits, one build per container.

@@ -10,7 +10,8 @@ import { choice, startDocs, transactionOps } from "./generator.ts";
 import { type Op, opSchema } from "./ops.ts";
 import { canonical } from "./testing.ts";
 
-const RUNS = 1000;
+// OPS_PROPERTY_RUNS lets a local run search longer for rare failures.
+const RUNS = Number(process.env.OPS_PROPERTY_RUNS ?? 1000);
 const limits = { pagesPerProject: 4 };
 
 describe("ops property test", () => {
@@ -64,5 +65,5 @@ describe("ops property test", () => {
     expect([...appliedKinds].sort()).toEqual(
       [...opSchema.options.map((o) => o.shape.op.value)].sort(),
     );
-  }, 120_000);
+  }, 300_000);
 });

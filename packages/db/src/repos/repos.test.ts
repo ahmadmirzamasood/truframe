@@ -194,3 +194,36 @@ describe("plan limits inside the write", () => {
     expect(await repos.projects.countActive()).toBe(5);
   });
 });
+
+describe("revisionsRepo", () => {
+  it("records and lists revisions only within the project's workspace", async () => {
+    await insertTestUser(t.d1, { id: "user-rev", email: "rev@example.com" });
+    const ws = await workspacesRepo(t.db).ensurePersonal({ userId: "user-rev", name: "R" });
+    const other = await workspacesRepo(t.db).ensurePersonal({ userId: "user-b", name: "B" });
+    const repos = forWorkspace(t.db, ws.id);
+    const p = await repos.projects.create({
+      name: "Site",
+      framework: "nextjs",
+      templateId: "blank",
+      createdBy: "user-rev",
+    });
+    const base = {
+      projectId: p.id,
+      frontiers: [{ peer: "1", counter: 4 }],
+      snapshotKey: `projects/${p.id}/snapshots/1.loro`,
+      authorKind: "user" as const,
+      authorIds: ["user-rev"],
+      changeCount: 5,
+      summary: null,
+    };
+    const first = await repos.revisions.record({ ...base, now: new Date(1000) });
+    const second = await repos.revisions.record({ ...base, changeCount: 2, now: new Date(2000) });
+    expect(first?.workspaceId).toBe(ws.id);
+    expect((await repos.revisions.list(p.id)).map((r) => r.id)).toEqual([second?.id, first?.id]);
+    expect((await repos.revisions.list(p.id))[0]?.frontiers).toEqual(base.frontiers);
+    // Another workspace can neither write to nor read this project's history.
+    const theirs = forWorkspace(t.db, other.id);
+    expect(await theirs.revisions.record(base)).toBeNull();
+    expect(await theirs.revisions.list(p.id)).toEqual([]);
+  });
+});

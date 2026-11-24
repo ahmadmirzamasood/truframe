@@ -3,7 +3,7 @@
 > Agent-facing, long-lived project memory. Read at the start of every session; append in the same PR as the work that taught you something. Keep entries short, dated (YYYY-MM-DD) and factual. Fix or strike entries that become wrong.
 
 ## Current state
-- **Phase:** P2 Document core and realtime (in progress; P2-1 to P2-4 done: model, Rust mirror, ops, Loro binding). P1 Accounts, dashboard, project creation is **done locally** (P1-1 to P1-7 merged with green CI). The P1 exit criteria that need staging are blocked: sign-in with all three methods on staging, and D1 migrations on staging. They wait on the Cloudflare connection and on the owner's OAuth apps, Resend and Turnstile keys (`docs/runbooks/auth-setup.md`). P0 is done except the P0-3 staging deploy. 
+- **Phase:** P2 Document core and realtime (in progress; P2-1 to P2-5 done: model, Rust mirror, ops, Loro binding, ProjectRoom). P1 Accounts, dashboard, project creation is **done locally** (P1-1 to P1-7 merged with green CI). The P1 exit criteria that need staging are blocked: sign-in with all three methods on staging, and D1 migrations on staging. They wait on the Cloudflare connection and on the owner's OAuth apps, Resend and Turnstile keys (`docs/runbooks/auth-setup.md`). P0 is done except the P0-3 staging deploy. 
 - **Last updated:** 2026-11-24
 - **Repo:** https://github.com/ahmadmirzamasood/truframe (public, default branch `main`). Work on `tf/<task-id>-<slug>` branches and open PRs. `archive/v1-local-first/` is not in this repo.
 
@@ -38,6 +38,7 @@
 | 2026-11-24 | Inspector simplified: no At rest/Hover state, no margin, no Block display, Align is a dropdown (not a 3×3 matrix) and Space between/around/evenly are separate Distribute buttons; keep blend modes, image features, guides, export | Owner decision | Mockup version |
 
 ## Open questions (owner; defaults in place)
+- Staging/production need a `ROOM_TOKEN_SECRET` Workers secret on both `truframe-web-*` and `truframe-realtime-*`, and `TRUFRAME_REALTIME_URL` (e.g. `wss://realtime.truframe.com`) on the web worker (2026-11-24). Blocked on the Cloudflare connection, like the other staging items.
 - Pricing numbers and limits in `docs/product/BILLING.md` (proposal).
 - Truframe's own license (default: proprietary). `LICENSE` (all rights reserved, holder "Truframe") and `"license": "UNLICENSED"` were committed in P0-5; the owner should confirm the legal entity name.
 - Cloudflare: the account exists but is not connected yet (owner, 2026-11-24). Work stays local until then. P0-3's staging deploy and the CI `deploy-staging` job wait on it (see `docs/runbooks/cloudflare-setup.md`).
@@ -103,6 +104,10 @@
 - 2026-11-24: loro.dev answers 403 to automated fetches. Read the API from the package itself: `npm pack loro-crdt@<v>` into the scratchpad, then `bundler/loro_wasm.d.ts` (classes) and `bundler/index.d.ts` (typed `LoroTreeNode`, `createNode`, `getNodes`), plus the README (bundler entries, mergeable children and undo identity).
 - 2026-11-24: Loro facts we rely on: `loro-crdt` resolves the `nodejs` entry in Node/Vitest (sync WASM, no init); browsers use `browser`/`bundler`, and `loro-crdt/base64` inlines the WASM for esbuild/Rollup. `LoroMap.ensureMergeableMap(key)` keeps one container identity per parent/key; deleting and re-creating it brings back its old contents. Tree nodes need `enableFractionalIndex(0)` for ordered children. Changes are not visible to `export`/events until `doc.commit()`.
 - 2026-11-24: `applyTransaction` must copy every op payload it stores in the document (`structuredClone`). Before the fix, an `addPage` followed by `insertNodes` into that page in the same transaction mutated the returned parsed `addPage` op, and the Loro binding then built a page body with a child it didn't have. The Loro property test found it.
+- 2026-11-24: Realtime worker: `loro-crdt` must be aliased to `loro-crdt/base64` in `workers/realtime/wrangler.jsonc` (the default entry fetches its `.wasm` by URL, which workerd can't do). Node and Vitest keep the default `nodejs` entry.
+- 2026-11-24: Worker integration tests use Wrangler's `createTestHarness()` (the replacement for the deprecated `unstable_startWorker`/`unstable_dev`): `server.listen()` gives a URL for real WebSockets (Node 22 global `WebSocket`), `getWorker().applyD1Migrations("DB")`, `getEnv()` for bindings (drizzle works on the proxied D1), `getDurableObjectStorage(binding, { name })` to read DO SQLite. Pass test secrets with `secrets: {...}` and test vars with `vars: {...}`. `room.integration.test.ts` boots in a few seconds and runs in the normal `pnpm test`.
+- 2026-11-24: `ROOM_TOKEN_SECRET` (≥ 32 chars) must be the same in `apps/web/.dev.vars` and `workers/realtime/.dev.vars`; both `.dev.vars.example` files hold the same local value. The web app also needs `TRUFRAME_REALTIME_URL` (`ws://localhost:8787` locally, `wss://` required elsewhere).
+- 2026-11-24: Open flake: the ops property test failed once in a full `pnpm test` run on Windows (the run that also started the new workerd integration test); the output wasn't kept. Six reruns and one 10,000-run search (`OPS_PROPERTY_RUNS=10000 npx vitest run packages/ops/src/apply.property.test.ts`) passed, so a timeout under load is the likely cause; the timeout is now 300 s. If it fails again, keep the output: fast-check prints the seed and the shrunk counterexample.
 
 ## Dependencies added (name, license, why)
 - turbo 2.11.13 (MIT): task runner. typescript 5.9.3 (Apache-2.0). wrangler 4.166.0 (MIT OR Apache-2.0): Workers dev/deploy. [P0-1]
