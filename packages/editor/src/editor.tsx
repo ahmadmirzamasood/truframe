@@ -16,6 +16,7 @@ import { createNodes, type InsertTool, insertOps, insertTarget } from "./insert.
 import { InsertToolbar } from "./insert-toolbar.tsx";
 import { type Guides, Inspector } from "./inspector/inspector.tsx";
 import { LayersPanel, useLocks } from "./layers-panel.tsx";
+import { PagesPanel } from "./pages-panel.tsx";
 import { ComingSoon, LeftPanel, type LeftTab, RightPanel, type RightTab } from "./panels.tsx";
 import { SelectionLayer } from "./selection-layer.tsx";
 
@@ -108,11 +109,18 @@ export function DesignEditor({ host, backHref, Link }: DesignEditorProps) {
             tab={leftTab}
             onTabChange={setLeftTab}
             content={{
-              pages: (
-                <ComingSoon title="Pages">
-                  Add, rename and organize pages here. Use the Pages menu in the top bar to switch.
-                </ComingSoon>
-              ),
+              pages:
+                doc && page ? (
+                  <PagesPanel
+                    doc={doc}
+                    activePageId={page.id}
+                    onOpenPage={(id) => {
+                      setPageId(id);
+                      setSelection([]);
+                    }}
+                    apply={host.apply}
+                  />
+                ) : null,
               layers:
                 doc && page ? (
                   <LayersPanel
