@@ -23,7 +23,7 @@ import {
   zoomByWheel,
   zoomLabel,
 } from "./camera.ts";
-import { layoutFrames } from "./frames.ts";
+import { type FrameBox, layoutFrames } from "./frames.ts";
 
 /** An empty page still gets a frame you can see and drop into. */
 const MIN_FRAME_HEIGHT = 400;
@@ -47,6 +47,13 @@ export function Canvas(props: {
   fitKey: string;
   /** False while frame content is still loading; the first fit waits for it. */
   contentReady: boolean;
+  /** Screen-space layer above the frames (selection, handles, guides). */
+  overlay?: (ctx: {
+    camera: Camera;
+    frames: FrameBox[];
+    world: HTMLDivElement | null;
+    panning: boolean;
+  }) => ReactNode;
 }) {
   const viewport = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState({ width: 0, height: 0 });
@@ -58,6 +65,11 @@ export function Canvas(props: {
   // Frames are as tall as their content (the page body is "Fit"), measured unscaled.
   const [heights, setHeights] = useState<Partial<Record<BreakpointId, number>>>({});
   const world = useRef<HTMLDivElement>(null);
+  const [worldEl, setWorldEl] = useState<HTMLDivElement | null>(null);
+  const setWorldRef = useCallback((el: HTMLDivElement | null) => {
+    world.current = el;
+    setWorldEl(el);
+  }, []);
   useLayoutEffect(() => {
     const el = world.current;
     if (!el || !props.contentReady) return;
@@ -200,7 +212,7 @@ export function Canvas(props: {
       {props.contentReady ? (
         <>
           <div
-            ref={world}
+            ref={setWorldRef}
             data-testid="canvas-world"
             className="absolute top-0 left-0 origin-top-left"
             style={{
@@ -222,6 +234,9 @@ export function Canvas(props: {
               </div>
             ))}
           </div>
+          {camera && props.overlay
+            ? props.overlay({ camera, frames, world: worldEl, panning: spaceDown || panning })
+            : null}
           {/* Labels live in screen space so they stay readable at any zoom. */}
           {frames.map(({ breakpoint, rect }) => {
             if (!camera) return null;
