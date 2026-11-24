@@ -164,14 +164,9 @@ pub fn tokens_css(project: &Project) -> String {
         if let Some(q) = q
             && !blocks[i].is_empty()
         {
-            css.push_str(&format!("
-@media {q} {{
-  :root {{
-"));
+            css.push_str(&format!("\n@media {q} {{\n  :root {{\n"));
             block(&mut css, "    ", &blocks[i]);
-            css.push_str("  }
-}
-");
+            css.push_str("  }\n}\n");
         }
     }
     if !theme.is_empty() {
