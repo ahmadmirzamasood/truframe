@@ -1,6 +1,7 @@
 "use client";
 
 import type { BreakpointId, Node, ProjectDocument } from "@truframe/model";
+import { RenderedFrame } from "@truframe/renderer";
 import { Button } from "@truframe/ui/components/button";
 import { Input } from "@truframe/ui/components/input";
 import { Label } from "@truframe/ui/components/label";
@@ -9,6 +10,7 @@ import { Canvas } from "./canvas.tsx";
 import type { EditorHost } from "./host.ts";
 import { ComingSoon, LeftPanel, type LeftTab, RightPanel, type RightTab } from "./panels.tsx";
 import { BREAKPOINT_LABEL, type EditorView, TopBar } from "./top-bar.tsx";
+import { useCompiled } from "./use-compiled.ts";
 
 export type DesignEditorProps = {
   host: EditorHost;
@@ -44,6 +46,8 @@ export function DesignEditor({ host, backHref, Link }: DesignEditorProps) {
   }, [host]);
 
   const page = doc?.pages.find((p) => p.id === activePageId);
+  const compiled = useCompiled(doc);
+  const output = compiled.status === "loading" ? null : compiled.output;
 
   return (
     <div className="flex h-dvh flex-col overflow-hidden bg-background text-foreground">
@@ -102,11 +106,21 @@ export function DesignEditor({ host, backHref, Link }: DesignEditorProps) {
                 editing={activeBreakpoint}
                 onEditingChange={setBreakpoint}
                 fitKey={page.id}
-                renderFrame={() => (
-                  <div className="grid h-[800px] place-items-center text-2xl text-neutral-400">
-                    {page.name}
-                  </div>
-                )}
+                contentReady={compiled.status !== "loading"}
+                renderFrame={(bp) =>
+                  output ? (
+                    <RenderedFrame doc={doc} output={output} pageId={page.id} breakpoint={bp} />
+                  ) : (
+                    <div
+                      data-tf-frame={bp}
+                      className="grid h-100 place-items-center p-6 text-center text-sm text-muted-foreground"
+                    >
+                      {compiled.status === "error"
+                        ? `The page couldn't be drawn: ${compiled.message}`
+                        : null}
+                    </div>
+                  )
+                }
               />
             ) : (
               <p className="grid h-full place-items-center text-sm text-muted-foreground">

@@ -24,6 +24,10 @@ import {
   zoomLabel,
 } from "./camera.ts";
 import { layoutFrames } from "./frames.ts";
+
+/** An empty page still gets a frame you can see and drop into. */
+const MIN_FRAME_HEIGHT = 400;
+
 import { BREAKPOINT_LABEL } from "./top-bar.tsx";
 
 function isTyping(target: EventTarget | null): boolean {
@@ -39,10 +43,10 @@ export function Canvas(props: {
   onEditingChange: (id: BreakpointId) => void;
   /** Content of each breakpoint frame, rendered at the frame's width in world space. */
   renderFrame: (id: BreakpointId) => ReactNode;
-  /** Measured content heights per frame. */
-  heights?: Partial<Record<BreakpointId, number>>;
   /** Changes when the page changes, so the camera fits the new page. */
   fitKey: string;
+  /** False while frame content is still loading; the first fit waits for it. */
+  contentReady: boolean;
 }) {
   const viewport = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState({ width: 0, height: 0 });
@@ -51,7 +55,29 @@ export function Canvas(props: {
   const drag = useRef<{ x: number; y: number; id: number } | null>(null);
   const [panning, setPanning] = useState(false);
 
-  const frames = layoutFrames(props.breakpoints, props.heights);
+  // Frames are as tall as their content (the page body is "Fit"), measured unscaled.
+  const [heights, setHeights] = useState<Partial<Record<BreakpointId, number>>>({});
+  const world = useRef<HTMLDivElement>(null);
+  useLayoutEffect(() => {
+    const el = world.current;
+    if (!el || !props.contentReady) return;
+    const measure = () => {
+      const next: Partial<Record<BreakpointId, number>> = {};
+      for (const f of el.querySelectorAll<HTMLElement>("[data-frame] > [data-tf-frame]"))
+        next[f.dataset.tfFrame as BreakpointId] = Math.max(MIN_FRAME_HEIGHT, f.offsetHeight);
+      setHeights((prev) =>
+        Object.keys(next).length === Object.keys(prev).length &&
+        Object.entries(next).every(([k, v]) => prev[k as BreakpointId] === v)
+          ? prev
+          : next,
+      );
+    };
+    measure();
+    const observer = new ResizeObserver(measure);
+    for (const f of el.querySelectorAll("[data-frame] > [data-tf-frame]")) observer.observe(f);
+    return () => observer.disconnect();
+  });
+  const frames = layoutFrames(props.breakpoints, heights);
   const bounds = unionRects(frames.map((f) => f.rect));
 
   useLayoutEffect(() => {
@@ -72,10 +98,11 @@ export function Canvas(props: {
   // Fit once the viewport is measured, and again for each page.
   const fittedFor = useRef<string | null>(null);
   useEffect(() => {
-    if (size.width === 0 || fittedFor.current === props.fitKey) return;
+    const measured = frames.every((f) => heights[f.breakpoint] !== undefined);
+    if (size.width === 0 || !measured || fittedFor.current === props.fitKey) return;
     fittedFor.current = props.fitKey;
     fit();
-  }, [size.width, props.fitKey, fit]);
+  }, [size.width, props.fitKey, frames, heights, fit]);
 
   const center = useCallback(() => ({ x: size.width / 2, y: size.height / 2 }), [size]);
   const zoomTo = useCallback(
@@ -170,12 +197,19 @@ export function Canvas(props: {
       onPointerUp={endPan}
       onPointerCancel={endPan}
     >
-      {camera ? (
+      {props.contentReady ? (
         <>
           <div
+            ref={world}
             data-testid="canvas-world"
             className="absolute top-0 left-0 origin-top-left"
-            style={{ transform: `translate(${camera.x}px, ${camera.y}px) scale(${camera.zoom})` }}
+            style={{
+              // Laid out (and measured) before the first fit, but not shown until then.
+              visibility: camera ? undefined : "hidden",
+              transform: camera
+                ? `translate(${camera.x}px, ${camera.y}px) scale(${camera.zoom})`
+                : undefined,
+            }}
           >
             {frames.map(({ breakpoint, rect }) => (
               <div
@@ -190,6 +224,7 @@ export function Canvas(props: {
           </div>
           {/* Labels live in screen space so they stay readable at any zoom. */}
           {frames.map(({ breakpoint, rect }) => {
+            if (!camera) return null;
             const p = worldToScreen(camera, rect);
             const active = breakpoint === props.editing;
             return (

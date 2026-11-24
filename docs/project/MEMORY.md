@@ -3,7 +3,7 @@
 > Agent-facing, long-lived project memory. Read at the start of every session; append in the same PR as the work that taught you something. Keep entries short, dated (YYYY-MM-DD) and factual. Fix or strike entries that become wrong.
 
 ## Current state
-- **Phase:** P4 Design View I is **in progress** (P4-1 editor shell done). P3 Compiler v1 is **done** (P3-1 to P3-6 merged with green CI; exit criteria met: 60 golden fixtures over both frameworks, every one built and type-checked in CI by the `generated` job, a 300-layer page compiles in 11.9 ms median in WASM). P2 is done. P1 is done locally; its staging exit criteria (sign-in with all three methods on staging, D1 migrations on staging) wait on the Cloudflare connection and the owner's OAuth apps, Resend and Turnstile keys (`docs/runbooks/auth-setup.md`). P0 is done except the P0-3 staging deploy.
+- **Phase:** P4 Design View I is **in progress** (P4-1 shell, P4-2 camera, P4-3 renderer done). P3 Compiler v1 is **done** (P3-1 to P3-6 merged with green CI; exit criteria met: 60 golden fixtures over both frameworks, every one built and type-checked in CI by the `generated` job, a 300-layer page compiles in 11.9 ms median in WASM). P2 is done. P1 is done locally; its staging exit criteria (sign-in with all three methods on staging, D1 migrations on staging) wait on the Cloudflare connection and the owner's OAuth apps, Resend and Turnstile keys (`docs/runbooks/auth-setup.md`). P0 is done except the P0-3 staging deploy.
 - **Last updated:** 2026-11-25
 - **Repo:** https://github.com/ahmadmirzamasood/truframe (public, default branch `main`). Work on `tf/<task-id>-<slug>` branches and open PRs. `archive/v1-local-first/` is not in this repo.
 
@@ -126,6 +126,10 @@
 
 - 2026-11-25: Editor split: `@truframe/editor` (UI package) owns the Design View and talks to the app only through `EditorHost` (`doc`, `sync`, `apply(ops)`, `undo`, `redo`, plus the app's `Link`). `apps/web/src/components/editor/project-editor.tsx` builds it from `DocClient`. Editor classes are Tailwind, so `apps/web/src/app/globals.css` has `@source` for `packages/editor/src`; new UI packages need the same line. Shared shadcn pieces (`tabs`, `dropdown-menu`) were written by hand into `packages/ui`, not with the CLI.
 
+- 2026-11-25: The canvas renderer reproduces the built site pixel for pixel (0.000% on 64 pairs) when it (1) emits the compiler's exact elements, (2) applies the per-node CSS down the cascade in one scope per frame, (3) uses Tailwind's preflight with the frame as `html`/`body`, and (4) makes the frame a containing block and stacking context. Without (4), `-z-1` layers vanish behind the frame's white background. Screenshot both sides the same way (full page at the breakpoint width): element screenshots clip overflow and fail on empty frames.
+- 2026-11-25: Turbopack (dev and `next build`) bundles `new URL("../pkg/compiler_bg.wasm", import.meta.url)` as a static asset (`.next/static/media/compiler_bg.<hash>.wasm`), so the browser loader needs no copy step. The CI `build` and `e2e` jobs now run `pnpm compiler:build` because the editor imports the glue.
+- 2026-11-25: Node's type stripping rejects TypeScript parameter properties (`constructor(private x)`); code that `scripts/*.ts` imports (the renderer, via `parity.ts`) must use plain fields.
+
 ## Dependencies added (name, license, why)
 - turbo 2.11.13 (MIT): task runner. typescript 5.9.3 (Apache-2.0). wrangler 4.166.0 (MIT OR Apache-2.0): Workers dev/deploy. [P0-1]
 - @biomejs/biome 2.6.8 (MIT OR Apache-2.0), vitest 5.1.1 (MIT), @playwright/test 1.65.1 (Apache-2.0), @types/node 22.20.5 (MIT). cargo-deny (MIT OR Apache-2.0) is a dev tool installed with `cargo install cargo-deny --locked`. [P0-2]
@@ -141,6 +145,8 @@
 - Rust dev-dependencies oxc_allocator, oxc_parser, oxc_span 0.160.0 (MIT): golden tests parse every generated script. Not in the WASM build. [P3-3]
 - Generated-project dependency pins (in `crates/compiler/templates/*/package.json`, not Truframe dependencies): next 16.4.6, react/react-dom 19.3.1, tailwindcss + @tailwindcss/postcss + @tailwindcss/vite 4.3.5, postcss 8.5.33, typescript 5.9.3, @types/react(-dom) 19.3.0, @types/node 22.20.5, astro 7.4.13, @astrojs/check 0.9.12. [P3-3, P3-4]
 - loro-crdt 1.18.0 (MIT): the document CRDT (`packages/crdt`), chosen in ARCHITECTURE §2. 1.19.0 was one day old, so pnpm's release-age rule applies. [P2-4]
+
+- pixelmatch 8.0.0 (ISC), pngjs 7.0.0 (MIT), @types/pngjs 6.0.5 (MIT), react/react-dom 19.3.1 + types (MIT), root dev only: the canvas parity script. [P4-3]
 
 ## Benchmarks
 - 2026-11-24: **Compiler WASM, one page (P3-6, budget < 30 ms): met.** `node scripts/bench-compiler.ts --runs 300` (whole `compileJson` call: JSON in, every project file printed, JSON out) on the Windows dev machine (Intel i5-9300H, 24 GB, Node 24.16): 300-layer page (307 layers, `benchmarkPage(300)` from `@truframe/model/testing/benchmark`) **11.9 ms median / 16.2 ms p95** (Next.js), 11.8 / 14.1 ms (Astro); 1,000-layer page 42.4 / 60.6 ms (Next.js), 40.5 / 57.1 ms (Astro). Before the P3-6 fixes the 300-layer page took 32 ms and the 1,000-layer page 271 ms: two quadratic steps (numbering duplicate layer classes from 2 each time; converting every span to UTF-16 from the file start). `speed.test.ts` guards the scaling. Each call also re-serializes the two fixed lockfiles (~270 KB); the P6 incremental compile should skip unchanged files. WASM size 1.3 MB raw (the lockfiles are ~270 KB of it); **355 KiB gzip** (budget 2.5 MB).

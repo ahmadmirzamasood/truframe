@@ -11,9 +11,11 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@truframe/compiler-wasm": "workspace:*",
     "@truframe/layout": "workspace:*",
     "@truframe/model": "workspace:*",
     "@truframe/ops": "workspace:*",
+    "@truframe/renderer": "workspace:*",
     "@truframe/ui": "workspace:*",
     "lucide-react": "1.77.0"
   },
