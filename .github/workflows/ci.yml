@@ -119,7 +119,7 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: cp apps/web/.dev.vars.example apps/web/.dev.vars
+      - run: cp apps/web/.dev.vars.example apps/web/.dev.vars && cp workers/realtime/.dev.vars.example workers/realtime/.dev.vars
       - run: pnpm exec playwright install --with-deps chromium
       - run: pnpm e2e
       - if: failure()

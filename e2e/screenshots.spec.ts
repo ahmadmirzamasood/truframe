@@ -40,4 +40,15 @@ test("capture auth and dashboard screens", async ({ page, context }) => {
   const dialog = await openDialog(page, "New project", "New project");
   await dialog.getByRole("radio", { name: "Landing page" }).check();
   await page.screenshot({ path: `${dir}/new-project-dialog.png` });
+
+  await page.keyboard.press("Escape");
+  await list
+    .getByRole("listitem", { name: "Pricing site" })
+    .getByRole("link", { name: "Open" })
+    .click();
+  await expect(page.getByTestId("sync-status")).toHaveText("Online");
+  await page.getByLabel("Add a text layer").fill("Added from the editor");
+  await page.getByRole("button", { name: "Add", exact: true }).click();
+  await expect(page.getByRole("listitem", { name: "Added from the editor" })).toBeVisible();
+  await page.screenshot({ path: `${dir}/editor.png` });
 });
