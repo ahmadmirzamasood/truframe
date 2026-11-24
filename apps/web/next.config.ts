@@ -15,6 +15,9 @@ const nextConfig: NextConfig = {
     "@truframe/crdt",
     "@truframe/sync",
     "@truframe/editor",
+    "@truframe/renderer",
+    "@truframe/layout",
+    "@truframe/compiler-wasm",
   ],
   poweredByHeader: false,
 };

@@ -1,7 +1,10 @@
 // Builds and type-checks the generated golden projects (fixtures/compiler/*/expected/<fw>).
 //
 //   node scripts/build-fixtures.ts nextjs|astro [--only a,b] [--dir <work dir>]
+//     [--keep-out <dir>] [--no-typecheck]
 //
+// `--keep-out` copies each built site (Next.js `out/`, Astro `dist/`) to `<dir>/<fixture>`
+// with its placeholder assets, for the canvas parity test (scripts/parity.ts).
 // Dependencies are the same for every project of a framework (one lockfile, embedded in the
 // compiler), so they are installed once with `npm ci` into a work directory; each fixture's
 // files are then swapped in and built with `npm run build` and `npm run typecheck`. Uploaded
@@ -23,7 +26,12 @@ import { parseArgs } from "node:util";
 const repo = join(import.meta.dirname, "..");
 const { positionals, values } = parseArgs({
   allowPositionals: true,
-  options: { only: { type: "string" }, dir: { type: "string" } },
+  options: {
+    only: { type: "string" },
+    dir: { type: "string" },
+    "keep-out": { type: "string" },
+    "no-typecheck": { type: "boolean" },
+  },
 });
 const framework = positionals[0];
 if (framework !== "nextjs" && framework !== "astro") {
@@ -113,8 +121,13 @@ for (const name of names) {
   }
   try {
     const build = run("npm", ["run", "build"], work);
-    const typecheck = run("npm", ["run", "typecheck"], work);
+    const typecheck = values["no-typecheck"] ? 0 : run("npm", ["run", "typecheck"], work);
     results.push({ name, build, typecheck });
+    if (values["keep-out"]) {
+      const dest = join(values["keep-out"], name);
+      rmSync(dest, { recursive: true, force: true });
+      cpSync(join(work, framework === "nextjs" ? "out" : "dist"), dest, { recursive: true });
+    }
   } catch {
     failures.push(name);
   }
