@@ -28,7 +28,7 @@ import { layoutFrames } from "./frames.ts";
 /** An empty page still gets a frame you can see and drop into. */
 const MIN_FRAME_HEIGHT = 400;
 
-import { BREAKPOINT_LABEL } from "./top-bar.tsx";
+import { BREAKPOINT_LABEL } from "./labels.ts";
 
 function isTyping(target: EventTarget | null): boolean {
   return (

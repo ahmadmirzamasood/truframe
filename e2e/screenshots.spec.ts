@@ -1,6 +1,6 @@
 // Not part of the suite: run with TRUFRAME_SCREENSHOTS=<dir> to save PR screenshots.
 import { expect, test } from "@playwright/test";
-import { openDialog, ownClientIp, signInWithMock, unique } from "./helpers";
+import { openDialog, openNewProject, ownClientIp, signInWithMock, unique } from "./helpers";
 
 const dir = process.env.TRUFRAME_SCREENSHOTS;
 test.skip(!dir, "set TRUFRAME_SCREENSHOTS to a folder to capture screenshots");
@@ -65,4 +65,14 @@ test("capture the editor", async ({ page, context }) => {
   await page.goto(`/p/${project.id}`);
   await expect(page.getByTestId("sync-status")).toHaveText("Online");
   await page.screenshot({ path: `${dir}/editor-shell.png` });
+});
+
+test("capture breakpoint settings", async ({ page, context }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await openNewProject(page, context, { name: "Landing", templateId: "landing" });
+  await page.getByRole("button", { name: "Breakpoint settings" }).click();
+  const input = page.getByLabel("Tablet", { exact: true });
+  await input.fill("1300");
+  await input.press("Enter");
+  await page.screenshot({ path: `${dir}/breakpoint-settings.png` });
 });

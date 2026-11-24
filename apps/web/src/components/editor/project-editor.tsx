@@ -67,7 +67,9 @@ export function ProjectEditor({
             lastError: state.lastError,
           }
         : { status: "loading", pending: 0, canUndo: false, canRedo: false, lastError: null },
-      apply: (ops) => client.current?.apply(ops) ?? { message: "The editor is still loading." },
+      // DocClient.apply returns null on success, so don't coalesce it.
+      apply: (ops) =>
+        client.current ? client.current.apply(ops) : { message: "The editor is still loading." },
       undo: () => client.current?.undo(),
       redo: () => client.current?.redo(),
     }),
