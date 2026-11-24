@@ -28,3 +28,26 @@ export async function openDialog(page: Page, trigger: string, dialogName: string
   }).toPass();
   return dialog;
 }
+
+/** Signs in as a new user, creates a project through the API and opens it in the editor. */
+export async function openNewProject(
+  page: Page,
+  context: BrowserContext,
+  input: { name: string; templateId: string; framework?: "nextjs" | "astro" },
+): Promise<string> {
+  await ownClientIp(context);
+  await signInWithMock(page, unique("editor"));
+  const res = await context.request.post("/api/projects", {
+    data: {
+      name: input.name,
+      framework: input.framework ?? "nextjs",
+      templateId: input.templateId,
+    },
+    headers: { origin: new URL(page.url()).origin },
+  });
+  expect(res.status()).toBe(201);
+  const { project } = (await res.json()) as { project: { id: string } };
+  await page.goto(`/p/${project.id}`);
+  await expect(page.getByTestId("sync-status")).toHaveText("Online");
+  return project.id;
+}

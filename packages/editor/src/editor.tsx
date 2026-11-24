@@ -5,6 +5,7 @@ import { Button } from "@truframe/ui/components/button";
 import { Input } from "@truframe/ui/components/input";
 import { Label } from "@truframe/ui/components/label";
 import { type ComponentType, type FormEvent, type ReactNode, useEffect, useState } from "react";
+import { Canvas } from "./canvas.tsx";
 import type { EditorHost } from "./host.ts";
 import { ComingSoon, LeftPanel, type LeftTab, RightPanel, type RightTab } from "./panels.tsx";
 import { BREAKPOINT_LABEL, type EditorView, TopBar } from "./top-bar.tsx";
@@ -93,13 +94,25 @@ export function DesignEditor({ host, backHref, Link }: DesignEditorProps) {
             }}
           />
         </aside>
-        <main aria-label={view === "design" ? "Canvas" : "Code"} className="min-h-0 bg-muted/60">
+        <main aria-label={view === "design" ? "Canvas" : "Code"} className="min-h-0">
           {view === "design" ? (
-            <div className="grid h-full place-items-center text-sm text-muted-foreground">
-              {doc
-                ? `${page?.name ?? ""} · ${BREAKPOINT_LABEL[activeBreakpoint]}`
-                : "Loading the document…"}
-            </div>
+            doc && page ? (
+              <Canvas
+                breakpoints={doc.breakpoints}
+                editing={activeBreakpoint}
+                onEditingChange={setBreakpoint}
+                fitKey={page.id}
+                renderFrame={() => (
+                  <div className="grid h-[800px] place-items-center text-2xl text-neutral-400">
+                    {page.name}
+                  </div>
+                )}
+              />
+            ) : (
+              <p className="grid h-full place-items-center text-sm text-muted-foreground">
+                Loading the document…
+              </p>
+            )
           ) : (
             <ComingSoon title="Code View">
               The generated project will appear here, read-only and updated as you design.

@@ -11,6 +11,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@truframe/layout": "workspace:*",
     "@truframe/model": "workspace:*",
     "@truframe/ops": "workspace:*",
     "@truframe/ui": "workspace:*",

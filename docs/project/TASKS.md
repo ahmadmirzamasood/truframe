@@ -36,7 +36,7 @@
 
 ## P4 Design View I
 - [x] **P4-1** Editor shell route `/p/[id]`: top bar (pages menu, Design/Code toggle, breakpoint bar, Preview, Publish), left tabs (Pages, Layers, Components, Variables, Assets), right tabs (Inspect, Agent, History, Comments). *Done when* layout renders with placeholders. `@truframe/editor` (`DesignEditor`) renders the shell from an `EditorHost` (document, sync summary, `apply`/`undo`/`redo`) that `apps/web` builds from `DocClient`. Evidence: `e2e/editor-shell.spec.ts`.
-- [ ] **P4-2** Canvas camera (pan, zoom 10–800%, fit), breakpoint frames side by side. *Done when* camera math unit tests pass.
+- [x] **P4-2** Canvas camera (pan, zoom 10–800%, fit), breakpoint frames side by side. *Done when* camera math unit tests pass. `packages/editor/src/camera.ts` (screen = world × zoom + offset; zoom about a point, wheel zoom, preset steps, fit) and `frames.ts` (frames widest first, 120 px apart); `Point`/`Rect` helpers in `@truframe/layout`. Wheel pans, Ctrl/Cmd+wheel or pinch zooms at the cursor, Space or middle-drag pans, Shift+1 fits, Shift+0 is 100%, Ctrl+= / Ctrl+- step. Evidence: `camera.test.ts` (8 tests) and `e2e/editor-canvas.spec.ts`.
 - [ ] **P4-3** `packages/renderer`: model → DOM using compiler CSS; per-breakpoint rendering at frame width. *Done when* renders fixtures identically to built output (screenshot parity ≤ 1%).
 - [ ] **P4-4** Breakpoint management: Desktop width ≥ 1200 editable, not deletable; Tablet/Mobile add/remove/resize within ranges. *Done when* e2e + validation errors shown.
 - [ ] **P4-5** Insert tools: Frame (Stack/Grid), Text, Image placeholder, Link/Button, Icon. *Done when* each inserts valid nodes via ops.
