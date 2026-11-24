@@ -2,15 +2,10 @@
 
 import type { BreakpointId } from "@truframe/model";
 import { RenderedFrame } from "@truframe/renderer";
-import {
-  type ComponentType,
-  type ReactNode,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
-import { Canvas } from "./canvas.tsx";
+import { type ComponentType, type ReactNode, useCallback, useMemo, useRef, useState } from "react";
+import { Canvas, type CanvasApi } from "./canvas.tsx";
+import { CommandPalette, ShortcutSheet, useCommandKeys } from "./command-ui.tsx";
+import { editorCommands } from "./editor-commands.ts";
 import type { EditorHost } from "./host.ts";
 import { createNodes, type InsertTool, insertOps, insertTarget } from "./insert.ts";
 import { InsertToolbar } from "./insert-toolbar.tsx";
@@ -49,19 +44,6 @@ export function DesignEditor({ host, backHref, Link }: DesignEditorProps) {
     doc && pageId && doc.pages.some((p) => p.id === pageId) ? pageId : (doc?.pages[0]?.id ?? null);
   const activeBreakpoint = doc?.breakpoints[breakpoint] ? breakpoint : "desktop";
 
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      const target = e.target as HTMLElement | null;
-      if (target?.closest("input, textarea, select, [contenteditable]")) return;
-      if (!(e.metaKey || e.ctrlKey) || e.key.toLowerCase() !== "z") return;
-      e.preventDefault();
-      if (e.shiftKey) host.redo();
-      else host.undo();
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [host]);
-
   const page = doc?.pages.find((p) => p.id === activePageId);
   const compiled = useCompiled(doc);
   const locks = useLocks(doc?.id);
@@ -83,6 +65,39 @@ export function DesignEditor({ host, backHref, Link }: DesignEditorProps) {
     [doc, page, liveSelection, host],
   );
 
+  const canvasApi = useRef<CanvasApi | null>(null);
+  const [paletteOpen, setPaletteOpen] = useState(false);
+  const [sheetOpen, setSheetOpen] = useState(false);
+  const commands = useMemo(
+    () =>
+      editorCommands({
+        doc,
+        pageRoot: page?.root ?? null,
+        selection: liveSelection,
+        editing: activeBreakpoint,
+        apply: host.apply,
+        undo: host.undo,
+        redo: host.redo,
+        canUndo: host.sync.canUndo,
+        canRedo: host.sync.canRedo,
+        setSelection,
+        setBreakpoint,
+        setView,
+        setLeftTab,
+        setRightTab,
+        openPage: (id) => {
+          setPageId(id);
+          setSelection([]);
+        },
+        insert,
+        canvas: canvasApi,
+        openPalette: () => setPaletteOpen(true),
+        openShortcuts: () => setSheetOpen(true),
+      }),
+    [doc, page, liveSelection, activeBreakpoint, host, insert],
+  );
+  useCommandKeys(commands);
+
   return (
     <div className="flex h-dvh flex-col overflow-hidden bg-background text-foreground">
       <TopBar
@@ -97,6 +112,7 @@ export function DesignEditor({ host, backHref, Link }: DesignEditorProps) {
         onBreakpointChange={setBreakpoint}
         backHref={backHref}
         BackLink={Link}
+        onOpenCommands={() => setPaletteOpen(true)}
       />
       {host.sync.lastError ? (
         <p role="alert" className="border-b bg-destructive/10 px-3 py-1.5 text-sm text-destructive">
@@ -161,6 +177,7 @@ export function DesignEditor({ host, backHref, Link }: DesignEditorProps) {
           {view === "design" ? (
             doc && page ? (
               <Canvas
+                apiRef={canvasApi}
                 breakpoints={doc.breakpoints}
                 editing={activeBreakpoint}
                 onEditingChange={setBreakpoint}
@@ -243,6 +260,8 @@ export function DesignEditor({ host, backHref, Link }: DesignEditorProps) {
           />
         </aside>
       </div>
+      <CommandPalette open={paletteOpen} onOpenChange={setPaletteOpen} commands={commands} />
+      <ShortcutSheet open={sheetOpen} onOpenChange={setSheetOpen} commands={commands} />
     </div>
   );
 }

@@ -33,7 +33,6 @@ import type { FrameBox } from "./frames.ts";
 import {
   type DragContext,
   type DragPreview,
-  deleteOps,
   dragOps,
   dragPreview,
   type ResizeContext,
@@ -297,29 +296,16 @@ export function SelectionLayer(props: SelectionLayerProps) {
   };
 
   // Keyboard: Escape selects the parent, Delete removes the selection.
+  // Alt shows measurements; Escape and Delete are commands in the registry.
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      setAlt(e.altKey);
-      const t = e.target as HTMLElement | null;
-      if (t?.closest("input, textarea, select, [contenteditable], [role=dialog], [role=menu]"))
-        return;
-      if (e.key === "Escape" && selection.length) {
-        const parent = parents.get(selection[0] as string);
-        props.onSelectionChange(parent && parent !== pageRoot ? [parent] : []);
-      } else if ((e.key === "Delete" || e.key === "Backspace") && selection.length) {
-        e.preventDefault();
-        const ops = deleteOps(selection, parents);
-        if (ops.length && !props.apply(ops)) props.onSelectionChange([]);
-      }
-    };
-    const onKeyUp = (e: KeyboardEvent) => setAlt(e.altKey);
+    const onKey = (e: KeyboardEvent) => setAlt(e.altKey);
     window.addEventListener("keydown", onKey);
-    window.addEventListener("keyup", onKeyUp);
+    window.addEventListener("keyup", onKey);
     return () => {
       window.removeEventListener("keydown", onKey);
-      window.removeEventListener("keyup", onKeyUp);
+      window.removeEventListener("keyup", onKey);
     };
-  }, [selection, parents, pageRoot, props.onSelectionChange, props.apply]);
+  }, []);
 
   // ——— Drawing ———
   const overlays: ReactNode[] = [];
