@@ -30,7 +30,7 @@
 | Privacy | Leaking customer data | Data stays in Cloudflare (R2/D1/DO); model provider receives only what the user's agent run needs; no training on customer data; telemetry without content; data export and account deletion (hard delete within 30 days) |
 
 ## 3. Required controls checklist
-- [ ] Repository layer enforces `workspaceId` on every query (lint rule forbids importing Drizzle tables outside `packages/db/repos`).
+- [x] Repository layer enforces `workspaceId` on every query (lint rule forbids importing Drizzle tables outside `packages/db/repos`). (P1-1: `forWorkspace()` repos, Biome `noRestrictedImports`; T1 API e2e in P1-7.)
 - [ ] Room tokens: HMAC-signed, 5-minute expiry, bound to user + project + role.
 - [ ] CSP and security headers on app, usercontent and sites origins (separate policies).
 - [ ] Sandboxed iframes for all user code; postMessage origin + schema checks both ways.
