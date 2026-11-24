@@ -1,4 +1,4 @@
-import { authAdapterSchema, authUsersRepo, type Db, uuidv7 } from "@truframe/db";
+import { authAdapterSchema, authUsersRepo, type Db, uuidv7, workspacesRepo } from "@truframe/db";
 import { type AuthEmail, type EmailSender, renderAuthEmail } from "@truframe/emails";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
@@ -13,9 +13,9 @@ export type CreateAuthOptions = {
   email: EmailSender;
   /** Runs email sends after the response (Workers `ctx.waitUntil`); awaited when absent. */
   waitUntil?: (promise: Promise<unknown>) => void;
-  /** Called once after Better Auth creates a user (P1-3: personal workspace). */
-  onUserCreated?: (user: { id: string; name: string; email: string }) => Promise<void>;
 };
+
+export const PERSONAL_WORKSPACE_NAME = "Personal";
 
 /** Endpoints that need a Turnstile token: the ones that can create an account. */
 export const CAPTCHA_ENDPOINTS = ["/sign-up/email", "/sign-in/magic-link"];
@@ -146,8 +146,13 @@ export function createAuth(options: CreateAuthOptions) {
     databaseHooks: {
       user: {
         create: {
+          // Every user gets a personal workspace at signup (idempotent; `resolveWorkspace`
+          // also creates it lazily if this hook ever failed).
           after: async (user) => {
-            await options.onUserCreated?.({ id: user.id, name: user.name, email: user.email });
+            await workspacesRepo(db).ensurePersonal({
+              userId: user.id,
+              name: PERSONAL_WORKSPACE_NAME,
+            });
           },
         },
       },
