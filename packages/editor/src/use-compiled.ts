@@ -9,10 +9,34 @@ import type { ProjectDocument } from "@truframe/model";
 import type { CompiledCss } from "@truframe/renderer";
 import { useEffect, useState } from "react";
 
+/** The compiler's CSS plus each layer's code class (PRD F27), read from its output. */
+export type Compiled = CompiledCss & { classes: ReadonlyMap<string, string> };
+
 export type CompileState =
   | { status: "loading" }
-  | { status: "ready"; output: CompiledCss }
-  | { status: "error"; message: string; output: CompiledCss | null };
+  | { status: "ready"; output: Compiled }
+  | { status: "error"; message: string; output: Compiled | null };
+
+/**
+ * A layer's code class is the first class on its element in the generated file, so the
+ * Layers panel shows exactly what Code View and the exported repo will contain.
+ */
+export function codeClasses(
+  files: Readonly<Record<string, string>>,
+  spans: readonly { node: string; path: string; start: number; end: number }[],
+): Map<string, string> {
+  const out = new Map<string, string>();
+  for (const s of spans) {
+    if (out.has(s.node)) continue;
+    const source = files[s.path];
+    if (!source) continue;
+    // The opening tag only: up to the first ">" that ends it.
+    const open = source.slice(s.start, s.end).split(">")[0] ?? "";
+    const m = /\bclass(?:Name)?="([^"\s]+)/.exec(open);
+    if (m?.[1]) out.set(s.node, m[1]);
+  }
+  return out;
+}
 
 const TOKENS = { nextjs: "app/tokens.css", astro: "src/styles/tokens.css" } as const;
 
@@ -28,7 +52,11 @@ export function useCompiled(doc: ProjectDocument | null): CompileState {
         const out = compile(doc);
         setState({
           status: "ready",
-          output: { css: out.css, tokens: out.files[TOKENS[doc.framework]] },
+          output: {
+            css: out.css,
+            tokens: out.files[TOKENS[doc.framework]],
+            classes: codeClasses(out.files, out.spans),
+          },
         });
       })
       .catch((error: unknown) => {

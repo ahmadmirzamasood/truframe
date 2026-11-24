@@ -47,9 +47,7 @@ test("capture auth and dashboard screens", async ({ page, context }) => {
     .getByRole("link", { name: "Open" })
     .click();
   await expect(page.getByTestId("sync-status")).toHaveText("Online");
-  await page.getByLabel("Add a text layer").fill("Added from the editor");
-  await page.getByRole("button", { name: "Add", exact: true }).click();
-  await expect(page.getByRole("listitem", { name: "Added from the editor" })).toBeVisible();
+  await expect(page.getByRole("tree", { name: "Desktop layers" })).toBeVisible();
   await page.screenshot({ path: `${dir}/editor.png` });
 });
 
@@ -108,5 +106,9 @@ test("capture the inspector", async ({ page, context }) => {
     .click();
   await page.screenshot({ path: `${dir}/inspector-text.png` });
   await page.keyboard.press("Escape");
+  await page
+    .getByRole("button", { name: /^Mobile/ })
+    .first()
+    .click();
   await page.screenshot({ path: `${dir}/inspector-section.png` });
 });

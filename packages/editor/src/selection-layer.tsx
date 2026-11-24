@@ -117,6 +117,8 @@ export type SelectionLayerProps = {
   /** Space is held: the canvas pans instead. */
   panning: boolean;
   guides?: Guides;
+  /** Locked layers (and everything inside them) can't be picked on the canvas. */
+  locked?: ReadonlySet<string>;
 };
 
 export function SelectionLayer(props: SelectionLayerProps) {
@@ -163,6 +165,11 @@ export function SelectionLayer(props: SelectionLayerProps) {
   };
 
   const boxesOf = (bp: BreakpointId): Boxes => measured.get(bp)?.boxes ?? new Map();
+  const pick = (bp: BreakpointId, p: Point): string[] => {
+    const path = hitPath(doc, pageRoot, boxesOf(bp), p);
+    const cut = path.findIndex((id) => props.locked?.has(id));
+    return cut >= 0 ? path.slice(0, cut) : path;
+  };
 
   const onPointerDown = (e: React.PointerEvent) => {
     if (e.button !== 0 || props.panning) return;
@@ -172,7 +179,7 @@ export function SelectionLayer(props: SelectionLayerProps) {
       props.onSelectionChange([]);
       return;
     }
-    const path = hitPath(doc, pageRoot, boxesOf(at.bp), at.local);
+    const path = pick(at.bp, at.local);
     const target = clickTarget(path, parents, selection.at(-1) ?? null, e.ctrlKey || e.metaKey);
     if (at.bp !== editing) props.onEditingChange(at.bp);
     if (!target) {
@@ -197,7 +204,7 @@ export function SelectionLayer(props: SelectionLayerProps) {
     if (!at) return;
     if (!session) {
       if (!at.bp || props.panning) return setHover(null);
-      const path = hitPath(doc, pageRoot, boxesOf(at.bp), at.local);
+      const path = pick(at.bp, at.local);
       const id = clickTarget(path, parents, selection.at(-1) ?? null, e.ctrlKey || e.metaKey);
       setHover(id ? { bp: at.bp, id } : null);
       return;
@@ -252,10 +259,7 @@ export function SelectionLayer(props: SelectionLayerProps) {
   const onDoubleClick = (e: React.MouseEvent) => {
     const at = locate(e);
     if (!at?.bp) return;
-    const next = drillTarget(
-      hitPath(doc, pageRoot, boxesOf(at.bp), at.local),
-      selection.at(-1) ?? null,
-    );
+    const next = drillTarget(pick(at.bp, at.local), selection.at(-1) ?? null);
     if (next) props.onSelectionChange([next]);
   };
 
