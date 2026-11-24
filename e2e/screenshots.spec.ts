@@ -91,3 +91,22 @@ test("capture selection and measurements", async ({ page, context }) => {
   await page.screenshot({ path: `${dir}/selection.png` });
   await page.keyboard.up("Alt");
 });
+
+test("capture the inspector", async ({ page, context }) => {
+  await page.setViewportSize({ width: 1440, height: 1100 });
+  await openNewProject(page, context, { name: "Landing", templateId: "landing" });
+  await page.screenshot({ path: `${dir}/inspector-page.png` });
+  const heading = page.locator('[data-frame="desktop"] main section h1');
+  const h = await heading.boundingBox();
+  if (!h) throw new Error("no heading");
+  await page.keyboard.down("Control");
+  await page.mouse.click(h.x + h.width / 2, h.y + h.height / 2);
+  await page.keyboard.up("Control");
+  await page
+    .getByRole("group", { name: "Breakpoints" })
+    .getByRole("button", { name: /Mobile/ })
+    .click();
+  await page.screenshot({ path: `${dir}/inspector-text.png` });
+  await page.keyboard.press("Escape");
+  await page.screenshot({ path: `${dir}/inspector-section.png` });
+});

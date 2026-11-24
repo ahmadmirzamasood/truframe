@@ -207,3 +207,23 @@ describe("gestures are one transaction each", () => {
     expect(next.nodes[heading]).toBeUndefined();
   });
 });
+
+describe("duplicate", () => {
+  it("copies a subtree with new ids right after the original, in one transaction", async () => {
+    const { duplicateOps } = await import("./gestures.ts");
+    const { doc, root, sections } = landing();
+    let n = 0;
+    const { ops, copies } = duplicateOps(
+      doc,
+      parentMap(doc),
+      [sections[0] as string],
+      () => `copy${++n}`,
+    );
+    const next = commit(doc, ops);
+    const body = childrenOf(next.nodes[root] as never);
+    expect(body[1]).toBe(copies[0]);
+    expect(childrenOf(next.nodes[copies[0] as string] as never)).toHaveLength(
+      childrenOf(doc.nodes[sections[0] as string] as never).length,
+    );
+  });
+});
