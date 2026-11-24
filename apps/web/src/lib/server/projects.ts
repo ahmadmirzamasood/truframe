@@ -40,6 +40,10 @@ export function toDto(p: Project): ProjectDto {
   };
 }
 
+export function isProjectId(id: string): boolean {
+  return projectIdSchema.safeParse(id).success;
+}
+
 /** Ids that aren't UUIDs can't exist; answer 404 without a query. */
 export function parseProjectId(id: string): string {
   const parsed = projectIdSchema.safeParse(id);

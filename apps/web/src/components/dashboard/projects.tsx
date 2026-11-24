@@ -15,6 +15,7 @@ import {
 } from "@truframe/ui/components/dialog";
 import { Input } from "@truframe/ui/components/input";
 import { Label } from "@truframe/ui/components/label";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { type FormEvent, type ReactNode, useState } from "react";
 import { ApiRequestError, projectsApi } from "@/lib/api-client";
@@ -131,6 +132,9 @@ export function ProjectCard({ project }: { project: ProjectDto }) {
         </p>
       </div>
       <div className="mt-auto flex flex-wrap gap-1 px-3 pb-3">
+        <Button size="sm" asChild>
+          <Link href={`/p/${project.id}`}>Open</Link>
+        </Button>
         <Button size="sm" variant="ghost" onClick={() => setRenaming(true)}>
           Rename
         </Button>

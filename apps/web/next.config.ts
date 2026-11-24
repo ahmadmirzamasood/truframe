@@ -11,6 +11,9 @@ const nextConfig: NextConfig = {
     "@truframe/protocol",
     "@truframe/model",
     "@truframe/billing",
+    "@truframe/ops",
+    "@truframe/crdt",
+    "@truframe/sync",
   ],
   poweredByHeader: false,
 };

@@ -1,0 +1,20 @@
+{
+  "name": "@truframe/sync",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Editor document store: Loro replica, offline cache, reconnect sync, per-user undo/redo",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@truframe/crdt": "workspace:*",
+    "@truframe/model": "workspace:*",
+    "@truframe/ops": "workspace:*",
+    "@truframe/protocol": "workspace:*",
+    "loro-crdt": "1.18.0"
+  }
+}

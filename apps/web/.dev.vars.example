@@ -22,4 +22,4 @@ EMAIL_FROM=
 
 # --- Realtime (ProjectRoom). Must equal ROOM_TOKEN_SECRET in workers/realtime/.dev.vars. ---
 ROOM_TOKEN_SECRET=local-dev-only-room-token-secret-0123456789
-TRUFRAME_REALTIME_URL=ws://localhost:8787
+TRUFRAME_REALTIME_URL=ws://127.0.0.1:8787
