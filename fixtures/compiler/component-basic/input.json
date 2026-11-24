@@ -1,0 +1,237 @@
+{
+  "schemaVersion": 1,
+  "id": "0199a0b2-7c3d-7e4f-8a5b-6c7d8e9f0a1b",
+  "framework": "nextjs",
+  "settings": {
+    "lang": "en"
+  },
+  "breakpoints": {
+    "desktop": {
+      "width": 1200
+    },
+    "tablet": {
+      "width": 810
+    },
+    "mobile": {
+      "width": 390
+    }
+  },
+  "pages": [
+    {
+      "id": "id1",
+      "name": "Home",
+      "path": "/",
+      "seo": {
+        "title": "Home",
+        "description": "",
+        "ogImage": null,
+        "noindex": false
+      },
+      "root": "id2"
+    }
+  ],
+  "nodes": {
+    "id2": {
+      "id": "id2",
+      "type": "frame",
+      "name": "Body",
+      "tag": "main",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "direction": "column",
+          "width": {
+            "type": "fill"
+          },
+          "height": {
+            "type": "fit"
+          }
+        }
+      },
+      "children": [
+        "n7"
+      ]
+    },
+    "n1": {
+      "type": "text",
+      "name": "Title",
+      "tag": "h3",
+      "style": {
+        "desktop": {
+          "fontSize": 20,
+          "fontWeight": 600
+        }
+      },
+      "content": [
+        {
+          "text": "Starter"
+        }
+      ],
+      "id": "n1"
+    },
+    "n2": {
+      "type": "text",
+      "name": "Price",
+      "tag": "p",
+      "style": {
+        "desktop": {
+          "fontSize": 36,
+          "fontWeight": 700
+        }
+      },
+      "content": [
+        {
+          "text": "$0"
+        }
+      ],
+      "id": "n2"
+    },
+    "n3": {
+      "type": "frame",
+      "name": "Pricing card",
+      "tag": "article",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "direction": "column",
+          "gap": 8,
+          "padding": {
+            "top": 24,
+            "right": 24,
+            "bottom": 24,
+            "left": 24
+          },
+          "width": {
+            "type": "fixed",
+            "value": 280
+          },
+          "radius": 16,
+          "border": {
+            "width": 1,
+            "color": "#e4e4e7",
+            "style": "solid",
+            "sides": {
+              "top": true,
+              "right": true,
+              "bottom": true,
+              "left": true
+            }
+          }
+        }
+      },
+      "children": [
+        "n1",
+        "n2"
+      ],
+      "id": "n3"
+    },
+    "n4": {
+      "type": "instance",
+      "name": "Free",
+      "tag": "div",
+      "style": {
+        "desktop": {}
+      },
+      "componentId": "card",
+      "overrides": {
+        "variant": {},
+        "props": {},
+        "nodes": {}
+      },
+      "id": "n4"
+    },
+    "n5": {
+      "type": "instance",
+      "name": "Pro",
+      "tag": "div",
+      "style": {
+        "desktop": {
+          "width": {
+            "type": "fill"
+          }
+        }
+      },
+      "componentId": "card",
+      "overrides": {
+        "variant": {},
+        "props": {
+          "title": "Pro",
+          "price": "$24"
+        },
+        "nodes": {}
+      },
+      "id": "n5"
+    },
+    "n6": {
+      "type": "instance",
+      "name": "Pricing card",
+      "tag": "div",
+      "style": {
+        "desktop": {}
+      },
+      "componentId": "card",
+      "overrides": {
+        "variant": {},
+        "props": {
+          "title": "Team",
+          "price": "$99"
+        },
+        "nodes": {}
+      },
+      "id": "n6"
+    },
+    "n7": {
+      "type": "frame",
+      "name": "Pricing",
+      "tag": "section",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "gap": 24,
+          "justify": "center"
+        },
+        "mobile": {
+          "direction": "column",
+          "align": "center"
+        }
+      },
+      "children": [
+        "n4",
+        "n5",
+        "n6"
+      ],
+      "id": "n7"
+    }
+  },
+  "components": {
+    "card": {
+      "id": "card",
+      "name": "PricingCard",
+      "root": "n3",
+      "props": [
+        {
+          "name": "title",
+          "type": "text",
+          "default": "Starter",
+          "target": {
+            "nodeId": "n1",
+            "field": "content"
+          }
+        },
+        {
+          "name": "price",
+          "type": "text",
+          "default": "$0",
+          "target": {
+            "nodeId": "n2",
+            "field": "content"
+          }
+        }
+      ],
+      "variantProps": [],
+      "variants": {}
+    }
+  },
+  "variables": {},
+  "assets": {}
+}

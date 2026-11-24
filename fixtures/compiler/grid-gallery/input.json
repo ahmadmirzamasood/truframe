@@ -1,0 +1,259 @@
+{
+  "schemaVersion": 1,
+  "id": "0199a0b2-7c3d-7e4f-8a5b-6c7d8e9f0a1b",
+  "framework": "nextjs",
+  "settings": {
+    "lang": "en"
+  },
+  "breakpoints": {
+    "desktop": {
+      "width": 1200
+    },
+    "tablet": {
+      "width": 810
+    },
+    "mobile": {
+      "width": 390
+    }
+  },
+  "pages": [
+    {
+      "id": "id1",
+      "name": "Home",
+      "path": "/",
+      "seo": {
+        "title": "Home",
+        "description": "",
+        "ogImage": null,
+        "noindex": false
+      },
+      "root": "id2"
+    }
+  ],
+  "nodes": {
+    "id2": {
+      "id": "id2",
+      "type": "frame",
+      "name": "Body",
+      "tag": "main",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "direction": "column",
+          "width": {
+            "type": "fill"
+          },
+          "height": {
+            "type": "fit"
+          }
+        }
+      },
+      "children": [
+        "n6"
+      ]
+    },
+    "n1": {
+      "type": "image",
+      "name": "One",
+      "tag": "figure",
+      "style": {
+        "desktop": {
+          "columnSpan": 2,
+          "rowSpan": 2,
+          "aspectRatio": 1,
+          "radius": 12,
+          "overflow": "clip"
+        },
+        "mobile": {
+          "columnSpan": 1,
+          "rowSpan": 1
+        }
+      },
+      "assetId": "photo0",
+      "alt": "Photo 1",
+      "decorative": false,
+      "fit": "crop",
+      "id": "n1"
+    },
+    "n2": {
+      "type": "image",
+      "name": "Two",
+      "tag": "figure",
+      "style": {
+        "desktop": {
+          "columnSpan": 1,
+          "rowSpan": 1,
+          "aspectRatio": 1.3333333333333333,
+          "radius": 12,
+          "overflow": "clip"
+        },
+        "mobile": {
+          "columnSpan": 1,
+          "rowSpan": 1
+        }
+      },
+      "assetId": "photo1",
+      "alt": "Photo 2",
+      "decorative": false,
+      "fit": "fit",
+      "id": "n2"
+    },
+    "n3": {
+      "type": "image",
+      "name": "Three",
+      "tag": "figure",
+      "style": {
+        "desktop": {
+          "columnSpan": 1,
+          "rowSpan": 1,
+          "aspectRatio": 1.3333333333333333,
+          "radius": 12,
+          "overflow": "clip"
+        },
+        "mobile": {
+          "columnSpan": 1,
+          "rowSpan": 1
+        }
+      },
+      "assetId": "photo2",
+      "alt": "Photo 3",
+      "decorative": false,
+      "fit": "crop",
+      "id": "n3"
+    },
+    "n4": {
+      "type": "image",
+      "name": "Four",
+      "tag": "figure",
+      "style": {
+        "desktop": {
+          "columnSpan": 1,
+          "rowSpan": 1,
+          "aspectRatio": 1.3333333333333333,
+          "radius": 12,
+          "overflow": "clip"
+        },
+        "mobile": {
+          "columnSpan": 1,
+          "rowSpan": 1
+        }
+      },
+      "assetId": "photo3",
+      "alt": "Photo 4",
+      "decorative": false,
+      "fit": "fit",
+      "id": "n4"
+    },
+    "n5": {
+      "type": "image",
+      "name": "Five",
+      "tag": "figure",
+      "style": {
+        "desktop": {
+          "columnSpan": 1,
+          "rowSpan": 1,
+          "aspectRatio": 1.3333333333333333,
+          "radius": 12,
+          "overflow": "clip"
+        },
+        "mobile": {
+          "columnSpan": 1,
+          "rowSpan": 1
+        }
+      },
+      "assetId": "photo4",
+      "alt": "Photo 5",
+      "decorative": false,
+      "fit": "crop",
+      "id": "n5"
+    },
+    "n6": {
+      "type": "frame",
+      "name": "Gallery",
+      "tag": "section",
+      "style": {
+        "desktop": {
+          "display": "grid",
+          "gridColumns": 4,
+          "gap": 16,
+          "padding": {
+            "top": 64,
+            "right": 64,
+            "bottom": 64,
+            "left": 64
+          }
+        },
+        "tablet": {
+          "gridColumns": 2
+        },
+        "mobile": {
+          "gridColumns": 1,
+          "gap": 8,
+          "padding": {
+            "top": 24,
+            "right": 16,
+            "bottom": 24,
+            "left": 16
+          }
+        }
+      },
+      "children": [
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5"
+      ],
+      "id": "n6"
+    }
+  },
+  "components": {},
+  "variables": {},
+  "assets": {
+    "photo0": {
+      "id": "photo0",
+      "name": "photo 1.jpg",
+      "mime": "image/jpeg",
+      "width": 1200,
+      "height": 900,
+      "bytes": 1000,
+      "key": "assets/358dc26ec8b649867d5bf794efd20145524da18e7b658d01fa445a6e3a848f01.jpg"
+    },
+    "photo1": {
+      "id": "photo1",
+      "name": "photo 2.jpg",
+      "mime": "image/jpeg",
+      "width": 1200,
+      "height": 900,
+      "bytes": 1000,
+      "key": "assets/3582246f913c0a8437d0a3b0f5dfe6b440e17864eef7d6282c3e80ab771ccef5.jpg"
+    },
+    "photo2": {
+      "id": "photo2",
+      "name": "photo 3.jpg",
+      "mime": "image/jpeg",
+      "width": 1200,
+      "height": 900,
+      "bytes": 1000,
+      "key": "assets/5c102d7791b70e85179b83eb72e481c7cdf4ddf20c13589f83a18ed403633e60.jpg"
+    },
+    "photo3": {
+      "id": "photo3",
+      "name": "photo 4.jpg",
+      "mime": "image/jpeg",
+      "width": 1200,
+      "height": 900,
+      "bytes": 1000,
+      "key": "assets/f94137f3be283f1fd30895d4c6d0974c432b3a065ae2c2dfc5f0024c5c53cbda.jpg"
+    },
+    "photo4": {
+      "id": "photo4",
+      "name": "photo 5.jpg",
+      "mime": "image/jpeg",
+      "width": 1200,
+      "height": 900,
+      "bytes": 1000,
+      "key": "assets/1d37703848848ccd0e5d9e3c1633356c65e3f828e8e91825a7a023dcfca6e06e.jpg"
+    }
+  }
+}

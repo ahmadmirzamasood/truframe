@@ -1,0 +1,23 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Home",
+};
+
+export default function HomePage() {
+  return (
+    <main className="body flex flex-col w-full h-fit">
+      <div className="card flex flex-col p-6 relative w-80 rounded-2xl">
+        <div
+          className="backdrop absolute top-0 right-0 bottom-0 left-0 -z-1 bg-[#a5b4fc] opacity-40 blur-[24px]"
+        />
+        <p className="body-2">Positioned children</p>
+        <span
+          className="badge px-2 py-0.5 absolute -top-2 -right-2 z-10 text-xs text-[#ffffff] bg-[#16a34a] rounded-full mobile:static"
+        >
+          New
+        </span>
+      </div>
+    </main>
+  );
+}

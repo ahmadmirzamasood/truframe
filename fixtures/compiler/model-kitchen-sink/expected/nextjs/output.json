@@ -1,0 +1,156 @@
+{
+  "assets": [
+    {
+      "assetId": "photo",
+      "key": "assets/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.png",
+      "path": "public/assets/photo.png"
+    }
+  ],
+  "css": {
+    "aboutBody": {
+      "desktop": ""
+    },
+    "blankPic": {
+      "desktop": "background-color: #e5e5e5;"
+    },
+    "card": {
+      "desktop": ""
+    },
+    "cardRoot": {
+      "desktop": ""
+    },
+    "cardTitle": {
+      "desktop": ""
+    },
+    "cta": {
+      "desktop": ""
+    },
+    "ctaLabel": {
+      "desktop": ""
+    },
+    "hero": {
+      "desktop": "display: flex; gap: var(--spacing-md); padding-top: 8px; padding-right: 8px; padding-bottom: var(--spacing-md); padding-left: 8px; position: relative; background-color: var(--colors-brand);",
+      "tablet": "display: none; align-items: stretch; justify-content: space-between; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: repeat(3, minmax(0, 1fr)); row-gap: 12px; flex: none; height: 640px; min-width: 100px; max-width: 1000px; min-height: 10px; max-height: 900px; overflow: clip; background-color: transparent; background-image: linear-gradient(45deg, #000000 0%, var(--colors-brand) 100%); border-width: 0px; border-top-width: 1px; border-bottom-width: 1px; border-style: dashed; border-color: #11223344; border-top-left-radius: 4px; border-top-right-radius: 8px; border-bottom-right-radius: 0px; border-bottom-left-radius: 2.5px; box-shadow: 0px 4px 12px -2px var(--colors-brand); opacity: 0.9; mix-blend-mode: color-dodge; filter: blur(2px);"
+    },
+    "icon": {
+      "desktop": "position: absolute; top: -4px; right: 0px; bottom: 0px; left: 10px; z-index: 2; width: 24px; aspect-ratio: 1;",
+      "tablet": "grid-column: span 2 / span 2; grid-row: span 1 / span 1;"
+    },
+    "id2": {
+      "desktop": "display: flex; flex-direction: column; width: 100%; height: fit-content;"
+    },
+    "mail": {
+      "desktop": "border-radius: 999px;"
+    },
+    "map": {
+      "desktop": "background-image: url(/assets/photo.png); background-size: auto; background-repeat: repeat;"
+    },
+    "pic": {
+      "desktop": "object-fit: cover;"
+    },
+    "title": {
+      "desktop": "font-family: var(--tf-font-inter, \"Inter\"); font-size: 3rem; font-weight: 700; line-height: 1.1; letter-spacing: -0.02em; text-align: center; text-decoration-line: line-through; text-transform: uppercase; color: #111111;"
+    },
+    "widget": {
+      "desktop": ""
+    }
+  },
+  "spans": [
+    {
+      "end": 175,
+      "node": "aboutBody",
+      "path": "app/about/page.tsx",
+      "start": 150
+    },
+    {
+      "end": 2731,
+      "node": "id2",
+      "path": "app/page.tsx",
+      "start": 210
+    },
+    {
+      "end": 2719,
+      "node": "hero",
+      "path": "app/page.tsx",
+      "start": 267
+    },
+    {
+      "end": 1311,
+      "node": "title",
+      "path": "app/page.tsx",
+      "start": 1030
+    },
+    {
+      "end": 1481,
+      "node": "pic",
+      "path": "app/page.tsx",
+      "start": 1320
+    },
+    {
+      "end": 1593,
+      "node": "cta",
+      "path": "app/page.tsx",
+      "start": 1490
+    },
+    {
+      "end": 1577,
+      "node": "ctaLabel",
+      "path": "app/page.tsx",
+      "start": 1537
+    },
+    {
+      "end": 1764,
+      "node": "card",
+      "path": "app/page.tsx",
+      "start": 1602
+    },
+    {
+      "end": 1749,
+      "node": "cardTitle",
+      "path": "app/page.tsx",
+      "start": 1646
+    },
+    {
+      "end": 2116,
+      "node": "icon",
+      "path": "app/page.tsx",
+      "start": 1773
+    },
+    {
+      "end": 2397,
+      "node": "map",
+      "path": "app/page.tsx",
+      "start": 2125
+    },
+    {
+      "end": 2432,
+      "node": "widget",
+      "path": "app/page.tsx",
+      "start": 2406
+    },
+    {
+      "end": 2630,
+      "node": "mail",
+      "path": "app/page.tsx",
+      "start": 2441
+    },
+    {
+      "end": 2702,
+      "node": "blankPic",
+      "path": "app/page.tsx",
+      "start": 2639
+    },
+    {
+      "end": 517,
+      "node": "cardRoot",
+      "path": "components/Card.tsx",
+      "start": 320
+    },
+    {
+      "end": 497,
+      "node": "cardTitle",
+      "path": "components/Card.tsx",
+      "start": 440
+    }
+  ]
+}

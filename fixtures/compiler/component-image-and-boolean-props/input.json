@@ -1,0 +1,259 @@
+{
+  "schemaVersion": 1,
+  "id": "0199a0b2-7c3d-7e4f-8a5b-6c7d8e9f0a1b",
+  "framework": "nextjs",
+  "settings": {
+    "lang": "en"
+  },
+  "breakpoints": {
+    "desktop": {
+      "width": 1200
+    },
+    "tablet": {
+      "width": 810
+    },
+    "mobile": {
+      "width": 390
+    }
+  },
+  "pages": [
+    {
+      "id": "id1",
+      "name": "Home",
+      "path": "/",
+      "seo": {
+        "title": "Home",
+        "description": "",
+        "ogImage": null,
+        "noindex": false
+      },
+      "root": "id2"
+    }
+  ],
+  "nodes": {
+    "id2": {
+      "id": "id2",
+      "type": "frame",
+      "name": "Body",
+      "tag": "main",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "direction": "column",
+          "width": {
+            "type": "fill"
+          },
+          "height": {
+            "type": "fit"
+          }
+        }
+      },
+      "children": [
+        "n8"
+      ]
+    },
+    "n1": {
+      "type": "image",
+      "name": "Photo",
+      "tag": "img",
+      "style": {
+        "desktop": {
+          "width": {
+            "type": "fixed",
+            "value": 64
+          },
+          "height": {
+            "type": "fixed",
+            "value": 64
+          },
+          "radius": 9999
+        }
+      },
+      "assetId": "avatar",
+      "alt": "",
+      "decorative": true,
+      "fit": "fill",
+      "id": "n1"
+    },
+    "n2": {
+      "type": "text",
+      "name": "Name",
+      "tag": "p",
+      "style": {
+        "desktop": {
+          "fontWeight": 600
+        }
+      },
+      "content": [
+        {
+          "text": "Ada Lovelace"
+        }
+      ],
+      "id": "n2"
+    },
+    "n3": {
+      "type": "text",
+      "name": "Badge",
+      "tag": "span",
+      "style": {
+        "desktop": {
+          "fontSize": 12,
+          "textColor": "#16a34a"
+        }
+      },
+      "content": [
+        {
+          "text": "Verified"
+        }
+      ],
+      "id": "n3"
+    },
+    "n4": {
+      "type": "frame",
+      "name": "Person",
+      "tag": "div",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "gap": 12,
+          "align": "center"
+        }
+      },
+      "children": [
+        "n1",
+        "n2",
+        "n3"
+      ],
+      "id": "n4"
+    },
+    "n5": {
+      "type": "instance",
+      "name": "Ada",
+      "tag": "li",
+      "style": {
+        "desktop": {}
+      },
+      "componentId": "person",
+      "overrides": {
+        "variant": {},
+        "props": {},
+        "nodes": {}
+      },
+      "id": "n5"
+    },
+    "n6": {
+      "type": "instance",
+      "name": "Grace",
+      "tag": "li",
+      "style": {
+        "desktop": {}
+      },
+      "componentId": "person",
+      "overrides": {
+        "variant": {},
+        "props": {
+          "name": "Grace Hopper",
+          "photo": "other",
+          "verified": false
+        },
+        "nodes": {}
+      },
+      "id": "n6"
+    },
+    "n7": {
+      "type": "instance",
+      "name": "Nobody",
+      "tag": "li",
+      "style": {
+        "desktop": {}
+      },
+      "componentId": "person",
+      "overrides": {
+        "variant": {},
+        "props": {
+          "name": "No photo",
+          "photo": null
+        },
+        "nodes": {}
+      },
+      "id": "n7"
+    },
+    "n8": {
+      "type": "frame",
+      "name": "People",
+      "tag": "ul",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "direction": "column",
+          "gap": 16
+        }
+      },
+      "children": [
+        "n5",
+        "n6",
+        "n7"
+      ],
+      "id": "n8"
+    }
+  },
+  "components": {
+    "person": {
+      "id": "person",
+      "name": "PersonChip",
+      "root": "n4",
+      "props": [
+        {
+          "name": "photo",
+          "type": "image",
+          "default": "avatar",
+          "target": {
+            "nodeId": "n1",
+            "field": "assetId"
+          }
+        },
+        {
+          "name": "name",
+          "type": "text",
+          "default": "Ada Lovelace",
+          "target": {
+            "nodeId": "n2",
+            "field": "content"
+          }
+        },
+        {
+          "name": "verified",
+          "type": "boolean",
+          "default": true,
+          "target": {
+            "nodeId": "n3",
+            "field": "visible"
+          }
+        }
+      ],
+      "variantProps": [],
+      "variants": {}
+    }
+  },
+  "variables": {},
+  "assets": {
+    "avatar": {
+      "id": "avatar",
+      "name": "avatar.png",
+      "mime": "image/png",
+      "width": 256,
+      "height": 256,
+      "bytes": 1000,
+      "key": "assets/87bbe879c7a5f5784a70384bb49fa9513a6a3fbe4c2d388635e3c87611c03fae.png"
+    },
+    "other": {
+      "id": "other",
+      "name": "Other Person.jpg",
+      "mime": "image/jpeg",
+      "width": 512,
+      "height": 512,
+      "bytes": 1000,
+      "key": "assets/d9298a10d1b0735837dc4bd85dac641b0f3cef27a47e5d53a54f2f3f5b2fcffa.jpg"
+    }
+  }
+}

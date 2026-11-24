@@ -1,0 +1,97 @@
+{
+  "assets": [],
+  "css": {
+    "id2": {
+      "desktop": "display: flex; flex-direction: column; width: 100%; height: fit-content;"
+    },
+    "n1": {
+      "desktop": ""
+    },
+    "n2": {
+      "desktop": "display: flex; flex-direction: column;"
+    },
+    "n3": {
+      "desktop": ""
+    },
+    "n4": {
+      "desktop": "display: flex; flex-direction: column;"
+    },
+    "n5": {
+      "desktop": ""
+    },
+    "n6": {
+      "desktop": "display: flex; flex-direction: column;"
+    },
+    "n7": {
+      "desktop": ""
+    },
+    "n8": {
+      "desktop": "display: flex; flex-direction: column;"
+    },
+    "n9": {
+      "desktop": ""
+    }
+  },
+  "spans": [
+    {
+      "end": 264,
+      "node": "n2",
+      "path": "app/about/page.tsx",
+      "start": 180
+    },
+    {
+      "end": 252,
+      "node": "n1",
+      "path": "app/about/page.tsx",
+      "start": 224
+    },
+    {
+      "end": 255,
+      "node": "n6",
+      "path": "app/blog/first-post/page.tsx",
+      "start": 166
+    },
+    {
+      "end": 243,
+      "node": "n5",
+      "path": "app/blog/first-post/page.tsx",
+      "start": 210
+    },
+    {
+      "end": 231,
+      "node": "n4",
+      "path": "app/blog/page.tsx",
+      "start": 148
+    },
+    {
+      "end": 219,
+      "node": "n3",
+      "path": "app/blog/page.tsx",
+      "start": 192
+    },
+    {
+      "end": 242,
+      "node": "n8",
+      "path": "app/docs/guides/getting-started/page.tsx",
+      "start": 148
+    },
+    {
+      "end": 230,
+      "node": "n7",
+      "path": "app/docs/guides/getting-started/page.tsx",
+      "start": 192
+    },
+    {
+      "end": 247,
+      "node": "id2",
+      "path": "app/page.tsx",
+      "start": 148
+    },
+    {
+      "end": 235,
+      "node": "n9",
+      "path": "app/page.tsx",
+      "start": 205
+    }
+  ]
+}

@@ -1,0 +1,132 @@
+{
+  "assets": [],
+  "css": {
+    "home-1": {
+      "desktop": "display: flex; flex-direction: column; align-items: center; gap: 24px; padding-inline: 32px; padding-block: 96px; flex: none; align-self: stretch; height: fit-content;",
+      "mobile": "gap: 16px; padding-inline: 20px; padding-block: 56px;"
+    },
+    "home-2": {
+      "desktop": "font-size: 56px; font-weight: 700; text-align: center; color: var(--neutral-ink);",
+      "mobile": "font-size: 2.25rem; line-height: calc(2.5 / 2.25);"
+    },
+    "home-3": {
+      "desktop": "display: flex; padding-inline: 24px; padding-block: 12px; background-color: var(--brand-accent); border-radius: 8px;"
+    },
+    "home-4": {
+      "desktop": "font-weight: 600; color: #ffffff;"
+    },
+    "home-5": {
+      "desktop": "display: flex; flex-direction: column; align-items: center; gap: 24px; padding-inline: 32px; padding-block: 96px; flex: none; align-self: stretch; height: fit-content;",
+      "mobile": "gap: 16px; padding-inline: 20px; padding-block: 56px;"
+    },
+    "home-6": {
+      "desktop": "font-size: 1.125rem; line-height: calc(1.75 / 1.125); text-align: center; color: var(--neutral-ink);"
+    },
+    "home-body": {
+      "desktop": "display: flex; flex-direction: column; width: 100%; height: fit-content;"
+    },
+    "pricing-1": {
+      "desktop": "display: flex; flex-direction: column; align-items: center; gap: 24px; padding-inline: 32px; padding-block: 96px; flex: none; align-self: stretch; height: fit-content;",
+      "mobile": "gap: 16px; padding-inline: 20px; padding-block: 56px;"
+    },
+    "pricing-2": {
+      "desktop": "font-size: 56px; font-weight: 700; text-align: center; color: var(--neutral-ink);",
+      "mobile": "font-size: 2.25rem; line-height: calc(2.5 / 2.25);"
+    },
+    "pricing-3": {
+      "desktop": "font-size: 2.25rem; line-height: calc(2.5 / 2.25); font-weight: 700; text-align: center; color: var(--neutral-ink);",
+      "mobile": "font-size: 28px;"
+    },
+    "pricing-4": {
+      "desktop": "font-size: 2.25rem; line-height: calc(2.5 / 2.25); font-weight: 700; text-align: center; color: var(--neutral-ink);",
+      "mobile": "font-size: 28px;"
+    },
+    "pricing-5": {
+      "desktop": "font-size: 2.25rem; line-height: calc(2.5 / 2.25); font-weight: 700; text-align: center; color: var(--neutral-ink);",
+      "mobile": "font-size: 28px;"
+    },
+    "pricing-body": {
+      "desktop": "display: flex; flex-direction: column; width: 100%; height: fit-content;"
+    }
+  },
+  "spans": [
+    {
+      "end": 1155,
+      "node": "home-body",
+      "path": "app/page.tsx",
+      "start": 178
+    },
+    {
+      "end": 842,
+      "node": "home-1",
+      "path": "app/page.tsx",
+      "start": 235
+    },
+    {
+      "end": 571,
+      "node": "home-2",
+      "path": "app/page.tsx",
+      "start": 396
+    },
+    {
+      "end": 825,
+      "node": "home-3",
+      "path": "app/page.tsx",
+      "start": 580
+    },
+    {
+      "end": 809,
+      "node": "home-4",
+      "path": "app/page.tsx",
+      "start": 707
+    },
+    {
+      "end": 1143,
+      "node": "home-5",
+      "path": "app/page.tsx",
+      "start": 849
+    },
+    {
+      "end": 1126,
+      "node": "home-6",
+      "path": "app/page.tsx",
+      "start": 1011
+    },
+    {
+      "end": 1039,
+      "node": "pricing-body",
+      "path": "app/pricing/page.tsx",
+      "start": 154
+    },
+    {
+      "end": 1027,
+      "node": "pricing-1",
+      "path": "app/pricing/page.tsx",
+      "start": 211
+    },
+    {
+      "end": 524,
+      "node": "pricing-2",
+      "path": "app/pricing/page.tsx",
+      "start": 375
+    },
+    {
+      "end": 687,
+      "node": "pricing-3",
+      "path": "app/pricing/page.tsx",
+      "start": 533
+    },
+    {
+      "end": 846,
+      "node": "pricing-4",
+      "path": "app/pricing/page.tsx",
+      "start": 696
+    },
+    {
+      "end": 1010,
+      "node": "pricing-5",
+      "path": "app/pricing/page.tsx",
+      "start": 855
+    }
+  ]
+}

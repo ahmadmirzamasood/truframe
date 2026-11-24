@@ -1,0 +1,300 @@
+{
+  "schemaVersion": 1,
+  "id": "0199a0b2-7c3d-7e4f-8a5b-6c7d8e9f0a1b",
+  "framework": "nextjs",
+  "settings": {
+    "lang": "en"
+  },
+  "breakpoints": {
+    "desktop": {
+      "width": 1200
+    },
+    "tablet": {
+      "width": 810
+    },
+    "mobile": {
+      "width": 390
+    }
+  },
+  "pages": [
+    {
+      "id": "id1",
+      "name": "Home",
+      "path": "/",
+      "seo": {
+        "title": "Home",
+        "description": "",
+        "ogImage": null,
+        "noindex": false
+      },
+      "root": "id2"
+    }
+  ],
+  "nodes": {
+    "id2": {
+      "id": "id2",
+      "type": "frame",
+      "name": "Body",
+      "tag": "main",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "direction": "column",
+          "width": {
+            "type": "fill"
+          },
+          "height": {
+            "type": "fit"
+          }
+        }
+      },
+      "children": [
+        "n10"
+      ]
+    },
+    "n1": {
+      "type": "image",
+      "name": "Plain",
+      "tag": "img",
+      "style": {
+        "desktop": {
+          "width": {
+            "type": "fixed",
+            "value": 320
+          },
+          "height": {
+            "type": "fixed",
+            "value": 180
+          }
+        }
+      },
+      "assetId": "photo",
+      "alt": "Plain photo",
+      "decorative": false,
+      "fit": "fill",
+      "id": "n1"
+    },
+    "n2": {
+      "type": "image",
+      "name": "Contained",
+      "tag": "img",
+      "style": {
+        "desktop": {
+          "width": {
+            "type": "fixed",
+            "value": 320
+          },
+          "height": {
+            "type": "fixed",
+            "value": 180
+          }
+        }
+      },
+      "assetId": "photo",
+      "alt": "Contained photo",
+      "decorative": false,
+      "fit": "fit",
+      "id": "n2"
+    },
+    "n3": {
+      "type": "image",
+      "name": "Tiled",
+      "tag": "img",
+      "style": {
+        "desktop": {
+          "width": {
+            "type": "fixed",
+            "value": 320
+          },
+          "height": {
+            "type": "fixed",
+            "value": 180
+          }
+        }
+      },
+      "assetId": "photo",
+      "alt": "Tiled photo",
+      "decorative": false,
+      "fit": "tile",
+      "id": "n3"
+    },
+    "n4": {
+      "type": "image",
+      "name": "Figure",
+      "tag": "figure",
+      "style": {
+        "desktop": {
+          "width": {
+            "type": "fixed",
+            "value": 320
+          },
+          "height": {
+            "type": "fixed",
+            "value": 180
+          }
+        }
+      },
+      "assetId": "photo",
+      "alt": "Figure photo",
+      "decorative": false,
+      "fit": "crop",
+      "id": "n4"
+    },
+    "n5": {
+      "type": "image",
+      "name": "Picture",
+      "tag": "picture",
+      "style": {
+        "desktop": {
+          "width": {
+            "type": "fixed",
+            "value": 320
+          },
+          "height": {
+            "type": "fixed",
+            "value": 180
+          }
+        }
+      },
+      "assetId": "photo",
+      "alt": "Picture photo",
+      "decorative": false,
+      "fit": "fill",
+      "id": "n5"
+    },
+    "n6": {
+      "type": "image",
+      "name": "Decorative",
+      "tag": "img",
+      "style": {
+        "desktop": {
+          "width": {
+            "type": "fixed",
+            "value": 320
+          },
+          "height": {
+            "type": "fixed",
+            "value": 180
+          }
+        }
+      },
+      "assetId": "photo",
+      "alt": "ignored",
+      "decorative": true,
+      "fit": "fill",
+      "id": "n6"
+    },
+    "n7": {
+      "type": "image",
+      "name": "Placeholder",
+      "tag": "img",
+      "style": {
+        "desktop": {
+          "width": {
+            "type": "fixed",
+            "value": 320
+          },
+          "height": {
+            "type": "fixed",
+            "value": 180
+          }
+        }
+      },
+      "assetId": null,
+      "alt": "Coming soon",
+      "decorative": false,
+      "fit": "fill",
+      "id": "n7"
+    },
+    "n8": {
+      "type": "image",
+      "name": "Empty placeholder",
+      "tag": "img",
+      "style": {
+        "desktop": {
+          "width": {
+            "type": "fixed",
+            "value": 320
+          },
+          "height": {
+            "type": "fixed",
+            "value": 180
+          }
+        }
+      },
+      "assetId": null,
+      "alt": "",
+      "decorative": false,
+      "fit": "fill",
+      "id": "n8"
+    },
+    "n9": {
+      "type": "image",
+      "name": "Logo",
+      "tag": "img",
+      "style": {
+        "desktop": {
+          "width": {
+            "type": "fixed",
+            "value": 120
+          },
+          "height": {
+            "type": "fixed",
+            "value": 40
+          }
+        }
+      },
+      "assetId": "logo",
+      "alt": "Acme",
+      "decorative": false,
+      "fit": "fit",
+      "id": "n9"
+    },
+    "n10": {
+      "type": "frame",
+      "name": "Images",
+      "tag": "div",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "wrap": true,
+          "gap": 16
+        }
+      },
+      "children": [
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8",
+        "n9"
+      ],
+      "id": "n10"
+    }
+  },
+  "components": {},
+  "variables": {},
+  "assets": {
+    "photo": {
+      "id": "photo",
+      "name": "team.jpg",
+      "mime": "image/jpeg",
+      "width": 1600,
+      "height": 900,
+      "bytes": 1000,
+      "key": "assets/55c64d0fcd6f9d5f7c828093857e3fdfda68478bb4e9bd24d481ef391c7804e8.jpg"
+    },
+    "logo": {
+      "id": "logo",
+      "name": "logo.svg",
+      "mime": "image/svg+xml",
+      "width": 120,
+      "height": 40,
+      "bytes": 1000,
+      "key": "assets/3598ce6f965b2481fe26316c06b30950c46ac7f8e7229f104aa78f579997668d.svg"
+    }
+  }
+}

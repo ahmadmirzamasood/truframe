@@ -1,0 +1,79 @@
+{
+  "assets": [],
+  "css": {
+    "id2": {
+      "desktop": "display: flex; flex-direction: column; width: 100%; height: fit-content;"
+    },
+    "n1": {
+      "desktop": "font-weight: 600;"
+    },
+    "n2": {
+      "desktop": "align-items: center; padding-inline: 16px; padding-block: 10px; color: #ffffff; background-color: #18181b; border-radius: 8px;"
+    },
+    "n3": {
+      "desktop": "display: flex;"
+    },
+    "n4": {
+      "desktop": "display: flex;"
+    },
+    "n5": {
+      "desktop": "display: flex;"
+    },
+    "n6": {
+      "desktop": "display: flex;"
+    },
+    "n7": {
+      "desktop": "display: flex; align-items: center; gap: 12px;"
+    }
+  },
+  "spans": [
+    {
+      "end": 721,
+      "node": "id2",
+      "path": "app/page.tsx",
+      "start": 190
+    },
+    {
+      "end": 709,
+      "node": "n7",
+      "path": "app/page.tsx",
+      "start": 247
+    },
+    {
+      "end": 340,
+      "node": "n3",
+      "path": "app/page.tsx",
+      "start": 305
+    },
+    {
+      "end": 409,
+      "node": "n4",
+      "path": "app/page.tsx",
+      "start": 349
+    },
+    {
+      "end": 547,
+      "node": "n5",
+      "path": "app/page.tsx",
+      "start": 418
+    },
+    {
+      "end": 696,
+      "node": "n6",
+      "path": "app/page.tsx",
+      "start": 556
+    },
+    {
+      "end": 1275,
+      "node": "n2",
+      "path": "components/Button.tsx",
+      "start": 927
+    },
+    {
+      "end": 1263,
+      "node": "n1",
+      "path": "components/Button.tsx",
+      "start": 1118
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+/* Design variables. Generated from the design; edits here are overwritten. */
+
+:root {
+  --colors-brand: #ff0000;
+  --spacing-md: 24px;
+  --text-body-family: var(--tf-font-inter);
+  --text-body-size: 16px;
+  --text-body-weight: 400;
+  --text-body-line-height: 1.5;
+  --text-body-letter-spacing: 0em;
+}
+
+@media (width < 1200px) {
+  :root {
+    --spacing-md: 16px;
+  }
+}
+
+@media (width < 810px) {
+  :root {
+    --colors-brand: #00ff00;
+  }
+}
+
+@theme inline {
+  --color-colors-brand: var(--colors-brand);
+  --spacing-spacing-md: var(--spacing-md);
+  --font-text-body: var(--text-body-family);
+  --text-text-body: var(--text-body-size);
+  --text-text-body--line-height: var(--text-body-line-height);
+  --text-text-body--letter-spacing: var(--text-body-letter-spacing);
+  --text-text-body--font-weight: var(--text-body-weight);
+}

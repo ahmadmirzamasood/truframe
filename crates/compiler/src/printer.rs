@@ -59,6 +59,8 @@ pub enum Child {
     Text(String),
     /// A JS expression printed inside `{…}`.
     Expr(String),
+    /// `{cond && <el />}`: an element rendered only when `cond` is truthy.
+    Cond(String, Box<El>),
 }
 
 #[derive(Debug, Clone, PartialEq, Default)]
@@ -249,10 +251,41 @@ impl Writer {
                 Child::El(c) => self.element(c, indent + 2, syntax),
                 Child::Text(t) => self.line(indent + 2, t),
                 Child::Expr(e) => self.line(indent + 2, &format!("{{{e}}}")),
+                Child::Cond(cond, el) => self.conditional(cond, el, indent + 2, syntax),
             }
         }
         self.indent(indent);
         self.out.push_str(&close);
+    }
+
+    /// `{cond && <el />}` on one line when it fits, else Prettier's parenthesized form.
+    fn conditional(&mut self, cond: &str, el: &El, indent: usize, syntax: Syntax) {
+        let mut probe = Writer::new();
+        probe.element(el, 0, syntax);
+        let flat = probe.out.trim_end();
+        let one_line = format!("{{{cond} && {flat}}}");
+        if !flat.contains('\n') && indent + one_line.len() <= PRINT_WIDTH {
+            self.indent(indent);
+            // `{` + cond + ` && `
+            let start = self.out.len() + cond.len() + 5;
+            self.out.push_str(&one_line);
+            self.shift_spans(&probe.spans, start);
+            self.out.push('\n');
+            return;
+        }
+        self.line(indent, &format!("{{{cond} && ("));
+        self.element(el, indent + 2, syntax);
+        self.line(indent, ")}");
+    }
+
+    fn shift_spans(&mut self, spans: &[RawSpan], by: usize) {
+        for s in spans {
+            self.spans.push(RawSpan {
+                node: s.node.clone(),
+                start: s.start + by,
+                end: s.end + by,
+            });
+        }
     }
 
     fn open_tag(&mut self, tag: &str, attrs: &[String], flat: &str, indent: usize) {
@@ -316,6 +349,11 @@ fn inline_children(children: &[Child], syntax: Syntax) -> String {
             Child::Expr(e) => {
                 s.push('{');
                 s.push_str(e);
+                s.push('}');
+            }
+            Child::Cond(cond, el) => {
+                s.push_str(&format!("{{{cond} && "));
+                s.push_str(&inline_children(&[Child::El((**el).clone())], syntax));
                 s.push('}');
             }
             Child::El(el) => {
@@ -421,6 +459,44 @@ mod tests {
             print(&el, Syntax::Astro),
             "<a title=\"say &quot;hi&quot;\"></a>\n"
         );
+    }
+
+    #[test]
+    fn conditionals_wrap_like_prettier() {
+        let short = El::new("p").node("n").child(Child::Text("Hi".into()));
+        let short = El {
+            inline: true,
+            ..short
+        };
+        let el = El::new("div").child(Child::Cond("props.show".into(), Box::new(short)));
+        let mut w = Writer::new();
+        w.element(&el, 0, Syntax::Jsx);
+        assert_eq!(
+            w.out,
+            "<div>
+  {props.show && <p>Hi</p>}
+</div>
+"
+        );
+        let span = &w.spans[0];
+        assert_eq!(&w.out[span.start..span.end], "<p>Hi</p>");
+
+        let long = El::new("p").attr(Attr::str("className", "x".repeat(70)));
+        let el = El::new("div").child(Child::Cond("props.show".into(), Box::new(long)));
+        let mut w = Writer::new();
+        w.element(&el, 0, Syntax::Jsx);
+        assert!(w.out.starts_with(
+            "<div>
+  {props.show && (
+    <p
+"
+        ));
+        assert!(w.out.ends_with(
+            "    />
+  )}
+</div>
+"
+        ));
     }
 
     #[test]

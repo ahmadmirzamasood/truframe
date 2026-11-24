@@ -1,0 +1,254 @@
+{
+  "schemaVersion": 1,
+  "id": "0199a0b2-7c3d-7e4f-8a5b-6c7d8e9f0a1b",
+  "framework": "nextjs",
+  "settings": {
+    "lang": "en"
+  },
+  "breakpoints": {
+    "desktop": {
+      "width": 1200
+    },
+    "tablet": {
+      "width": 810
+    },
+    "mobile": {
+      "width": 390
+    }
+  },
+  "pages": [
+    {
+      "id": "id1",
+      "name": "Home",
+      "path": "/",
+      "seo": {
+        "title": "Home",
+        "description": "",
+        "ogImage": null,
+        "noindex": false
+      },
+      "root": "id2"
+    }
+  ],
+  "nodes": {
+    "id2": {
+      "id": "id2",
+      "type": "frame",
+      "name": "Body",
+      "tag": "main",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "direction": "column",
+          "width": {
+            "type": "fill"
+          },
+          "height": {
+            "type": "fit"
+          }
+        }
+      },
+      "children": [
+        "n4"
+      ]
+    },
+    "n1": {
+      "type": "text",
+      "name": "Title",
+      "tag": "h1",
+      "style": {
+        "desktop": {
+          "font": {
+            "var": "display"
+          },
+          "textColor": {
+            "var": "ink"
+          }
+        }
+      },
+      "content": [
+        {
+          "text": "Bound to variables"
+        }
+      ],
+      "id": "n1"
+    },
+    "n2": {
+      "type": "text",
+      "name": "Label",
+      "tag": "span",
+      "style": {
+        "desktop": {
+          "fontWeight": 600
+        }
+      },
+      "content": [
+        {
+          "text": "Start"
+        }
+      ],
+      "id": "n2"
+    },
+    "n3": {
+      "type": "link",
+      "name": "CTA",
+      "tag": "a",
+      "style": {
+        "desktop": {
+          "padding": {
+            "top": 12,
+            "right": {
+              "var": "stack"
+            },
+            "bottom": 12,
+            "left": {
+              "var": "stack"
+            }
+          },
+          "fill": {
+            "type": "solid",
+            "color": {
+              "var": "accent"
+            }
+          },
+          "textColor": "#ffffff",
+          "radius": 8
+        }
+      },
+      "target": {
+        "type": "url",
+        "href": "#start"
+      },
+      "newTab": false,
+      "children": [
+        "n2"
+      ],
+      "id": "n3"
+    },
+    "n4": {
+      "type": "frame",
+      "name": "Section",
+      "tag": "section",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "direction": "column",
+          "gap": {
+            "var": "stack"
+          },
+          "padding": {
+            "top": {
+              "var": "gutter"
+            },
+            "right": {
+              "var": "gutter"
+            },
+            "bottom": {
+              "var": "gutter"
+            },
+            "left": {
+              "var": "gutter"
+            }
+          },
+          "border": {
+            "width": 1,
+            "color": {
+              "var": "accent"
+            },
+            "style": "solid",
+            "sides": {
+              "top": false,
+              "right": false,
+              "bottom": true,
+              "left": false
+            }
+          }
+        }
+      },
+      "children": [
+        "n1",
+        "n3"
+      ],
+      "id": "n4"
+    }
+  },
+  "components": {},
+  "variables": {
+    "accent": {
+      "id": "accent",
+      "type": "color",
+      "name": "Accent",
+      "group": "Brand",
+      "cssName": "--brand-accent",
+      "value": {
+        "desktop": "#ec221f",
+        "tablet": "#d11d1a",
+        "mobile": "#b01815"
+      }
+    },
+    "ink": {
+      "id": "ink",
+      "type": "color",
+      "name": "Ink",
+      "group": "Neutral",
+      "cssName": "--neutral-ink",
+      "value": {
+        "desktop": "#18181b"
+      }
+    },
+    "gutter": {
+      "id": "gutter",
+      "type": "spacing",
+      "name": "Gutter",
+      "group": "Spacing",
+      "cssName": "--space-gutter",
+      "value": {
+        "desktop": 64,
+        "tablet": 32,
+        "mobile": 16
+      }
+    },
+    "stack": {
+      "id": "stack",
+      "type": "spacing",
+      "name": "Stack",
+      "group": "Spacing",
+      "cssName": "--space-stack",
+      "value": {
+        "desktop": 24,
+        "mobile": 24
+      }
+    },
+    "display": {
+      "id": "display",
+      "type": "font",
+      "name": "Display",
+      "group": "Text",
+      "cssName": "--font-display",
+      "value": {
+        "desktop": {
+          "family": "Inter",
+          "weight": 800,
+          "size": 64,
+          "lineHeight": 1.05,
+          "letterSpacing": -0.03
+        },
+        "tablet": {
+          "family": "Inter",
+          "weight": 800,
+          "size": 48,
+          "lineHeight": 1.1,
+          "letterSpacing": -0.02
+        },
+        "mobile": {
+          "family": "Inter",
+          "weight": 700,
+          "size": 36,
+          "lineHeight": 1.15,
+          "letterSpacing": -0.01
+        }
+      }
+    }
+  },
+  "assets": {}
+}

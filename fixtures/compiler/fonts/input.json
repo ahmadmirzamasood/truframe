@@ -1,0 +1,164 @@
+{
+  "schemaVersion": 1,
+  "id": "0199a0b2-7c3d-7e4f-8a5b-6c7d8e9f0a1b",
+  "framework": "nextjs",
+  "settings": {
+    "lang": "en"
+  },
+  "breakpoints": {
+    "desktop": {
+      "width": 1200
+    },
+    "tablet": {
+      "width": 810
+    },
+    "mobile": {
+      "width": 390
+    }
+  },
+  "pages": [
+    {
+      "id": "id1",
+      "name": "Home",
+      "path": "/",
+      "seo": {
+        "title": "Home",
+        "description": "",
+        "ogImage": null,
+        "noindex": false
+      },
+      "root": "id2"
+    }
+  ],
+  "nodes": {
+    "id2": {
+      "id": "id2",
+      "type": "frame",
+      "name": "Body",
+      "tag": "main",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "direction": "column",
+          "width": {
+            "type": "fill"
+          },
+          "height": {
+            "type": "fit"
+          }
+        }
+      },
+      "children": [
+        "n6"
+      ]
+    },
+    "n1": {
+      "type": "text",
+      "name": "Headline",
+      "tag": "h1",
+      "style": {
+        "desktop": {
+          "fontFamily": "Playfair Display",
+          "fontSize": 48,
+          "fontWeight": 700
+        }
+      },
+      "content": [
+        {
+          "text": "Editorial headline"
+        }
+      ],
+      "id": "n1"
+    },
+    "n2": {
+      "type": "text",
+      "name": "Subhead",
+      "tag": "h2",
+      "style": {
+        "desktop": {
+          "fontFamily": "Playfair Display",
+          "fontSize": 24,
+          "fontWeight": 400
+        }
+      },
+      "content": [
+        {
+          "text": "With a serif subhead"
+        }
+      ],
+      "id": "n2"
+    },
+    "n3": {
+      "type": "text",
+      "name": "Body",
+      "tag": "p",
+      "style": {
+        "desktop": {
+          "fontSize": 16
+        }
+      },
+      "content": [
+        {
+          "text": "Body copy inherits Inter from its section."
+        }
+      ],
+      "id": "n3"
+    },
+    "n4": {
+      "type": "text",
+      "name": "Strong",
+      "tag": "span",
+      "style": {
+        "desktop": {
+          "fontWeight": 600
+        }
+      },
+      "content": [
+        {
+          "text": "Semibold label"
+        }
+      ],
+      "id": "n4"
+    },
+    "n5": {
+      "type": "text",
+      "name": "System",
+      "tag": "p",
+      "style": {
+        "desktop": {
+          "fontFamily": "Georgia"
+        }
+      },
+      "content": [
+        {
+          "text": "Georgia is a system font."
+        }
+      ],
+      "id": "n5"
+    },
+    "n6": {
+      "type": "frame",
+      "name": "Story",
+      "tag": "article",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "direction": "column",
+          "gap": 12,
+          "fontFamily": "Inter"
+        }
+      },
+      "children": [
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5"
+      ],
+      "id": "n6"
+    }
+  },
+  "components": {},
+  "variables": {},
+  "assets": {}
+}

@@ -1,0 +1,510 @@
+{
+  "schemaVersion": 1,
+  "id": "0199a0b2-7c3d-7e4f-8a5b-6c7d8e9f0a1b",
+  "framework": "nextjs",
+  "settings": {
+    "lang": "en"
+  },
+  "breakpoints": {
+    "desktop": {
+      "width": 1200
+    },
+    "tablet": {
+      "width": 810
+    },
+    "mobile": {
+      "width": 390
+    }
+  },
+  "pages": [
+    {
+      "id": "id1",
+      "name": "Home",
+      "path": "/",
+      "seo": {
+        "title": "Home",
+        "description": "",
+        "ogImage": null,
+        "noindex": false
+      },
+      "root": "id2"
+    }
+  ],
+  "nodes": {
+    "id2": {
+      "id": "id2",
+      "type": "frame",
+      "name": "Body",
+      "tag": "main",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "direction": "column",
+          "width": {
+            "type": "fill"
+          },
+          "height": {
+            "type": "fit"
+          }
+        }
+      },
+      "children": [
+        "n22"
+      ]
+    },
+    "n1": {
+      "type": "text",
+      "name": "Fixed label",
+      "tag": "span",
+      "style": {
+        "desktop": {}
+      },
+      "content": [
+        {
+          "text": "Fixed"
+        }
+      ],
+      "id": "n1"
+    },
+    "n2": {
+      "type": "frame",
+      "name": "Fixed",
+      "tag": "div",
+      "style": {
+        "desktop": {
+          "padding": {
+            "top": 8,
+            "right": 8,
+            "bottom": 8,
+            "left": 8
+          },
+          "fill": {
+            "type": "solid",
+            "color": "#e0e7ff"
+          },
+          "width": {
+            "type": "fixed",
+            "value": 120
+          }
+        }
+      },
+      "children": [
+        "n1"
+      ],
+      "id": "n2"
+    },
+    "n3": {
+      "type": "text",
+      "name": "Fill label",
+      "tag": "span",
+      "style": {
+        "desktop": {}
+      },
+      "content": [
+        {
+          "text": "Fill"
+        }
+      ],
+      "id": "n3"
+    },
+    "n4": {
+      "type": "frame",
+      "name": "Fill",
+      "tag": "div",
+      "style": {
+        "desktop": {
+          "padding": {
+            "top": 8,
+            "right": 8,
+            "bottom": 8,
+            "left": 8
+          },
+          "fill": {
+            "type": "solid",
+            "color": "#e0e7ff"
+          },
+          "width": {
+            "type": "fill"
+          }
+        }
+      },
+      "children": [
+        "n3"
+      ],
+      "id": "n4"
+    },
+    "n5": {
+      "type": "text",
+      "name": "Fit label",
+      "tag": "span",
+      "style": {
+        "desktop": {}
+      },
+      "content": [
+        {
+          "text": "Fit"
+        }
+      ],
+      "id": "n5"
+    },
+    "n6": {
+      "type": "frame",
+      "name": "Fit",
+      "tag": "div",
+      "style": {
+        "desktop": {
+          "padding": {
+            "top": 8,
+            "right": 8,
+            "bottom": 8,
+            "left": 8
+          },
+          "fill": {
+            "type": "solid",
+            "color": "#e0e7ff"
+          },
+          "width": {
+            "type": "fit"
+          }
+        }
+      },
+      "children": [
+        "n5"
+      ],
+      "id": "n6"
+    },
+    "n7": {
+      "type": "text",
+      "name": "Stretch label",
+      "tag": "span",
+      "style": {
+        "desktop": {}
+      },
+      "content": [
+        {
+          "text": "Stretch"
+        }
+      ],
+      "id": "n7"
+    },
+    "n8": {
+      "type": "frame",
+      "name": "Stretch",
+      "tag": "div",
+      "style": {
+        "desktop": {
+          "padding": {
+            "top": 8,
+            "right": 8,
+            "bottom": 8,
+            "left": 8
+          },
+          "fill": {
+            "type": "solid",
+            "color": "#e0e7ff"
+          },
+          "height": {
+            "type": "fill"
+          },
+          "width": {
+            "type": "fixed",
+            "value": 80
+          }
+        }
+      },
+      "children": [
+        "n7"
+      ],
+      "id": "n8"
+    },
+    "n9": {
+      "type": "frame",
+      "name": "Row",
+      "tag": "div",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "gap": 12,
+          "align": "stretch",
+          "height": {
+            "type": "fixed",
+            "value": 120
+          }
+        }
+      },
+      "children": [
+        "n2",
+        "n4",
+        "n6",
+        "n8"
+      ],
+      "id": "n9"
+    },
+    "n10": {
+      "type": "text",
+      "name": "Full width label",
+      "tag": "span",
+      "style": {
+        "desktop": {}
+      },
+      "content": [
+        {
+          "text": "Full width"
+        }
+      ],
+      "id": "n10"
+    },
+    "n11": {
+      "type": "frame",
+      "name": "Full width",
+      "tag": "div",
+      "style": {
+        "desktop": {
+          "padding": {
+            "top": 8,
+            "right": 8,
+            "bottom": 8,
+            "left": 8
+          },
+          "fill": {
+            "type": "solid",
+            "color": "#e0e7ff"
+          },
+          "width": {
+            "type": "fill"
+          }
+        }
+      },
+      "children": [
+        "n10"
+      ],
+      "id": "n11"
+    },
+    "n12": {
+      "type": "text",
+      "name": "Grow label",
+      "tag": "span",
+      "style": {
+        "desktop": {}
+      },
+      "content": [
+        {
+          "text": "Grow"
+        }
+      ],
+      "id": "n12"
+    },
+    "n13": {
+      "type": "frame",
+      "name": "Grow",
+      "tag": "div",
+      "style": {
+        "desktop": {
+          "padding": {
+            "top": 8,
+            "right": 8,
+            "bottom": 8,
+            "left": 8
+          },
+          "fill": {
+            "type": "solid",
+            "color": "#e0e7ff"
+          },
+          "height": {
+            "type": "fill"
+          }
+        }
+      },
+      "children": [
+        "n12"
+      ],
+      "id": "n13"
+    },
+    "n14": {
+      "type": "text",
+      "name": "Fixed height label",
+      "tag": "span",
+      "style": {
+        "desktop": {}
+      },
+      "content": [
+        {
+          "text": "Fixed height"
+        }
+      ],
+      "id": "n14"
+    },
+    "n15": {
+      "type": "frame",
+      "name": "Fixed height",
+      "tag": "div",
+      "style": {
+        "desktop": {
+          "padding": {
+            "top": 8,
+            "right": 8,
+            "bottom": 8,
+            "left": 8
+          },
+          "fill": {
+            "type": "solid",
+            "color": "#e0e7ff"
+          },
+          "height": {
+            "type": "fixed",
+            "value": 48
+          }
+        }
+      },
+      "children": [
+        "n14"
+      ],
+      "id": "n15"
+    },
+    "n16": {
+      "type": "frame",
+      "name": "Column",
+      "tag": "div",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "direction": "column",
+          "gap": 12,
+          "align": "start"
+        }
+      },
+      "children": [
+        "n11",
+        "n13",
+        "n15"
+      ],
+      "id": "n16"
+    },
+    "n17": {
+      "type": "text",
+      "name": "Left label",
+      "tag": "span",
+      "style": {
+        "desktop": {}
+      },
+      "content": [
+        {
+          "text": "Left"
+        }
+      ],
+      "id": "n17"
+    },
+    "n18": {
+      "type": "frame",
+      "name": "Left",
+      "tag": "div",
+      "style": {
+        "desktop": {
+          "padding": {
+            "top": 8,
+            "right": 8,
+            "bottom": 8,
+            "left": 8
+          },
+          "fill": {
+            "type": "solid",
+            "color": "#e0e7ff"
+          },
+          "width": {
+            "type": "fill"
+          }
+        }
+      },
+      "children": [
+        "n17"
+      ],
+      "id": "n18"
+    },
+    "n19": {
+      "type": "text",
+      "name": "Right label",
+      "tag": "span",
+      "style": {
+        "desktop": {}
+      },
+      "content": [
+        {
+          "text": "Right"
+        }
+      ],
+      "id": "n19"
+    },
+    "n20": {
+      "type": "frame",
+      "name": "Right",
+      "tag": "div",
+      "style": {
+        "desktop": {
+          "padding": {
+            "top": 8,
+            "right": 8,
+            "bottom": 8,
+            "left": 8
+          },
+          "fill": {
+            "type": "solid",
+            "color": "#e0e7ff"
+          },
+          "width": {
+            "type": "fill"
+          }
+        }
+      },
+      "children": [
+        "n19"
+      ],
+      "id": "n20"
+    },
+    "n21": {
+      "type": "frame",
+      "name": "Responsive",
+      "tag": "div",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "gap": 16
+        },
+        "mobile": {
+          "direction": "column"
+        }
+      },
+      "children": [
+        "n18",
+        "n20"
+      ],
+      "id": "n21"
+    },
+    "n22": {
+      "type": "frame",
+      "name": "Layouts",
+      "tag": "div",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "direction": "column",
+          "gap": 32,
+          "padding": {
+            "top": 32,
+            "right": 32,
+            "bottom": 32,
+            "left": 32
+          }
+        }
+      },
+      "children": [
+        "n9",
+        "n16",
+        "n21"
+      ],
+      "id": "n22"
+    }
+  },
+  "components": {},
+  "variables": {},
+  "assets": {}
+}

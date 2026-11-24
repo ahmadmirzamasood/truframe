@@ -7,7 +7,13 @@
   },
   "files": {
     "ignoreUnknown": true,
-    "includes": ["**", "!**/worker-configuration.d.ts", "!fixtures/**/expected", "!**/*.md"]
+    "includes": [
+      "**",
+      "!**/worker-configuration.d.ts",
+      "!fixtures/compiler",
+      "!crates/compiler/templates",
+      "!**/*.md"
+    ]
   },
   "formatter": {
     "enabled": true,

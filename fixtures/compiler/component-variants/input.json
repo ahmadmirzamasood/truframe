@@ -1,0 +1,304 @@
+{
+  "schemaVersion": 1,
+  "id": "0199a0b2-7c3d-7e4f-8a5b-6c7d8e9f0a1b",
+  "framework": "nextjs",
+  "settings": {
+    "lang": "en"
+  },
+  "breakpoints": {
+    "desktop": {
+      "width": 1200
+    },
+    "tablet": {
+      "width": 810
+    },
+    "mobile": {
+      "width": 390
+    }
+  },
+  "pages": [
+    {
+      "id": "id1",
+      "name": "Home",
+      "path": "/",
+      "seo": {
+        "title": "Home",
+        "description": "",
+        "ogImage": null,
+        "noindex": false
+      },
+      "root": "id2"
+    }
+  ],
+  "nodes": {
+    "id2": {
+      "id": "id2",
+      "type": "frame",
+      "name": "Body",
+      "tag": "main",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "direction": "column",
+          "width": {
+            "type": "fill"
+          },
+          "height": {
+            "type": "fit"
+          }
+        }
+      },
+      "children": [
+        "n7"
+      ]
+    },
+    "n1": {
+      "type": "text",
+      "name": "Label",
+      "tag": "span",
+      "style": {
+        "desktop": {
+          "fontWeight": 600
+        }
+      },
+      "content": [
+        {
+          "text": "Click me"
+        }
+      ],
+      "id": "n1"
+    },
+    "n2": {
+      "type": "link",
+      "name": "Button",
+      "tag": "a",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "align": "center",
+          "padding": {
+            "top": 10,
+            "right": 16,
+            "bottom": 10,
+            "left": 16
+          },
+          "radius": 8,
+          "fill": {
+            "type": "solid",
+            "color": "#18181b"
+          },
+          "textColor": "#ffffff"
+        }
+      },
+      "target": {
+        "type": "url",
+        "href": "#"
+      },
+      "newTab": false,
+      "children": [
+        "n1"
+      ],
+      "id": "n2"
+    },
+    "n3": {
+      "type": "instance",
+      "name": "Default",
+      "tag": "div",
+      "style": {
+        "desktop": {}
+      },
+      "componentId": "btn",
+      "overrides": {
+        "variant": {},
+        "props": {},
+        "nodes": {}
+      },
+      "id": "n3"
+    },
+    "n4": {
+      "type": "instance",
+      "name": "Small",
+      "tag": "div",
+      "style": {
+        "desktop": {}
+      },
+      "componentId": "btn",
+      "overrides": {
+        "variant": {
+          "size": "small"
+        },
+        "props": {
+          "label": "Small"
+        },
+        "nodes": {}
+      },
+      "id": "n4"
+    },
+    "n5": {
+      "type": "instance",
+      "name": "Large",
+      "tag": "div",
+      "style": {
+        "desktop": {}
+      },
+      "componentId": "btn",
+      "overrides": {
+        "variant": {
+          "size": "large"
+        },
+        "props": {
+          "label": "Get started",
+          "href": "/signup"
+        },
+        "nodes": {}
+      },
+      "id": "n5"
+    },
+    "n6": {
+      "type": "instance",
+      "name": "Light",
+      "tag": "div",
+      "style": {
+        "desktop": {}
+      },
+      "componentId": "btn",
+      "overrides": {
+        "variant": {
+          "tone": "light"
+        },
+        "props": {
+          "label": "Learn more",
+          "href": "https://example.com"
+        },
+        "nodes": {}
+      },
+      "id": "n6"
+    },
+    "n7": {
+      "type": "frame",
+      "name": "Buttons",
+      "tag": "div",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "gap": 12,
+          "align": "center"
+        }
+      },
+      "children": [
+        "n3",
+        "n4",
+        "n5",
+        "n6"
+      ],
+      "id": "n7"
+    }
+  },
+  "components": {
+    "btn": {
+      "id": "btn",
+      "name": "Button",
+      "root": "n2",
+      "props": [
+        {
+          "name": "label",
+          "type": "text",
+          "default": "Click me",
+          "target": {
+            "nodeId": "n1",
+            "field": "content"
+          }
+        },
+        {
+          "name": "href",
+          "type": "link",
+          "default": "#",
+          "target": {
+            "nodeId": "n2",
+            "field": "href"
+          }
+        }
+      ],
+      "variantProps": [
+        {
+          "name": "size",
+          "values": [
+            "small",
+            "default",
+            "large"
+          ],
+          "default": "default"
+        },
+        {
+          "name": "tone",
+          "values": [
+            "dark",
+            "light"
+          ],
+          "default": "dark"
+        }
+      ],
+      "variants": {
+        "size=small,tone=dark": {
+          "n2": {
+            "desktop": {
+              "padding": {
+                "top": 6,
+                "right": 12,
+                "bottom": 6,
+                "left": 12
+              },
+              "radius": 6
+            }
+          },
+          "n1": {
+            "desktop": {
+              "fontSize": 14
+            }
+          }
+        },
+        "size=large,tone=dark": {
+          "n2": {
+            "desktop": {
+              "padding": {
+                "top": 14,
+                "right": 24,
+                "bottom": 14,
+                "left": 24
+              }
+            }
+          },
+          "n1": {
+            "desktop": {
+              "fontSize": 18
+            }
+          }
+        },
+        "size=default,tone=light": {
+          "n2": {
+            "desktop": {
+              "fill": {
+                "type": "solid",
+                "color": "#ffffff"
+              },
+              "textColor": "#18181b",
+              "border": {
+                "width": 1,
+                "color": "#e4e4e7",
+                "style": "solid",
+                "sides": {
+                  "top": true,
+                  "right": true,
+                  "bottom": true,
+                  "left": true
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "variables": {},
+  "assets": {}
+}

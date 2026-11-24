@@ -1,0 +1,217 @@
+{
+  "assets": [],
+  "css": {
+    "id2": {
+      "desktop": "display: flex; flex-direction: column; width: 100%; height: fit-content;"
+    },
+    "n1": {
+      "desktop": ""
+    },
+    "n10": {
+      "desktop": ""
+    },
+    "n11": {
+      "desktop": "padding: 8px; align-self: stretch; background-color: #e0e7ff;"
+    },
+    "n12": {
+      "desktop": ""
+    },
+    "n13": {
+      "desktop": "padding: 8px; flex: 1 1 0%; background-color: #e0e7ff;"
+    },
+    "n14": {
+      "desktop": ""
+    },
+    "n15": {
+      "desktop": "padding: 8px; flex: none; height: 48px; background-color: #e0e7ff;"
+    },
+    "n16": {
+      "desktop": "display: flex; flex-direction: column; align-items: flex-start; gap: 12px;"
+    },
+    "n17": {
+      "desktop": ""
+    },
+    "n18": {
+      "desktop": "padding: 8px; flex: 1 1 0%; background-color: #e0e7ff;",
+      "mobile": "flex: 0 1 auto; align-self: stretch;"
+    },
+    "n19": {
+      "desktop": ""
+    },
+    "n2": {
+      "desktop": "padding: 8px; flex: none; width: 120px; background-color: #e0e7ff;"
+    },
+    "n20": {
+      "desktop": "padding: 8px; flex: 1 1 0%; background-color: #e0e7ff;",
+      "mobile": "flex: 0 1 auto; align-self: stretch;"
+    },
+    "n21": {
+      "desktop": "display: flex; gap: 16px;",
+      "mobile": "flex-direction: column;"
+    },
+    "n22": {
+      "desktop": "display: flex; flex-direction: column; gap: 32px; padding: 32px;"
+    },
+    "n3": {
+      "desktop": ""
+    },
+    "n4": {
+      "desktop": "padding: 8px; flex: 1 1 0%; background-color: #e0e7ff;"
+    },
+    "n5": {
+      "desktop": ""
+    },
+    "n6": {
+      "desktop": "padding: 8px; flex: none; width: fit-content; background-color: #e0e7ff;"
+    },
+    "n7": {
+      "desktop": ""
+    },
+    "n8": {
+      "desktop": "padding: 8px; flex: none; align-self: stretch; width: 80px; background-color: #e0e7ff;"
+    },
+    "n9": {
+      "desktop": "display: flex; align-items: stretch; gap: 12px; flex: none; height: 120px;"
+    }
+  },
+  "spans": [
+    {
+      "end": 1904,
+      "node": "id2",
+      "path": "app/page.tsx",
+      "start": 148
+    },
+    {
+      "end": 1892,
+      "node": "n22",
+      "path": "app/page.tsx",
+      "start": 205
+    },
+    {
+      "end": 897,
+      "node": "n9",
+      "path": "app/page.tsx",
+      "start": 263
+    },
+    {
+      "end": 465,
+      "node": "n2",
+      "path": "app/page.tsx",
+      "start": 335
+    },
+    {
+      "end": 448,
+      "node": "n1",
+      "path": "app/page.tsx",
+      "start": 406
+    },
+    {
+      "end": 592,
+      "node": "n4",
+      "path": "app/page.tsx",
+      "start": 476
+    },
+    {
+      "end": 575,
+      "node": "n3",
+      "path": "app/page.tsx",
+      "start": 535
+    },
+    {
+      "end": 725,
+      "node": "n6",
+      "path": "app/page.tsx",
+      "start": 603
+    },
+    {
+      "end": 708,
+      "node": "n5",
+      "path": "app/page.tsx",
+      "start": 670
+    },
+    {
+      "end": 882,
+      "node": "n8",
+      "path": "app/page.tsx",
+      "start": 736
+    },
+    {
+      "end": 865,
+      "node": "n7",
+      "path": "app/page.tsx",
+      "start": 819
+    },
+    {
+      "end": 1417,
+      "node": "n16",
+      "path": "app/page.tsx",
+      "start": 906
+    },
+    {
+      "end": 1113,
+      "node": "n11",
+      "path": "app/page.tsx",
+      "start": 973
+    },
+    {
+      "end": 1096,
+      "node": "n10",
+      "path": "app/page.tsx",
+      "start": 1044
+    },
+    {
+      "end": 1243,
+      "node": "n13",
+      "path": "app/page.tsx",
+      "start": 1124
+    },
+    {
+      "end": 1226,
+      "node": "n12",
+      "path": "app/page.tsx",
+      "start": 1186
+    },
+    {
+      "end": 1402,
+      "node": "n15",
+      "path": "app/page.tsx",
+      "start": 1254
+    },
+    {
+      "end": 1385,
+      "node": "n14",
+      "path": "app/page.tsx",
+      "start": 1329
+    },
+    {
+      "end": 1879,
+      "node": "n21",
+      "path": "app/page.tsx",
+      "start": 1426
+    },
+    {
+      "end": 1671,
+      "node": "n18",
+      "path": "app/page.tsx",
+      "start": 1492
+    },
+    {
+      "end": 1654,
+      "node": "n17",
+      "path": "app/page.tsx",
+      "start": 1614
+    },
+    {
+      "end": 1864,
+      "node": "n20",
+      "path": "app/page.tsx",
+      "start": 1682
+    },
+    {
+      "end": 1847,
+      "node": "n19",
+      "path": "app/page.tsx",
+      "start": 1805
+    }
+  ]
+}

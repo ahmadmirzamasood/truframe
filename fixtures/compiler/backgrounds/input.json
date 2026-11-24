@@ -1,0 +1,237 @@
+{
+  "schemaVersion": 1,
+  "id": "0199a0b2-7c3d-7e4f-8a5b-6c7d8e9f0a1b",
+  "framework": "nextjs",
+  "settings": {
+    "lang": "en"
+  },
+  "breakpoints": {
+    "desktop": {
+      "width": 1200
+    },
+    "tablet": {
+      "width": 810
+    },
+    "mobile": {
+      "width": 390
+    }
+  },
+  "pages": [
+    {
+      "id": "id1",
+      "name": "Home",
+      "path": "/",
+      "seo": {
+        "title": "Home",
+        "description": "",
+        "ogImage": null,
+        "noindex": false
+      },
+      "root": "id2"
+    }
+  ],
+  "nodes": {
+    "id2": {
+      "id": "id2",
+      "type": "frame",
+      "name": "Body",
+      "tag": "main",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "direction": "column",
+          "width": {
+            "type": "fill"
+          },
+          "height": {
+            "type": "fit"
+          }
+        }
+      },
+      "children": [
+        "n7"
+      ]
+    },
+    "n1": {
+      "type": "frame",
+      "name": "Solid",
+      "tag": "div",
+      "style": {
+        "desktop": {
+          "height": {
+            "type": "fixed",
+            "value": 120
+          },
+          "fill": {
+            "type": "solid",
+            "color": "#0ea5e9"
+          }
+        }
+      },
+      "children": [],
+      "id": "n1"
+    },
+    "n2": {
+      "type": "frame",
+      "name": "Alpha",
+      "tag": "div",
+      "style": {
+        "desktop": {
+          "height": {
+            "type": "fixed",
+            "value": 120
+          },
+          "fill": {
+            "type": "solid",
+            "color": "#0ea5e980"
+          }
+        }
+      },
+      "children": [],
+      "id": "n2"
+    },
+    "n3": {
+      "type": "frame",
+      "name": "Gradient",
+      "tag": "div",
+      "style": {
+        "desktop": {
+          "height": {
+            "type": "fixed",
+            "value": 120
+          },
+          "fill": {
+            "type": "linearGradient",
+            "angle": 135,
+            "stops": [
+              {
+                "color": "#6366f1",
+                "position": 0
+              },
+              {
+                "color": "#ec4899",
+                "position": 0.6
+              },
+              {
+                "color": "#f59e0b",
+                "position": 1
+              }
+            ]
+          }
+        }
+      },
+      "children": [],
+      "id": "n3"
+    },
+    "n4": {
+      "type": "frame",
+      "name": "Tile",
+      "tag": "div",
+      "style": {
+        "desktop": {
+          "height": {
+            "type": "fixed",
+            "value": 120
+          },
+          "fill": {
+            "type": "image",
+            "assetId": "pattern",
+            "fit": "tile"
+          }
+        }
+      },
+      "children": [],
+      "id": "n4"
+    },
+    "n5": {
+      "type": "frame",
+      "name": "Cover",
+      "tag": "div",
+      "style": {
+        "desktop": {
+          "height": {
+            "type": "fixed",
+            "value": 120
+          },
+          "fill": {
+            "type": "image",
+            "assetId": "cover",
+            "fit": "fill"
+          }
+        },
+        "mobile": {
+          "fill": {
+            "type": "solid",
+            "color": "#111827"
+          }
+        }
+      },
+      "children": [],
+      "id": "n5"
+    },
+    "n6": {
+      "type": "frame",
+      "name": "Contain",
+      "tag": "div",
+      "style": {
+        "desktop": {
+          "height": {
+            "type": "fixed",
+            "value": 120
+          },
+          "fill": {
+            "type": "image",
+            "assetId": "cover",
+            "fit": "fit"
+          },
+          "blend": "multiply"
+        }
+      },
+      "children": [],
+      "id": "n6"
+    },
+    "n7": {
+      "type": "frame",
+      "name": "Backgrounds",
+      "tag": "div",
+      "style": {
+        "desktop": {
+          "display": "grid",
+          "gridColumns": 3,
+          "gap": 16
+        }
+      },
+      "children": [
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6"
+      ],
+      "id": "n7"
+    }
+  },
+  "components": {},
+  "variables": {},
+  "assets": {
+    "pattern": {
+      "id": "pattern",
+      "name": "pattern.png",
+      "mime": "image/png",
+      "width": 64,
+      "height": 64,
+      "bytes": 1000,
+      "key": "assets/1fd38d5cbd2a997b91f725cb1cb0a710849db30dac491ee42e92443fd8e3c1a2.png"
+    },
+    "cover": {
+      "id": "cover",
+      "name": "cover.webp",
+      "mime": "image/webp",
+      "width": 2400,
+      "height": 1200,
+      "bytes": 1000,
+      "key": "assets/3fa405a8301ace34d11cf44a816080b8f0e49a48fbd048b8aef1543a8c58bdb6.webp"
+    }
+  }
+}

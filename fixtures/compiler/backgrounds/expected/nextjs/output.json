@@ -1,0 +1,91 @@
+{
+  "assets": [
+    {
+      "assetId": "cover",
+      "key": "assets/3fa405a8301ace34d11cf44a816080b8f0e49a48fbd048b8aef1543a8c58bdb6.webp",
+      "path": "public/assets/cover.webp"
+    },
+    {
+      "assetId": "pattern",
+      "key": "assets/1fd38d5cbd2a997b91f725cb1cb0a710849db30dac491ee42e92443fd8e3c1a2.png",
+      "path": "public/assets/pattern.png"
+    }
+  ],
+  "css": {
+    "id2": {
+      "desktop": "display: flex; flex-direction: column; width: 100%; height: fit-content;"
+    },
+    "n1": {
+      "desktop": "height: 120px; background-color: #0ea5e9;"
+    },
+    "n2": {
+      "desktop": "height: 120px; background-color: #0ea5e980;"
+    },
+    "n3": {
+      "desktop": "height: 120px; background-image: linear-gradient(135deg, #6366f1 0%, #ec4899 60%, #f59e0b 100%);"
+    },
+    "n4": {
+      "desktop": "height: 120px; background-image: url(/assets/pattern.png); background-size: auto; background-repeat: repeat;"
+    },
+    "n5": {
+      "desktop": "height: 120px; background-image: url(/assets/cover.webp); background-size: cover; background-position: center; background-repeat: no-repeat;",
+      "mobile": "background-image: none; background-color: #111827;"
+    },
+    "n6": {
+      "desktop": "height: 120px; background-image: url(/assets/cover.webp); background-size: contain; background-position: center; background-repeat: no-repeat; mix-blend-mode: multiply;"
+    },
+    "n7": {
+      "desktop": "display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px;"
+    }
+  },
+  "spans": [
+    {
+      "end": 911,
+      "node": "id2",
+      "path": "app/page.tsx",
+      "start": 148
+    },
+    {
+      "end": 899,
+      "node": "n7",
+      "path": "app/page.tsx",
+      "start": 205
+    },
+    {
+      "end": 309,
+      "node": "n1",
+      "path": "app/page.tsx",
+      "start": 266
+    },
+    {
+      "end": 363,
+      "node": "n2",
+      "path": "app/page.tsx",
+      "start": 318
+    },
+    {
+      "end": 488,
+      "node": "n3",
+      "path": "app/page.tsx",
+      "start": 372
+    },
+    {
+      "end": 592,
+      "node": "n4",
+      "path": "app/page.tsx",
+      "start": 497
+    },
+    {
+      "end": 745,
+      "node": "n5",
+      "path": "app/page.tsx",
+      "start": 601
+    },
+    {
+      "end": 886,
+      "node": "n6",
+      "path": "app/page.tsx",
+      "start": 754
+    }
+  ]
+}

@@ -118,6 +118,10 @@
 
 - 2026-11-24: Tailwind v4 facts checked with the real compiler (`tailwind.test.ts`): `@custom-variant tablet (@media (width < 1200px));` (the media shorthand) works and nests rules as `@media … { .tablet\:gap-4 {…} }`; spacing utilities accept quarter steps (`gap-4.5`, `max-w-300`); `(--var)` and `(color:--var)` / `(length:--var)` / `(family-name:--var)` references work; arbitrary properties (`[font-weight:var(--x)]`) are the safe form when no utility takes a type hint. `@tailwindcss/node`'s `compile(css, { base, onDependency }).build(candidates)` runs Tailwind in Vitest without a project on disk.
 
+- 2026-11-24: Generated Next.js projects: `next build` rewrites `tsconfig.json` if `.next/dev/types/**/*.ts` is missing from `include`, so the template lists it (keeps users' repos clean). `next/font/google` needs `weight` for non-variable fonts; the compiler always passes the weights used. Builds of generated projects download fonts (network). `scripts/build-fixtures.ts` builds goldens locally on Windows too (~10 s build + ~3 s `tsc` per Next.js fixture).
+- 2026-11-24: Biome must not touch `fixtures/compiler` (it reformats `input.json` and the goldens); it is excluded in `biome.json`, as are `crates/compiler/templates`.
+- 2026-11-24: Generated projects' own dependencies (next, astro, sharp…) are the user's, not Truframe's: the license allowlist applies to our dependencies. Their lockfiles include the usual LGPL `@img/sharp-libvips-*` binaries, as any create-next-app project does.
+
 ## Dependencies added (name, license, why)
 - turbo 2.11.13 (MIT): task runner. typescript 5.9.3 (Apache-2.0). wrangler 4.166.0 (MIT OR Apache-2.0): Workers dev/deploy. [P0-1]
 - @biomejs/biome 2.6.8 (MIT OR Apache-2.0), vitest 5.1.1 (MIT), @playwright/test 1.65.1 (Apache-2.0), @types/node 22.20.5 (MIT). cargo-deny (MIT OR Apache-2.0) is a dev tool installed with `cargo install cargo-deny --locked`. [P0-2]
@@ -130,6 +134,8 @@
 - fast-check 4.10.3 (MIT, dev): property tests in `packages/ops`. zod 4.6.7 (MIT) in `packages/ops`. [P2-3]
 - Rust: wasm-bindgen 0.2.130 (MIT OR Apache-2.0), wasm32 target only, pinned exactly; wasm-bindgen-cli 0.2.130 (same) is a dev tool. [P3-1]
 - @tailwindcss/node 4.3.5 and tailwindcss 4.3.5 (MIT), dev only in `packages/compiler-wasm`: the test that runs Tailwind over compiler output. [P3-2]
+- Rust dev-dependencies oxc_allocator, oxc_parser, oxc_span 0.160.0 (MIT): golden tests parse every generated script. Not in the WASM build. [P3-3]
+- Generated-project dependency pins (in `crates/compiler/templates/*/package.json`, not Truframe dependencies): next 16.4.6, react/react-dom 19.3.1, tailwindcss + @tailwindcss/postcss + @tailwindcss/vite 4.3.5, postcss 8.5.33, typescript 5.9.3, @types/react(-dom) 19.3.0, @types/node 22.20.5, astro 7.4.13, @astrojs/check 0.9.12. [P3-3, P3-4]
 - loro-crdt 1.18.0 (MIT): the document CRDT (`packages/crdt`), chosen in ARCHITECTURE §2. 1.19.0 was one day old, so pnpm's release-age rule applies. [P2-4]
 
 ## Benchmarks

@@ -5,6 +5,7 @@
 //! every layer (`spans`, for reveal-in-code) and per-layer canvas CSS (`css`, for the renderer).
 
 mod adapters;
+mod fonts;
 pub mod model;
 pub mod names;
 pub mod printer;
