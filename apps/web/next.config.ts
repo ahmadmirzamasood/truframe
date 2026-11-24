@@ -10,6 +10,4 @@ const nextConfig: NextConfig = {
 export default nextConfig;
 
 // Gives `next dev` access to Cloudflare bindings (D1, R2, KV, Queues, DO) through Miniflare.
-// Local D1/R2/KV state lives at the repo root, outside the app folder: next dev watches this
-// folder, and SQLite touching files under apps/web/.wrangler caused an endless recompile loop.
-initOpenNextCloudflareForDev({ persist: { path: "../../.wrangler/state/v3" } });
+initOpenNextCloudflareForDev();
