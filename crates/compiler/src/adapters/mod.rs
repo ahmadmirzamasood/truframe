@@ -42,12 +42,30 @@ impl Emit {
     }
 
     pub fn writer(&mut self, path: &str, w: Writer) {
+        // One pass over the file for all offsets; converting each from the start of the file
+        // made compile time quadratic in page size.
+        let mut offsets: Vec<usize> = w.spans.iter().flat_map(|s| [s.start, s.end]).collect();
+        offsets.sort_unstable();
+        offsets.dedup();
+        let utf16: std::collections::HashMap<usize, usize> = if w.out.is_ascii() {
+            offsets.iter().map(|&o| (o, o)).collect()
+        } else {
+            let mut map = std::collections::HashMap::with_capacity(offsets.len());
+            let (mut byte, mut units) = (0, 0);
+            for &o in &offsets {
+                units += utf16_offset(&w.out[byte..], o - byte);
+                byte = o;
+                map.insert(o, units);
+            }
+            map
+        };
+        let at = |b: usize| utf16.get(&b).copied().unwrap_or(0);
         for s in &w.spans {
             self.output.spans.push(Span {
                 node: s.node.clone(),
                 path: path.to_string(),
-                start: utf16_offset(&w.out, s.start),
-                end: utf16_offset(&w.out, s.end),
+                start: at(s.start),
+                end: at(s.end),
             });
         }
         self.output.files.insert(path.to_string(), w.out);

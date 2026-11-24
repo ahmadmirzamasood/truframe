@@ -1,6 +1,6 @@
 //! Names derived from the document: layer code classes (PRD F27), identifiers, routes.
 
-use std::collections::BTreeSet;
+use std::collections::{BTreeMap, BTreeSet};
 
 /// Kebab-case of `name`, ASCII letters and digits only.
 pub fn kebab(name: &str) -> String {
@@ -334,6 +334,8 @@ pub fn class_base(name: &str, node_type: &str) -> String {
 #[derive(Debug, Default)]
 pub struct ClassNamer {
     taken: BTreeSet<String>,
+    /// Next number to try per base, so a page with hundreds of `card`s stays linear.
+    next: BTreeMap<String, usize>,
 }
 
 impl ClassNamer {
@@ -349,16 +351,17 @@ impl ClassNamer {
         if self.taken.insert(base.to_string()) {
             return base.to_string();
         }
-        let mut n = 2;
+        let mut n = self.next.get(base).copied().unwrap_or(2);
         loop {
             let mut candidate = format!("{base}-{n}");
             if collides_with_tailwind(&candidate) {
                 candidate = format!("{base}-el-{n}");
             }
+            n += 1;
             if self.taken.insert(candidate.clone()) {
+                self.next.insert(base.to_string(), n);
                 return candidate;
             }
-            n += 1;
         }
     }
 }
