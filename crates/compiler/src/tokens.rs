@@ -188,36 +188,22 @@ fn css_name(v: &Variable) -> &str {
 /// The Tailwind entry stylesheet: Tailwind, the tokens and the breakpoint variants.
 pub fn global_css(project: &Project, tokens_import: &str) -> String {
     let (tablet, mobile) = media(&project.breakpoints);
-    let mut css = String::from(
-        "@import \"tailwindcss\";
-",
-    );
-    css.push_str(&format!(
-        "@import \"{tokens_import}\";
-"
-    ));
+    let mut css = String::from("@import \"tailwindcss\";\n");
+    css.push_str(&format!("@import \"{tokens_import}\";\n"));
     if tablet.is_some() || mobile.is_some() {
-        css.push_str(
-            "
-/*
- * Desktop-first breakpoints: unprefixed classes are the desktop design;
- * `tablet:` and `mobile:` classes override them on smaller screens.
- * Declared tablet first so mobile wins where both apply.
- */
-",
-        );
+        css.push_str(concat!(
+            "\n/*\n",
+            " * Desktop-first breakpoints: unprefixed classes are the desktop design;\n",
+            " * `tablet:` and `mobile:` classes override them on smaller screens.\n",
+            " * Declared tablet first so mobile wins where both apply.\n",
+            " */\n",
+        ));
     }
     if let Some(q) = tablet {
-        css.push_str(&format!(
-            "@custom-variant tablet (@media {q});
-"
-        ));
+        css.push_str(&format!("@custom-variant tablet (@media {q});\n"));
     }
     if let Some(q) = mobile {
-        css.push_str(&format!(
-            "@custom-variant mobile (@media {q});
-"
-        ));
+        css.push_str(&format!("@custom-variant mobile (@media {q});\n"));
     }
     css
 }
