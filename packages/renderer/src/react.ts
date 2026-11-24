@@ -68,7 +68,8 @@ function frameElement(
   const width = doc.breakpoints[breakpoint]?.width ?? 0;
   return createElement(
     "div",
-    { "data-tf-frame": breakpoint, style: { width } },
+    // `lang` as on the site's <html>: browsers pick fallback fonts by language.
+    { "data-tf-frame": breakpoint, lang: doc.settings.lang, style: { width } },
     createElement("style", null, sheet),
     tree ? toReact(tree) : null,
   );

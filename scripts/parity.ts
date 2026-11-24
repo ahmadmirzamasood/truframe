@@ -161,7 +161,7 @@ function canvasHtml(c: Case, pageId: string, breakpoint: string) {
       },
     }) as Parameters<typeof renderToStaticMarkup>[0],
   );
-  return `<!doctype html><html><head><meta charset="utf-8"></head><body style="margin:0;background:#fff">${markup}</body></html>`;
+  return `<!doctype html><html lang="${c.doc.settings.lang}"><head><meta charset="utf-8"></head><body style="margin:0;background:#fff">${markup}</body></html>`;
 }
 
 async function run(cases: Case[]) {

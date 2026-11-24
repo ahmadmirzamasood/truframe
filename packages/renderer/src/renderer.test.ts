@@ -147,7 +147,7 @@ describe("React output", () => {
         breakpoint: "tablet",
       }) as React.ReactElement,
     );
-    expect(html).toMatch(/^<div data-tf-frame="tablet" style="width:810px"><style>/);
+    expect(html).toMatch(/^<div data-tf-frame="tablet" lang="en" style="width:810px"><style>/);
     expect(html).toContain(`data-tf-node="${page?.root}"`);
     expect(html).toContain("Launch something people love");
   });
