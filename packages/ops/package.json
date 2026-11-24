@@ -11,6 +11,10 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@truframe/model": "workspace:*"
+    "@truframe/model": "workspace:*",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "fast-check": "4.10.3"
   }
 }

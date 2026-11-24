@@ -141,6 +141,8 @@ Instance overrides: { variant: {prop: value}, props: {name: value}, nodes: {node
 
 **Operations** (`packages/ops`): `insertNode`, `deleteNode`, `moveNode`, `setProp(nodeId, breakpoint, key, value)`, `resetProp`, `setText`, `bindVariable`, `createComponent`, `detachInstance`, `setOverride`, `upsertVariable`, `addPage`, `updatePage`, `addAsset`, `setCodeFile`, etc. Every op is validated against the schema and the user's plan limits before it is applied to the Loro doc. A **transaction** groups the ops of one gesture or one agent turn, and is one undo step.
 
+**Ops as built (P2-3).** `applyTransaction(doc, ops, limits)` in `packages/ops` is the reference semantics: it parses each op (zod), applies them in order to a copy of the plain document, then runs `validateDocument` on the result and checks plan limits (`pagesPerProject`, only when the count grows, so a downgraded project can still be edited). It returns the new document and the inverse ops (newest first), or a typed error (`INVALID_OP`, `NOT_FOUND`, `INVALID_DOCUMENT`, `LIMIT_REACHED`) with no change. Reference rules are not duplicated in ops: deleting a page a link points at, or a variable in use, fails document validation. `setProp`/`resetProp` drop an empty tablet/mobile override object so set-then-reset leaves no trace; `setNodeFields` takes `null` to remove optional fields; `setInstanceOverride` without `value` removes an override. The Loro binding (P2-4) must produce the same documents.
+
 ## 6. Compiler (design ⇄ code)
 
 ### 6.1 Codegen
