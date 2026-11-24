@@ -5,7 +5,8 @@
   "description": "Operation types, validation, transactions",
   "type": "module",
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./testing": "./src/generator.ts"
   },
   "scripts": {
     "typecheck": "tsc --noEmit"

@@ -3,7 +3,7 @@
 > Agent-facing, long-lived project memory. Read at the start of every session; append in the same PR as the work that taught you something. Keep entries short, dated (YYYY-MM-DD) and factual. Fix or strike entries that become wrong.
 
 ## Current state
-- **Phase:** P2 Document core and realtime (in progress; P2-1 model, P2-2 Rust mirror and P2-3 ops done). P1 Accounts, dashboard, project creation is **done locally** (P1-1 to P1-7 merged with green CI). The P1 exit criteria that need staging are blocked: sign-in with all three methods on staging, and D1 migrations on staging. They wait on the Cloudflare connection and on the owner's OAuth apps, Resend and Turnstile keys (`docs/runbooks/auth-setup.md`). P0 is done except the P0-3 staging deploy. 
+- **Phase:** P2 Document core and realtime (in progress; P2-1 to P2-4 done: model, Rust mirror, ops, Loro binding). P1 Accounts, dashboard, project creation is **done locally** (P1-1 to P1-7 merged with green CI). The P1 exit criteria that need staging are blocked: sign-in with all three methods on staging, and D1 migrations on staging. They wait on the Cloudflare connection and on the owner's OAuth apps, Resend and Turnstile keys (`docs/runbooks/auth-setup.md`). P0 is done except the P0-3 staging deploy. 
 - **Last updated:** 2026-11-24
 - **Repo:** https://github.com/ahmadmirzamasood/truframe (public, default branch `main`). Work on `tf/<task-id>-<slug>` branches and open PRs. `archive/v1-local-first/` is not in this repo.
 
@@ -100,6 +100,9 @@
 - 2026-11-24: Document model (`@truframe/model`): `validateDocument(x)` returns `{ ok, doc | issues[] }` with every problem (path + message), `parseDocument` throws for trusted input. zod checks shape (strict objects), `checkIntegrity` checks references. Layout and sizing are per-breakpoint style props. Templates are JSON outlines expanded by `templateDocument(id, { projectId, framework })`.
 - 2026-11-24: Model parity: change `packages/model` → mirror it in `crates/compiler/src/model` → run `node scripts/model-fixtures.ts` and `pnpm format` → `pnpm test` and `cargo test`. Rust checks shape only (unknown keys, types, enums, required fields); ranges and references are the TS validator's job, so invalid fixtures hold only shape errors. Serde gotchas: `#[serde(default)]` on an `Option<T>` field of a generic struct adds a `T: Default` bound (leave it off, missing options are `None` anyway); compare round-tripped JSON with numbers normalized to f64 (`24` vs `24.0`).
 - 2026-11-24: Ops property tests build each random op against the current document from fast-check numbers (`makeOp(doc, choice)`), so most ops are meaningful and some are deliberately invalid. Compare documents with `canonical()` (sorted keys): an undo re-inserts nodes at the end of the `nodes` map, so key order differs while the document is equal. The test asserts every op type gets applied at least once, so a generator change can't silently stop covering an op.
+- 2026-11-24: loro.dev answers 403 to automated fetches. Read the API from the package itself: `npm pack loro-crdt@<v>` into the scratchpad, then `bundler/loro_wasm.d.ts` (classes) and `bundler/index.d.ts` (typed `LoroTreeNode`, `createNode`, `getNodes`), plus the README (bundler entries, mergeable children and undo identity).
+- 2026-11-24: Loro facts we rely on: `loro-crdt` resolves the `nodejs` entry in Node/Vitest (sync WASM, no init); browsers use `browser`/`bundler`, and `loro-crdt/base64` inlines the WASM for esbuild/Rollup. `LoroMap.ensureMergeableMap(key)` keeps one container identity per parent/key; deleting and re-creating it brings back its old contents. Tree nodes need `enableFractionalIndex(0)` for ordered children. Changes are not visible to `export`/events until `doc.commit()`.
+- 2026-11-24: `applyTransaction` must copy every op payload it stores in the document (`structuredClone`). Before the fix, an `addPage` followed by `insertNodes` into that page in the same transaction mutated the returned parsed `addPage` op, and the Loro binding then built a page body with a child it didn't have. The Loro property test found it.
 
 ## Dependencies added (name, license, why)
 - turbo 2.11.13 (MIT): task runner. typescript 5.9.3 (Apache-2.0). wrangler 4.166.0 (MIT OR Apache-2.0): Workers dev/deploy. [P0-1]
@@ -111,7 +114,9 @@
 - zod 4.6.7 (MIT) added to `packages/model` (already used by protocol and auth). [P2-1]
 - Rust: serde 1.0.229 (derive) and serde_json 1.0.154 (MIT OR Apache-2.0) in `truframe-compiler`. [P2-2]
 - fast-check 4.10.3 (MIT, dev): property tests in `packages/ops`. zod 4.6.7 (MIT) in `packages/ops`. [P2-3]
+- loro-crdt 1.18.0 (MIT): the document CRDT (`packages/crdt`), chosen in ARCHITECTURE §2. 1.19.0 was one day old, so pnpm's release-age rule applies. [P2-4]
 
 ## Benchmarks
+- 2026-11-24: loro-crdt 1.18.0 WASM: **3.7 MB raw / 1.24 MB gzip**. It is the biggest piece of the realtime worker and the editor bundle; load it lazily in the editor (P2-6). Loro property test (300 runs, up to 12 transactions, Loro vs JS compared after every transaction): about 8 s.
 - 2026-11-24: Ops property test, 1,000 runs (up to 25 transactions × 3 ops, full `validateDocument` after every transaction plus undo and redo): about 12 s on the Windows dev machine. `applyTransaction` clones the whole document (`structuredClone`) and validates it fully each time; fine for now, revisit if ProjectRoom profiling shows it.
 - 2026-11-24: `truframe-web` OpenNext bundle (P0 skeleton: home page + `/api/health`), `wrangler deploy --dry-run --env staging` in `node:22-bookworm`: **4,546 KiB raw / 959 KiB gzip** (Workers limit 3 MiB free / 10 MiB paid, compressed).
