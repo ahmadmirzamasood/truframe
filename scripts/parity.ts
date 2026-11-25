@@ -10,19 +10,28 @@
 // assets resolve the same way. A pair fails when more than `--max-diff` of its pixels differ
 // (pixelmatch, anti-aliasing tolerant). Diff images go to `--report`.
 //
-// Also usable for any document: `--doc <input.json> --css <output.json> --site <dir>`
-// compares a document compiled and built elsewhere (the P4 exit e2e uses this).
+// Also usable for any document: `--doc <doc.json> [--canvas <dir of editor screenshots>]`
+// compiles and builds it, then compares (the P4 exit e2e uses this; see documentCase).
 import { execFileSync } from "node:child_process";
-import { existsSync, mkdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
+import {
+  existsSync,
+  mkdirSync,
+  readdirSync,
+  readFileSync,
+  rmSync,
+  statSync,
+  writeFileSync,
+} from "node:fs";
 import { createServer, type Server } from "node:http";
 import type { AddressInfo } from "node:net";
 import { tmpdir } from "node:os";
-import { extname, join, normalize } from "node:path";
+import { dirname, extname, join, normalize } from "node:path";
 import { parseArgs } from "node:util";
 import { chromium, type Page } from "@playwright/test";
 import pixelmatch from "pixelmatch";
 import { PNG } from "pngjs";
 import { renderToStaticMarkup } from "react-dom/server";
+import { compile, initCompilerFromDisk } from "../packages/compiler-wasm/src/node.ts";
 import {
   activeBreakpoints,
   type ProjectDocument,
@@ -68,8 +77,7 @@ const { values } = parseArgs({
     report: { type: "string" },
     "max-diff": { type: "string" },
     doc: { type: "string" },
-    css: { type: "string" },
-    site: { type: "string" },
+    canvas: { type: "string" },
   },
 });
 const maxDiff = Number(values["max-diff"] ?? "0.01");
@@ -80,7 +88,15 @@ type Output = {
   css: Record<string, { desktop: string; tablet?: string; mobile?: string }>;
   assets: { assetId: string; path: string }[];
 };
-type Case = { name: string; doc: ProjectDocument; output: Output; tokens?: string; site: string };
+type Case = {
+  name: string;
+  doc: ProjectDocument;
+  output: Output;
+  tokens?: string;
+  site: string;
+  /** Screenshots of the editor's canvas frames, instead of rendering the markup here. */
+  canvas?: string;
+};
 
 const MIME: Record<string, string> = {
   ".html": "text/html; charset=utf-8",
@@ -176,10 +192,11 @@ async function run(cases: Case[]) {
       for (const bp of activeBreakpoints(c.doc.breakpoints)) {
         const width = c.doc.breakpoints[bp]?.width ?? 0;
         const label = `${c.name} ${page.path} ${bp}`;
-        writeFileSync(
-          join(c.site, "__canvas", `${page.id}-${bp}.html`),
-          canvasHtml(c, page.id, bp),
-        );
+        if (!c.canvas)
+          writeFileSync(
+            join(c.site, "__canvas", `${page.id}-${bp}.html`),
+            canvasHtml(c, page.id, bp),
+          );
         const ctx = await browser.newContext({ viewport: { width, height: 200 } });
         const tab = await ctx.newPage();
         await tab.goto(origin + page.path, { waitUntil: "load" });
@@ -187,12 +204,15 @@ async function run(cases: Case[]) {
         const site = PNG.sync.read(
           await tab.screenshot({ fullPage: true, animations: "disabled" }),
         );
-        await tab.goto(`${origin}/__canvas/${page.id}-${bp}`, { waitUntil: "load" });
-        await settle(tab);
-        // Same viewport and method as the site: the frame sits at the page's top left.
-        const frame = PNG.sync.read(
-          await tab.screenshot({ fullPage: true, animations: "disabled" }),
-        );
+        let frame: PNG;
+        if (c.canvas) {
+          frame = PNG.sync.read(readFileSync(join(c.canvas, `${page.id}-${bp}.png`)));
+        } else {
+          await tab.goto(`${origin}/__canvas/${page.id}-${bp}`, { waitUntil: "load" });
+          await settle(tab);
+          // Same viewport and method as the site: the frame sits at the page's top left.
+          frame = PNG.sync.read(await tab.screenshot({ fullPage: true, animations: "disabled" }));
+        }
         await ctx.close();
         const safe = label.replace(/[^a-z0-9]+/gi, "_");
         const { ratio, size } = compare(site, frame, join(report, `${safe}.diff.png`));
@@ -246,18 +266,35 @@ function fixtureCases(): Case[] {
   });
 }
 
+/**
+ * Any document (the P4 exit e2e saves one): compile it with the WASM compiler, build the Next.js
+ * project, and compare against canvas screenshots from the editor when `--canvas` is given
+ * (`<pageId>-<breakpoint>.png`), else against the renderer's markup.
+ */
 function documentCase(): Case {
-  const { doc, css, site } = values;
-  if (!doc || !css || !site) throw new Error("--doc, --css and --site go together");
-  const output = JSON.parse(readFileSync(css, "utf8")) as Output & {
-    files?: Record<string, string>;
-  };
+  const docPath = values.doc as string;
+  const doc = parseDocument(JSON.parse(readFileSync(docPath, "utf8")));
+  initCompilerFromDisk();
+  const out = compile(doc, "nextjs");
+  const work = values.dir ?? join(tmpdir(), "truframe-parity-document");
+  mkdirSync(work, { recursive: true });
+  for (const entry of readdirSync(work))
+    if (entry !== "node_modules") rmSync(join(work, entry), { recursive: true, force: true });
+  for (const [path, text] of Object.entries(out.files)) {
+    mkdirSync(dirname(join(work, path)), { recursive: true });
+    writeFileSync(join(work, path), text);
+  }
+  const shell = process.platform === "win32";
+  if (!existsSync(join(work, "node_modules")))
+    execFileSync("npm", ["ci", "--no-audit", "--no-fund"], { cwd: work, stdio: "inherit", shell });
+  execFileSync("npm", ["run", "build"], { cwd: work, stdio: "inherit", shell });
   return {
     name: "document",
-    doc: parseDocument(JSON.parse(readFileSync(doc, "utf8"))),
-    output,
-    tokens: output.files?.["app/tokens.css"],
-    site,
+    doc,
+    output: out,
+    tokens: out.files["app/tokens.css"],
+    site: join(work, "out"),
+    canvas: values.canvas,
   };
 }
 

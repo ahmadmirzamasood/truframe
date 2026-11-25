@@ -3,7 +3,7 @@
 > Agent-facing, long-lived project memory. Read at the start of every session; append in the same PR as the work that taught you something. Keep entries short, dated (YYYY-MM-DD) and factual. Fix or strike entries that become wrong.
 
 ## Current state
-- **Phase:** P4 Design View I is **in progress** (P4-1 shell, P4-2 camera, P4-3 renderer, P4-4 breakpoints, P4-5 insert tools, P4-6 gestures, P4-7 inspector, P4-8 layers, P4-9 pages, P4-10 commands done). P3 Compiler v1 is **done** (P3-1 to P3-6 merged with green CI; exit criteria met: 60 golden fixtures over both frameworks, every one built and type-checked in CI by the `generated` job, a 300-layer page compiles in 11.9 ms median in WASM). P2 is done. P1 is done locally; its staging exit criteria (sign-in with all three methods on staging, D1 migrations on staging) wait on the Cloudflare connection and the owner's OAuth apps, Resend and Turnstile keys (`docs/runbooks/auth-setup.md`). P0 is done except the P0-3 staging deploy.
+- **Phase:** P4 Design View I is **done** (P4-1 to P4-10 merged with green CI; exit criteria met: `e2e/exit-landing.spec.ts` builds a 3-section landing page on all three breakpoints with only the UI, and the editor's canvas matches the built Next.js site at **0.000%** differing pixels per breakpoint; fixture parity is 0.000% on 64 pairs in CI). Open P4 follow-up: P4-7a text truncation (needs a model prop and compiler support). P5 Design View II is next. P3 Compiler v1 is done. P2 is done. P1 is done locally; its staging exit criteria (sign-in with all three methods on staging, D1 migrations on staging) wait on the Cloudflare connection and the owner's OAuth apps, Resend and Turnstile keys (`docs/runbooks/auth-setup.md`). P0 is done except the P0-3 staging deploy.
 - **Last updated:** 2026-11-25
 - **Repo:** https://github.com/ahmadmirzamasood/truframe (public, default branch `main`). Work on `tf/<task-id>-<slug>` branches and open PRs. `archive/v1-local-first/` is not in this repo.
 
@@ -146,6 +146,8 @@
 - 2026-11-25: `biome check --write --unsafe` removes `role="tree"` from a `<ul>` ("redundant role"); use `div` with `role=tree/treeitem/group` for trees.
 
 - 2026-11-25: Editor keyboard: add a command to `editor-commands.ts` instead of a new `keydown` listener. `useCommandKeys` skips commands while typing or inside dialogs/menus unless `inInputs`; Space (pan) and Alt (measure) are gesture state, not commands.
+
+- 2026-11-25: Canvas vs site at the document level: `scripts/parity.ts --doc <doc.json> --canvas <dir>` compiles the document with the WASM compiler, writes the Next.js project, runs `npm ci` (once per work dir) and `npm run build`, then compares the built pages with the editor's own frame screenshots (`<pageId>-<bp>.png`, taken at 100% zoom: a 3300 px wide viewport makes Zoom to fit land on 100%). The dev-only `window.__truframeDoc()` hook (non-production builds) gives e2e the document.
 
 ## Dependencies added (name, license, why)
 - turbo 2.11.13 (MIT): task runner. typescript 5.9.3 (Apache-2.0). wrangler 4.166.0 (MIT OR Apache-2.0): Workers dev/deploy. [P0-1]
