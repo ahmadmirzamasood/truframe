@@ -170,6 +170,7 @@ The printer (`crates/compiler/src/printer.rs`) lays out an element tree: two-spa
 - Variables are referenced as CSS variables in classes (`bg-(--brand-accent)`, `p-(--space-md)`, `text-(color:--brand-accent)`), so a variable name can never collide with a Tailwind theme name. `tokens.css` still adds `@theme inline` mappings (`--color-brand-accent`, `--spacing-space-md`, `--text-heading…`, `--font-heading`) so exported projects can use them as utilities.
 - A bound text style (`font: { var }`) supplies family, size, weight, line height and letter spacing through `<cssName>-family/-size/-weight/-line-height/-letter-spacing`; a value set on the layer itself wins for that part only.
 - Font families are referenced as `--tf-font-<slug>`: the framework's font loader sets it for web fonts (P3-3/P3-4), `tokens.css` declares system stacks (Arial, Georgia, …).
+- `truncate: true` is Tailwind's `truncate` (overflow hidden, ellipsis, nowrap) in its own slot; turned off below, it resets all three (P4-7a).
 - Hidden per breakpoint is part of the display slot (`hidden` / `tablet:flex`, or the tag's natural display).
 - Media queries: `tablet` = `(width < 1200px)`; `mobile` = `(width < <tablet width>px)`, or `(width < 1200px)` when Tablet is removed. Tablet is declared first so mobile wins where both match.
 - Component roots split slots: outer (display, position, insets, spans, flex, size) come from the instance; the rest from the component.

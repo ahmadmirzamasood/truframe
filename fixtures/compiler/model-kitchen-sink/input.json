@@ -204,7 +204,8 @@
           "letterSpacing": -0.02,
           "textAlign": "center",
           "textDecoration": "line-through",
-          "textTransform": "uppercase"
+          "textTransform": "uppercase",
+          "truncate": true
         }
       },
       "content": [

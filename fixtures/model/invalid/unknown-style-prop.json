@@ -193,6 +193,7 @@
           "textAlign": "center",
           "textDecoration": "line-through",
           "textTransform": "uppercase",
+          "truncate": true,
           "color": "#ffffff"
         }
       },

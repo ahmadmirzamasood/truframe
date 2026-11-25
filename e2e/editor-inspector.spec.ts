@@ -60,6 +60,17 @@ test("inspector sections edit the selection at the editing breakpoint", async ({
   await expect(h1).toHaveCSS("text-align", "right");
   await p.getByLabel("Text transform").selectOption("uppercase");
   await expect(h1).toHaveCSS("text-transform", "uppercase");
+  await p
+    .getByRole("radiogroup", { name: "Truncation" })
+    .getByRole("radio", { name: "One line …" })
+    .click();
+  await expect(h1).toHaveCSS("text-overflow", "ellipsis");
+  await expect(h1).toHaveCSS("white-space", "nowrap");
+  await p
+    .getByRole("radiogroup", { name: "Truncation" })
+    .getByRole("radio", { name: "Wrap" })
+    .click();
+  await expect(h1).toHaveCSS("white-space", "normal");
 
   // Mobile override: red dot, then reset to inherited.
   await page

@@ -128,6 +128,8 @@ export const propsSchema = z.strictObject({
   textAlign: z.enum(["left", "center", "right", "justify"]).optional(),
   textDecoration: z.enum(["none", "underline", "line-through"]).optional(),
   textTransform: z.enum(["none", "uppercase", "lowercase", "capitalize"]).optional(),
+  /** One line with an ellipsis (Tailwind `truncate`). */
+  truncate: z.boolean().optional(),
   textColor: colorValueSchema.optional(),
   // Appearance
   fill: fillSchema.optional(),

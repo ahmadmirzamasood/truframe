@@ -63,6 +63,7 @@ pub enum Slot {
     TextAlign,
     Decoration,
     Transform,
+    Truncate,
     TextColor,
     Background,
     Border,
@@ -262,6 +263,7 @@ pub fn merge(base: &Props, over: &Props) -> Props {
         text_align,
         text_decoration,
         text_transform,
+        truncate,
         text_color,
         fill,
         border,
@@ -410,6 +412,12 @@ pub fn reset(slot: Slot, node: NodeInfo) -> Decl {
         Slot::TextAlign => Decl::one("text-start", "text-align", "start"),
         Slot::Decoration => Decl::one("no-underline", "text-decoration-line", "none"),
         Slot::Transform => Decl::one("normal-case", "text-transform", "none"),
+        Slot::Truncate => {
+            let mut d = Decl::one("overflow-visible", "overflow", "visible");
+            d.push("text-clip", "text-overflow", "clip");
+            d.push("whitespace-normal", "white-space", "normal");
+            d
+        }
         Slot::TextColor => Decl::one("text-inherit", "color", "inherit"),
         Slot::Background => {
             let mut d = Decl::one("bg-transparent", "background-color", "transparent");
@@ -778,6 +786,13 @@ pub fn decls(input: &BpInput, env: &Env) -> BTreeMap<Slot, Decl> {
             TextTransform::Capitalize => ("capitalize", "capitalize"),
         };
         put(Slot::Transform, Decl::one(c, "text-transform", v));
+    }
+    if p.truncate == Some(true) {
+        // Tailwind's `truncate`: one class, three declarations.
+        let mut d = Decl::one("truncate", "overflow", "hidden");
+        d.css.push(("text-overflow", "ellipsis".into()));
+        d.css.push(("white-space", "nowrap".into()));
+        put(Slot::Truncate, d);
     }
     if let Some(c) = &p.text_color {
         let (class, v) = color("text", c, vars, true);

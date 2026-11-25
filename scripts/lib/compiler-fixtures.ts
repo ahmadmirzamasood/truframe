@@ -233,7 +233,13 @@ export function compilerFixtures(): Record<string, ProjectDocument> {
       const quote = b.text(
         "Quote",
         "Simplicity is the ultimate sophistication.",
-        { fontSize: 24, textTransform: "uppercase", letterSpacing: 0.1, textDecoration: "none" },
+        {
+          fontSize: 24,
+          textTransform: "uppercase",
+          letterSpacing: 0.1,
+          textDecoration: "none",
+          truncate: true,
+        },
         "blockquote",
       );
       const small = b.text(

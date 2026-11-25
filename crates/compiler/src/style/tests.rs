@@ -581,3 +581,19 @@ fn missing_breakpoints_are_skipped() {
     // Tablet overrides are kept in the document but inactive while Tablet is removed.
     assert_eq!(e[1].1.gap, Some(SpacingValue::Px(8.0)));
 }
+
+#[test]
+fn truncate_cases() {
+    assert_eq!(c(json!({ "truncate": true })), "truncate");
+    assert_eq!(c(json!({ "truncate": false })), "");
+    // Turned off on a smaller breakpoint: the three declarations are reset.
+    let s = cascade(json!({ "desktop": { "truncate": true }, "mobile": { "truncate": false } }));
+    assert_eq!(
+        s.classes.join(" "),
+        "truncate mobile:overflow-visible mobile:text-clip mobile:whitespace-normal"
+    );
+    assert_eq!(
+        s.css.desktop,
+        "overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"
+    );
+}
