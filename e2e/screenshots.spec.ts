@@ -112,3 +112,17 @@ test("capture the inspector", async ({ page, context }) => {
     .click();
   await page.screenshot({ path: `${dir}/inspector-section.png` });
 });
+
+test("capture the pages panel", async ({ page, context }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await openNewProject(page, context, { name: "Site", templateId: "saas" });
+  await page
+    .getByRole("tablist", { name: "Left panel tabs" })
+    .getByRole("tab", { name: "Pages" })
+    .click();
+  await page.getByTestId("pages-panel").getByRole("button", { name: "New folder" }).click();
+  await page.getByRole("dialog").getByLabel("Name").fill("Blog");
+  await page.getByRole("dialog").getByRole("button", { name: "Create folder" }).click();
+  await page.getByRole("treeitem", { name: "Pricing" }).hover();
+  await page.screenshot({ path: `${dir}/pages-panel.png` });
+});
