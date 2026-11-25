@@ -39,6 +39,10 @@ export function ProjectEditor({
         cache: indexedDbCache(),
       });
       client.current = c;
+      // Local development and e2e only: lets tests read the document they built in the UI.
+      if (process.env.NODE_ENV !== "production")
+        (window as unknown as { __truframeDoc?: () => unknown }).__truframeDoc = () =>
+          c.state().doc;
       unsubscribe = c.subscribe(setState);
       await c.start();
     });
