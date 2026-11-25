@@ -25,11 +25,19 @@ async function openEditor(browser: Browser, email: string, projectId?: string) {
   return { context, page, projectId: id };
 }
 
-const layers = (page: Page) => page.getByRole("list", { name: "Layers" }).getByRole("listitem");
+/** Top-level layers of the page, as the Layers panel lists them for Desktop. */
+const layers = (page: Page) =>
+  page.getByRole("tree", { name: "Desktop layers" }).locator('[data-depth="1"]');
 
+/** Inserts a text layer (one transaction) and types its words (a second one). */
 async function addText(page: Page, words: string) {
-  await page.getByLabel("Add a text layer").fill(words);
-  await page.getByRole("button", { name: "Add", exact: true }).click();
+  await page
+    .getByRole("toolbar", { name: "Insert" })
+    .getByRole("button", { name: "Insert Text" })
+    .click();
+  const content = page.getByRole("tabpanel", { name: "Inspect" }).getByLabel("Text content");
+  await content.fill(words);
+  await content.blur();
 }
 
 test("offline edits sync on reconnect and two browsers converge", async ({ browser }) => {
@@ -42,21 +50,21 @@ test("offline edits sync on reconnect and two browsers converge", async ({ brows
 
   // Live: B sees A's change.
   await addText(a.page, "Typed while online");
-  await expect(b.page.getByRole("listitem", { name: "Typed while online" })).toBeVisible();
+  await expect(b.page.getByRole("treeitem", { name: "Typed while online" })).toBeVisible();
 
   // A goes offline and keeps editing; B edits meanwhile and doesn't see A's offline change.
   await a.context.setOffline(true);
   await expect(a.page.getByTestId("sync-status")).toContainText("Offline");
   await addText(a.page, "Typed while offline");
-  await expect(a.page.getByTestId("sync-status")).toHaveText("Offline · 1 unsaved change");
+  await expect(a.page.getByTestId("sync-status")).toHaveText("Offline · 2 unsaved changes");
   await addText(b.page, "B kept working");
-  await expect(b.page.getByRole("listitem", { name: "Typed while offline" })).toHaveCount(0);
+  await expect(b.page.getByRole("treeitem", { name: "Typed while offline" })).toHaveCount(0);
 
   // Back online: both browsers end with the same layers in the same order.
   await a.context.setOffline(false);
   await expect(a.page.getByTestId("sync-status")).toHaveText("Online");
-  await expect(b.page.getByRole("listitem", { name: "Typed while offline" })).toBeVisible();
-  await expect(a.page.getByRole("listitem", { name: "B kept working" })).toBeVisible();
+  await expect(b.page.getByRole("treeitem", { name: "Typed while offline" })).toBeVisible();
+  await expect(a.page.getByRole("treeitem", { name: "B kept working" })).toBeVisible();
   const order = await layers(a.page).allTextContents();
   await expect(layers(b.page)).toHaveText(order);
   expect(order).toHaveLength(6);
@@ -68,10 +76,10 @@ test("offline edits sync on reconnect and two browsers converge", async ({ brows
 
   // Undo removes only A's last change, for everyone; Redo brings it back.
   await a.page.getByRole("button", { name: "Undo" }).click();
-  await expect(b.page.getByRole("listitem", { name: "Typed while offline" })).toHaveCount(0);
-  await expect(b.page.getByRole("listitem", { name: "B kept working" })).toBeVisible();
+  await expect(b.page.getByRole("treeitem", { name: "Typed while offline" })).toHaveCount(0);
+  await expect(b.page.getByRole("treeitem", { name: "B kept working" })).toBeVisible();
   await a.page.getByRole("button", { name: "Redo" }).click();
-  await expect(b.page.getByRole("listitem", { name: "Typed while offline" })).toBeVisible();
+  await expect(b.page.getByRole("treeitem", { name: "Typed while offline" })).toBeVisible();
 
   await a.context.close();
   await b.context.close();

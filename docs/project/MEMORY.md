@@ -3,7 +3,7 @@
 > Agent-facing, long-lived project memory. Read at the start of every session; append in the same PR as the work that taught you something. Keep entries short, dated (YYYY-MM-DD) and factual. Fix or strike entries that become wrong.
 
 ## Current state
-- **Phase:** P4 Design View I is **in progress** (P4-1 shell, P4-2 camera, P4-3 renderer, P4-4 breakpoints, P4-5 insert tools, P4-6 gestures, P4-7 inspector done). P3 Compiler v1 is **done** (P3-1 to P3-6 merged with green CI; exit criteria met: 60 golden fixtures over both frameworks, every one built and type-checked in CI by the `generated` job, a 300-layer page compiles in 11.9 ms median in WASM). P2 is done. P1 is done locally; its staging exit criteria (sign-in with all three methods on staging, D1 migrations on staging) wait on the Cloudflare connection and the owner's OAuth apps, Resend and Turnstile keys (`docs/runbooks/auth-setup.md`). P0 is done except the P0-3 staging deploy.
+- **Phase:** P4 Design View I is **in progress** (P4-1 shell, P4-2 camera, P4-3 renderer, P4-4 breakpoints, P4-5 insert tools, P4-6 gestures, P4-7 inspector, P4-8 layers done). P3 Compiler v1 is **done** (P3-1 to P3-6 merged with green CI; exit criteria met: 60 golden fixtures over both frameworks, every one built and type-checked in CI by the `generated` job, a 300-layer page compiles in 11.9 ms median in WASM). P2 is done. P1 is done locally; its staging exit criteria (sign-in with all three methods on staging, D1 migrations on staging) wait on the Cloudflare connection and the owner's OAuth apps, Resend and Turnstile keys (`docs/runbooks/auth-setup.md`). P0 is done except the P0-3 staging deploy.
 - **Last updated:** 2026-11-25
 - **Repo:** https://github.com/ahmadmirzamasood/truframe (public, default branch `main`). Work on `tf/<task-id>-<slug>` branches and open PRs. `archive/v1-local-first/` is not in this repo.
 
@@ -35,6 +35,7 @@
 | 2026-11-24 | GitHub repo `ahmadmirzamasood/truframe` is **public**, with a proprietary `LICENSE` (source-visible, all rights reserved) | Owner decision | Private repo |
 | 2026-11-24 | CI `deploy-staging` is gated on repository variable `CLOUDFLARE_DEPLOY_ENABLED=true` | Cloudflare is not connected yet, and main must stay green | Failing deploy job |
 | 2026-11-24 | Dependabot ignores major bumps of `typescript`, `vitest`/`@vitest/*` and `@types/node` (`.github/dependabot.yml`) | Those versions are pinned on purpose (TS 5.9, Vitest 4 for vitest-pool-workers, Node 22) | Closing each bump PR by hand |
+| 2026-11-25 | Layer **lock** and column **guides** are editor aids kept per browser (localStorage per project), not document data | They don't affect the site; avoids a model change for v1 | Store `locked` on nodes (TS + Rust + parity) |
 | 2026-11-24 | Inspector simplified: no At rest/Hover state, no margin, no Block display, Align is a dropdown (not a 3×3 matrix) and Space between/around/evenly are separate Distribute buttons; keep blend modes, image features, guides, export | Owner decision | Mockup version |
 
 ## Open questions (owner; defaults in place)
@@ -141,6 +142,8 @@
 
 - 2026-11-25: Chromium 159 (Playwright's) serializes `justify-content`/`align-items: flex-end` as `flow-end` in computed styles. Assert with `/^(flex|flow)-end$/`.
 - 2026-11-25: Inspector convention: a control shows the cascaded value at the editing breakpoint (`effective()`), writes with `setProp` at that breakpoint, and `isOverridden()` (set at Tablet/Mobile) drives the red dot whose click sends `resetProp`. Compound props (padding, border, shadows, fill) are written whole.
+
+- 2026-11-25: `biome check --write --unsafe` removes `role="tree"` from a `<ul>` ("redundant role"); use `div` with `role=tree/treeitem/group` for trees.
 
 ## Dependencies added (name, license, why)
 - turbo 2.11.13 (MIT): task runner. typescript 5.9.3 (Apache-2.0). wrangler 4.166.0 (MIT OR Apache-2.0): Workers dev/deploy. [P0-1]

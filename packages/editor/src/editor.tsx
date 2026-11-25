@@ -1,13 +1,9 @@
 "use client";
 
-import type { BreakpointId, Node, ProjectDocument } from "@truframe/model";
+import type { BreakpointId } from "@truframe/model";
 import { RenderedFrame } from "@truframe/renderer";
-import { Button } from "@truframe/ui/components/button";
-import { Input } from "@truframe/ui/components/input";
-import { Label } from "@truframe/ui/components/label";
 import {
   type ComponentType,
-  type FormEvent,
   type ReactNode,
   useCallback,
   useEffect,
@@ -19,8 +15,12 @@ import type { EditorHost } from "./host.ts";
 import { createNodes, type InsertTool, insertOps, insertTarget } from "./insert.ts";
 import { InsertToolbar } from "./insert-toolbar.tsx";
 import { type Guides, Inspector } from "./inspector/inspector.tsx";
+import { LayersPanel, useLocks } from "./layers-panel.tsx";
 import { ComingSoon, LeftPanel, type LeftTab, RightPanel, type RightTab } from "./panels.tsx";
 import { SelectionLayer } from "./selection-layer.tsx";
+
+const EMPTY_CLASSES: ReadonlyMap<string, string> = new Map();
+
 import { type EditorView, TopBar } from "./top-bar.tsx";
 import { useCompiled } from "./use-compiled.ts";
 
@@ -63,6 +63,7 @@ export function DesignEditor({ host, backHref, Link }: DesignEditorProps) {
 
   const page = doc?.pages.find((p) => p.id === activePageId);
   const compiled = useCompiled(doc);
+  const locks = useLocks(doc?.id);
   // Layers removed by undo or by someone else drop out of the selection.
   const liveSelection = useMemo(
     () => (doc ? selection.filter((id) => doc.nodes[id]) : []),
@@ -113,7 +114,24 @@ export function DesignEditor({ host, backHref, Link }: DesignEditorProps) {
                 </ComingSoon>
               ),
               layers:
-                doc && page ? <TemporaryLayers host={host} doc={doc} pageRoot={page.root} /> : null,
+                doc && page ? (
+                  <LayersPanel
+                    doc={doc}
+                    page={page}
+                    selection={liveSelection}
+                    editing={activeBreakpoint}
+                    onSelect={(ids, bp) => {
+                      setSelection(ids);
+                      setBreakpoint(bp);
+                    }}
+                    apply={(ops) => {
+                      host.apply(ops);
+                    }}
+                    classes={output?.classes ?? EMPTY_CLASSES}
+                    locked={locks.locked}
+                    onToggleLock={locks.toggle}
+                  />
+                ) : null,
               components: (
                 <ComingSoon title="Components">
                   Reusable components arrive in a later update.
@@ -152,6 +170,7 @@ export function DesignEditor({ host, backHref, Link }: DesignEditorProps) {
                     onSelectionChange={setSelection}
                     apply={host.apply}
                     guides={guides}
+                    locked={locks.locked}
                   />
                 )}
                 renderFrame={(bp) =>
@@ -216,79 +235,6 @@ export function DesignEditor({ host, backHref, Link }: DesignEditorProps) {
           />
         </aside>
       </div>
-    </div>
-  );
-}
-
-function textOf(node: Node | undefined): string {
-  return node?.type === "text" ? node.content.map((s) => s.text).join("") : (node?.name ?? "");
-}
-
-function newNodeId(): string {
-  return `t${crypto.randomUUID().replaceAll("-", "").slice(0, 15)}`;
-}
-
-/** The P2 layer list, kept until the real Layers panel (P4-8) and insert tools (P4-5) land. */
-function TemporaryLayers(props: { host: EditorHost; doc: ProjectDocument; pageRoot: string }) {
-  const [text, setText] = useState("");
-  const body = props.doc.nodes[props.pageRoot];
-  const layers = body && "children" in body ? body.children.map((id) => props.doc.nodes[id]) : [];
-
-  const addText = (e: FormEvent) => {
-    e.preventDefault();
-    const words = text.trim();
-    if (!words) return;
-    const error = props.host.apply([
-      {
-        op: "insertNodes",
-        parentId: props.pageRoot,
-        index: layers.length,
-        nodes: [
-          {
-            id: newNodeId(),
-            type: "text",
-            name: "",
-            tag: "p",
-            style: { desktop: {} },
-            content: [{ text: words }],
-          },
-        ],
-      },
-    ]);
-    if (!error) setText("");
-  };
-
-  return (
-    <div className="grid gap-3 p-2">
-      <ol aria-label="Layers" className="grid gap-0.5 text-sm">
-        {layers.map((n) =>
-          n ? (
-            <li
-              key={n.id}
-              aria-label={textOf(n) || n.type}
-              className="truncate rounded px-2 py-1 hover:bg-accent"
-            >
-              {textOf(n) || n.type} <span className="text-xs text-muted-foreground">({n.tag})</span>
-            </li>
-          ) : null,
-        )}
-      </ol>
-      <form onSubmit={addText} className="grid gap-1.5 px-1">
-        <Label htmlFor="new-text" className="text-xs">
-          Add a text layer
-        </Label>
-        <div className="flex gap-1.5">
-          <Input
-            id="new-text"
-            className="h-8"
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-          />
-          <Button type="submit" size="sm">
-            Add
-          </Button>
-        </div>
-      </form>
     </div>
   );
 }

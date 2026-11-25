@@ -75,7 +75,8 @@ export function createNodes(tool: InsertTool, id: () => string = newId): Node[] 
         {
           id: id(),
           type: "text",
-          name: "Text",
+          // Unnamed: the Layers panel shows its words until it is renamed.
+          name: "",
           tag: "p",
           style: { desktop: {} },
           content: [{ text: "Text" }],
