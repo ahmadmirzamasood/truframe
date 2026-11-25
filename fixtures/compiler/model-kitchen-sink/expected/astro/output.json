@@ -54,7 +54,7 @@
       "desktop": "object-fit: cover;"
     },
     "title": {
-      "desktop": "font-family: var(--tf-font-inter, \"Inter\"); font-size: 3rem; font-weight: 700; line-height: 1.1; letter-spacing: -0.02em; text-align: center; text-decoration-line: line-through; text-transform: uppercase; color: #111111;"
+      "desktop": "font-family: var(--tf-font-inter, \"Inter\"); font-size: 3rem; font-weight: 700; line-height: 1.1; letter-spacing: -0.02em; text-align: center; text-decoration-line: line-through; text-transform: uppercase; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #111111;"
     },
     "widget": {
       "desktop": ""
@@ -80,82 +80,82 @@
       "start": 74
     },
     {
-      "end": 2461,
+      "end": 2470,
       "node": "id2",
       "path": "src/pages/index.astro",
       "start": 155
     },
     {
-      "end": 2451,
+      "end": 2460,
       "node": "hero",
       "path": "src/pages/index.astro",
       "start": 206
     },
     {
-      "end": 1228,
+      "end": 1237,
       "node": "title",
       "path": "src/pages/index.astro",
       "start": 959
     },
     {
-      "end": 1300,
+      "end": 1309,
       "node": "pic",
       "path": "src/pages/index.astro",
-      "start": 1235
+      "start": 1244
     },
     {
-      "end": 1392,
+      "end": 1401,
       "node": "cta",
       "path": "src/pages/index.astro",
-      "start": 1307
+      "start": 1316
     },
     {
-      "end": 1381,
+      "end": 1390,
       "node": "ctaLabel",
       "path": "src/pages/index.astro",
-      "start": 1345
+      "start": 1354
     },
     {
-      "end": 1545,
+      "end": 1554,
       "node": "card",
       "path": "src/pages/index.astro",
-      "start": 1399
+      "start": 1408
     },
     {
-      "end": 1532,
+      "end": 1541,
       "node": "cardTitle",
       "path": "src/pages/index.astro",
-      "start": 1437
+      "start": 1446
     },
     {
-      "end": 1869,
+      "end": 1878,
       "node": "icon",
       "path": "src/pages/index.astro",
-      "start": 1552
+      "start": 1561
     },
     {
-      "end": 2143,
+      "end": 2152,
       "node": "map",
       "path": "src/pages/index.astro",
-      "start": 1876
+      "start": 1885
     },
     {
-      "end": 2176,
+      "end": 2185,
       "node": "widget",
       "path": "src/pages/index.astro",
-      "start": 2150
+      "start": 2159
     },
     {
-      "end": 2366,
+      "end": 2375,
       "node": "mail",
       "path": "src/pages/index.astro",
-      "start": 2183
+      "start": 2192
     },
     {
-      "end": 2436,
+      "end": 2445,
       "node": "blankPic",
       "path": "src/pages/index.astro",
-      "start": 2373
+      "start": 2382
     }
   ]
 }

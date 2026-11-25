@@ -49,7 +49,7 @@
       "desktop": "object-fit: cover;"
     },
     "title": {
-      "desktop": "font-family: var(--tf-font-inter, \"Inter\"); font-size: 3rem; font-weight: 700; line-height: 1.1; letter-spacing: -0.02em; text-align: center; text-decoration-line: line-through; text-transform: uppercase; color: #111111;"
+      "desktop": "font-family: var(--tf-font-inter, \"Inter\"); font-size: 3rem; font-weight: 700; line-height: 1.1; letter-spacing: -0.02em; text-align: center; text-decoration-line: line-through; text-transform: uppercase; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #111111;"
     },
     "widget": {
       "desktop": ""
@@ -63,82 +63,82 @@
       "start": 150
     },
     {
-      "end": 2731,
+      "end": 2740,
       "node": "id2",
       "path": "app/page.tsx",
       "start": 210
     },
     {
-      "end": 2719,
+      "end": 2728,
       "node": "hero",
       "path": "app/page.tsx",
       "start": 267
     },
     {
-      "end": 1311,
+      "end": 1320,
       "node": "title",
       "path": "app/page.tsx",
       "start": 1030
     },
     {
-      "end": 1481,
+      "end": 1490,
       "node": "pic",
       "path": "app/page.tsx",
-      "start": 1320
+      "start": 1329
     },
     {
-      "end": 1593,
+      "end": 1602,
       "node": "cta",
       "path": "app/page.tsx",
-      "start": 1490
+      "start": 1499
     },
     {
-      "end": 1577,
+      "end": 1586,
       "node": "ctaLabel",
       "path": "app/page.tsx",
-      "start": 1537
+      "start": 1546
     },
     {
-      "end": 1764,
+      "end": 1773,
       "node": "card",
       "path": "app/page.tsx",
-      "start": 1602
+      "start": 1611
     },
     {
-      "end": 1749,
+      "end": 1758,
       "node": "cardTitle",
       "path": "app/page.tsx",
-      "start": 1646
+      "start": 1655
     },
     {
-      "end": 2116,
+      "end": 2125,
       "node": "icon",
       "path": "app/page.tsx",
-      "start": 1773
+      "start": 1782
     },
     {
-      "end": 2397,
+      "end": 2406,
       "node": "map",
       "path": "app/page.tsx",
-      "start": 2125
+      "start": 2134
     },
     {
-      "end": 2432,
+      "end": 2441,
       "node": "widget",
       "path": "app/page.tsx",
-      "start": 2406
+      "start": 2415
     },
     {
-      "end": 2630,
+      "end": 2639,
       "node": "mail",
       "path": "app/page.tsx",
-      "start": 2441
+      "start": 2450
     },
     {
-      "end": 2702,
+      "end": 2711,
       "node": "blankPic",
       "path": "app/page.tsx",
-      "start": 2639
+      "start": 2648
     },
     {
       "end": 517,

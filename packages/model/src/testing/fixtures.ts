@@ -282,6 +282,7 @@ export function kitchenSink(): ProjectDocument {
     textAlign: "center",
     textDecoration: "line-through",
     textTransform: "uppercase",
+    truncate: true,
   };
   const card = doc.nodes.card as Extract<Node, { type: "instance" }>;
   card.overrides.nodes.cardTitle = {

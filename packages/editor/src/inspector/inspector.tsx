@@ -951,6 +951,17 @@ function Typography(props: { ctx: Ctx }) {
           onChange={(v) => set(ctx, "textTransform", v)}
         />
       </PropRow>
+      <PropRow ctx={ctx} label="Truncate" keys={["truncate"]}>
+        <Segmented
+          label="Truncation"
+          value={get(ctx, "truncate") ? "truncate" : "wrap"}
+          options={[
+            { value: "wrap", label: "Wrap" },
+            { value: "truncate", label: "One line …" },
+          ]}
+          onChange={(v) => set(ctx, "truncate", v === "truncate")}
+        />
+      </PropRow>
     </Section>
   );
 }

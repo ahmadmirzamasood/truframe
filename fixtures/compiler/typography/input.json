@@ -212,7 +212,8 @@
           "fontSize": 24,
           "textTransform": "uppercase",
           "letterSpacing": 0.1,
-          "textDecoration": "none"
+          "textDecoration": "none",
+          "truncate": true
         }
       },
       "content": [

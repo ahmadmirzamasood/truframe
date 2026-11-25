@@ -18,7 +18,7 @@ export default function HomePage() {
           Plain, <strong>bold</strong>, <em>italic</em>, <u>underlined</u>, <strong><em><u>all three</u></em></strong> and <a href="https://example.com/docs">a link</a>.<br />A second line.
         </p>
         <blockquote
-          className="quote text-2xl tracking-widest no-underline uppercase"
+          className="quote text-2xl tracking-widest no-underline uppercase truncate"
         >
           Simplicity is the ultimate sophistication.
         </blockquote>

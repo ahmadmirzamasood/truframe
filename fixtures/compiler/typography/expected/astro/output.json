@@ -29,7 +29,7 @@
       "desktop": "font-size: 1.125rem; line-height: 1.625; text-align: justify;"
     },
     "n8": {
-      "desktop": "font-size: 1.5rem; line-height: calc(2 / 1.5); letter-spacing: 0.1em; text-decoration-line: none; text-transform: uppercase;"
+      "desktop": "font-size: 1.5rem; line-height: calc(2 / 1.5); letter-spacing: 0.1em; text-decoration-line: none; text-transform: uppercase; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"
     },
     "n9": {
       "desktop": "font-size: 0.75rem; line-height: calc(1 / 0.75); color: #71717a;"
@@ -37,13 +37,13 @@
   },
   "spans": [
     {
-      "end": 1038,
+      "end": 1062,
       "node": "id2",
       "path": "src/pages/index.astro",
       "start": 73
     },
     {
-      "end": 1028,
+      "end": 1052,
       "node": "n10",
       "path": "src/pages/index.astro",
       "start": 124
@@ -91,16 +91,16 @@
       "start": 528
     },
     {
-      "end": 932,
+      "end": 956,
       "node": "n8",
       "path": "src/pages/index.astro",
       "start": 787
     },
     {
-      "end": 1013,
+      "end": 1037,
       "node": "n9",
       "path": "src/pages/index.astro",
-      "start": 939
+      "start": 963
     }
   ]
 }

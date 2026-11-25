@@ -288,6 +288,8 @@ pub struct Props {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub text_transform: Option<TextTransform>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub truncate: Option<bool>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
     pub text_color: Option<ColorValue>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub fill: Option<Fill>,
