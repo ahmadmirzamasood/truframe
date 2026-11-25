@@ -11,6 +11,8 @@ test("command palette, shortcut sheet and keyboard commands", async ({ page, con
   await page.setViewportSize({ width: 1600, height: 1000 });
   await openNewProject(page, context, { name: "Commands", templateId: "landing" });
   const zoom = page.getByTestId("zoom-level");
+  // The camera fits the page once the frames are measured; commands before that are no-ops.
+  await expect(zoom).not.toHaveText("100%");
 
   // Cmd/Ctrl+K opens the palette; typing filters; Enter runs the command.
   await page.keyboard.press("Control+k");
