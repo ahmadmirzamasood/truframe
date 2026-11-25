@@ -37,6 +37,13 @@ function isTyping(target: EventTarget | null): boolean {
   );
 }
 
+export type CanvasApi = {
+  fit: () => void;
+  zoomTo: (zoom: number) => void;
+  zoomIn: () => void;
+  zoomOut: () => void;
+};
+
 export function Canvas(props: {
   breakpoints: Breakpoints;
   editing: BreakpointId;
@@ -47,6 +54,8 @@ export function Canvas(props: {
   fitKey: string;
   /** False while frame content is still loading; the first fit waits for it. */
   contentReady: boolean;
+  /** Filled with the zoom actions so commands can drive the camera. */
+  apiRef?: { current: CanvasApi | null };
   /** Screen-space layer above the frames (selection, handles, guides). */
   overlay?: (ctx: {
     camera: Camera;
@@ -144,24 +153,19 @@ export function Canvas(props: {
     return () => el.removeEventListener("wheel", onWheel);
   }, []);
 
+  // Zoom is driven by commands (Shift+1, Shift+0, Mod+Plus/Minus); Space-to-pan stays here.
+  useEffect(() => {
+    if (!props.apiRef) return;
+    props.apiRef.current = {
+      fit,
+      zoomTo,
+      zoomIn: () => setCamera((c) => (c ? zoomAt(c, center(), stepZoom(c.zoom, 1)) : c)),
+      zoomOut: () => setCamera((c) => (c ? zoomAt(c, center(), stepZoom(c.zoom, -1)) : c)),
+    };
+  });
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
-      if (isTyping(e.target)) return;
-      if (e.code === "Space" && !e.repeat) setSpaceDown(true);
-      const mod = e.ctrlKey || e.metaKey;
-      if (e.shiftKey && e.code === "Digit1") {
-        e.preventDefault();
-        fit();
-      } else if ((e.shiftKey && e.code === "Digit0") || (mod && e.code === "Digit0")) {
-        e.preventDefault();
-        zoomTo(1);
-      } else if (mod && (e.key === "=" || e.key === "+")) {
-        e.preventDefault();
-        setCamera((c) => (c ? zoomAt(c, center(), stepZoom(c.zoom, 1)) : c));
-      } else if (mod && e.key === "-") {
-        e.preventDefault();
-        setCamera((c) => (c ? zoomAt(c, center(), stepZoom(c.zoom, -1)) : c));
-      }
+      if (!isTyping(e.target) && e.code === "Space" && !e.repeat) setSpaceDown(true);
     };
     const onKeyUp = (e: KeyboardEvent) => {
       if (e.code === "Space") setSpaceDown(false);
@@ -172,7 +176,7 @@ export function Canvas(props: {
       window.removeEventListener("keydown", onKeyDown);
       window.removeEventListener("keyup", onKeyUp);
     };
-  }, [fit, zoomTo, center]);
+  }, []);
 
   const onPointerDown = (e: React.PointerEvent) => {
     if (!(e.button === 1 || (e.button === 0 && spaceDown))) return;

@@ -16,6 +16,7 @@ import { cn } from "@truframe/ui/lib/utils";
 import {
   ChevronDownIcon,
   ChevronLeftIcon,
+  CommandIcon,
   MonitorIcon,
   PlayIcon,
   Redo2Icon,
@@ -74,6 +75,7 @@ export function TopBar(props: {
   onBreakpointChange: (id: BreakpointId) => void;
   backHref: string;
   BackLink: React.ComponentType<{ href: string; className?: string; children: React.ReactNode }>;
+  onOpenCommands: () => void;
 }) {
   const { host, doc, BackLink } = props;
   const page = doc?.pages.find((p) => p.id === props.pageId);
@@ -169,6 +171,15 @@ export function TopBar(props: {
             ? ` · ${sync.pending} unsaved ${sync.pending === 1 ? "change" : "changes"}`
             : ""}
         </output>
+        <Button
+          size="icon-sm"
+          variant="ghost"
+          aria-label="Commands"
+          title="Commands (Ctrl+K)"
+          onClick={props.onOpenCommands}
+        >
+          <CommandIcon />
+        </Button>
         <Button
           size="icon-sm"
           variant="ghost"

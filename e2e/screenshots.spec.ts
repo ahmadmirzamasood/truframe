@@ -126,3 +126,16 @@ test("capture the pages panel", async ({ page, context }) => {
   await page.getByRole("treeitem", { name: "Pricing" }).hover();
   await page.screenshot({ path: `${dir}/pages-panel.png` });
 });
+
+test("capture commands", async ({ page, context }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await openNewProject(page, context, { name: "Landing", templateId: "landing" });
+  await page.keyboard.press("Control+k");
+  await page.keyboard.type("in");
+  await page.screenshot({ path: `${dir}/command-palette.png` });
+  await page.keyboard.press("Escape");
+  await expect(page.getByRole("dialog")).toBeHidden();
+  await page.keyboard.press("Shift+Slash");
+  await expect(page.getByRole("dialog", { name: "Keyboard shortcuts" })).toBeVisible();
+  await page.screenshot({ path: `${dir}/shortcut-sheet.png` });
+});

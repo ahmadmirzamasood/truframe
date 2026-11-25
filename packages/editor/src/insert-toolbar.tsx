@@ -10,7 +10,6 @@ import {
   StarIcon,
   TypeIcon,
 } from "lucide-react";
-import { useEffect } from "react";
 import { INSERT_LABEL, INSERT_SHORTCUT, INSERT_TOOLS, type InsertTool } from "./insert.ts";
 
 const ICON: Record<InsertTool, LucideIcon> = {
@@ -22,28 +21,9 @@ const ICON: Record<InsertTool, LucideIcon> = {
   icon: StarIcon,
 };
 
-function isTyping(target: EventTarget | null): boolean {
-  return (
-    target instanceof HTMLElement &&
-    Boolean(
-      target.closest("input, textarea, select, [contenteditable], [role=dialog], [role=menu]"),
-    )
-  );
-}
-
 export function InsertToolbar(props: { onInsert: (tool: InsertTool) => void; disabled: boolean }) {
   const { onInsert, disabled } = props;
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (disabled || e.ctrlKey || e.metaKey || e.altKey || e.repeat || isTyping(e.target)) return;
-      const tool = INSERT_TOOLS.find((t) => INSERT_SHORTCUT[t] === e.key.toUpperCase());
-      if (!tool) return;
-      e.preventDefault();
-      onInsert(tool);
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [onInsert, disabled]);
+  // Shortcuts (F, G, T, I, B) are commands in the registry.
 
   return (
     <div
