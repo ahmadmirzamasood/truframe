@@ -31,7 +31,6 @@ import { chromium, type Page } from "@playwright/test";
 import pixelmatch from "pixelmatch";
 import { PNG } from "pngjs";
 import { renderToStaticMarkup } from "react-dom/server";
-import { compile, initCompilerFromDisk } from "../packages/compiler-wasm/src/node.ts";
 import {
   activeBreakpoints,
   type ProjectDocument,
@@ -271,9 +270,11 @@ function fixtureCases(): Case[] {
  * project, and compare against canvas screenshots from the editor when `--canvas` is given
  * (`<pageId>-<breakpoint>.png`), else against the renderer's markup.
  */
-function documentCase(): Case {
+async function documentCase(): Promise<Case> {
   const docPath = values.doc as string;
   const doc = parseDocument(JSON.parse(readFileSync(docPath, "utf8")));
+  // Loaded here, not at the top: the fixture mode runs where the WASM isn't built.
+  const { compile, initCompilerFromDisk } = await import("../packages/compiler-wasm/src/node.ts");
   initCompilerFromDisk();
   const out = compile(doc, "nextjs");
   const work = values.dir ?? join(tmpdir(), "truframe-parity-document");
@@ -298,4 +299,4 @@ function documentCase(): Case {
   };
 }
 
-await run(values.doc ? [documentCase()] : fixtureCases());
+await run(values.doc ? [await documentCase()] : fixtureCases());
