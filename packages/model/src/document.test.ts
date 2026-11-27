@@ -252,6 +252,18 @@ describe("invalid documents", () => {
       (d) => Object.assign(d.nodes.title?.style.desktop as object, { font: { var: "brand" } }),
       /expected font/,
     );
+    // Radius and fixed sizes bind to spacing variables only (P5-2).
+    expectInvalid(
+      (d) => Object.assign(d.nodes.hero?.style.desktop as object, { radius: { var: "brand" } }),
+      /^nodes.hero.style.desktop.radius: Variable "brand" is a color variable, expected spacing/,
+    );
+    expectInvalid(
+      (d) =>
+        Object.assign(d.nodes.hero?.style.desktop as object, {
+          width: { type: "fixed", value: { var: "nope" } },
+        }),
+      /^nodes.hero.style.desktop.width.value: Unknown variable "nope"/,
+    );
     expectInvalid((d) => {
       must(d.nodes.hero).style.mobile = {
         fill: {

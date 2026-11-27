@@ -615,8 +615,8 @@ pub fn decls(input: &BpInput, env: &Env) -> BTreeMap<Slot, Decl> {
         let Some(size) = size else { continue };
         let d = match size {
             Size::Fixed { value } => {
-                let (s, css) = length(*value);
-                Decl::one(format!("{axis}-{s}"), prop, css)
+                let (class, css) = spacing(axis, value, vars);
+                Decl::one(class, prop, css)
             }
             Size::Fit => Decl::one(format!("{axis}-fit"), prop, "fit-content"),
             // In a stack, Fill is flex-1 (main axis) or self-stretch (cross axis).
@@ -835,11 +835,19 @@ pub fn decls(input: &BpInput, env: &Env) -> BTreeMap<Slot, Decl> {
     }
     if let Some(r) = &p.radius {
         let d = match r {
-            Radius::All(v) => Decl::one(
+            Radius::All(SpacingValue::Px(v)) => Decl::one(
                 format!("rounded{}", radius(*v)),
                 "border-radius",
                 radius_css(*v),
             ),
+            Radius::All(SpacingValue::Var(r)) => {
+                let n = var_name(vars, &r.var);
+                Decl::one(
+                    format!("rounded-({n})"),
+                    "border-radius",
+                    format!("var({n})"),
+                )
+            }
             Radius::Corners(c)
                 if c.top_left == c.top_right
                     && c.top_right == c.bottom_right

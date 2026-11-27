@@ -17,7 +17,8 @@ const sides = <T extends z.ZodType>(v: T) =>
   z.strictObject({ top: v, right: v, bottom: v, left: v });
 
 export const sizeSchema = z.discriminatedUnion("type", [
-  z.strictObject({ type: z.literal("fixed"), value: lengthSchema }),
+  // A fixed size may be bound to a spacing variable (PRD F13).
+  z.strictObject({ type: z.literal("fixed"), value: spacingValueSchema }),
   z.strictObject({ type: z.literal("fill") }),
   z.strictObject({ type: z.literal("fit") }),
 ]);
@@ -51,7 +52,8 @@ export const borderSchema = z.strictObject({
 });
 
 export const radiusSchema = z.union([
-  lengthSchema,
+  // One radius for every corner, literal or a spacing variable; per-corner radii are literal.
+  spacingValueSchema,
   z.strictObject({
     topLeft: lengthSchema,
     topRight: lengthSchema,
@@ -174,6 +176,9 @@ export function varRefsInProps(props: Props): { var: string; kind: VariableKind;
       out.push({ var: (v as { var: string }).var, kind: "spacing", key });
   };
   spacing(props.gap, "gap");
+  if (props.width?.type === "fixed") spacing(props.width.value, "width.value");
+  if (props.height?.type === "fixed") spacing(props.height.value, "height.value");
+  if (typeof props.radius !== "object" || "var" in props.radius) spacing(props.radius, "radius");
   spacing(props.rowGap, "rowGap");
   if (props.padding)
     for (const [side, v] of Object.entries(props.padding)) spacing(v, `padding.${side}`);

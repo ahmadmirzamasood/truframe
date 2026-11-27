@@ -17,7 +17,7 @@ export default function HomePage() {
         </h1>
         <a
           href="#start"
-          className="cta px-(--space-stack) py-3 text-[#ffffff] bg-(--brand-accent) rounded-lg"
+          className="cta px-(--space-stack) py-3 w-(--size-cta-width) text-[#ffffff] bg-(--brand-accent) rounded-(--radius-round)"
         >
           <span className="label font-semibold">Start</span>
         </a>

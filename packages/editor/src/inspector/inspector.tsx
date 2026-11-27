@@ -40,13 +40,16 @@ import { checkBreakpointWidth } from "../breakpoints.ts";
 import { deleteOps, duplicateOps, makeAbsoluteOps } from "../gestures.ts";
 import { BREAKPOINT_LABEL } from "../labels.ts";
 import { parentMap } from "../tree.ts";
+import { valueAt } from "../variables.ts";
 import {
+  type BindOption,
   ColorField,
   NumberField,
   Row,
   Section,
   Segmented,
   SelectField,
+  SpacingField,
   TextField,
 } from "./fields.tsx";
 import {
@@ -66,7 +69,7 @@ import {
   distributeOps,
   effective,
   isOverridden,
-  numericSides,
+  paddingSides,
   pageColors,
   replaceColorOps,
   resetProp,
@@ -187,6 +190,40 @@ function variableColor(doc: ProjectDocument, bp: BreakpointId, id: string): stri
   return value;
 }
 
+function bindOptions(ctx: Ctx, type: "color" | "spacing"): BindOption[] {
+  return Object.values(ctx.doc.variables)
+    .filter((v) => v.type === type)
+    .sort((a, b) => a.group.localeCompare(b.group) || a.name.localeCompare(b.name))
+    .map((v) => {
+      const value = valueAt(ctx.doc, v, ctx.bp);
+      return {
+        id: v.id,
+        name: v.name,
+        group: v.group,
+        preview: typeof value === "number" ? `${value}px` : String(value),
+      };
+    });
+}
+
+function colorBind(ctx: Ctx, onBind: (id: string) => void) {
+  return { options: bindOptions(ctx, "color"), onBind };
+}
+
+/** The bind props of a SpacingField for one value of the selection. */
+function spacingBind(ctx: Ctx, onBind: (id: string) => void) {
+  return {
+    options: bindOptions(ctx, "spacing"),
+    name: (id: string) => ctx.doc.variables[id]?.name,
+    resolve: (id: string) => {
+      const v = ctx.doc.variables[id];
+      return v?.type === "spacing" ? valueAt(ctx.doc, v, ctx.bp) : undefined;
+    },
+    onBind,
+  };
+}
+
+const same = (a: unknown, b: unknown) => JSON.stringify(a) === JSON.stringify(b);
+
 function num(v: unknown): number | undefined {
   return typeof v === "number" ? v : undefined;
 }
@@ -218,18 +255,19 @@ function PositionSize(props: { ctx: Ctx; parentId?: string; text?: boolean }) {
   const size = (key: "width" | "height") => {
     const v = get(ctx, key);
     const mode: SizeMode = v?.type ?? "fit";
-    const current =
+    const current: number | { var: string } =
       v?.type === "fixed"
         ? v.value
         : Math.round((key === "width" ? box?.rect.width : box?.rect.height) ?? 0);
     return (
       <PropRow ctx={ctx} label={key === "width" ? "Width" : "Height"} keys={[key]}>
-        <NumberField
+        <SpacingField
           label={key === "width" ? "W" : "H"}
           prefix={key === "width" ? "W" : "H"}
           value={current}
           min={0}
           onCommit={(value) => set(ctx, key, { type: "fixed", value })}
+          bind={spacingBind(ctx, (id) => set(ctx, key, { type: "fixed", value: { var: id } }))}
         />
         <div className="w-20 shrink-0">
           <SelectField
@@ -409,22 +447,24 @@ function Layout(props: { ctx: Ctx }) {
             />
           </PropRow>
           <PropRow ctx={ctx} label="Gap" keys={["gap", "rowGap"]}>
-            <NumberField
+            <SpacingField
               label="Gap"
               prefix="↔"
-              value={num(get(ctx, "gap")) ?? 0}
+              value={get(ctx, "gap") ?? 0}
               min={0}
               unit="px"
               onCommit={(v) => set(ctx, "gap", v)}
+              bind={spacingBind(ctx, (id) => set(ctx, "gap", { var: id }))}
             />
             {display === "grid" ? (
-              <NumberField
+              <SpacingField
                 label="Row gap"
                 prefix="↕"
-                value={num(get(ctx, "rowGap")) ?? num(get(ctx, "gap")) ?? 0}
+                value={get(ctx, "rowGap") ?? get(ctx, "gap") ?? 0}
                 min={0}
                 unit="px"
                 onCommit={(v) => set(ctx, "rowGap", v)}
+                bind={spacingBind(ctx, (id) => set(ctx, "rowGap", { var: id }))}
               />
             ) : null}
           </PropRow>
@@ -440,42 +480,51 @@ function Layout(props: { ctx: Ctx }) {
 
 function Padding(props: { ctx: Ctx }) {
   const { ctx } = props;
-  const p = numericSides(get(ctx, "padding"));
-  const [expanded, setExpanded] = useState(p.top !== p.bottom || p.left !== p.right);
+  const p = paddingSides(get(ctx, "padding"));
+  const [expanded, setExpanded] = useState(!same(p.top, p.bottom) || !same(p.left, p.right));
   const commit = (next: typeof p) => set(ctx, "padding", next);
+  // A bound side shows the variable name, which needs the full row.
+  const anyBound = Object.values(p).some((v) => typeof v === "object");
   return (
     <Section title="Padding">
       <PropRow ctx={ctx} label="Padding" keys={["padding"]}>
         {expanded ? (
-          <div className="grid flex-1 grid-cols-4 gap-1">
+          <div className={cn("grid flex-1 gap-1", anyBound ? "grid-cols-1" : "grid-cols-2")}>
             {(["top", "right", "bottom", "left"] as const).map((s) => (
-              <NumberField
+              <SpacingField
                 key={s}
                 label={`Padding ${s}`}
                 prefix={s[0]?.toUpperCase()}
                 value={p[s]}
                 min={0}
                 onCommit={(v) => commit({ ...p, [s]: v })}
+                bind={spacingBind(ctx, (id) => commit({ ...p, [s]: { var: id } }))}
               />
             ))}
           </div>
         ) : (
-          <>
-            <NumberField
+          <div className={cn("grid flex-1 gap-1", anyBound ? "grid-cols-1" : "grid-cols-2")}>
+            <SpacingField
               label="Padding horizontal"
               prefix="H"
               value={p.left}
               min={0}
               onCommit={(v) => commit({ ...p, left: v, right: v })}
+              bind={spacingBind(ctx, (id) =>
+                commit({ ...p, left: { var: id }, right: { var: id } }),
+              )}
             />
-            <NumberField
+            <SpacingField
               label="Padding vertical"
               prefix="V"
               value={p.top}
               min={0}
               onCommit={(v) => commit({ ...p, top: v, bottom: v })}
+              bind={spacingBind(ctx, (id) =>
+                commit({ ...p, top: { var: id }, bottom: { var: id } }),
+              )}
             />
-          </>
+          </div>
         )}
         <button
           type="button"
@@ -530,6 +579,7 @@ function Fill(props: { ctx: Ctx; title?: string }) {
             label="Fill"
             value={fill.color}
             onCommit={(c) => set(ctx, "fill", { type: "solid", color: c })}
+            bind={colorBind(ctx, (id) => set(ctx, "fill", { type: "solid", color: { var: id } }))}
           />
         </Row>
       ) : null}
@@ -559,6 +609,12 @@ function Fill(props: { ctx: Ctx; title?: string }) {
                     stops: fill.stops.map((x, j) => (j === i ? { ...x, color: c } : x)),
                   })
                 }
+                bind={colorBind(ctx, (id) =>
+                  set(ctx, "fill", {
+                    ...fill,
+                    stops: fill.stops.map((x, j) => (j === i ? { ...x, color: { var: id } } : x)),
+                  }),
+                )}
               />
             </Row>
           ))}
@@ -572,11 +628,16 @@ function Border(props: { ctx: Ctx; title?: string }) {
   const { ctx } = props;
   const border = get(ctx, "border");
   const radius = get(ctx, "radius");
-  const [corners, setCorners] = useState(typeof radius === "object");
+  const bound = typeof radius === "object" && "var" in radius;
+  const [corners, setCorners] = useState(typeof radius === "object" && !bound);
+  const all = (v: number) => ({ topLeft: v, topRight: v, bottomRight: v, bottomLeft: v });
+  // Per-corner editing starts from a bound radius's current value.
   const r =
     typeof radius === "number"
-      ? { topLeft: radius, topRight: radius, bottomRight: radius, bottomLeft: radius }
-      : (radius ?? { topLeft: 0, topRight: 0, bottomRight: 0, bottomLeft: 0 });
+      ? all(radius)
+      : radius && "var" in radius
+        ? all(spacingBind(ctx, () => {}).resolve(radius.var) ?? 0)
+        : (radius ?? all(0));
   const sidesValue = border
     ? Object.values(border.sides).every(Boolean)
       ? "all"
@@ -607,6 +668,7 @@ function Border(props: { ctx: Ctx; title?: string }) {
               label="Border"
               value={border.color}
               onCommit={(c) => set(ctx, "border", { ...border, color: c })}
+              bind={colorBind(ctx, (id) => set(ctx, "border", { ...border, color: { var: id } }))}
             />
           </PropRow>
           <Row label="Width">
@@ -672,13 +734,14 @@ function Border(props: { ctx: Ctx; title?: string }) {
             ))}
           </div>
         ) : (
-          <NumberField
+          <SpacingField
             label="Radius"
             prefix="R"
-            value={typeof radius === "number" ? radius : r.topLeft}
+            value={typeof radius === "number" || bound ? radius : r.topLeft}
             min={0}
             unit="px"
             onCommit={(v) => set(ctx, "radius", v)}
+            bind={spacingBind(ctx, (id) => set(ctx, "radius", { var: id }))}
           />
         )}
         <button
@@ -728,6 +791,9 @@ function Shadow(props: { ctx: Ctx }) {
               label={`Shadow ${i + 1}`}
               value={s.color}
               onCommit={(c) => update(shadows.map((x, j) => (j === i ? { ...x, color: c } : x)))}
+              bind={colorBind(ctx, (id) =>
+                update(shadows.map((x, j) => (j === i ? { ...x, color: { var: id } } : x))),
+              )}
             />
             <button
               type="button"
@@ -1514,6 +1580,7 @@ export function Inspector(props: InspectorProps) {
               label="Text"
               value={get(ctx, "textColor") ?? "#000000"}
               onCommit={(c) => set(ctx, "textColor", c)}
+              bind={colorBind(ctx, (id) => set(ctx, "textColor", { var: id }))}
             />
           </PropRow>
         </Section>
