@@ -74,7 +74,9 @@ describe("T4: SVG sanitizer", () => {
   it("catches encoded javascript: and refuses DOCTYPE/entities", () => {
     const out = clean('<svg><use href="&#106;avascript:alert(1)"/></svg>');
     expect(out).not.toMatch(/javascript|alert/i);
-    expect(clean('<svg><rect fill="url(java&#9;script:alert(1))"/></svg>')).not.toMatch(/script|alert/i);
+    expect(clean('<svg><rect fill="url(java&#9;script:alert(1))"/></svg>')).not.toMatch(
+      /script|alert/i,
+    );
     const r = sanitizeSvg('<?xml version="1.0"?><!DOCTYPE svg [<!ENTITY x "y">]><svg>&x;</svg>');
     expect(r.ok).toBe(false);
   });
