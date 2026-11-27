@@ -14,6 +14,7 @@ import { LayersPanel, useLocks } from "./layers-panel.tsx";
 import { PagesPanel } from "./pages-panel.tsx";
 import { ComingSoon, LeftPanel, type LeftTab, RightPanel, type RightTab } from "./panels.tsx";
 import { SelectionLayer } from "./selection-layer.tsx";
+import { VariablesPanel } from "./variables-panel.tsx";
 
 const EMPTY_CLASSES: ReadonlyMap<string, string> = new Map();
 
@@ -161,11 +162,7 @@ export function DesignEditor({ host, backHref, Link }: DesignEditorProps) {
                   Reusable components arrive in a later update.
                 </ComingSoon>
               ),
-              variables: (
-                <ComingSoon title="Variables">
-                  Colors, spacing and text styles arrive in a later update.
-                </ComingSoon>
-              ),
+              variables: doc ? <VariablesPanel doc={doc} apply={host.apply} /> : null,
               assets: (
                 <ComingSoon title="Assets">Image uploads arrive in a later update.</ComingSoon>
               ),
