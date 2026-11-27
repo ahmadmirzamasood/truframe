@@ -1,5 +1,11 @@
 "use client";
 
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@truframe/ui/components/dropdown-menu";
 /**
  * Inspector controls (PRD F29 conventions): scrub-able number fields with units, segmented
  * buttons, selects, color + opacity, and the red override dot with "Reset to inherited".
@@ -7,7 +13,7 @@
  * transaction.
  */
 import { cn } from "@truframe/ui/lib/utils";
-import { MinusIcon, PlusIcon, RotateCcwIcon, Unlink2Icon } from "lucide-react";
+import { MinusIcon, PlusIcon, RotateCcwIcon, Unlink2Icon, VariableIcon } from "lucide-react";
 import { type ReactNode, useEffect, useId, useRef, useState } from "react";
 import { hexAlpha, withAlpha } from "./model.ts";
 
@@ -282,6 +288,8 @@ export function ColorField(props: {
   /** The bound variable's value at the editing breakpoint (detach keeps it). */
   resolveVariable?: (id: string) => string | undefined;
   onCommit: (value: string) => void;
+  /** Offer "bind to a variable" next to a literal color (PRD F13). */
+  bind?: { options: readonly BindOption[]; onBind: (id: string) => void };
 }) {
   const literal = typeof props.value === "string" ? props.value : undefined;
   const { hex, alpha } = hexAlpha(literal ?? "#000000");
@@ -291,28 +299,14 @@ export function ColorField(props: {
     const v = props.value.var;
     const resolved = props.resolveVariable?.(v);
     return (
-      <div className="flex min-w-0 flex-1 items-center gap-1">
-        <span
-          data-testid="bound-variable"
-          className="flex h-7 min-w-0 flex-1 items-center gap-1.5 rounded-md bg-muted/70 px-2 text-xs"
-        >
-          <span
-            className="size-3 shrink-0 rounded-sm border"
-            style={{ background: resolved ?? "transparent" }}
-          />
-          <span className="truncate">{props.variableName?.(v) ?? v}</span>
-        </span>
-        <button
-          type="button"
-          aria-label={`Detach ${props.label.toLowerCase()} variable`}
-          title="Detach variable (keeps the current value)"
-          disabled={!resolved}
-          onClick={() => resolved && props.onCommit(resolved)}
-          className="grid size-7 shrink-0 place-items-center rounded-md text-muted-foreground hover:bg-accent disabled:opacity-40"
-        >
-          <Unlink2Icon className="size-3.5" />
-        </button>
-      </div>
+      <BoundChip
+        label={props.label}
+        name={props.variableName?.(v) ?? v}
+        swatch={resolved ?? ""}
+        detachable={resolved !== undefined}
+        onDetach={() => resolved && props.onCommit(resolved)}
+        rebind={props.bind && { kind: "color", ...props.bind }}
+      />
     );
   }
   const commitHex = (raw: string) => {
@@ -348,6 +342,168 @@ export function ColorField(props: {
           onCommit={(v) => props.onCommit(withAlpha(hex, v / 100))}
         />
       </div>
+      {props.bind ? (
+        <BindMenu
+          label={props.label}
+          kind="color"
+          options={props.bind.options}
+          onBind={props.bind.onBind}
+        />
+      ) : null}
+    </div>
+  );
+}
+
+/** One variable offered by a bind menu, with its value at the editing breakpoint. */
+export type BindOption = { id: string; name: string; group: string; preview: string };
+
+/** The variable button next to a field (PRD F13): lists variables of the matching type. */
+export function BindMenu(props: {
+  label: string;
+  options: readonly BindOption[];
+  kind: "color" | "spacing";
+  onBind: (id: string) => void;
+}) {
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger
+        aria-label={`Bind ${props.label.toLowerCase()} to a variable`}
+        title="Bind to a variable"
+        className="grid size-7 shrink-0 place-items-center rounded-md text-muted-foreground hover:bg-accent data-[state=open]:bg-accent"
+      >
+        <VariableIcon className="size-3.5" />
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="max-h-72 w-52 overflow-y-auto">
+        {props.options.length === 0 ? (
+          <p className="px-2 py-1.5 text-xs text-muted-foreground">
+            No {props.kind} variables yet. Create one in the Variables panel.
+          </p>
+        ) : (
+          props.options.map((o) => (
+            <DropdownMenuItem key={o.id} onSelect={() => props.onBind(o.id)} className="text-xs">
+              {props.kind === "color" ? (
+                <span
+                  className="size-3 shrink-0 rounded-sm border"
+                  style={{ background: o.preview }}
+                />
+              ) : null}
+              <span className="min-w-0 flex-1 truncate">
+                {o.group ? <span className="text-muted-foreground">{o.group} / </span> : null}
+                {o.name}
+              </span>
+              {props.kind === "spacing" ? (
+                <span className="font-mono text-[10px] text-muted-foreground">{o.preview}</span>
+              ) : null}
+            </DropdownMenuItem>
+          ))
+        )}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
+
+/** A bound variable shown by name, with detach (keeps the current value). */
+function BoundChip(props: {
+  label: string;
+  name: string;
+  swatch?: string;
+  detachable: boolean;
+  onDetach: () => void;
+  /** Switch to another variable of the same type. */
+  rebind?: {
+    kind: "color" | "spacing";
+    options: readonly BindOption[];
+    onBind: (id: string) => void;
+  };
+}) {
+  return (
+    <div className="flex min-w-0 flex-1 items-center gap-1">
+      <span
+        data-testid="bound-variable"
+        title={props.name}
+        className="flex h-7 min-w-0 flex-1 items-center gap-1.5 rounded-md bg-violet-500/10 px-2 text-xs text-violet-900 dark:text-violet-200"
+      >
+        {props.swatch !== undefined ? (
+          <span
+            className="size-3 shrink-0 rounded-sm border"
+            style={{ background: props.swatch || "transparent" }}
+          />
+        ) : (
+          <VariableIcon className="size-3 shrink-0" aria-hidden />
+        )}
+        <span className="truncate">{props.name}</span>
+      </span>
+      <button
+        type="button"
+        aria-label={`Detach ${props.label.toLowerCase()} variable`}
+        title="Detach variable (keeps the current value)"
+        disabled={!props.detachable}
+        onClick={props.onDetach}
+        className="grid size-7 shrink-0 place-items-center rounded-md text-muted-foreground hover:bg-accent disabled:opacity-40"
+      >
+        <Unlink2Icon className="size-3.5" />
+      </button>
+      {props.rebind ? (
+        <BindMenu
+          label={props.label}
+          kind={props.rebind.kind}
+          options={props.rebind.options}
+          onBind={props.rebind.onBind}
+        />
+      ) : null}
+    </div>
+  );
+}
+
+/** A px length that can be bound to a spacing variable (gap, padding, size, radius). */
+export function SpacingField(props: {
+  label: string;
+  value: number | { var: string } | undefined;
+  onCommit: (value: number) => void;
+  /** Absent: the field can't be bound (e.g. per-corner radii). */
+  bind?: {
+    options: readonly BindOption[];
+    name: (id: string) => string | undefined;
+    resolve: (id: string) => number | undefined;
+    onBind: (id: string) => void;
+  };
+  prefix?: string;
+  unit?: string;
+  min?: number;
+  placeholder?: string;
+}) {
+  const v = props.value;
+  if (v && typeof v === "object") {
+    const resolved = props.bind?.resolve(v.var);
+    return (
+      <BoundChip
+        label={props.label}
+        name={props.bind?.name(v.var) ?? v.var}
+        detachable={resolved !== undefined}
+        onDetach={() => resolved !== undefined && props.onCommit(resolved)}
+        rebind={props.bind && { kind: "spacing", ...props.bind }}
+      />
+    );
+  }
+  return (
+    <div className="flex min-w-0 flex-1 items-center gap-0.5">
+      <NumberField
+        label={props.label}
+        prefix={props.prefix}
+        unit={props.unit}
+        min={props.min}
+        placeholder={props.placeholder}
+        value={v}
+        onCommit={props.onCommit}
+      />
+      {props.bind ? (
+        <BindMenu
+          label={props.label}
+          kind="spacing"
+          options={props.bind.options}
+          onBind={props.bind.onBind}
+        />
+      ) : null}
     </div>
   );
 }

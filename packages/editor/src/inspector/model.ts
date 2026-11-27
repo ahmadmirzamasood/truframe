@@ -225,6 +225,11 @@ export function textResizingOps(
 
 export type Sides = { top: number; right: number; bottom: number; left: number };
 
+/** Padding sides with missing values as 0; bound sides stay variable references. */
+export function paddingSides(p: Props["padding"]): NonNullable<Props["padding"]> {
+  return { top: p?.top ?? 0, right: p?.right ?? 0, bottom: p?.bottom ?? 0, left: p?.left ?? 0 };
+}
+
 export function numericSides(p: Props["padding"]): Sides {
   const n = (v: unknown) => (typeof v === "number" ? v : 0);
   return { top: n(p?.top), right: n(p?.right), bottom: n(p?.bottom), left: n(p?.left) };

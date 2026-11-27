@@ -185,7 +185,7 @@ describe("usage and delete", () => {
     expect([...counts.keys()].every((id) => doc.variables[id])).toBe(true);
   });
 
-  for (const id of ["accent", "ink", "gutter", "stack", "display"]) {
+  for (const id of ["accent", "ink", "gutter", "stack", "display", "round", "ctaWidth"]) {
     it(`deleting "${id}" detaches every use and keeps what each layer showed`, () => {
       const doc = fixture();
       if (!doc.variables[id]) return;

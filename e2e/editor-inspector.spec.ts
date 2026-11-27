@@ -125,7 +125,7 @@ test("inspector sections edit the selection at the editing breakpoint", async ({
   await expect(hero).toHaveCSS("justify-content", "space-between");
   await fill(p.getByLabel("Gap", { exact: true }), "10");
   await expect(hero).toHaveCSS("column-gap", "10px");
-  await fill(p.getByLabel("Padding horizontal"), "50");
+  await fill(p.getByLabel("Padding horizontal", { exact: true }), "50");
   await expect(hero).toHaveCSS("padding-left", "50px");
   await p
     .getByRole("radiogroup", { name: "Overflow" })

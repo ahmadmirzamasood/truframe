@@ -557,7 +557,10 @@ fn overrides_merge_field_by_field() {
         serde_json::from_value(json!({ "desktop": { "radius": 12 }, "mobile": { "gap": 4 } }))
             .unwrap_or_default();
     let merged = apply_override(&style, &o);
-    assert_eq!(merged.desktop.radius, Some(Radius::All(12.0)));
+    assert_eq!(
+        merged.desktop.radius,
+        Some(Radius::All(SpacingValue::Px(12.0)))
+    );
     assert_eq!(merged.desktop.gap, Some(SpacingValue::Px(8.0)));
     assert_eq!(
         merged.mobile.and_then(|m| m.gap),

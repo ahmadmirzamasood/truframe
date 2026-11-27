@@ -8,6 +8,8 @@
   --font-display-line-height: 1.05;
   --font-display-letter-spacing: -0.03em;
   --neutral-ink: #18181b;
+  --radius-round: 12px;
+  --size-cta-width: 240px;
   --space-gutter: 64px;
   --space-stack: 24px;
 }
@@ -18,6 +20,7 @@
     --font-display-size: 48px;
     --font-display-line-height: 1.1;
     --font-display-letter-spacing: -0.02em;
+    --radius-round: 8px;
     --space-gutter: 32px;
   }
 }
@@ -29,6 +32,7 @@
     --font-display-weight: 700;
     --font-display-line-height: 1.15;
     --font-display-letter-spacing: -0.01em;
+    --size-cta-width: 180px;
     --space-gutter: 16px;
   }
 }
@@ -41,6 +45,8 @@
   --text-font-display--letter-spacing: var(--font-display-letter-spacing);
   --text-font-display--font-weight: var(--font-display-weight);
   --color-neutral-ink: var(--neutral-ink);
+  --spacing-radius-round: var(--radius-round);
+  --spacing-size-cta-width: var(--size-cta-width);
   --spacing-space-gutter: var(--space-gutter);
   --spacing-space-stack: var(--space-stack);
 }

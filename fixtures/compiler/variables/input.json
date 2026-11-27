@@ -112,7 +112,15 @@
             }
           },
           "textColor": "#ffffff",
-          "radius": 8
+          "radius": {
+            "var": "round"
+          },
+          "width": {
+            "type": "fixed",
+            "value": {
+              "var": "ctaWidth"
+            }
+          }
         }
       },
       "target": {
@@ -217,6 +225,28 @@
       "value": {
         "desktop": 24,
         "mobile": 24
+      }
+    },
+    "round": {
+      "id": "round",
+      "type": "spacing",
+      "name": "Round",
+      "group": "Radius",
+      "cssName": "--radius-round",
+      "value": {
+        "desktop": 12,
+        "tablet": 8
+      }
+    },
+    "ctaWidth": {
+      "id": "ctaWidth",
+      "type": "spacing",
+      "name": "CTA width",
+      "group": "Size",
+      "cssName": "--size-cta-width",
+      "value": {
+        "desktop": 240,
+        "mobile": 180
       }
     },
     "display": {

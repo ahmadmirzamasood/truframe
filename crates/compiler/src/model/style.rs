@@ -37,7 +37,10 @@ pub struct Sides<T> {
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(tag = "type", rename_all = "camelCase", deny_unknown_fields)]
 pub enum Size {
-    Fixed { value: f64 },
+    /// A px length or a spacing variable (PRD F13).
+    Fixed {
+        value: SpacingValue,
+    },
     Fill,
     Fit,
 }
@@ -104,7 +107,8 @@ pub struct Corners {
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum Radius {
-    All(f64),
+    /// One radius for every corner: px or a spacing variable.
+    All(SpacingValue),
     Corners(Corners),
 }
 
