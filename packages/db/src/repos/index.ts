@@ -1,4 +1,5 @@
 import type { Db } from "../client.ts";
+import { assetsRepo } from "./assets.ts";
 import { auditRepo } from "./audit.ts";
 import { type AuthUser, authUsersRepo } from "./auth-users.ts";
 import { projectsRepo } from "./projects.ts";
@@ -6,6 +7,12 @@ import { revisionsRepo } from "./revisions.ts";
 import { usageRepo } from "./usage.ts";
 import { workspacesRepo } from "./workspaces.ts";
 
+export {
+  ASSET_LIMIT_REACHED,
+  type AssetRow,
+  type NewAsset,
+  type StorageUsage,
+} from "./assets.ts";
 export type { AuditEntry } from "./audit.ts";
 export {
   LIMIT_REACHED,
@@ -28,6 +35,7 @@ export function forWorkspace(db: Db, workspaceId: string) {
     usage: usageRepo(db, workspaceId),
     audit: auditRepo(db, workspaceId),
     revisions: revisionsRepo(db, workspaceId),
+    assets: assetsRepo(db, workspaceId),
   };
 }
 

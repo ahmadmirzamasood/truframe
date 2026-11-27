@@ -35,9 +35,10 @@ import {
   Trash2Icon,
   TypeIcon,
 } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { checkBreakpointWidth } from "../breakpoints.ts";
 import { deleteOps, duplicateOps, makeAbsoluteOps } from "../gestures.ts";
+import type { AssetHost } from "../host.ts";
 import { BREAKPOINT_LABEL } from "../labels.ts";
 import { parentMap } from "../tree.ts";
 import { valueAt } from "../variables.ts";
@@ -134,6 +135,7 @@ type Ctx = {
   node: Node;
   bp: BreakpointId;
   apply: (ops: Op[]) => void;
+  assets?: AssetHost;
 };
 
 /** Unscaled box of a layer in the editing frame, and of its parent. */
@@ -550,11 +552,14 @@ function Fill(props: { ctx: Ctx; title?: string }) {
             { value: "none", label: "None" },
             { value: "solid", label: "Solid" },
             { value: "gradient", label: "Gradient" },
-            { value: "image", label: "Image", disabled: true },
+            { value: "image", label: "Image", disabled: !Object.keys(ctx.doc.assets).length },
           ]}
           onChange={(t) => {
             if (t === "none") set(ctx, "fill", undefined);
             if (t === "solid") set(ctx, "fill", { type: "solid", color: "#e5e5e5" });
+            const first = Object.keys(ctx.doc.assets)[0];
+            if (t === "image" && first)
+              set(ctx, "fill", { type: "image", assetId: first, fit: "fill" });
             if (t === "gradient")
               set(ctx, "fill", {
                 type: "linearGradient",
@@ -578,6 +583,31 @@ function Fill(props: { ctx: Ctx; title?: string }) {
             bind={colorBind(ctx, (id) => set(ctx, "fill", { type: "solid", color: { var: id } }))}
           />
         </Row>
+      ) : null}
+      {fill?.type === "image" ? (
+        <>
+          <Row label="Image">
+            <SelectField
+              label="Fill image"
+              value={fill.assetId}
+              options={Object.values(ctx.doc.assets).map((a) => ({ value: a.id, label: a.name }))}
+              onChange={(id) => set(ctx, "fill", { ...fill, assetId: id })}
+            />
+          </Row>
+          <Row label="Fit">
+            <Segmented
+              label="Fill image fit"
+              value={fill.fit}
+              options={[
+                { value: "fill", label: "Fill" },
+                { value: "fit", label: "Fit" },
+                { value: "crop", label: "Crop" },
+                { value: "tile", label: "Tile" },
+              ]}
+              onChange={(fit) => set(ctx, "fill", { ...fill, fit })}
+            />
+          </Row>
+        </>
       ) : null}
       {fill?.type === "linearGradient" ? (
         <>
@@ -1122,6 +1152,69 @@ function TextContent(props: { ctx: Ctx }) {
   );
 }
 
+/** Replace (upload a new file for this layer) and From assets (pick an uploaded one). */
+function ImagePickers({ ctx }: { ctx: Ctx }) {
+  const { node, doc, apply } = ctx;
+  const input = useRef<HTMLInputElement>(null);
+  const [problem, setProblem] = useState<string | null>(null);
+  const [busy, setBusy] = useState(false);
+  if (node.type !== "image") return null;
+  const pick = (id: string) => {
+    const a = doc.assets[id];
+    const fields: Record<string, unknown> = { assetId: id };
+    if (a?.alt && !node.alt) fields.alt = a.alt;
+    apply([{ op: "setNodeFields", nodeId: node.id, fields }]);
+  };
+  return (
+    <>
+      <div className="grid grid-cols-2 gap-1">
+        <Button
+          variant="outline"
+          size="sm"
+          className="h-7"
+          disabled={!ctx.assets || busy}
+          onClick={() => input.current?.click()}
+        >
+          {busy ? "Uploading…" : "Replace"}
+        </Button>
+        <SelectField
+          label="From assets"
+          value={node.assetId ?? ""}
+          placeholder="From assets"
+          options={Object.values(doc.assets).map((a) => ({ value: a.id, label: a.name }))}
+          onChange={(id) => pick(id)}
+        />
+      </div>
+      <input
+        ref={input}
+        type="file"
+        accept=".png,.jpg,.jpeg,.webp,.gif,.svg"
+        aria-label="Upload an image for this layer"
+        className="hidden"
+        onChange={async (e) => {
+          const file = e.target.files?.[0];
+          e.target.value = "";
+          if (!file || !ctx.assets) return;
+          setBusy(true);
+          const r = await ctx.assets.upload(file);
+          setBusy(false);
+          if (!r.ok) return setProblem(r.message);
+          setProblem(null);
+          apply([
+            { op: "upsertAsset", asset: r.asset },
+            { op: "setNodeFields", nodeId: node.id, fields: { assetId: r.asset.id } },
+          ]);
+        }}
+      />
+      {problem ? (
+        <p role="alert" className="text-[11px] text-destructive">
+          {problem}
+        </p>
+      ) : null}
+    </>
+  );
+}
+
 function ImageSection(props: { ctx: Ctx }) {
   const { ctx } = props;
   const { node, doc, apply } = ctx;
@@ -1133,8 +1226,12 @@ function ImageSection(props: { ctx: Ctx }) {
   return (
     <Section title="Image">
       <div className="flex items-center gap-2 rounded-md bg-muted/50 p-2">
-        <div className="grid size-10 place-items-center rounded bg-[#e5e5e5]">
-          <ImageIcon className="size-4 text-muted-foreground" />
+        <div className="grid size-10 shrink-0 place-items-center overflow-hidden rounded bg-[#e5e5e5]">
+          {asset && ctx.assets ? (
+            <img src={ctx.assets.url(asset, 320)} alt="" className="size-full object-cover" />
+          ) : (
+            <ImageIcon className="size-4 text-muted-foreground" />
+          )}
         </div>
         <div className="min-w-0 text-[11px]">
           <p className="truncate font-medium">{asset?.name ?? "Placeholder"}</p>
@@ -1143,26 +1240,7 @@ function ImageSection(props: { ctx: Ctx }) {
           </p>
         </div>
       </div>
-      <div className="grid grid-cols-2 gap-1">
-        <Button
-          variant="outline"
-          size="sm"
-          className="h-7"
-          disabled
-          title="Uploads arrive with the Assets panel"
-        >
-          Replace
-        </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          className="h-7"
-          disabled
-          title="Uploads arrive with the Assets panel"
-        >
-          From assets
-        </Button>
-      </div>
+      <ImagePickers ctx={ctx} />
       <Row label="Fit">
         <Segmented
           label="Image fit"
@@ -1504,6 +1582,8 @@ export type InspectorProps = {
   guides: Guides;
   onGuidesChange: (g: Guides) => void;
   components?: ComponentActions;
+  /** Uploads and file URLs, when the app provides them. */
+  assets?: AssetHost;
 };
 
 export function Inspector(props: InspectorProps) {
@@ -1558,7 +1638,7 @@ export function Inspector(props: InspectorProps) {
       </div>
     );
   }
-  const ctx: Ctx = { doc, node, bp, apply: props.apply };
+  const ctx: Ctx = { doc, node, bp, apply: props.apply, assets: props.assets };
   const parentId = parents.get(node.id);
   const container = node.type === "frame" || node.type === "link";
   if (node.type === "instance") {

@@ -4,6 +4,8 @@ import { type BreakpointId, newId } from "@truframe/model";
 import type { Op } from "@truframe/ops";
 import { RenderedFrame } from "@truframe/renderer";
 import { type ComponentType, type ReactNode, useCallback, useMemo, useRef, useState } from "react";
+import { imageNodeFor } from "./assets.ts";
+import { AssetsPanel } from "./assets-panel.tsx";
 import { Canvas, type CanvasApi } from "./canvas.tsx";
 import { CommandPalette, ShortcutSheet, useCommandKeys } from "./command-ui.tsx";
 import {
@@ -101,6 +103,17 @@ export function DesignEditor({ host, backHref, Link }: DesignEditorProps) {
     [doc, selection],
   );
   const output = compiled.status === "loading" ? null : compiled.output;
+  // Images on the canvas load from the app (authorized); one URL per asset and width bucket.
+  const assetHost = host.assets;
+  const treeOptions = useMemo(
+    () => ({
+      assetUrl: (id: string) => {
+        const a = doc?.assets[id];
+        return a && assetHost ? assetHost.url(a, Math.min(a.width, 1920)) : null;
+      },
+    }),
+    [doc, assetHost],
+  );
 
   const insert = useCallback(
     (tool: InsertTool) => {
@@ -270,9 +283,24 @@ export function DesignEditor({ host, backHref, Link }: DesignEditorProps) {
                 />
               ) : null,
               variables: doc ? <VariablesPanel doc={doc} apply={apply} /> : null,
-              assets: (
-                <ComingSoon title="Assets">Image uploads arrive in a later update.</ComingSoon>
-              ),
+              assets: realDoc ? (
+                <AssetsPanel
+                  doc={realDoc}
+                  host={host.assets}
+                  apply={host.apply}
+                  onInsert={(asset) => {
+                    if (!doc || !page) return;
+                    const node = imageNodeFor(asset, newId());
+                    const target = insertTarget(
+                      doc,
+                      main?.root ?? page.root,
+                      liveSelection.at(-1) ?? null,
+                      "image",
+                    );
+                    if (!apply(insertOps([node], target))) setSelection([node.id]);
+                  }}
+                />
+              ) : null,
             }}
           />
         </aside>
@@ -322,7 +350,13 @@ export function DesignEditor({ host, backHref, Link }: DesignEditorProps) {
                 )}
                 renderFrame={(bp) =>
                   output ? (
-                    <RenderedFrame doc={doc} output={output} pageId={page.id} breakpoint={bp} />
+                    <RenderedFrame
+                      doc={doc}
+                      output={output}
+                      pageId={page.id}
+                      breakpoint={bp}
+                      options={treeOptions}
+                    />
                   ) : (
                     <div
                       data-tf-frame={bp}
@@ -366,6 +400,7 @@ export function DesignEditor({ host, backHref, Link }: DesignEditorProps) {
                     guides={guides}
                     onGuidesChange={setGuides}
                     components={componentActions}
+                    assets={host.assets}
                   />
                 ) : null,
               agent: (

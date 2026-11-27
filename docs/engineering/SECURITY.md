@@ -35,7 +35,7 @@
 - [ ] CSP and security headers on app, usercontent and sites origins (separate policies).
 - [ ] Sandboxed iframes for all user code; postMessage origin + schema checks both ways.
 - [ ] Build container: no secrets, egress allowlist, limits, one build per container.
-- [ ] Upload pipeline: sniffing, SVG sanitizer, size limits, sandbox CSP on serve.
+- [x] Upload pipeline: sniffing, SVG sanitizer, size limits, sandbox CSP on serve. (P5-4: `packages/integrations/src/assets`, `apps/web/src/lib/server/assets.ts`; T4 green. Files are served from the app origin with `sandbox` CSP and `nosniff` until the usercontent domain exists; moving them there is part of the domain setup.)
 - [ ] Token encryption with key rotation support; no tokens in logs (log redaction middleware).
 - [ ] Agent and MCP tool allowlist; no publish/billing/delete-project tools; per-turn budgets.
 - [ ] Webhook signature verification + idempotency.

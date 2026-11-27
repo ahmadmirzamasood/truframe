@@ -13,7 +13,7 @@ import {
   propsSchema,
   validateDocument,
 } from "@truframe/model";
-import { type Op, opSchema } from "./ops.ts";
+import { NULLABLE_NODE_FIELDS, type Op, opSchema } from "./ops.ts";
 
 /** Limits the caller resolves from the workspace's plan (`@truframe/billing`). */
 export type OpLimits = { pagesPerProject: number };
@@ -179,7 +179,7 @@ function applyOp(doc: ProjectDocument, op: Op): Op[] {
       for (const [key, value] of Object.entries(op.fields)) {
         if (!(key in target) && value === null) continue;
         undo[key] = key in target ? target[key] : null;
-        if (value === null) delete next[key];
+        if (value === null && !NULLABLE_NODE_FIELDS.has(key)) delete next[key];
         else next[key] = value;
       }
       const parsed = nodeSchema.safeParse(next);
@@ -299,6 +299,19 @@ function applyOp(doc: ProjectDocument, op: Op): Op[] {
       delete doc.components[op.componentId];
       const nodes = removeSubtree(doc, c.root);
       return [{ op: "addComponent", component: c, nodes }];
+    }
+    case "upsertAsset": {
+      const before = doc.assets[op.asset.id];
+      doc.assets[op.asset.id] = structuredClone(op.asset);
+      return [
+        before ? { op: "upsertAsset", asset: before } : { op: "deleteAsset", assetId: op.asset.id },
+      ];
+    }
+    case "deleteAsset": {
+      const before = doc.assets[op.assetId];
+      if (!before) return fail("NOT_FOUND", `No asset "${op.assetId}"`);
+      delete doc.assets[op.assetId];
+      return [{ op: "upsertAsset", asset: before }];
     }
     case "setSettings": {
       const before = doc.settings;

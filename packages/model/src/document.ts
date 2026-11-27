@@ -139,6 +139,10 @@ export const assetSchema = z.strictObject({
    * document can never point at another tenant's objects.
    */
   key: z.string().regex(/^assets\/[0-9a-f]{64}\.(?:png|jpg|webp|avif|gif|svg)$/),
+  /** Assets panel folder; empty or absent is the top level (P5-4). */
+  folder: z.string().max(100).optional(),
+  /** Alt text new image layers start with (PRD F14); each layer keeps its own. */
+  alt: z.string().max(1000).optional(),
 });
 export type Asset = z.infer<typeof assetSchema>;
 

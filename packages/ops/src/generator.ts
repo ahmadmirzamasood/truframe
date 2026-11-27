@@ -17,7 +17,7 @@ export { canonical } from "./testing.ts";
 /** Random numbers drawn by fast-check; turned into concrete ops against the current doc. */
 export type Choice = { kind: number; a: number; b: number; c: number; d: number };
 export const choice = fc.record({
-  kind: fc.nat(16),
+  kind: fc.nat(18),
   a: fc.nat(),
   b: fc.nat(),
   c: fc.nat(),
@@ -108,6 +108,7 @@ export function makeOp(doc: ProjectDocument, c: Choice): Op {
         { content: [{ text: `Text ${c.d}` }] },
         { ariaLabel: c.d % 2 ? "Label" : null },
         { alt: "Alt" },
+        { assetId: c.d % 2 ? null : "photo" },
       ];
       return {
         op: "setNodeFields",
@@ -247,6 +248,23 @@ export function makeOp(doc: ProjectDocument, c: Choice): Op {
         op: "deleteComponent",
         componentId: pick(Object.keys(doc.components), c.a) ?? "none",
       };
+    case 16:
+      return {
+        op: "upsertAsset",
+        asset: {
+          id: `a${c.a % 3}`,
+          name: `photo-${c.b % 5}.png`,
+          mime: "image/png",
+          width: 1 + (c.c % 800),
+          height: 1 + (c.d % 600),
+          bytes: 1 + c.d,
+          key: `assets/${"ab".repeat(32)}.png`,
+          ...(c.b % 2 ? { folder: "Hero" } : {}),
+          ...(c.c % 3 === 0 ? { alt: "A photo" } : {}),
+        },
+      };
+    case 17:
+      return { op: "deleteAsset", assetId: pick(Object.keys(doc.assets), c.a) ?? "none" };
     default:
       return {
         op: "setSettings",

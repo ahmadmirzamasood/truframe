@@ -208,6 +208,12 @@ pub struct Asset {
     pub bytes: u64,
     /// Relative to the workspace's R2 prefix.
     pub key: String,
+    /// Assets panel folder (editor only).
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub folder: Option<String>,
+    /// Default alt text for new image layers (editor only).
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub alt: Option<String>,
 }
 
 /// A whole project document.

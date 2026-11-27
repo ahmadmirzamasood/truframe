@@ -121,3 +121,35 @@ export const revisions = sqliteTable(
   },
   (t) => [index("revisions_project_id_idx").on(t.projectId, t.createdAt)],
 );
+
+/**
+ * Uploaded files (PRD F14, SECURITY "Uploads"). One row per project that uses a file; the R2
+ * object (`ws/<workspaceId>/<r2Key>`, content-addressed by sha256) is shared by rows with the
+ * same key. The row id is the asset id in the project's document.
+ */
+export const assets = sqliteTable(
+  "assets",
+  {
+    id: text("id").primaryKey(),
+    workspaceId: text("workspace_id")
+      .notNull()
+      .references(() => workspaces.id, { onDelete: "cascade" }),
+    projectId: text("project_id")
+      .notNull()
+      .references(() => projects.id, { onDelete: "cascade" }),
+    /** `assets/<sha256>.<ext>`, relative to the workspace prefix (the document's `key`). */
+    r2Key: text("r2_key").notNull(),
+    name: text("name").notNull(),
+    mime: text("mime").notNull(),
+    bytes: integer("bytes").notNull(),
+    width: integer("width").notNull(),
+    height: integer("height").notNull(),
+    sha256: text("sha256").notNull(),
+    createdBy: text("created_by").references(() => users.id, { onDelete: "set null" }),
+    createdAt: integer("created_at", { mode: "timestamp_ms" }).notNull(),
+  },
+  (t) => [
+    index("assets_project_id_idx").on(t.projectId),
+    index("assets_workspace_key_idx").on(t.workspaceId, t.r2Key),
+  ],
+);
