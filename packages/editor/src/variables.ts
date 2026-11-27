@@ -349,6 +349,22 @@ export function deleteVariableOps(doc: ProjectDocument, id: string): Op[] {
       });
     }
   }
+  for (const c of Object.values(doc.components)) {
+    if (!refersTo(c.variants, id)) continue;
+    const variants = structuredClone(c.variants);
+    for (const styles of Object.values(variants))
+      for (const style of Object.values(styles)) {
+        if (!refersTo(style, id)) continue;
+        // detachStyle reads the original before this loop writes into the same object.
+        for (const w of detachStyle(doc, structuredClone(style), v)) {
+          style[w.bp] ??= {};
+          const props = style[w.bp] as Record<string, unknown>;
+          if (w.value === undefined) delete props[w.key];
+          else props[w.key] = w.value;
+        }
+      }
+    ops.push({ op: "updateComponent", componentId: c.id, fields: { variants } });
+  }
   ops.push({ op: "deleteVariable", variableId: id });
   return ops;
 }

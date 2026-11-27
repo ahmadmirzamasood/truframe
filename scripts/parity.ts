@@ -40,15 +40,19 @@ import { renderFrame } from "../packages/renderer/src/react.ts";
 
 /**
  * Fixtures compared in CI. Left out, with the reason: web fonts (the canvas loads them from
- * Google Fonts, the site self-hosts them: fonts, typography, variables, model-*), components
- * (instance layer CSS isn't per instance yet, P5: component-*), and remote content that
- * renders differently between two loads (embed-and-icons).
+ * Google Fonts, the site self-hosts them: fonts, typography, variables, model-*), and remote
+ * content that renders differently between two loads (embed-and-icons). Components joined in
+ * P5-3, when instances got their own canvas CSS (`instanceCss`).
  */
 export const PARITY_FIXTURES = [
   "absolute-position",
   "backgrounds",
   "borders-and-effects",
   "code-class-collisions",
+  "component-basic",
+  "component-image-and-boolean-props",
+  "component-inline-overrides",
+  "component-variants",
   "desktop-only-wide",
   "grid-gallery",
   "hero-responsive",
@@ -85,6 +89,10 @@ mkdirSync(report, { recursive: true });
 
 type Output = {
   css: Record<string, { desktop: string; tablet?: string; mobile?: string }>;
+  instanceCss?: Record<
+    string,
+    Record<string, { desktop: string; tablet?: string; mobile?: string }>
+  >;
   assets: { assetId: string; path: string }[];
 };
 type Case = {
@@ -167,7 +175,7 @@ function canvasHtml(c: Case, pageId: string, breakpoint: string) {
   const markup = renderToStaticMarkup(
     renderFrame({
       doc: c.doc,
-      output: { css: c.output.css, tokens: c.tokens },
+      output: { css: c.output.css, instanceCss: c.output.instanceCss, tokens: c.tokens },
       pageId,
       breakpoint: breakpoint as "desktop",
       options: {

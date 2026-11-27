@@ -54,6 +54,7 @@ export function useCompiled(doc: ProjectDocument | null): CompileState {
           status: "ready",
           output: {
             css: out.css,
+            instanceCss: out.instanceCss,
             tokens: out.files[TOKENS[doc.framework]],
             classes: codeClasses(out.files, out.spans),
           },

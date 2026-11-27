@@ -194,6 +194,7 @@ fn page_file(project: &Project, page: &Page, out: &mut Emit) -> Result<(), Compi
     w.line(0, "</Base>");
 
     out.output.css.append(&mut b.css);
+    out.output.instance_css.append(&mut b.instance_css);
     out.assets(&b.take_assets(), project);
     out.writer(&page_path(page), w);
     Ok(())
@@ -251,6 +252,7 @@ fn component_file(project: &Project, c: &Component, out: &mut Emit) -> Result<()
     w.element(&tree.root, 0, Flavor::Astro.syntax());
 
     out.output.css.append(&mut b.css);
+    out.output.instance_css.append(&mut b.instance_css);
     out.assets(&b.take_assets(), project);
     out.writer(&format!("src/components/{name}.astro"), w);
     Ok(())

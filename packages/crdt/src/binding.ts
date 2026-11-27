@@ -249,6 +249,23 @@ export function applyOpToLoro(doc: LoroDoc, op: Op): void {
     case "deleteVariable":
       doc.getMap("variables").delete(op.variableId);
       return;
+    case "addComponent":
+      createSubtree(doc, op.nodes, undefined, undefined);
+      doc.getMap("components").set(op.component.id, op.component);
+      return;
+    case "updateComponent": {
+      const before = doc.getMap("components").get(op.componentId) as Json;
+      const next: Json = { ...before };
+      for (const [k, v] of Object.entries(op.fields)) if (v !== undefined) next[k] = v;
+      doc.getMap("components").set(op.componentId, next);
+      return;
+    }
+    case "deleteComponent": {
+      const c = doc.getMap("components").get(op.componentId) as { root: string };
+      deleteSubtree(doc, c.root);
+      doc.getMap("components").delete(op.componentId);
+      return;
+    }
     case "setSettings":
       meta(doc).set("settings", op.settings);
       return;

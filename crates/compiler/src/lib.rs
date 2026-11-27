@@ -64,6 +64,11 @@ pub struct Output {
     pub spans: Vec<Span>,
     /// Node id → canvas CSS.
     pub css: BTreeMap<String, NodeCss>,
+    /// Instance id → component layer id → canvas CSS, for instances whose component layers
+    /// look different from the component's own (a non-default variant or layer overrides).
+    /// The renderer scopes these rules under the instance.
+    #[serde(rename = "instanceCss", skip_serializing_if = "BTreeMap::is_empty")]
+    pub instance_css: BTreeMap<String, BTreeMap<String, NodeCss>>,
     pub assets: Vec<AssetFile>,
 }
 

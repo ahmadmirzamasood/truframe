@@ -38,6 +38,16 @@
       "desktop": "font-family: var(--text-body-family); font-size: var(--text-body-size); font-weight: var(--text-body-weight); line-height: var(--text-body-line-height); letter-spacing: var(--text-body-letter-spacing); color: #111111;"
     }
   },
+  "instanceCss": {
+    "card": {
+      "cardRoot": {
+        "desktop": "padding: 32px;"
+      },
+      "cardTitle": {
+        "desktop": ""
+      }
+    }
+  },
   "spans": [
     {
       "end": 175,

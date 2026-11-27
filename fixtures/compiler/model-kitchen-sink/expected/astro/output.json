@@ -60,6 +60,18 @@
       "desktop": ""
     }
   },
+  "instanceCss": {
+    "card": {
+      "cardRoot": {
+        "desktop": "padding: 32px;"
+      },
+      "cardTitle": {
+        "desktop": "",
+        "mobile": "display: none;",
+        "tablet": "color: #ffffff;"
+      }
+    }
+  },
   "spans": [
     {
       "end": 453,

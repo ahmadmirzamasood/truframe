@@ -30,7 +30,11 @@ export function toReact(node: RChild, key?: number): ReactNode {
   return createElement(node.tag, props, ...(children.length ? children : []));
 }
 
-export type CompiledCss = { css: Record<string, NodeCss>; tokens?: string };
+export type CompiledCss = {
+  css: Record<string, NodeCss>;
+  instanceCss?: Record<string, Record<string, NodeCss>>;
+  tokens?: string;
+};
 
 export type RenderedFrameProps = {
   doc: ProjectDocument;

@@ -4,6 +4,7 @@
  */
 import {
   BREAKPOINT_IDS,
+  componentSchema,
   idSchema,
   nodeSchema,
   pageSchema,
@@ -120,6 +121,28 @@ export const deleteVariableOp = z.strictObject({
   variableId: idSchema,
 });
 
+/** Adds a component with its layer tree (`nodes[0]` is the component root). */
+export const addComponentOp = z.strictObject({
+  op: z.literal("addComponent"),
+  component: componentSchema,
+  nodes: z.array(nodeSchema).min(1).max(5000),
+});
+
+/** Changes a component's name, exposed props, variant props or variant styles. */
+export const updateComponentOp = z.strictObject({
+  op: z.literal("updateComponent"),
+  componentId: idSchema,
+  fields: componentSchema
+    .pick({ name: true, props: true, variantProps: true, variants: true })
+    .partial(),
+});
+
+/** Removes a component and its layers. Fails validation while instances of it exist. */
+export const deleteComponentOp = z.strictObject({
+  op: z.literal("deleteComponent"),
+  componentId: idSchema,
+});
+
 export const setSettingsOp = z.strictObject({
   op: z.literal("setSettings"),
   settings: z.strictObject({ lang: z.string() }),
@@ -140,6 +163,9 @@ export const opSchema = z.discriminatedUnion("op", [
   setBreakpointOp,
   upsertVariableOp,
   deleteVariableOp,
+  addComponentOp,
+  updateComponentOp,
+  deleteComponentOp,
   setSettingsOp,
 ]);
 export type Op = z.infer<typeof opSchema>;

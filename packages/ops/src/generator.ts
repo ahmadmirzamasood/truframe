@@ -17,7 +17,7 @@ export { canonical } from "./testing.ts";
 /** Random numbers drawn by fast-check; turned into concrete ops against the current doc. */
 export type Choice = { kind: number; a: number; b: number; c: number; d: number };
 export const choice = fc.record({
-  kind: fc.nat(13),
+  kind: fc.nat(16),
   a: fc.nat(),
   b: fc.nat(),
   c: fc.nat(),
@@ -202,6 +202,51 @@ export function makeOp(doc: ProjectDocument, c: Choice): Op {
               value: { desktop: c.d % 64 },
             },
           };
+    case 13: {
+      const id = fresh("c");
+      return {
+        op: "addComponent",
+        component: {
+          id,
+          name: `Part${c.a % 3}`,
+          root: `${id}root`,
+          props: [],
+          variantProps: [],
+          variants: {},
+        },
+        nodes: [
+          {
+            id: `${id}root`,
+            type: "frame",
+            name: "Root",
+            tag: "div",
+            style: { desktop: {} },
+            children: [`${id}t`],
+          },
+          textNode(`${id}t`),
+        ],
+      };
+    }
+    case 14: {
+      const comp = pick(Object.values(doc.components), c.a);
+      const fields = [
+        { name: `Renamed${c.c % 4}` },
+        { name: "lowercase" },
+        { variantProps: [{ name: "size", values: ["small", "large"], default: "small" }] },
+        { variantProps: [] },
+        { props: [] },
+      ];
+      return {
+        op: "updateComponent",
+        componentId: comp?.id ?? "none",
+        fields: pick(fields, c.b) as Record<string, unknown>,
+      };
+    }
+    case 15:
+      return {
+        op: "deleteComponent",
+        componentId: pick(Object.keys(doc.components), c.a) ?? "none",
+      };
     default:
       return {
         op: "setSettings",

@@ -178,10 +178,16 @@ class Builder {
     const inline = Object.keys(n.overrides.nodes).length > 0;
     const overlay = new Map<string, Overlay>();
     for (const p of c.props) {
-      const value = n.overrides.props[p.name] ?? p.default;
+      const value = Object.hasOwn(n.overrides.props, p.name)
+        ? n.overrides.props[p.name]
+        : p.default;
       const o = overlay.get(p.target.nodeId) ?? {};
       if (p.target.field === "content" && typeof value === "string") o.content = [{ text: value }];
-      if (p.target.field === "assetId") o.assetId = typeof value === "string" ? value : null;
+      if (p.target.field === "assetId") {
+        o.assetId = typeof value === "string" ? value : null;
+        // An imported component renders an image prop with `{image && <img />}`.
+        if (o.assetId === null && !inline) o.removed = true;
+      }
       if (p.target.field === "href" && typeof value === "string" && !inline) o.href = value;
       if (p.target.field === "visible" && value === false) {
         if (inline) o.hidden = true;

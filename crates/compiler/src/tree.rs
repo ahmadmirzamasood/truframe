@@ -198,7 +198,7 @@ fn merge_override(a: &StyleOverride, b: &StyleOverride) -> StyleOverride {
 }
 
 /// What the generated file must import.
-#[derive(Debug, Default)]
+#[derive(Debug, Default, Clone)]
 pub struct Imports {
     /// `next/image` / `astro:assets` Image.
     pub image: bool,
@@ -234,6 +234,8 @@ pub struct Builder<'a> {
     pub flavor: Flavor,
     pub classes: BTreeMap<String, String>,
     pub css: BTreeMap<String, NodeCss>,
+    /// Canvas CSS of component layers per instance (see `Output::instance_css`).
+    pub instance_css: BTreeMap<String, BTreeMap<String, NodeCss>>,
     pub asset_names: BTreeMap<String, String>,
     pub imports: Imports,
     pub assets_used: RefCell<BTreeSet<(String, AssetUse)>>,
@@ -259,6 +261,7 @@ impl<'a> Builder<'a> {
             flavor,
             classes,
             css: BTreeMap::new(),
+            instance_css: BTreeMap::new(),
             asset_names: asset_file_names(project),
             imports: Imports::default(),
             assets_used: RefCell::new(BTreeSet::new()),
@@ -689,6 +692,9 @@ impl<'a> Builder<'a> {
         if !overrides.nodes.is_empty() {
             return self.inline_instance(id, c, class, overrides);
         }
+        if c.variants.contains_key(&variant_key(c, &overrides.variant)) {
+            self.instance_canvas_css(id, c, overrides)?;
+        }
 
         let name = pascal(&c.name);
         self.imports.components.insert(name.clone());
@@ -743,16 +749,27 @@ impl<'a> Builder<'a> {
         }
     }
 
-    /// An instance with per-layer overrides is rendered in place: the component's layers with
-    /// the selected variant, the props and the overrides applied.
-    fn inline_instance(
+    /// The canvas CSS of an imported instance's layers with its variant applied. The elements
+    /// built on the way are thrown away; only the CSS is kept.
+    fn instance_canvas_css(
         &mut self,
         id: &str,
         c: &Component,
-        outer_class: String,
         overrides: &InstanceOverrides,
-    ) -> Result<El, CompileError> {
-        let project = self.project;
+    ) -> Result<(), CompileError> {
+        let imports = self.imports.clone();
+        let assets = self.assets_used.borrow().clone();
+        self.inline_instance(id, c, String::new(), overrides)?;
+        self.imports = imports;
+        *self.assets_used.borrow_mut() = assets;
+        Ok(())
+    }
+
+    /// The variant, prop values and layer overrides an instance applies to its component.
+    fn instance_overlay(
+        c: &Component,
+        overrides: &InstanceOverrides,
+    ) -> BTreeMap<String, NodeOverride> {
         let mut overlay: BTreeMap<String, NodeOverride> = BTreeMap::new();
         // Variant overrides, then prop values, then the instance's own layer overrides.
         if let Some(v) = c.variants.get(&variant_key(c, &overrides.variant)) {
@@ -813,7 +830,20 @@ impl<'a> Builder<'a> {
                 o.hidden = no.hidden.clone();
             }
         }
+        overlay
+    }
 
+    /// An instance with per-layer overrides is rendered in place: the component's layers with
+    /// the selected variant, the props and the overrides applied.
+    fn inline_instance(
+        &mut self,
+        id: &str,
+        c: &Component,
+        outer_class: String,
+        overrides: &InstanceOverrides,
+    ) -> Result<El, CompileError> {
+        let project = self.project;
+        let overlay = Self::instance_overlay(c, overrides);
         let classes = code_classes(project, &c.root, Some(&component_block(c)))?;
         let saved = (
             std::mem::replace(&mut self.classes, classes),
@@ -821,9 +851,9 @@ impl<'a> Builder<'a> {
             self.component.take(),
             self.inline_outer.replace(outer_class),
         );
-        // Inlined layers share ids with the component's own file; their canvas CSS belongs
-        // to the component, so keep what's already recorded.
-        let mut root = self.element_inline(c)?;
+        // Inlined layers share ids with the component's own file: their canvas CSS for this
+        // instance goes to `instance_css`, scoped under the instance by the renderer.
+        let mut root = self.element_inline(id, c)?;
         root.node = Some(id.to_string());
         self.classes = saved.0;
         self.overlay = saved.1;
@@ -832,16 +862,17 @@ impl<'a> Builder<'a> {
         Ok(root)
     }
 
-    fn element_inline(&mut self, c: &Component) -> Result<El, CompileError> {
+    fn element_inline(&mut self, instance: &str, c: &Component) -> Result<El, CompileError> {
         self.component = Some(ComponentMode {
             root: c.root.clone(),
             bindings: BTreeMap::new(),
             variant_classes: BTreeMap::new(),
             inline: true,
         });
-        let css_before = self.css.clone();
+        let css_before = std::mem::take(&mut self.css);
         let el = self.element(&c.root, None);
-        self.css = css_before;
+        let css = std::mem::replace(&mut self.css, css_before);
+        self.instance_css.entry(instance.to_string()).or_insert(css);
         el
     }
 

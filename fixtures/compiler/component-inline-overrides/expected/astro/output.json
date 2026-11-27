@@ -35,6 +35,36 @@
       "desktop": "display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px;"
     }
   },
+  "instanceCss": {
+    "n6": {
+      "n1": {
+        "desktop": "font-size: 1.25rem; line-height: calc(1.75 / 1.25); font-weight: 600;"
+      },
+      "n2": {
+        "desktop": "color: #92400e;"
+      },
+      "n3": {
+        "desktop": "flex: none; width: 40px; height: 40px; object-fit: contain;"
+      },
+      "n4": {
+        "desktop": "flex-direction: column; gap: 8px; padding: 16px; background-color: #fef3c7; border-radius: 12px;"
+      }
+    },
+    "n7": {
+      "n1": {
+        "desktop": "font-size: 1.25rem; line-height: calc(1.75 / 1.25); font-weight: 600;"
+      },
+      "n2": {
+        "desktop": "display: none; color: #52525b;"
+      },
+      "n3": {
+        "desktop": "flex: none; width: 40px; height: 40px; background-color: #e5e5e5;"
+      },
+      "n4": {
+        "desktop": "flex-direction: column; gap: 8px; padding: 16px;"
+      }
+    }
+  },
   "spans": [
     {
       "end": 689,
