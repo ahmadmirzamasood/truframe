@@ -1146,6 +1146,7 @@ function Checks(props: { doc: ProjectDocument; rootId: string; onSelect: (id: st
   const paint = useContext(CanvasPaint);
   // Measure after the canvas has rendered this document with its compiled CSS.
   const [painted, setPainted] = useState<ProjectDocument | null>(null);
+  // biome-ignore lint/correctness/useExhaustiveDependencies: `paint` is the trigger, not an input: new compiled CSS means new sizes to measure.
   useEffect(() => {
     setPainted(null);
     const raf = requestAnimationFrame(() => setPainted(props.doc));
