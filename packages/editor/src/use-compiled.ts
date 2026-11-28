@@ -5,12 +5,20 @@
  * (ARCHITECTURE §6.1 "Parity"). Runs on the main thread for now: one page compiles in about
  * 12 ms; the incremental Web Worker compile is P6.
  */
+import type { Span } from "@truframe/compiler-wasm";
 import type { ProjectDocument } from "@truframe/model";
 import type { CompiledCss } from "@truframe/renderer";
 import { useEffect, useState } from "react";
 
-/** The compiler's CSS plus each layer's code class (PRD F27), read from its output. */
-export type Compiled = CompiledCss & { classes: ReadonlyMap<string, string> };
+/**
+ * The compiler's CSS plus each layer's code class (PRD F27), read from its output, and the
+ * generated files and spans for Code View.
+ */
+export type Compiled = CompiledCss & {
+  classes: ReadonlyMap<string, string>;
+  files: Readonly<Record<string, string>>;
+  spans: readonly Span[];
+};
 
 export type CompileState =
   | { status: "loading" }
@@ -57,6 +65,8 @@ export function useCompiled(doc: ProjectDocument | null): CompileState {
             instanceCss: out.instanceCss,
             tokens: out.files[TOKENS[doc.framework]],
             classes: codeClasses(out.files, out.spans),
+            files: out.files,
+            spans: out.spans,
           },
         });
       })

@@ -3,3 +3,4 @@
 @source "../";
 /* The editor package ships its own Tailwind classes. */
 @source "../../../../packages/editor/src";
+@source "../../../../packages/codeview/src";

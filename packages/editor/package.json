@@ -11,6 +11,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@truframe/codeview": "workspace:*",
     "@truframe/compiler-wasm": "workspace:*",
     "@truframe/layout": "workspace:*",
     "@truframe/model": "workspace:*",

@@ -3,7 +3,16 @@
 import { type BreakpointId, newId } from "@truframe/model";
 import type { Op } from "@truframe/ops";
 import { fontFamilies, RenderedFrame } from "@truframe/renderer";
-import { type ComponentType, type ReactNode, useCallback, useMemo, useRef, useState } from "react";
+import {
+  type ComponentType,
+  lazy,
+  type ReactNode,
+  Suspense,
+  useCallback,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { imageNodeFor } from "./assets.ts";
 import { AssetsPanel } from "./assets-panel.tsx";
 import { Canvas, type CanvasApi } from "./canvas.tsx";
@@ -35,6 +44,9 @@ import { SelectionLayer } from "./selection-layer.tsx";
 import { VariablesPanel } from "./variables-panel.tsx";
 
 const EMPTY_CLASSES: ReadonlyMap<string, string> = new Map();
+
+// CodeMirror and its languages load only when Code View opens (editor bundle budget, §12).
+const CodeView = lazy(() => import("@truframe/codeview").then((m) => ({ default: m.CodeView })));
 
 import { type EditorView, TopBar } from "./top-bar.tsx";
 import { useCompiled } from "./use-compiled.ts";
@@ -391,9 +403,21 @@ export function DesignEditor({ host, backHref, Link }: DesignEditorProps) {
               </p>
             )
           ) : (
-            <ComingSoon title="Code View">
-              The generated project will appear here, read-only and updated as you design.
-            </ComingSoon>
+            <Suspense
+              fallback={
+                <p className="grid h-full place-items-center text-sm text-muted-foreground">
+                  Loading Code View…
+                </p>
+              }
+            >
+              <CodeView
+                files={output?.files ?? {}}
+                defaultPath={
+                  (page && output?.spans.find((sp) => sp.node === page.root)?.path) ?? null
+                }
+                error={compiled.status === "error" ? compiled.message : null}
+              />
+            </Suspense>
           )}
         </main>
         <aside aria-label="Right panel" className="min-h-0 border-l">
