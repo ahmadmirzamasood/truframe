@@ -70,6 +70,8 @@ describe("editor commands", () => {
       "zoom-100",
       "view-design",
       "view-code",
+      "reveal-in-code",
+      "reveal-in-design",
       "edit-desktop",
       "edit-tablet",
       "edit-mobile",

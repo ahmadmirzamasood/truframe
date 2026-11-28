@@ -245,6 +245,21 @@ export function editorCommands(ctx: CommandContext): Command[] {
     },
     { id: "view-design", title: "Design view", group: "View", run: () => ctx.setView("design") },
     { id: "view-code", title: "Code view", group: "View", run: () => ctx.setView("code") },
+    // Code View follows the selection, so revealing is switching view with it kept (P6-3).
+    {
+      id: "reveal-in-code",
+      title: "Reveal in code",
+      group: "View",
+      enabled: has,
+      run: () => ctx.setView("code"),
+    },
+    {
+      id: "reveal-in-design",
+      title: "Reveal in design",
+      group: "View",
+      enabled: has,
+      run: () => ctx.setView("design"),
+    },
     ...(doc ? activeBreakpoints(doc.breakpoints) : (["desktop"] as BreakpointId[])).map(
       (bp, i): Command => ({
         id: `edit-${bp}`,
