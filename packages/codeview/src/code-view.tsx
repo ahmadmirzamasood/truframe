@@ -13,7 +13,15 @@ import {
   FolderIcon,
   SearchIcon,
 } from "lucide-react";
-import { type KeyboardEvent, type ReactNode, useEffect, useMemo, useRef, useState } from "react";
+import {
+  type KeyboardEvent,
+  type ReactNode,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { CodeEditor, type Reveal } from "./code-editor.tsx";
 import {
   buildFileTree,
@@ -86,14 +94,17 @@ export function CodeView({
   const [reveal, setReveal] = useState<Reveal | null>(null);
   const seq = useRef(0);
 
-  const openFile = (path: string, range?: { from: number; to: number }, move = true) => {
-    setChosen(path);
-    setOpen((prev) => new Set([...prev, ...parentFolders(path)]));
-    if (range) {
-      seq.current += 1;
-      setReveal({ ...range, seq: seq.current, move });
-    } else setReveal(null);
-  };
+  const openFile = useCallback(
+    (path: string, range?: { from: number; to: number }, move = true) => {
+      setChosen(path);
+      setOpen((prev) => new Set([...prev, ...parentFolders(path)]));
+      if (range) {
+        seq.current += 1;
+        setReveal({ ...range, seq: seq.current, move });
+      } else setReveal(null);
+    },
+    [],
+  );
 
   // Reveal in code: when the selected layer changes, show its element, preferring the open
   // file, then the page's file. A layer picked in the code is only marked, not jumped to.
@@ -113,7 +124,7 @@ export function CodeView({
     const move = picked.current !== selectedNode;
     picked.current = null;
     openFile(span.path, { from: span.start, to: span.end }, move);
-  }, [selectedNode, spans, defaultPath]);
+  }, [selectedNode, spans, defaultPath, openFile]);
 
   const pick = (offset: number) => {
     if (!openPath) return;
