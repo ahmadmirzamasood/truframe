@@ -35,7 +35,7 @@ import {
   Trash2Icon,
   TypeIcon,
 } from "lucide-react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { addAutoLayoutOps } from "../auto-layout.ts";
 import { checkBreakpointWidth } from "../breakpoints.ts";
 import { deleteOps, duplicateOps, makeAbsoluteOps } from "../gestures.ts";
@@ -1135,14 +1135,22 @@ const measureOnCanvas: MeasureLayer = (nodeId, bp) => {
   return el ? { w: el.offsetWidth, h: el.offsetHeight } : null;
 };
 
+/**
+ * Changes whenever the canvas draws new compiler output. The compile runs in a worker, so
+ * the CSS for a change arrives after the document does; measurements wait for both.
+ */
+export const CanvasPaint = createContext<unknown>(null);
+
 function Checks(props: { doc: ProjectDocument; rootId: string; onSelect: (id: string) => void }) {
   const parents = useMemo(() => parentMap(props.doc), [props.doc]);
-  // Measure after the canvas has rendered this document.
+  const paint = useContext(CanvasPaint);
+  // Measure after the canvas has rendered this document with its compiled CSS.
   const [painted, setPainted] = useState<ProjectDocument | null>(null);
   useEffect(() => {
+    setPainted(null);
     const raf = requestAnimationFrame(() => setPainted(props.doc));
     return () => cancelAnimationFrame(raf);
-  }, [props.doc]);
+  }, [props.doc, paint]);
   const checks = useMemo(
     () =>
       accessibilityChecks(

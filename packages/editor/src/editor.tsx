@@ -34,7 +34,7 @@ import type { EditorHost } from "./host.ts";
 import { createNodes, type InsertTool, insertOps, insertTarget } from "./insert.ts";
 import { InsertToolbar } from "./insert-toolbar.tsx";
 import type { ComponentActions } from "./inspector/component-sections.tsx";
-import { Inspector } from "./inspector/inspector.tsx";
+import { CanvasPaint, Inspector } from "./inspector/inspector.tsx";
 import { LayersPanel, useLocks } from "./layers-panel.tsx";
 import { measureLayer } from "./measure-dom.ts";
 import { PagesPanel } from "./pages-panel.tsx";
@@ -439,23 +439,25 @@ export function DesignEditor({ host, backHref, Link }: DesignEditorProps) {
             content={{
               inspect:
                 doc && page ? (
-                  <Inspector
-                    doc={doc}
-                    page={page}
-                    selection={liveSelection}
-                    bp={activeBreakpoint}
-                    onBreakpointChange={setBreakpoint}
-                    onSelectionChange={setSelection}
-                    apply={(ops) => {
-                      apply(ops);
-                    }}
-                    guides={guides}
-                    onGuidesChange={setGuides}
-                    components={componentActions}
-                    assets={host.assets}
-                    exports={host.exports}
-                    pickers={host.pickers}
-                  />
+                  <CanvasPaint.Provider value={output}>
+                    <Inspector
+                      doc={doc}
+                      page={page}
+                      selection={liveSelection}
+                      bp={activeBreakpoint}
+                      onBreakpointChange={setBreakpoint}
+                      onSelectionChange={setSelection}
+                      apply={(ops) => {
+                        apply(ops);
+                      }}
+                      guides={guides}
+                      onGuidesChange={setGuides}
+                      components={componentActions}
+                      assets={host.assets}
+                      exports={host.exports}
+                      pickers={host.pickers}
+                    />
+                  </CanvasPaint.Provider>
                 ) : null,
               agent: (
                 <ComingSoon title="Agent">The design agent arrives in a later update.</ComingSoon>
