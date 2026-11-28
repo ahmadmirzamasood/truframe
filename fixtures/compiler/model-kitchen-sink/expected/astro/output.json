@@ -92,82 +92,82 @@
       "start": 74
     },
     {
-      "end": 2727,
+      "end": 3115,
       "node": "id2",
       "path": "src/pages/index.astro",
-      "start": 155
+      "start": 262
     },
     {
-      "end": 2717,
+      "end": 3105,
       "node": "hero",
       "path": "src/pages/index.astro",
-      "start": 206
+      "start": 313
     },
     {
-      "end": 1237,
+      "end": 1344,
       "node": "title",
       "path": "src/pages/index.astro",
-      "start": 959
+      "start": 1066
     },
     {
-      "end": 1309,
+      "end": 1416,
       "node": "pic",
       "path": "src/pages/index.astro",
-      "start": 1244
+      "start": 1351
     },
     {
-      "end": 1401,
+      "end": 1508,
       "node": "cta",
       "path": "src/pages/index.astro",
-      "start": 1316
+      "start": 1423
     },
     {
-      "end": 1390,
+      "end": 1497,
       "node": "ctaLabel",
       "path": "src/pages/index.astro",
-      "start": 1354
+      "start": 1461
     },
     {
-      "end": 1554,
+      "end": 1661,
       "node": "card",
       "path": "src/pages/index.astro",
-      "start": 1408
+      "start": 1515
     },
     {
-      "end": 1541,
+      "end": 1648,
       "node": "cardTitle",
       "path": "src/pages/index.astro",
-      "start": 1446
+      "start": 1553
     },
     {
-      "end": 2135,
+      "end": 2242,
       "node": "icon",
       "path": "src/pages/index.astro",
-      "start": 1561
+      "start": 1668
     },
     {
-      "end": 2409,
+      "end": 2516,
       "node": "map",
       "path": "src/pages/index.astro",
-      "start": 2142
+      "start": 2249
     },
     {
-      "end": 2442,
+      "end": 2830,
       "node": "widget",
       "path": "src/pages/index.astro",
-      "start": 2416
+      "start": 2523
     },
     {
-      "end": 2632,
+      "end": 3020,
       "node": "mail",
       "path": "src/pages/index.astro",
-      "start": 2449
+      "start": 2837
     },
     {
-      "end": 2702,
+      "end": 3090,
       "node": "blankPic",
       "path": "src/pages/index.astro",
-      "start": 2639
+      "start": 3027
     }
   ]
 }

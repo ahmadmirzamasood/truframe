@@ -241,7 +241,10 @@ export function applyOpToLoro(doc: LoroDoc, op: Op): void {
     case "updatePage": {
       const page = pageData(doc).get(op.pageId) as Page;
       const next: Json = { ...page };
-      for (const [k, v] of Object.entries(op.fields)) if (v !== undefined) next[k] = v;
+      for (const [k, v] of Object.entries(op.fields)) {
+        if (v === null) delete next[k];
+        else if (v !== undefined) next[k] = v;
+      }
       pageData(doc).set(op.pageId, next);
       return;
     }

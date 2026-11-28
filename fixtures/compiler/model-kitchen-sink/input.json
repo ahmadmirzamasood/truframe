@@ -27,7 +27,37 @@
         "ogImage": null,
         "noindex": false
       },
-      "root": "id2"
+      "root": "id2",
+      "code": {
+        "head": [
+          {
+            "tag": "script",
+            "attrs": [
+              [
+                "async",
+                ""
+              ],
+              [
+                "src",
+                "https://analytics.example.com/a.js"
+              ]
+            ],
+            "text": ""
+          }
+        ],
+        "body": [
+          {
+            "tag": "script",
+            "attrs": [
+              [
+                "type",
+                "application/ld+json"
+              ]
+            ],
+            "text": "{}"
+          }
+        ]
+      }
     },
     {
       "id": "about",

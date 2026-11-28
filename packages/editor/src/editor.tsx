@@ -1,6 +1,6 @@
 "use client";
 
-import { type BreakpointId, newId, type ProjectDocument } from "@truframe/model";
+import { type BreakpointId, type EmbedNode, newId, type ProjectDocument } from "@truframe/model";
 import type { Op } from "@truframe/ops";
 import { fontFamilies, RenderedFrame } from "@truframe/renderer";
 import {
@@ -29,6 +29,7 @@ import {
 } from "./components.ts";
 import { ComponentsPanel } from "./components-panel.tsx";
 import { editorCommands } from "./editor-commands.ts";
+import { embedFrameUrl } from "./embeds.ts";
 import { useGuides } from "./guides.ts";
 import type { EditorHost } from "./host.ts";
 import { createNodes, type InsertTool, insertOps, insertTarget } from "./insert.ts";
@@ -139,14 +140,19 @@ export function DesignEditor({ host, backHref, Link }: DesignEditorProps) {
   const output = compiled.status === "loading" ? null : compiled.output;
   // Images on the canvas load from the app (authorized); one URL per asset and width bucket.
   const assetHost = host.assets;
+  // Embeds render only in sandboxed frames on the usercontent origin (SECURITY T3); with no
+  // such origin configured they are placeholders, never markup on the app origin.
+  const embedOrigin = host.preview?.origin ?? null;
   const treeOptions = useMemo(
     () => ({
       assetUrl: (id: string) => {
         const a = doc?.assets[id];
         return a && assetHost ? assetHost.url(a, Math.min(a.width, 1920)) : null;
       },
+      embedUrl: (source: EmbedNode["source"]) =>
+        embedOrigin ? embedFrameUrl(embedOrigin, source) : null,
     }),
-    [doc, assetHost],
+    [doc, assetHost, embedOrigin],
   );
 
   const insert = useCallback(

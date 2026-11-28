@@ -8,6 +8,7 @@ import {
   componentSchema,
   idSchema,
   nodeSchema,
+  pageCodeSchema,
   pageSchema,
   propsSchema,
   variableSchema,
@@ -107,7 +108,11 @@ export const deletePageOp = z.strictObject({ op: z.literal("deletePage"), pageId
 export const updatePageOp = z.strictObject({
   op: z.literal("updatePage"),
   pageId: idSchema,
-  fields: pageSchema.pick({ name: true, path: true, seo: true }).partial(),
+  /** `code: null` removes the page's code snippets. */
+  fields: pageSchema
+    .pick({ name: true, path: true, seo: true })
+    .extend({ code: pageCodeSchema.nullable() })
+    .partial(),
 });
 
 export const movePageOp = z.strictObject({ op: z.literal("movePage"), pageId: idSchema, index });

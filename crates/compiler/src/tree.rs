@@ -16,6 +16,11 @@ use crate::style::{
 };
 use crate::{CompileError, NodeCss};
 
+/// What an HTML embed's frame may do on the published site: run scripts, submit forms and
+/// open popups, never share the page's origin.
+pub const EMBED_SANDBOX: &str =
+    "allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox";
+
 /// Per-framework choices while building elements.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Flavor {
@@ -554,25 +559,37 @@ impl<'a> Builder<'a> {
             } => {
                 let class = self.class_attr(id, n, parent_node, &[])?;
                 let mut el = El::new(tag.as_str()).node(id).attr(class);
-                // HTML embeds render once the sanitizer exists (P6); until then the element
-                // keeps its place and size in the layout.
-                if let EmbedSource::Url { url } = source {
-                    let title = if name.trim().is_empty() {
-                        "Embedded content"
-                    } else {
-                        name.as_str()
-                    };
-                    el.children.push(Child::El(
-                        El::new("iframe")
-                            .attr(Attr::str("src", url.clone()))
-                            .attr(Attr::str("title", title))
-                            .attr(Attr::str("loading", "lazy"))
-                            .attr(Attr::str(
-                                self.flavor.class_attr(),
-                                "block size-full border-0",
-                            )),
-                    ));
-                }
+                let title = if name.trim().is_empty() {
+                    "Embedded content"
+                } else {
+                    name.as_str()
+                };
+                let frame = match source {
+                    EmbedSource::Url { url } => {
+                        El::new("iframe").attr(Attr::str("src", url.clone()))
+                    }
+                    // HTML (stored sanitized, P6-5) runs in a sandboxed `srcdoc` frame: its
+                    // scripts work, but it gets an opaque origin, so it can't reach the page,
+                    // its cookies or its storage (SECURITY "Third-party markup").
+                    EmbedSource::Html { html } => El::new("iframe")
+                        .attr(Attr::expr(
+                            match self.flavor {
+                                Flavor::Next => "srcDoc",
+                                Flavor::Astro => "srcdoc",
+                            },
+                            js_string(html),
+                        ))
+                        .attr(Attr::str("sandbox", EMBED_SANDBOX)),
+                };
+                el.children.push(Child::El(
+                    frame
+                        .attr(Attr::str("title", title))
+                        .attr(Attr::str("loading", "lazy"))
+                        .attr(Attr::str(
+                            self.flavor.class_attr(),
+                            "block size-full border-0",
+                        )),
+                ));
                 Ok(el)
             }
             Node::Instance {

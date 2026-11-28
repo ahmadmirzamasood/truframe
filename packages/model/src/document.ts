@@ -3,6 +3,7 @@
  * checks references between parts (tree structure, ids, variable types). `validateDocument`
  * runs both and is what every boundary should call.
  */
+
 import { z } from "zod";
 import { breakpointsSchema } from "./breakpoints.ts";
 import { childrenOf, type Node, nodeSchema, propValueSchema } from "./nodes.ts";
@@ -14,6 +15,7 @@ import {
   lengthSchema,
   projectIdSchema,
 } from "./primitives.ts";
+import { pageCodeSchema } from "./snippets.ts";
 import {
   assetRefsInProps,
   type Props,
@@ -46,6 +48,8 @@ export const pageSchema = z.strictObject({
   }),
   /** The page body: a frame node. */
   root: idSchema,
+  /** Head/body code snippets (P6-5); absent when the page has none. */
+  code: pageCodeSchema.optional(),
 });
 export type Page = z.infer<typeof pageSchema>;
 

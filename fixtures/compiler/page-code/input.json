@@ -1,0 +1,200 @@
+{
+  "schemaVersion": 1,
+  "id": "0199a0b2-7c3d-7e4f-8a5b-6c7d8e9f0a1b",
+  "framework": "nextjs",
+  "settings": {
+    "lang": "en"
+  },
+  "breakpoints": {
+    "desktop": {
+      "width": 1200
+    },
+    "tablet": {
+      "width": 810
+    },
+    "mobile": {
+      "width": 390
+    }
+  },
+  "pages": [
+    {
+      "id": "id1",
+      "name": "Home",
+      "path": "/",
+      "seo": {
+        "title": "Home",
+        "description": "",
+        "ogImage": null,
+        "noindex": false
+      },
+      "root": "id2",
+      "code": {
+        "head": [
+          {
+            "tag": "script",
+            "attrs": [
+              [
+                "defer",
+                ""
+              ],
+              [
+                "data-domain",
+                "example.com"
+              ],
+              [
+                "src",
+                "https://plausible.io/js/script.js"
+              ]
+            ],
+            "text": ""
+          },
+          {
+            "tag": "meta",
+            "attrs": [
+              [
+                "name",
+                "google-site-verification"
+              ],
+              [
+                "content",
+                "abc123"
+              ]
+            ],
+            "text": ""
+          },
+          {
+            "tag": "link",
+            "attrs": [
+              [
+                "rel",
+                "preconnect"
+              ],
+              [
+                "href",
+                "https://fonts.gstatic.com"
+              ],
+              [
+                "crossorigin",
+                ""
+              ]
+            ],
+            "text": ""
+          },
+          {
+            "tag": "script",
+            "attrs": [
+              [
+                "type",
+                "application/ld+json"
+              ]
+            ],
+            "text": "{\"@context\":\"https://schema.org\",\"@type\":\"Organization\",\"name\":\"Acme \\\"Q\\\"\"}"
+          }
+        ],
+        "body": [
+          {
+            "tag": "script",
+            "attrs": [],
+            "text": "window.tfLoaded = true;"
+          },
+          {
+            "tag": "noscript",
+            "attrs": [],
+            "text": "<img src=\"https://px.example.com/1.gif\" alt=\"\">"
+          }
+        ]
+      }
+    },
+    {
+      "id": "page2",
+      "name": "About",
+      "path": "/about",
+      "seo": {
+        "title": "About",
+        "description": "",
+        "ogImage": null,
+        "noindex": false
+      },
+      "root": "n2",
+      "code": {
+        "head": [],
+        "body": [
+          {
+            "tag": "style",
+            "attrs": [],
+            "text": "body{margin:0}"
+          }
+        ]
+      }
+    }
+  ],
+  "nodes": {
+    "id2": {
+      "id": "id2",
+      "type": "frame",
+      "name": "Body",
+      "tag": "main",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "direction": "column",
+          "width": {
+            "type": "fill"
+          },
+          "height": {
+            "type": "fit"
+          }
+        }
+      },
+      "children": [
+        "n3"
+      ]
+    },
+    "n1": {
+      "type": "text",
+      "name": "Title",
+      "tag": "h1",
+      "style": {
+        "desktop": {}
+      },
+      "content": [
+        {
+          "text": "About"
+        }
+      ],
+      "id": "n1"
+    },
+    "n2": {
+      "type": "frame",
+      "name": "Body",
+      "tag": "main",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "direction": "column"
+        }
+      },
+      "children": [
+        "n1"
+      ],
+      "id": "n2"
+    },
+    "n3": {
+      "type": "text",
+      "name": "Title",
+      "tag": "h1",
+      "style": {
+        "desktop": {}
+      },
+      "content": [
+        {
+          "text": "Page code"
+        }
+      ],
+      "id": "n3"
+    }
+  },
+  "components": {},
+  "variables": {},
+  "assets": {}
+}

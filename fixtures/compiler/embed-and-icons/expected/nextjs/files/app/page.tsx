@@ -23,7 +23,15 @@ export default function HomePage() {
           className="block size-full border-0"
         />
       </div>
-      <section className="snippet flex-none h-20" />
+      <section className="snippet flex-none h-20">
+        <iframe
+          srcDoc={"<script>alert(1)</script>"}
+          sandbox="allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox"
+          title="Snippet"
+          loading="lazy"
+          className="block size-full border-0"
+        />
+      </section>
       <div className="icons flex gap-2">
         <span
           className="star flex-none w-6 h-6 text-[#f59e0b]"

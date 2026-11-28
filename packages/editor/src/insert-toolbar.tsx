@@ -2,6 +2,7 @@
 
 import { Button } from "@truframe/ui/components/button";
 import {
+  CodeXmlIcon,
   ImageIcon,
   LayoutGridIcon,
   type LucideIcon,
@@ -19,6 +20,7 @@ const ICON: Record<InsertTool, LucideIcon> = {
   image: ImageIcon,
   button: RectangleHorizontalIcon,
   icon: StarIcon,
+  embed: CodeXmlIcon,
 };
 
 export function InsertToolbar(props: { onInsert: (tool: InsertTool) => void; disabled: boolean }) {

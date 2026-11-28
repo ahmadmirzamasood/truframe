@@ -166,9 +166,29 @@ export function makeOp(doc: ProjectDocument, c: Choice): Op {
         op: "updatePage",
         pageId: (pick(doc.pages, c.a) as { id: string }).id,
         fields:
-          c.b % 2
+          c.b % 4 === 1
             ? { name: `Renamed ${c.c % 9}` }
-            : { path: pick(["/", "/x", "/about", "/y-z"], c.c) as string },
+            : c.b % 4 === 3
+              ? // Page code (P6-5): set it, or remove it with null.
+                {
+                  code:
+                    c.c % 3 === 0
+                      ? null
+                      : {
+                          head: [
+                            {
+                              tag: "meta",
+                              attrs: [
+                                ["name", "x"],
+                                ["content", `${c.c}`],
+                              ],
+                              text: "",
+                            },
+                          ],
+                          body: c.c % 2 ? [{ tag: "script", attrs: [], text: "1" }] : [],
+                        },
+                }
+              : { path: pick(["/", "/x", "/about", "/y-z"], c.c) as string },
       };
     case 10:
       return {

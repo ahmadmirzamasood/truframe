@@ -28,7 +28,7 @@
   },
   "spans": [
     {
-      "end": 1645,
+      "end": 1922,
       "node": "id2",
       "path": "app/page.tsx",
       "start": 148
@@ -46,34 +46,34 @@
       "start": 463
     },
     {
-      "end": 744,
+      "end": 1021,
       "node": "n3",
       "path": "app/page.tsx",
       "start": 698
     },
     {
-      "end": 1633,
+      "end": 1910,
       "node": "n7",
       "path": "app/page.tsx",
-      "start": 751
+      "start": 1028
     },
     {
-      "end": 1062,
+      "end": 1339,
       "node": "n4",
-      "path": "app/page.tsx",
-      "start": 794
-    },
-    {
-      "end": 1341,
-      "node": "n5",
       "path": "app/page.tsx",
       "start": 1071
     },
     {
-      "end": 1620,
+      "end": 1618,
+      "node": "n5",
+      "path": "app/page.tsx",
+      "start": 1348
+    },
+    {
+      "end": 1897,
       "node": "n6",
       "path": "app/page.tsx",
-      "start": 1350
+      "start": 1627
     }
   ]
 }
