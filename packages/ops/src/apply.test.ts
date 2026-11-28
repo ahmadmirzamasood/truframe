@@ -57,6 +57,61 @@ describe("node ops", () => {
     expect(deleted.nodes.t1).toBeUndefined();
   });
 
+  it("sets, changes and removes an animation with undo, and refuses invalid ones", () => {
+    const doc = kitchenSink();
+    const anim = {
+      trigger: "load",
+      from: { opacity: 0, y: 24 },
+      duration: 600,
+      delay: 0,
+      easing: "ease-out",
+      once: true,
+      disabledOn: ["mobile"],
+    };
+    const set = roundTrip(doc, [
+      { op: "setNodeFields", nodeId: "title", fields: { animation: anim } },
+    ]);
+    expect(set.nodes.title?.animation).toEqual(anim);
+    const changed = roundTrip(set, [
+      { op: "setNodeFields", nodeId: "title", fields: { animation: { ...anim, trigger: "loop" } } },
+    ]);
+    expect(changed.nodes.title?.animation?.trigger).toBe("loop");
+    const removed = roundTrip(changed, [
+      { op: "setNodeFields", nodeId: "title", fields: { animation: null } },
+    ]);
+    expect(removed.nodes.title && "animation" in removed.nodes.title).toBe(false);
+    expect(
+      error(
+        applyTransaction(
+          doc,
+          [
+            {
+              op: "setNodeFields",
+              nodeId: "title",
+              fields: { animation: { ...anim, duration: 0 } },
+            },
+          ],
+          limits,
+        ),
+      ).code,
+    ).toBe("INVALID_OP");
+    expect(
+      error(
+        applyTransaction(
+          doc,
+          [
+            {
+              op: "setNodeFields",
+              nodeId: "title",
+              fields: { animation: { ...anim, staggerChildren: 80 } },
+            },
+          ],
+          limits,
+        ),
+      ).code,
+    ).toBe("INVALID_DOCUMENT");
+  });
+
   it("moves a node within and between parents", () => {
     const doc = kitchenSink();
     const within = roundTrip(doc, [

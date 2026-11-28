@@ -45,6 +45,50 @@ const PROP_VALUES: [string, unknown][] = [
   ["radius", 6],
 ];
 
+/** Animation values for `setNodeFields`: valid ones, a removal and two the validator refuses. */
+export const ANIMATIONS: unknown[] = [
+  {
+    trigger: "inView",
+    from: { opacity: 0, y: 24 },
+    duration: 600,
+    delay: 0,
+    easing: "ease-out",
+    once: true,
+    disabledOn: [],
+  },
+  {
+    trigger: "loop",
+    from: { scale: 1.1, rotate: 5 },
+    duration: 1500,
+    delay: 200,
+    easing: "ease-in-out",
+    once: true,
+    disabledOn: ["mobile"],
+  },
+  // Stagger is valid on frames and links only, so this one fails on other layers.
+  {
+    trigger: "load",
+    from: { opacity: 0, blur: 8, x: -40 },
+    duration: 400,
+    delay: 0,
+    easing: "back-out",
+    once: false,
+    staggerChildren: 80,
+    disabledOn: ["tablet", "mobile"],
+  },
+  null,
+  { trigger: "load", from: {}, duration: 10, delay: 0, easing: "ease", once: true, disabledOn: [] },
+  {
+    trigger: "inView",
+    from: { opacity: 2 },
+    duration: 600,
+    delay: 0,
+    easing: "ease",
+    once: true,
+    disabledOn: ["tablet", "tablet"],
+  },
+];
+
 let counter = 0;
 const fresh = (prefix: string) => `${prefix}${++counter}`;
 
@@ -109,6 +153,8 @@ export function makeOp(doc: ProjectDocument, c: Choice): Op {
         { ariaLabel: c.d % 2 ? "Label" : null },
         { alt: "Alt" },
         { assetId: c.d % 2 ? null : "photo" },
+        { animation: pick(ANIMATIONS, c.d) },
+        { animation: pick(ANIMATIONS, c.d) },
       ];
       return {
         op: "setNodeFields",

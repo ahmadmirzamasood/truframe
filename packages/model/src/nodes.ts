@@ -4,6 +4,7 @@
  */
 
 import { z } from "zod";
+import { animationSchema } from "./animation.ts";
 import { EMBED_HTML_MAX, sanitizeEmbedHtml } from "./embed.ts";
 import { hrefSchema, httpsUrlSchema, idSchema, richTextSchema } from "./primitives.ts";
 import { styleOverrideSchema, styleSchema } from "./style.ts";
@@ -51,6 +52,8 @@ const base = <T extends NodeType>(type: T) =>
     tag: z.enum(TAGS[type]),
     hidden: hiddenSchema.optional(),
     style: styleSchema,
+    /** Entrance, scroll-in or loop effect (P6A). */
+    animation: animationSchema.optional(),
   }) as const;
 
 const childrenSchema = z.array(idSchema).max(10_000);

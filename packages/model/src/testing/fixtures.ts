@@ -286,6 +286,25 @@ export function kitchenSink(): ProjectDocument {
     style: { desktop: {} },
   };
   hero.children.push("icon", "map", "widget", "mail", "blankPic");
+  hero.animation = {
+    trigger: "inView",
+    from: { opacity: 0, x: -40, y: 24, scale: 0.9, rotate: -5, blur: 8 },
+    duration: 600,
+    delay: 100,
+    easing: "back-out",
+    once: false,
+    staggerChildren: 80,
+    disabledOn: ["tablet", "mobile"],
+  };
+  doc.nodes.mail.animation = {
+    trigger: "loop",
+    from: { scale: 1.05 },
+    duration: 1200,
+    delay: 0,
+    easing: "ease-in-out",
+    once: true,
+    disabledOn: [],
+  };
   const title = doc.nodes.title as Extract<Node, { type: "text" }>;
   title.content.push({ text: "!", italic: true, underline: true, href: "https://example.com" });
   title.style.desktop = {

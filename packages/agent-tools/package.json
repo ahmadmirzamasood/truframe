@@ -9,5 +9,10 @@
   },
   "scripts": {
     "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@truframe/model": "workspace:*",
+    "@truframe/ops": "workspace:*",
+    "zod": "4.6.7"
   }
 }

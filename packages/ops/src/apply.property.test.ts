@@ -19,6 +19,7 @@ describe("ops property test", () => {
     let applied = 0;
     let rejected = 0;
     const appliedKinds = new Set<string>();
+    const animationOps = { set: 0, removed: 0 };
     fc.assert(
       fc.property(
         fc.nat(startDocs().length - 1),
@@ -36,7 +37,11 @@ describe("ops property test", () => {
               continue;
             }
             applied++;
-            for (const op of ops) appliedKinds.add(op.op);
+            for (const op of ops) {
+              appliedKinds.add(op.op);
+              if (op.op === "setNodeFields" && "animation" in op.fields)
+                animationOps[op.fields.animation === null ? "removed" : "set"]++;
+            }
             expect(validateDocument(result.doc).ok).toBe(true);
             const undo = applyTransaction(result.doc, result.inverse, limits);
             expect(undo.ok).toBe(true);
@@ -62,6 +67,9 @@ describe("ops property test", () => {
     // The generator must exercise both paths, not just produce rejected ops.
     expect(applied).toBeGreaterThan(RUNS * 2);
     expect(rejected).toBeGreaterThan(RUNS / 10);
+    // Animation ops (P6A-1) are applied, in both directions.
+    expect(animationOps.set).toBeGreaterThan(0);
+    expect(animationOps.removed).toBeGreaterThan(0);
     expect([...appliedKinds].sort()).toEqual(
       [...opSchema.options.map((o) => o.shape.op.value)].sort(),
     );

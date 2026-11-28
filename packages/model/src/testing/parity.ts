@@ -64,6 +64,12 @@ export function invalidFixtures(): Record<string, unknown> {
     "unknown-framework": mutate((d) => {
       d.framework = "remix";
     }),
+    "unknown-animation-trigger": mutate((d) => {
+      at(d, "nodes", "hero", "animation").trigger = "hover";
+    }),
+    "unknown-animation-from-key": mutate((d) => {
+      at(d, "nodes", "hero", "animation", "from").skew = 10;
+    }),
     "variable-missing-desktop": mutate((d) => {
       delete at(d, "variables", "brand", "value").desktop;
     }),

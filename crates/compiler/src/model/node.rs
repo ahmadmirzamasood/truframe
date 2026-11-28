@@ -82,6 +82,70 @@ pub struct Hidden {
     pub mobile: Option<bool>,
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub enum AnimationTrigger {
+    Load,
+    InView,
+    Loop,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+pub enum AnimationEasing {
+    #[serde(rename = "ease")]
+    Ease,
+    #[serde(rename = "ease-in")]
+    EaseIn,
+    #[serde(rename = "ease-out")]
+    EaseOut,
+    #[serde(rename = "ease-in-out")]
+    EaseInOut,
+    #[serde(rename = "linear")]
+    Linear,
+    #[serde(rename = "back-out")]
+    BackOut,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
+#[serde(rename_all = "lowercase")]
+pub enum AnimationBreakpoint {
+    Tablet,
+    Mobile,
+}
+
+/// The state a layer animates from; `None` keeps the layer's own value.
+#[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct AnimationFrom {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub opacity: Option<f64>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub x: Option<f64>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub y: Option<f64>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub scale: Option<f64>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub rotate: Option<f64>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub blur: Option<f64>,
+}
+
+/// A layer animation (mirror of `packages/model/src/animation.ts`). Times are milliseconds.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields, rename_all = "camelCase")]
+pub struct Animation {
+    pub trigger: AnimationTrigger,
+    pub from: AnimationFrom,
+    pub duration: f64,
+    pub delay: f64,
+    pub easing: AnimationEasing,
+    pub once: bool,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub stagger_children: Option<f64>,
+    pub disabled_on: Vec<AnimationBreakpoint>,
+}
+
 /// One run of text with the same formatting.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -163,6 +227,8 @@ pub enum Node {
         #[serde(default, skip_serializing_if = "Option::is_none")]
         hidden: Option<Hidden>,
         style: Style,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        animation: Option<Animation>,
         children: Vec<String>,
     },
     Text {
@@ -172,6 +238,8 @@ pub enum Node {
         #[serde(default, skip_serializing_if = "Option::is_none")]
         hidden: Option<Hidden>,
         style: Style,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        animation: Option<Animation>,
         content: Vec<TextSpan>,
     },
     Image {
@@ -181,6 +249,8 @@ pub enum Node {
         #[serde(default, skip_serializing_if = "Option::is_none")]
         hidden: Option<Hidden>,
         style: Style,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        animation: Option<Animation>,
         #[serde(rename = "assetId")]
         asset_id: Option<String>,
         alt: String,
@@ -194,6 +264,8 @@ pub enum Node {
         #[serde(default, skip_serializing_if = "Option::is_none")]
         hidden: Option<Hidden>,
         style: Style,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        animation: Option<Animation>,
         target: LinkTarget,
         #[serde(rename = "newTab")]
         new_tab: bool,
@@ -208,6 +280,8 @@ pub enum Node {
         #[serde(default, skip_serializing_if = "Option::is_none")]
         hidden: Option<Hidden>,
         style: Style,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        animation: Option<Animation>,
         set: String,
         icon: String,
         #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -220,6 +294,8 @@ pub enum Node {
         #[serde(default, skip_serializing_if = "Option::is_none")]
         hidden: Option<Hidden>,
         style: Style,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        animation: Option<Animation>,
         source: EmbedSource,
     },
     Instance {
@@ -229,6 +305,8 @@ pub enum Node {
         #[serde(default, skip_serializing_if = "Option::is_none")]
         hidden: Option<Hidden>,
         style: Style,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        animation: Option<Animation>,
         #[serde(rename = "componentId")]
         component_id: String,
         overrides: InstanceOverrides,
@@ -293,6 +371,18 @@ impl Node {
             | Node::Icon { hidden, .. }
             | Node::Embed { hidden, .. }
             | Node::Instance { hidden, .. } => hidden.as_ref(),
+        }
+    }
+
+    pub fn animation(&self) -> Option<&Animation> {
+        match self {
+            Node::Frame { animation, .. }
+            | Node::Text { animation, .. }
+            | Node::Image { animation, .. }
+            | Node::Link { animation, .. }
+            | Node::Icon { animation, .. }
+            | Node::Embed { animation, .. }
+            | Node::Instance { animation, .. } => animation.as_ref(),
         }
     }
 

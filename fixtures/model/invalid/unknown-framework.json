@@ -188,6 +188,23 @@
       "children": ["title", "pic", "cta", "card", "icon", "map", "widget", "mail", "blankPic"],
       "hidden": {
         "tablet": true
+      },
+      "animation": {
+        "trigger": "inView",
+        "from": {
+          "opacity": 0,
+          "x": -40,
+          "y": 24,
+          "scale": 0.9,
+          "rotate": -5,
+          "blur": 8
+        },
+        "duration": 600,
+        "delay": 100,
+        "easing": "back-out",
+        "once": false,
+        "staggerChildren": 80,
+        "disabledOn": ["tablet", "mobile"]
       }
     },
     "title": {
@@ -426,6 +443,17 @@
         "desktop": {
           "radius": 999
         }
+      },
+      "animation": {
+        "trigger": "loop",
+        "from": {
+          "scale": 1.05
+        },
+        "duration": 1200,
+        "delay": 0,
+        "easing": "ease-in-out",
+        "once": true,
+        "disabledOn": []
       }
     },
     "blankPic": {
