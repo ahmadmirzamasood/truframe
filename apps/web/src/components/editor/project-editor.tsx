@@ -4,7 +4,7 @@
  * Connects the Design View (`@truframe/editor`) to the synced document store (P2-6): room
  * connection, offline cache and undo/redo live here; the editor only reads and sends ops.
  */
-import { type AssetHost, DesignEditor, type EditorHost } from "@truframe/editor";
+import { type AssetHost, DesignEditor, type EditorHost, type ExportHost } from "@truframe/editor";
 import type { DocClient, DocState } from "@truframe/sync";
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -47,6 +47,32 @@ function assetHost(projectId: string): AssetHost {
       const res = await fetch(`/api/projects/${projectId}/assets`);
       if (!res.ok) return null;
       return ((await res.json()) as { usage: Awaited<ReturnType<AssetHost["usage"]>> }).usage;
+    },
+  };
+}
+
+/** Image export: the server checks the plan's largest scale before rendering (P5-9). */
+function exportHost(projectId: string): ExportHost {
+  const endpoint = `/api/projects/${projectId}/exports/image`;
+  return {
+    async maxScale() {
+      const res = await fetch(endpoint);
+      if (!res.ok) return null;
+      return ((await res.json()) as { limits: { maxScale: number } }).limits.maxScale;
+    },
+    async image(input) {
+      const res = await fetch(endpoint, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(input),
+      });
+      if (!res.ok) {
+        const body = (await res.json().catch(() => null)) as {
+          error?: { message?: string };
+        } | null;
+        return { ok: false, message: body?.error?.message ?? "The export failed. Try again." };
+      }
+      return { ok: true, url: ((await res.json()) as { url: string }).url };
     },
   };
 }
@@ -95,6 +121,7 @@ export function ProjectEditor({
   }, [projectId]);
 
   const assets = useMemo(() => assetHost(projectId), [projectId]);
+  const exports = useMemo(() => exportHost(projectId), [projectId]);
   const host = useMemo<EditorHost>(
     () => ({
       projectName,
@@ -114,8 +141,9 @@ export function ProjectEditor({
       undo: () => client.current?.undo(),
       redo: () => client.current?.redo(),
       assets,
+      exports,
     }),
-    [projectName, state, assets],
+    [projectName, state, assets, exports],
   );
 
   return <DesignEditor host={host} backHref="/dashboard" Link={Link} />;

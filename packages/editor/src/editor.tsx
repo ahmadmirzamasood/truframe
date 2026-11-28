@@ -20,11 +20,12 @@ import {
 } from "./components.ts";
 import { ComponentsPanel } from "./components-panel.tsx";
 import { editorCommands } from "./editor-commands.ts";
+import { useGuides } from "./guides.ts";
 import type { EditorHost } from "./host.ts";
 import { createNodes, type InsertTool, insertOps, insertTarget } from "./insert.ts";
 import { InsertToolbar } from "./insert-toolbar.tsx";
 import type { ComponentActions } from "./inspector/component-sections.tsx";
-import { type Guides, Inspector } from "./inspector/inspector.tsx";
+import { Inspector } from "./inspector/inspector.tsx";
 import { LayersPanel, useLocks } from "./layers-panel.tsx";
 import { PagesPanel } from "./pages-panel.tsx";
 import { ComingSoon, LeftPanel, type LeftTab, RightPanel, type RightTab } from "./panels.tsx";
@@ -87,7 +88,7 @@ export function DesignEditor({ host, backHref, Link }: DesignEditorProps) {
   /** Selected layer ids; the last one is the focus (P4-6 adds pointer selection). */
   const [selection, setSelection] = useState<string[]>([]);
   /** Column guides per breakpoint: a design aid, not part of the site. */
-  const [guides, setGuides] = useState<Guides>({});
+  const [guides, setGuides] = useGuides(realDoc?.id);
 
   // Follow the document: keep the active page if it still exists, otherwise show the first.
   const activePageId =
@@ -401,6 +402,7 @@ export function DesignEditor({ host, backHref, Link }: DesignEditorProps) {
                     onGuidesChange={setGuides}
                     components={componentActions}
                     assets={host.assets}
+                    exports={host.exports}
                   />
                 ) : null,
               agent: (

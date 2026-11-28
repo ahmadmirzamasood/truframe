@@ -1,6 +1,7 @@
 import { createDocument, type Node, type ProjectDocument, templateDocument } from "@truframe/model";
 import { applyTransaction, type Op } from "@truframe/ops";
 import { describe, expect, it } from "vitest";
+import { createComponentOps } from "../components.ts";
 import { createNodes, insertOps } from "../insert.ts";
 import { parentMap } from "../tree.ts";
 import {
@@ -236,5 +237,43 @@ describe("focus ring and tap target checks", () => {
       { op: "setNodeFields", nodeId: l, fields: { hidden: { mobile: true } } },
     ]);
     expect(messages(doc, root)).toEqual([]);
+  });
+});
+
+describe("selection colors with component instances", () => {
+  it("counts and replaces colors set as instance overrides, not the component's own", () => {
+    let doc = createDocument({ id: ID, framework: "nextjs" });
+    const root = doc.pages[0]?.root as string;
+    doc = commit(doc, insertOps(createNodes("button", counter("b")), { parentId: root, index: 0 }));
+    const made = createComponentOps(doc, "b1", { component: "c1", instance: "i1" });
+    if (!made.ok) throw new Error(made.message);
+    doc = commit(doc, made.ops);
+    const layer = doc.components.c1?.root as string;
+    doc = commit(doc, [
+      {
+        op: "setInstanceOverride",
+        nodeId: "i1",
+        kind: "nodes",
+        key: layer,
+        value: { style: { mobile: { fill: { type: "solid", color: "#ff0000" } } } },
+      },
+    ]);
+    const colors = new Map(pageColors(doc, root));
+    expect(colors.get("#ff0000")).toBe(1);
+    // The component main's own fill isn't a page color.
+    expect(colors.has("#111827")).toBe(false);
+
+    const ops = replaceColorOps(doc, root, "#ff0000", "#00aa00");
+    expect(ops).toEqual([
+      {
+        op: "setInstanceOverride",
+        nodeId: "i1",
+        kind: "nodes",
+        key: layer,
+        value: { style: { mobile: { fill: { type: "solid", color: "#00aa00" } } } },
+      },
+    ]);
+    doc = commit(doc, ops);
+    expect(new Map(pageColors(doc, root)).get("#00aa00")).toBe(1);
   });
 });
