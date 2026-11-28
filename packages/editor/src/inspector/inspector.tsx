@@ -36,10 +36,12 @@ import {
   TypeIcon,
 } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { addAutoLayoutOps } from "../auto-layout.ts";
 import { checkBreakpointWidth } from "../breakpoints.ts";
 import { deleteOps, duplicateOps, makeAbsoluteOps } from "../gestures.ts";
 import type { AssetHost, ExportHost, FontOption, ImageExportRequest, PickerHost } from "../host.ts";
 import { BREAKPOINT_LABEL } from "../labels.ts";
+import { measureLayer } from "../measure-dom.ts";
 import { IconPicker, SvgPreview } from "../pickers.tsx";
 import { parentMap } from "../tree.ts";
 import { valueAt } from "../variables.ts";
@@ -143,23 +145,9 @@ type Ctx = {
 
 /** Unscaled box of a layer in the editing frame, and of its parent. */
 function measure(bp: BreakpointId, id: string, parentId?: string) {
-  const frame = document.querySelector<HTMLElement>(`[data-frame="${bp}"]`);
-  const el = frame?.querySelector<HTMLElement>(`[data-tf-node="${id}"]`);
-  if (!frame || !el) return null;
-  const scale = frame.getBoundingClientRect().width / (frame.offsetWidth || 1);
-  const r = el.getBoundingClientRect();
-  const rect = {
-    x: r.left / scale,
-    y: r.top / scale,
-    width: r.width / scale,
-    height: r.height / scale,
-  };
-  const p = parentId
-    ? frame.querySelector<HTMLElement>(`[data-tf-node="${parentId}"]`)?.getBoundingClientRect()
-    : null;
-  const parent = p
-    ? { x: p.left / scale, y: p.top / scale, width: p.width / scale, height: p.height / scale }
-    : rect;
+  const rect = measureLayer(bp, id);
+  if (!rect) return null;
+  const parent = (parentId && measureLayer(bp, parentId)) || rect;
   return { rect, parent };
 }
 
@@ -357,6 +345,12 @@ function Layout(props: { ctx: Ctx }) {
         setProp(node.id, bp, "gridColumns", num(get(ctx, "gridColumns")) ?? 2),
       ]);
     else if (d === "stack") {
+      // From Free: infer the stack from where the children are (Add auto layout).
+      const inferred =
+        display === "free"
+          ? addAutoLayoutOps(doc, node.id, bp, (id) => measureLayer(bp, id))
+          : null;
+      if (inferred?.length) return ctx.apply(inferred);
       // Back to auto layout: children leave absolute positioning at this breakpoint.
       const kids = childrenOf(node).filter((c) => {
         const n = doc.nodes[c];

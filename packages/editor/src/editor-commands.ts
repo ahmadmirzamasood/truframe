@@ -11,6 +11,13 @@ import {
   type ProjectDocument,
 } from "@truframe/model";
 import type { Op } from "@truframe/ops";
+import {
+  addAutoLayoutOps,
+  canAddAutoLayout,
+  groupable,
+  groupIntoStackOps,
+  type MeasureBox,
+} from "./auto-layout.ts";
 import type { CanvasApi } from "./canvas.tsx";
 import type { Command } from "./commands.ts";
 import { deleteOps, duplicateOps, isAbsolute, reorderOps } from "./gestures.ts";
@@ -38,6 +45,8 @@ export type CommandContext = {
   openPage: (id: string) => void;
   insert: (tool: InsertTool) => void;
   canvas: { current: CanvasApi | null };
+  /** Rendered boxes at the editing breakpoint (auto-layout inference needs them). */
+  measure?: MeasureBox;
   openPalette: () => void;
   openShortcuts: () => void;
 };
@@ -56,6 +65,12 @@ export function editorCommands(ctx: CommandContext): Command[] {
     const at = childrenOf(doc.nodes[parentId] as Node).indexOf(id) + dir;
     if (at < 0 || at > others.length) return;
     ctx.apply(reorderOps(doc, parents, [id], parentId, at));
+  };
+
+  const groupStack = () => {
+    if (!doc || !ctx.measure || selection.includes(ctx.pageRoot ?? "")) return;
+    const r = groupIntoStackOps(doc, selection, ctx.editing, ctx.measure, newId);
+    if (r && !ctx.apply(r.ops)) ctx.setSelection([r.stackId]);
   };
 
   const commands: Command[] = [
@@ -153,6 +168,34 @@ export function editorCommands(ctx: CommandContext): Command[] {
       shortcuts: ["Alt+ArrowDown"],
       enabled: () => Boolean(single()),
       run: () => move(1),
+    },
+    {
+      id: "add-auto-layout",
+      title: "Add auto layout",
+      group: "Arrange",
+      shortcuts: ["Shift+A"],
+      enabled: () => {
+        const id = single();
+        if (doc && id) return canAddAutoLayout(doc, id, ctx.editing);
+        return Boolean(doc && selection.length > 1 && groupable(doc, parents, selection));
+      },
+      run: () => {
+        const id = single();
+        if (!doc || !ctx.measure) return;
+        if (!id) return groupStack();
+        const ops = addAutoLayoutOps(doc, id, ctx.editing, ctx.measure);
+        if (ops?.length) ctx.apply(ops);
+      },
+    },
+    {
+      id: "group-stack",
+      title: "Group into stack",
+      group: "Arrange",
+      shortcuts: ["Mod+G"],
+      enabled: () =>
+        Boolean(doc && selection.length > 0 && groupable(doc, parents, selection)) &&
+        !selection.includes(ctx.pageRoot ?? ""),
+      run: () => groupStack(),
     },
     {
       id: "toggle-absolute",

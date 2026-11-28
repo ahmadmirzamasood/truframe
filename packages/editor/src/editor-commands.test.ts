@@ -61,6 +61,8 @@ describe("editor commands", () => {
       "insert-icon",
       "move-up",
       "move-down",
+      "add-auto-layout",
+      "group-stack",
       "toggle-absolute",
       "zoom-in",
       "zoom-out",

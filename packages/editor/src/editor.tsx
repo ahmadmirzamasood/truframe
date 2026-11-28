@@ -27,6 +27,7 @@ import { InsertToolbar } from "./insert-toolbar.tsx";
 import type { ComponentActions } from "./inspector/component-sections.tsx";
 import { Inspector } from "./inspector/inspector.tsx";
 import { LayersPanel, useLocks } from "./layers-panel.tsx";
+import { measureLayer } from "./measure-dom.ts";
 import { PagesPanel } from "./pages-panel.tsx";
 import { ComingSoon, LeftPanel, type LeftTab, RightPanel, type RightTab } from "./panels.tsx";
 import { SelectionLayer } from "./selection-layer.tsx";
@@ -159,6 +160,7 @@ export function DesignEditor({ host, backHref, Link }: DesignEditorProps) {
         },
         insert,
         canvas: canvasApi,
+        measure: (id) => measureLayer(activeBreakpoint, id),
         openPalette: () => setPaletteOpen(true),
         openShortcuts: () => setSheetOpen(true),
       }),
