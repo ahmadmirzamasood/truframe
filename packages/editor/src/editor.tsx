@@ -51,6 +51,7 @@ const EMPTY_CLASSES: ReadonlyMap<string, string> = new Map();
 // CodeMirror and its languages load only when Code View opens (editor bundle budget, §12).
 const CodeView = lazy(() => import("@truframe/codeview").then((m) => ({ default: m.CodeView })));
 
+import { play } from "./play.ts";
 import { type EditorView, TopBar } from "./top-bar.tsx";
 import { useCompiled } from "./use-compiled.ts";
 
@@ -138,6 +139,12 @@ export function DesignEditor({ host, backHref, Link }: DesignEditorProps) {
     [doc, selection],
   );
   const output = compiled.status === "loading" ? null : compiled.output;
+  // Stable for the command list; reads the latest document, output and selection.
+  const playLatest = useRef(() => {});
+  playLatest.current = () => {
+    if (doc && output) play(document, doc, liveSelection, output.animations ?? {});
+  };
+  const playAnimation = useCallback(() => playLatest.current(), []);
   // Images on the canvas load from the app (authorized); one URL per asset and width bucket.
   const assetHost = host.assets;
   // Embeds render only in sandboxed frames on the usercontent origin (SECURITY T3); with no
@@ -198,8 +205,9 @@ export function DesignEditor({ host, backHref, Link }: DesignEditorProps) {
         openPalette: () => setPaletteOpen(true),
         openShortcuts: () => setSheetOpen(true),
         openPreview: host.preview ? () => setPreviewing(true) : undefined,
+        playAnimation,
       }),
-    [doc, page, liveSelection, activeBreakpoint, host, insert, apply],
+    [doc, page, liveSelection, activeBreakpoint, host, insert, apply, playAnimation],
   );
   useCommandKeys(commands);
 
@@ -487,6 +495,7 @@ export function DesignEditor({ host, backHref, Link }: DesignEditorProps) {
                       assets={host.assets}
                       exports={host.exports}
                       pickers={host.pickers}
+                      onPlayAnimation={playAnimation}
                     />
                   </CanvasPaint.Provider>
                 ) : null,

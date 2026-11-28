@@ -51,6 +51,8 @@ export type CommandContext = {
   openShortcuts: () => void;
   /** Absent where Preview isn't configured. */
   openPreview?: () => void;
+  /** ▶ Play the selection's animations on the canvas (P6A-4). */
+  playAnimation?: () => void;
 };
 
 export function editorCommands(ctx: CommandContext): Command[] {
@@ -306,6 +308,13 @@ export function editorCommands(ctx: CommandContext): Command[] {
       shortcuts: ["Mod+K"],
       inInputs: true,
       run: ctx.openPalette,
+    },
+    {
+      id: "play-animation",
+      title: "Play animation",
+      group: "View",
+      enabled: () => Boolean(doc && selection.some((id) => doc.nodes[id]?.animation)),
+      run: () => ctx.playAnimation?.(),
     },
     {
       id: "preview",

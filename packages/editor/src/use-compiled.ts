@@ -48,12 +48,15 @@ export function codeClasses(
 }
 
 const TOKENS = { nextjs: "app/tokens.css", astro: "src/styles/tokens.css" } as const;
+const ANIMATIONS = { nextjs: "app/animations.css", astro: "src/styles/animations.css" } as const;
 
 function toCompiled(out: CompileOutput, framework: ProjectDocument["framework"]): Compiled {
   return {
     css: out.css,
     instanceCss: out.instanceCss,
     tokens: out.files[TOKENS[framework]],
+    animations: out.animations,
+    animationsCss: out.files[ANIMATIONS[framework]],
     classes: codeClasses(out.files, out.spans),
     files: out.files,
     spans: out.spans,

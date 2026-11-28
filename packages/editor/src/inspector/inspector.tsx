@@ -1735,6 +1735,8 @@ export type InspectorProps = {
   /** Image export, when the app provides it. */
   exports?: ExportHost;
   pickers?: PickerHost;
+  /** ▶ Play the selection's animation on the canvas. */
+  onPlayAnimation?: () => void;
 };
 
 export function Inspector(props: InspectorProps) {
@@ -1818,7 +1820,12 @@ export function Inspector(props: InspectorProps) {
         />
         <PositionSize ctx={ctx} parentId={parentId} />
         <LayerSection ctx={ctx} />
-        <AnimationSection doc={doc} node={node} apply={props.apply} />
+        <AnimationSection
+          doc={doc}
+          node={node}
+          apply={props.apply}
+          onPlay={props.onPlayAnimation}
+        />
         <Accessibility ctx={ctx} />
       </div>
     );
@@ -1886,7 +1893,7 @@ export function Inspector(props: InspectorProps) {
       ) : null}
       <Shadow ctx={ctx} />
       {container ? <LayerSection ctx={ctx} /> : null}
-      <AnimationSection doc={doc} node={node} apply={props.apply} />
+      <AnimationSection doc={doc} node={node} apply={props.apply} onPlay={props.onPlayAnimation} />
       <Accessibility ctx={ctx} />
       {node.type === "image" ? (
         <Arrange ctx={ctx} onSelectionChange={props.onSelectionChange} />
