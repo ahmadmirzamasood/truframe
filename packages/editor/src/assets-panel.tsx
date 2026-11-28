@@ -39,7 +39,8 @@ import {
   replaceEverywhereOps,
   updateAssetOps,
 } from "./assets.ts";
-import type { AssetHost, AssetUsage } from "./host.ts";
+import type { AssetHost, AssetUsage, PickerHost } from "./host.ts";
+import { PhotoPicker } from "./pickers.tsx";
 
 type Apply = (ops: Op[]) => { message: string } | null;
 type Editing = { kind: "rename" | "alt" | "folder"; asset: Asset } | null;
@@ -47,6 +48,7 @@ type Editing = { kind: "rename" | "alt" | "folder"; asset: Asset } | null;
 export function AssetsPanel(props: {
   doc: ProjectDocument;
   host: AssetHost | undefined;
+  pickers?: PickerHost;
   apply: Apply;
   onInsert: (asset: Asset) => void;
 }) {
@@ -316,6 +318,15 @@ export function AssetsPanel(props: {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+      {props.pickers ? (
+        <PhotoPicker
+          host={props.pickers}
+          onAdded={(asset) => {
+            run([{ op: "upsertAsset", asset: folder ? { ...asset, folder } : asset }]);
+            refreshUsage();
+          }}
+        />
+      ) : null}
     </div>
   );
 }

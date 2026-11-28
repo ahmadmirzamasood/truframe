@@ -25,6 +25,10 @@ The first class on each element (such as `hero-section`) names its layer in the 
 
 Design variables are CSS custom properties in `tokens.css`.
 
+## Photo credits
+
+- logo.svg: photo by [Ada Example](https://unsplash.com/@ada?utm_source=truframe&utm_medium=referral) on [Unsplash](https://unsplash.com/?utm_source=truframe&utm_medium=referral)
+
 ---
 
 Generated with Truframe.

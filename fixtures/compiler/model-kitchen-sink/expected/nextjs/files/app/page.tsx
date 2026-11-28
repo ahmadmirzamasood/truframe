@@ -36,11 +36,21 @@ export default function HomePage() {
           className="arrow absolute -top-1 right-0 bottom-0 left-2.5 z-2 w-6 aspect-square tablet:col-span-2 tablet:row-span-1"
           aria-hidden="true"
         >
-          <img
-            src="https://api.iconify.design/lucide/arrow-right.svg"
-            alt=""
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
             className="block size-full"
-          />
+          >
+            <g
+              fill="none"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+            >
+              <path d="M5 12h14m-7-7l7 7l-7 7" />
+            </g>
+          </svg>
         </span>
         <figure className="map bg-[url(/assets/photo.png)] bg-auto bg-repeat">
           <iframe

@@ -2,7 +2,7 @@
 
 import { type BreakpointId, newId } from "@truframe/model";
 import type { Op } from "@truframe/ops";
-import { RenderedFrame } from "@truframe/renderer";
+import { fontFamilies, RenderedFrame } from "@truframe/renderer";
 import { type ComponentType, type ReactNode, useCallback, useMemo, useRef, useState } from "react";
 import { imageNodeFor } from "./assets.ts";
 import { AssetsPanel } from "./assets-panel.tsx";
@@ -89,6 +89,12 @@ export function DesignEditor({ host, backHref, Link }: DesignEditorProps) {
   const [selection, setSelection] = useState<string[]>([]);
   /** Column guides per breakpoint: a design aid, not part of the site. */
   const [guides, setGuides] = useGuides(realDoc?.id);
+  // Web fonts the design uses, loaded through the app's proxy so the canvas matches the site.
+  const familyKey = realDoc ? fontFamilies(realDoc).sort().join("|") : "";
+  const fontCss = useMemo(
+    () => (familyKey ? (host.pickers?.fontCssUrl(familyKey.split("|")) ?? null) : null),
+    [familyKey, host.pickers],
+  );
 
   // Follow the document: keep the active page if it still exists, otherwise show the first.
   const activePageId =
@@ -288,6 +294,7 @@ export function DesignEditor({ host, backHref, Link }: DesignEditorProps) {
                 <AssetsPanel
                   doc={realDoc}
                   host={host.assets}
+                  pickers={host.pickers}
                   apply={host.apply}
                   onInsert={(asset) => {
                     if (!doc || !page) return;
@@ -305,6 +312,7 @@ export function DesignEditor({ host, backHref, Link }: DesignEditorProps) {
             }}
           />
         </aside>
+        {fontCss ? <link rel="stylesheet" href={fontCss} data-testid="canvas-fonts" /> : null}
         <main aria-label={view === "design" ? "Canvas" : "Code"} className="relative min-h-0">
           {view === "design" ? <InsertToolbar onInsert={insert} disabled={!doc || !page} /> : null}
           {view === "design" && main ? (
@@ -403,6 +411,7 @@ export function DesignEditor({ host, backHref, Link }: DesignEditorProps) {
                     components={componentActions}
                     assets={host.assets}
                     exports={host.exports}
+                    pickers={host.pickers}
                   />
                 ) : null,
               agent: (

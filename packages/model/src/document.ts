@@ -6,7 +6,14 @@
 import { z } from "zod";
 import { breakpointsSchema } from "./breakpoints.ts";
 import { childrenOf, type Node, nodeSchema, propValueSchema } from "./nodes.ts";
-import { colorSchema, hrefSchema, idSchema, lengthSchema, projectIdSchema } from "./primitives.ts";
+import {
+  colorSchema,
+  hrefSchema,
+  httpsUrlSchema,
+  idSchema,
+  lengthSchema,
+  projectIdSchema,
+} from "./primitives.ts";
 import {
   assetRefsInProps,
   type Props,
@@ -143,6 +150,15 @@ export const assetSchema = z.strictObject({
   folder: z.string().max(100).optional(),
   /** Alt text new image layers start with (PRD F14); each layer keeps its own. */
   alt: z.string().max(1000).optional(),
+  /** Who made a stock photo and where it came from (Unsplash attribution, P5-5). */
+  credit: z
+    .strictObject({
+      source: z.enum(["unsplash"]),
+      author: z.string().min(1).max(200),
+      authorUrl: httpsUrlSchema,
+      sourceUrl: httpsUrlSchema,
+    })
+    .optional(),
 });
 export type Asset = z.infer<typeof assetSchema>;
 

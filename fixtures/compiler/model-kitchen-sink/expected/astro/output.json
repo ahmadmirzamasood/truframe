@@ -92,13 +92,13 @@
       "start": 74
     },
     {
-      "end": 2470,
+      "end": 2727,
       "node": "id2",
       "path": "src/pages/index.astro",
       "start": 155
     },
     {
-      "end": 2460,
+      "end": 2717,
       "node": "hero",
       "path": "src/pages/index.astro",
       "start": 206
@@ -140,34 +140,34 @@
       "start": 1446
     },
     {
-      "end": 1878,
+      "end": 2135,
       "node": "icon",
       "path": "src/pages/index.astro",
       "start": 1561
     },
     {
-      "end": 2152,
+      "end": 2409,
       "node": "map",
       "path": "src/pages/index.astro",
-      "start": 1885
+      "start": 2142
     },
     {
-      "end": 2185,
+      "end": 2442,
       "node": "widget",
       "path": "src/pages/index.astro",
-      "start": 2159
+      "start": 2416
     },
     {
-      "end": 2375,
+      "end": 2632,
       "node": "mail",
       "path": "src/pages/index.astro",
-      "start": 2192
+      "start": 2449
     },
     {
-      "end": 2445,
+      "end": 2702,
       "node": "blankPic",
       "path": "src/pages/index.astro",
-      "start": 2382
+      "start": 2639
     }
   ]
 }

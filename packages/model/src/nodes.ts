@@ -85,7 +85,88 @@ const iconPart = z
   .string()
   .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)
   .max(100);
-export const iconNodeSchema = z.strictObject({ ...base("icon"), set: iconPart, icon: iconPart });
+/**
+ * An icon's drawing (P5-5), kept as data rather than markup so it can't carry script: only
+ * these shape tags and presentation attributes, values without `url(` references. The canvas
+ * builds it as elements and the compiler inlines it as `<svg>`.
+ */
+export const SVG_TAGS = [
+  "g",
+  "path",
+  "circle",
+  "ellipse",
+  "rect",
+  "line",
+  "polyline",
+  "polygon",
+] as const;
+export const SVG_ATTRS = [
+  "d",
+  "cx",
+  "cy",
+  "r",
+  "rx",
+  "ry",
+  "x",
+  "y",
+  "x1",
+  "y1",
+  "x2",
+  "y2",
+  "width",
+  "height",
+  "points",
+  "transform",
+  "fill",
+  "fill-rule",
+  "fill-opacity",
+  "clip-rule",
+  "stroke",
+  "stroke-width",
+  "stroke-linecap",
+  "stroke-linejoin",
+  "stroke-miterlimit",
+  "stroke-dasharray",
+  "stroke-dashoffset",
+  "stroke-opacity",
+  "opacity",
+] as const;
+export type SvgElement = {
+  tag: (typeof SVG_TAGS)[number];
+  attrs: Partial<Record<(typeof SVG_ATTRS)[number], string>>;
+  children?: SvgElement[];
+};
+const svgValue = z
+  .string()
+  .max(20_000)
+  .regex(/^[A-Za-z0-9 .,#%+\-()]*$/, "Unsupported characters in an SVG value")
+  .refine((v) => !/url\s*\(/i.test(v), "SVG references aren't supported");
+export const svgElementSchema: z.ZodType<SvgElement> = z.lazy(() =>
+  z.strictObject({
+    tag: z.enum(SVG_TAGS),
+    attrs: z.partialRecord(z.enum(SVG_ATTRS), svgValue),
+    children: z.array(svgElementSchema).max(100).optional(),
+  }),
+);
+const count = (els: SvgElement[], depth: number): number =>
+  depth > 4
+    ? Number.POSITIVE_INFINITY
+    : els.reduce((n, e) => n + 1 + count(e.children ?? [], depth + 1), 0);
+export const iconSvgSchema = z
+  .strictObject({
+    viewBox: z.string().regex(/^-?\d+(?:\.\d+)? -?\d+(?:\.\d+)? \d+(?:\.\d+)? \d+(?:\.\d+)?$/),
+    body: z.array(svgElementSchema).min(1).max(200),
+  })
+  .refine((s) => count(s.body, 0) <= 500, "An icon can have at most 500 shapes, 4 levels deep");
+export type IconSvg = z.infer<typeof iconSvgSchema>;
+
+export const iconNodeSchema = z.strictObject({
+  ...base("icon"),
+  set: iconPart,
+  icon: iconPart,
+  /** Absent on icons from before P5-5: those compile to an Iconify image URL. */
+  svg: iconSvgSchema.optional(),
+});
 
 export const embedNodeSchema = z.strictObject({
   ...base("embed"),

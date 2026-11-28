@@ -2,7 +2,7 @@
  * What the editor needs from the app that hosts it. The app owns the document store
  * (`@truframe/sync` in apps/web); the editor only reads the document and sends ops.
  */
-import type { Asset, ProjectDocument } from "@truframe/model";
+import type { Asset, IconSvg, ProjectDocument } from "@truframe/model";
 import type { Op } from "@truframe/ops";
 
 export type SyncSummary = {
@@ -50,6 +50,31 @@ export type ExportHost = {
   ) => Promise<{ ok: true; url: string } | { ok: false; message: string }>;
 };
 
+type Result<T> = ({ ok: true } & T) | { ok: false; message: string };
+
+/** A web font the Typography picker offers, with the weights the family has. */
+export type FontOption = { family: string; weights: number[] };
+export type IconOption = { set: string; icon: string; svg: IconSvg };
+export type PhotoOption = {
+  id: string;
+  description: string;
+  thumbUrl: string;
+  author: string;
+  authorUrl: string;
+  sourceUrl: string;
+};
+
+/** Fonts, icons and stock photos (P5-5), all through the app's server proxies. */
+export type PickerHost = {
+  fonts: FontOption[];
+  /** The stylesheet that loads these families on the canvas, or null for none. */
+  fontCssUrl: (families: string[]) => string | null;
+  icons: (query: string) => Promise<Result<{ icons: IconOption[] }>>;
+  photos: (query: string) => Promise<Result<{ sample: boolean; photos: PhotoOption[] }>>;
+  /** Copies a photo into the project's assets; the asset comes back for `upsertAsset`. */
+  importPhoto: (photoId: string) => Promise<Result<{ asset: Asset }>>;
+};
+
 export type EditorHost = {
   projectName: string;
   doc: ProjectDocument | null;
@@ -62,4 +87,6 @@ export type EditorHost = {
   assets?: AssetHost;
   /** Absent where image export isn't available. */
   exports?: ExportHost;
+  /** Absent where the pickers aren't available (tests, previews). */
+  pickers?: PickerHost;
 };

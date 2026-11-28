@@ -13,6 +13,7 @@ import type {
   LinkNode,
   Node,
   ProjectDocument,
+  SvgElement,
   TextSpan,
 } from "@truframe/model";
 
@@ -33,6 +34,14 @@ const el = (tag: string, attrs: RElement["attrs"] = {}, children: RChild[] = [])
   attrs,
   children,
 });
+
+/** An icon shape; React spells SVG attributes in camelCase (`strokeWidth`). */
+function svgElement(e: SvgElement): RElement {
+  const attrs: RElement["attrs"] = {};
+  for (const [k, v] of Object.entries(e.attrs))
+    if (v !== undefined) attrs[k.replace(/-([a-z])/g, (_, c: string) => c.toUpperCase())] = v;
+  return el(e.tag, attrs, (e.children ?? []).map(svgElement));
+}
 
 /** Fixed classes the compiler puts on inner elements, as inline styles. */
 const FILL = "display:block;width:100%;height:100%";
@@ -109,6 +118,14 @@ class Builder {
       case "image":
         return this.image(n, mark, overlay);
       case "icon":
+        if (n.svg)
+          return el(n.tag, { ...mark, "aria-hidden": "true" }, [
+            el(
+              "svg",
+              { xmlns: "http://www.w3.org/2000/svg", viewBox: n.svg.viewBox, style: FILL },
+              n.svg.body.map(svgElement),
+            ),
+          ]);
         return el(n.tag, { ...mark, "aria-hidden": "true" }, [
           el("img", {
             src: `https://api.iconify.design/${n.set}/${n.icon}.svg`,

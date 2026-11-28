@@ -31,18 +31,22 @@ import { chromium, type Page } from "@playwright/test";
 import pixelmatch from "pixelmatch";
 import { PNG } from "pngjs";
 import { renderToStaticMarkup } from "react-dom/server";
+import { googleCssUrl } from "../packages/integrations/src/fonts/index.ts";
 import {
   activeBreakpoints,
   type ProjectDocument,
   parseDocument,
 } from "../packages/model/src/index.ts";
+import { fontFamilies } from "../packages/renderer/src/css.ts";
 import { renderFrame } from "../packages/renderer/src/react.ts";
 
 /**
- * Fixtures compared in CI. Left out, with the reason: web fonts (the canvas loads them from
- * Google Fonts, the site self-hosts them: fonts, typography, variables, model-*), and remote
- * content that renders differently between two loads (embed-and-icons). Components joined in
- * P5-3, when instances got their own canvas CSS (`instanceCss`).
+ * Fixtures compared in CI. Left out, with the reason: model-* (kitchen-sink documents with
+ * remote icons and placeholder files) and remote content that renders differently between two
+ * loads (embed-and-icons). Components joined in P5-3, when instances got their own canvas CSS
+ * (`instanceCss`); typography in P5-5, when the canvas started loading Google Fonts. Still out:
+ * fonts and variables (Inter, Playfair Display): 0.000% on Windows, but on Linux CI the
+ * canvas's css2 files and next/font's self-hosted files lay out 1.6–4.9% differently.
  */
 export const PARITY_FIXTURES = [
   "absolute-position",
@@ -68,6 +72,7 @@ export const PARITY_FIXTURES = [
   "template-landing",
   "template-portfolio",
   "template-saas",
+  "typography",
 ];
 
 const repo = join(import.meta.dirname, "..");
@@ -184,7 +189,10 @@ function canvasHtml(c: Case, pageId: string, breakpoint: string) {
       },
     }) as Parameters<typeof renderToStaticMarkup>[0],
   );
-  return `<!doctype html><html lang="${c.doc.settings.lang}"><head><meta charset="utf-8"></head><body style="margin:0;background:#fff">${markup}</body></html>`;
+  // The editor loads web fonts through the app's Google Fonts proxy; here, from Google itself.
+  const fonts = googleCssUrl(fontFamilies(c.doc));
+  const link = fonts ? `<link rel="stylesheet" href="${fonts.replaceAll("&", "&amp;")}">` : "";
+  return `<!doctype html><html lang="${c.doc.settings.lang}"><head><meta charset="utf-8">${link}</head><body style="margin:0;background:#fff">${markup}</body></html>`;
 }
 
 async function run(cases: Case[]) {

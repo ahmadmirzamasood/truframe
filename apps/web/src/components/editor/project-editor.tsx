@@ -4,7 +4,14 @@
  * Connects the Design View (`@truframe/editor`) to the synced document store (P2-6): room
  * connection, offline cache and undo/redo live here; the editor only reads and sends ops.
  */
-import { type AssetHost, DesignEditor, type EditorHost, type ExportHost } from "@truframe/editor";
+import {
+  type AssetHost,
+  DesignEditor,
+  type EditorHost,
+  type ExportHost,
+  type PickerHost,
+} from "@truframe/editor";
+import { catalogFont, GOOGLE_FONTS } from "@truframe/integrations";
 import type { DocClient, DocState } from "@truframe/sync";
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -77,6 +84,38 @@ function exportHost(projectId: string): ExportHost {
   };
 }
 
+async function call<T>(url: string, init?: RequestInit) {
+  const res = await fetch(url, init);
+  if (!res.ok) {
+    const body = (await res.json().catch(() => null)) as { error?: { message?: string } } | null;
+    return {
+      ok: false as const,
+      message: body?.error?.message ?? "Something went wrong. Try again.",
+    };
+  }
+  return { ok: true as const, ...((await res.json()) as T) };
+}
+
+/** Fonts, icons and photos through the app's proxies (P5-5). */
+function pickerHost(projectId: string): PickerHost {
+  return {
+    fonts: GOOGLE_FONTS.map((f) => ({ family: f.family, weights: f.weights })),
+    fontCssUrl(families) {
+      const known = families.filter((f) => catalogFont(f)).sort();
+      if (!known.length) return null;
+      return `/api/fonts/css?${known.map((f) => `family=${encodeURIComponent(f)}`).join("&")}`;
+    },
+    icons: (q) => call(`/api/icons?q=${encodeURIComponent(q)}`),
+    photos: (q) => call(`/api/photos?q=${encodeURIComponent(q)}`),
+    importPhoto: (photoId) =>
+      call(`/api/projects/${projectId}/photos`, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ photoId }),
+      }),
+  };
+}
+
 export function ProjectEditor({
   projectId,
   projectName,
@@ -122,6 +161,7 @@ export function ProjectEditor({
 
   const assets = useMemo(() => assetHost(projectId), [projectId]);
   const exports = useMemo(() => exportHost(projectId), [projectId]);
+  const pickers = useMemo(() => pickerHost(projectId), [projectId]);
   const host = useMemo<EditorHost>(
     () => ({
       projectName,
@@ -142,8 +182,9 @@ export function ProjectEditor({
       redo: () => client.current?.redo(),
       assets,
       exports,
+      pickers,
     }),
-    [projectName, state, assets, exports],
+    [projectName, state, assets, exports, pickers],
   );
 
   return <DesignEditor host={host} backHref="/dashboard" Link={Link} />;

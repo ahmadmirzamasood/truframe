@@ -53,6 +53,7 @@ export const API_ERROR_CODES = [
   "UPLOAD_REJECTED",
   "UPLOAD_EXPIRED",
   "EXPORT_UNAVAILABLE",
+  "INTEGRATION_UNAVAILABLE",
   "INTERNAL",
 ] as const;
 export type ApiErrorCode = (typeof API_ERROR_CODES)[number];
