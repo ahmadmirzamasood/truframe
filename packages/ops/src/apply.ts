@@ -271,6 +271,35 @@ function applyOp(doc: ProjectDocument, op: Op): Op[] {
       delete doc.variables[op.variableId];
       return [{ op: "upsertVariable", variable: before }];
     }
+    case "addComponent": {
+      if (doc.components[op.component.id])
+        fail("INVALID_OP", `Component "${op.component.id}" already exists`);
+      if (op.component.root !== (op.nodes[0] as Node).id)
+        fail("INVALID_OP", "nodes[0] must be the component root");
+      addSubtree(doc, op.nodes);
+      doc.components[op.component.id] = structuredClone(op.component);
+      return [{ op: "deleteComponent", componentId: op.component.id }];
+    }
+    case "updateComponent": {
+      const c = doc.components[op.componentId] as Record<string, unknown> | undefined;
+      if (!c) return fail("NOT_FOUND", `No component "${op.componentId}"`);
+      const undo: Record<string, unknown> = {};
+      for (const [key, value] of Object.entries(op.fields)) {
+        if (value === undefined) continue;
+        undo[key] = c[key];
+        c[key] = structuredClone(value);
+      }
+      return Object.keys(undo).length
+        ? [{ op: "updateComponent", componentId: op.componentId, fields: undo as never }]
+        : [];
+    }
+    case "deleteComponent": {
+      const c = doc.components[op.componentId];
+      if (!c) return fail("NOT_FOUND", `No component "${op.componentId}"`);
+      delete doc.components[op.componentId];
+      const nodes = removeSubtree(doc, c.root);
+      return [{ op: "addComponent", component: c, nodes }];
+    }
     case "setSettings": {
       const before = doc.settings;
       doc.settings = structuredClone(op.settings);

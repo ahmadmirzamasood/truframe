@@ -42,6 +42,13 @@ import { BREAKPOINT_LABEL } from "../labels.ts";
 import { parentMap } from "../tree.ts";
 import { valueAt } from "../variables.ts";
 import {
+  type ComponentActions,
+  CreateComponent,
+  ExposeSection,
+  InstanceSections,
+  MainComponentSections,
+} from "./component-sections.tsx";
+import {
   type BindOption,
   ColorField,
   NumberField,
@@ -224,28 +231,17 @@ function spacingBind(ctx: Ctx, onBind: (id: string) => void) {
 
 const same = (a: unknown, b: unknown) => JSON.stringify(a) === JSON.stringify(b);
 
+/** Whether `id` is `ancestor` or inside it. */
+function within(parents: Map<string, string>, id: string, ancestor: string): boolean {
+  for (let at: string | undefined = id; at; at = parents.get(at)) if (at === ancestor) return true;
+  return false;
+}
+
 function num(v: unknown): number | undefined {
   return typeof v === "number" ? v : undefined;
 }
 
 // ——— Sections ———
-
-function CreateComponent() {
-  return (
-    <div className="border-b px-3 py-2">
-      <Button
-        variant="outline"
-        size="sm"
-        className="h-7 w-full"
-        disabled
-        title="Components arrive with the Components panel"
-      >
-        <ComponentIcon />
-        Create component
-      </Button>
-    </div>
-  );
-}
 
 function PositionSize(props: { ctx: Ctx; parentId?: string; text?: boolean }) {
   const { ctx } = props;
@@ -1507,6 +1503,7 @@ export type InspectorProps = {
   apply: (ops: Op[]) => void;
   guides: Guides;
   onGuidesChange: (g: Guides) => void;
+  components?: ComponentActions;
 };
 
 export function Inspector(props: InspectorProps) {
@@ -1534,6 +1531,25 @@ export function Inspector(props: InspectorProps) {
     );
   }
   const node = selection[0] ? doc.nodes[selection[0]] : undefined;
+  const editing = props.components?.editing;
+  // The main component comes from the editor: the view document leaves it out of `components`.
+  const main = editing?.component;
+  if (main && (!node || node.id === props.page.root)) {
+    return (
+      <div className="grid">
+        <Header icon={ComponentIcon} name={main.name} type="Main component" bp={bp} />
+        <MainComponentSections
+          doc={props.components?.doc ?? doc}
+          c={main}
+          variantKey={editing.variantKey}
+          apply={props.apply}
+          onVariantKey={(k) => props.components?.setVariantKey(k)}
+          onDone={() => props.components?.done()}
+          onSelect={(id) => props.onSelectionChange([id])}
+        />
+      </div>
+    );
+  }
   if (!node || node.id === props.page.root) {
     return (
       <div className="grid">
@@ -1545,6 +1561,31 @@ export function Inspector(props: InspectorProps) {
   const ctx: Ctx = { doc, node, bp, apply: props.apply };
   const parentId = parents.get(node.id);
   const container = node.type === "frame" || node.type === "link";
+  if (node.type === "instance") {
+    const c = doc.components[node.componentId];
+    return (
+      <div className="grid" key={node.id}>
+        <Header
+          icon={ComponentIcon}
+          name={node.name || c?.name || "Instance"}
+          type={`Instance of ${c?.name ?? "a missing component"}`}
+          bp={bp}
+        />
+        <InstanceSections
+          doc={props.components?.doc ?? doc}
+          inst={node}
+          apply={props.apply}
+          actions={props.components}
+          onSelectionChange={props.onSelectionChange}
+        />
+        <PositionSize ctx={ctx} parentId={parentId} />
+        <LayerSection ctx={ctx} />
+        <Accessibility ctx={ctx} />
+      </div>
+    );
+  }
+  const inMain = main && within(parents, node.id, main.root) ? main : undefined;
+  const create = props.components?.create;
   return (
     <div className="grid" key={node.id}>
       <Header
@@ -1559,7 +1600,19 @@ export function Inspector(props: InspectorProps) {
         }
         bp={bp}
       />
-      {node.type === "frame" || node.type === "text" ? <CreateComponent /> : null}
+      {node.type === "frame" || node.type === "text" || node.type === "link" ? (
+        <CreateComponent
+          onCreate={create && node.id !== main?.root ? () => create(node.id) : undefined}
+        />
+      ) : null}
+      {inMain ? (
+        <ExposeSection
+          doc={props.components?.doc ?? doc}
+          c={inMain}
+          node={node}
+          apply={props.apply}
+        />
+      ) : null}
       {node.type === "text" ? <TextContent ctx={ctx} /> : null}
       {node.type === "frame" ? <StyleSection ctx={ctx} /> : null}
       {node.type === "image" ? <ImageSection ctx={ctx} /> : null}

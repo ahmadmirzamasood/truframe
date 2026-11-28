@@ -100,7 +100,11 @@ export const frameScope = (breakpoint: BreakpointId) => `[data-tf-frame="${break
  */
 export function frameStylesheet(
   doc: ProjectDocument,
-  output: { css: Record<string, NodeCss>; tokens?: string },
+  output: {
+    css: Record<string, NodeCss>;
+    instanceCss?: Record<string, Record<string, NodeCss>>;
+    tokens?: string;
+  },
   breakpoint: BreakpointId,
 ): string {
   const { css } = output;
@@ -123,6 +127,20 @@ export function frameStylesheet(
       if (!d) continue;
       // Component layers first so an instance's own (outer) declarations follow them.
       if (componentNodes.has(id)) out.push(`${scope} [data-tf-c="${id}"]{${d}}`);
+    }
+    // An instance's own variant and overrides: its component layers, scoped under it.
+    for (const [inst, layers] of Object.entries(output.instanceCss ?? {})) {
+      const root = doc.nodes[inst]?.type === "instance" ? doc.nodes[inst] : undefined;
+      const rootId = root?.type === "instance" ? doc.components[root.componentId]?.root : undefined;
+      for (const [id, decls] of Object.entries(layers)) {
+        const d = decls[bp];
+        if (!d) continue;
+        const sel =
+          id === rootId
+            ? `${scope} [data-tf-node="${inst}"][data-tf-c="${id}"]`
+            : `${scope} [data-tf-node="${inst}"] [data-tf-c="${id}"]`;
+        out.push(`${sel}{${d}}`);
+      }
     }
     for (const [id, decls] of Object.entries(css)) {
       const d = decls[bp];

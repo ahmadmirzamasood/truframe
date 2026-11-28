@@ -26,6 +26,32 @@
       "desktop": "display: flex; align-items: center; gap: 12px;"
     }
   },
+  "instanceCss": {
+    "n4": {
+      "n1": {
+        "desktop": "font-size: 0.875rem; line-height: calc(1.25 / 0.875); font-weight: 600;"
+      },
+      "n2": {
+        "desktop": "align-items: center; padding-inline: 12px; padding-block: 6px; color: #ffffff; background-color: #18181b; border-radius: 6px;"
+      }
+    },
+    "n5": {
+      "n1": {
+        "desktop": "font-size: 1.125rem; line-height: calc(1.75 / 1.125); font-weight: 600;"
+      },
+      "n2": {
+        "desktop": "align-items: center; padding-inline: 24px; padding-block: 14px; color: #ffffff; background-color: #18181b; border-radius: 8px;"
+      }
+    },
+    "n6": {
+      "n1": {
+        "desktop": "font-weight: 600;"
+      },
+      "n2": {
+        "desktop": "align-items: center; padding-inline: 16px; padding-block: 10px; color: #18181b; background-color: #ffffff; border-width: 1px; border-color: #e4e4e7; border-radius: 8px;"
+      }
+    }
+  },
   "spans": [
     {
       "end": 1141,

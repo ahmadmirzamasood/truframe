@@ -23,6 +23,11 @@ export type CompileOutput = {
   spans: Span[];
   /** Node id → canvas CSS. */
   css: Record<string, NodeCss>;
+  /**
+   * Instance id → component layer id → canvas CSS, for instances with a non-default variant
+   * or layer overrides. Absent when there are none.
+   */
+  instanceCss?: Record<string, Record<string, NodeCss>>;
   assets: AssetFile[];
 };
 

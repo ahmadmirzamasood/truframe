@@ -69,11 +69,14 @@ fn read_tree(dir: &Path, base: &Path, out: &mut BTreeMap<String, String>) {
 }
 
 fn meta(output: &Output) -> String {
-    let v = serde_json::json!({
+    let mut v = serde_json::json!({
         "spans": output.spans,
         "css": output.css,
         "assets": output.assets,
     });
+    if !output.instance_css.is_empty() {
+        v["instanceCss"] = serde_json::json!(output.instance_css);
+    }
     serde_json::to_string_pretty(&v).unwrap_or_default() + "\n"
 }
 

@@ -7,7 +7,7 @@ use crate::model::Project;
 use crate::{Framework, compile_for};
 
 /// Compiles a document (JSON text) and returns the output as JSON text:
-/// `{ files, spans, css, assets }`. `framework` overrides the document's framework when given.
+/// `{ files, spans, css, instanceCss?, assets }`. `framework` overrides the document's framework when given.
 #[wasm_bindgen(js_name = compile)]
 pub fn compile_js(document_json: &str, framework: Option<String>) -> Result<String, JsError> {
     let project = Project::from_json(document_json).map_err(|e| JsError::new(&e.to_string()))?;
