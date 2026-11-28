@@ -28,3 +28,7 @@ TRUFRAME_REALTIME_URL=ws://127.0.0.1:8787
 TRUFRAME_INTEGRATIONS_MOCK=1
 # Unsplash Access Key (server only). Empty: generated sample photos.
 UNSPLASH_ACCESS_KEY=
+
+# --- Preview (P5-7). The usercontent origin (workers/sites, port 8791). Must be another host
+# than the app: cookies are scoped by host, not port, so 127.0.0.1 rather than localhost.
+TRUFRAME_USERCONTENT_URL=http://127.0.0.1:8791

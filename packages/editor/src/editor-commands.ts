@@ -49,6 +49,8 @@ export type CommandContext = {
   measure?: MeasureBox;
   openPalette: () => void;
   openShortcuts: () => void;
+  /** Absent where Preview isn't configured. */
+  openPreview?: () => void;
 };
 
 export function editorCommands(ctx: CommandContext): Command[] {
@@ -289,6 +291,13 @@ export function editorCommands(ctx: CommandContext): Command[] {
       shortcuts: ["Mod+K"],
       inInputs: true,
       run: ctx.openPalette,
+    },
+    {
+      id: "preview",
+      title: "Preview",
+      group: "View",
+      enabled: () => Boolean(doc && ctx.openPreview),
+      run: () => ctx.openPreview?.(),
     },
     {
       id: "shortcuts",

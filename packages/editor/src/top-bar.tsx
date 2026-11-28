@@ -76,6 +76,8 @@ export function TopBar(props: {
   backHref: string;
   BackLink: React.ComponentType<{ href: string; className?: string; children: React.ReactNode }>;
   onOpenCommands: () => void;
+  /** Absent where Preview isn't configured. */
+  onPreview?: () => void;
 }) {
   const { host, doc, BackLink } = props;
   const page = doc?.pages.find((p) => p.id === props.pageId);
@@ -200,7 +202,14 @@ export function TopBar(props: {
         >
           <Redo2Icon />
         </Button>
-        <Button size="sm" variant="outline" className="ml-1 h-7" disabled title="Coming soon">
+        <Button
+          size="sm"
+          variant="outline"
+          className="ml-1 h-7"
+          disabled={!props.onPreview || !doc}
+          title={props.onPreview ? "Preview" : "Preview isn't configured on this server"}
+          onClick={props.onPreview}
+        >
           <PlayIcon aria-hidden />
           Preview
         </Button>

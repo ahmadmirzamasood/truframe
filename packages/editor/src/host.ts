@@ -89,4 +89,12 @@ export type EditorHost = {
   exports?: ExportHost;
   /** Absent where the pickers aren't available (tests, previews). */
   pickers?: PickerHost;
+  /** Absent where Preview isn't configured (no usercontent origin). */
+  preview?: PreviewHost;
+};
+
+/** Preview renders in a sandboxed iframe on the usercontent origin (P5-7). */
+export type PreviewHost = {
+  /** The usercontent origin, e.g. `https://usercontent.truframe.site`. */
+  origin: string;
 };

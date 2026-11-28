@@ -77,6 +77,7 @@ describe("editor commands", () => {
       "panel-layers",
       "panel-inspect",
       "add-page",
+      "preview",
       "palette",
       "shortcuts",
     ])

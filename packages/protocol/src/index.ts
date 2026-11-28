@@ -2,6 +2,7 @@
 
 export * from "./exports.ts";
 export * from "./pickers.ts";
+export * from "./preview.ts";
 export * from "./projects.ts";
 export * from "./room.ts";
 export * from "./uploads.ts";
