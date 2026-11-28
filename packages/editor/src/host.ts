@@ -91,7 +91,14 @@ export type EditorHost = {
   pickers?: PickerHost;
   /** Absent where Preview isn't configured (no usercontent origin). */
   preview?: PreviewHost;
+  /**
+   * What the plan allows with generated code (BILLING §2). Copy rules are a soft deterrent
+   * in Code View; export and push are enforced server-side when they exist (P9).
+   */
+  code?: CodeAccess;
 };
+
+export type CodeAccess = { copy: boolean; export: boolean; githubPush: boolean };
 
 /** Preview renders in a sandboxed iframe on the usercontent origin (P5-7). */
 export type PreviewHost = {

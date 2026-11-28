@@ -117,6 +117,17 @@ export const PLANS: Readonly<Record<PlanId, Plan>> = {
 };
 
 export type LimitKey = keyof PlanLimits;
+export type FeatureKey = keyof PlanFeatures;
+
+export function featureFor(plan: PlanId, key: FeatureKey): boolean {
+  return PLANS[plan].features[key];
+}
+
+/** What a plan allows with generated code in Code View (P6-4). */
+export function codeAccess(plan: PlanId): { copy: boolean; export: boolean; githubPush: boolean } {
+  const f = PLANS[plan].features;
+  return { copy: f.codeCopy, export: f.codeExport, githubPush: f.githubPush };
+}
 
 export function limitFor(plan: PlanId, key: LimitKey): number {
   return PLANS[plan].limits[key];

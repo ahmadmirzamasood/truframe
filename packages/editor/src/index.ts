@@ -3,6 +3,7 @@ export { DesignEditor, type DesignEditorProps } from "./editor.tsx";
 export type {
   AssetHost,
   AssetUsage,
+  CodeAccess,
   EditorHost,
   ExportHost,
   FontOption,

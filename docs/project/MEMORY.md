@@ -177,6 +177,8 @@
 
 - 2026-11-28: CodeMirror draws a multi-line mark decoration as one span per line, so e2e must join `.cm-tf-revealed` texts (`allTextContents`) instead of `toHaveText` on the locator. Layers rows' accessible names include the code class (`Button .button`), so match them with a regex.
 
+- 2026-11-28: Plan features reach the editor as props from the server page (`codeAccess(planForWorkspace(workspace))` → `EditorHost.code`), like the image export limit. Every workspace is Free until P10, so Pro-only UI paths can't be e2e-tested yet; their rules are unit-tested in `packages/billing`.
+
 ## Dependencies added (name, license, why)
 - turbo 2.11.13 (MIT): task runner. typescript 5.9.3 (Apache-2.0). wrangler 4.166.0 (MIT OR Apache-2.0): Workers dev/deploy. [P0-1]
 - @biomejs/biome 2.6.8 (MIT OR Apache-2.0), vitest 5.1.1 (MIT), @playwright/test 1.65.1 (Apache-2.0), @types/node 22.20.5 (MIT). cargo-deny (MIT OR Apache-2.0) is a dev tool installed with `cargo install cargo-deny --locked`. [P0-2]

@@ -6,6 +6,7 @@
  */
 import {
   type AssetHost,
+  type CodeAccess,
   DesignEditor,
   type EditorHost,
   type ExportHost,
@@ -120,9 +121,12 @@ export function ProjectEditor({
   projectId,
   projectName,
   previewOrigin,
+  codeAccess,
 }: {
   projectId: string;
   projectName: string;
+  /** What the workspace's plan allows with generated code (Code View copy, export, push). */
+  codeAccess: CodeAccess;
   /** The usercontent origin for Preview, or null where it isn't configured. */
   previewOrigin: string | null;
 }) {
@@ -201,8 +205,9 @@ export function ProjectEditor({
       exports,
       pickers,
       preview,
+      code: codeAccess,
     }),
-    [projectName, state, assets, exports, pickers, preview],
+    [projectName, state, assets, exports, pickers, preview, codeAccess],
   );
 
   return <DesignEditor host={host} backHref="/dashboard" Link={Link} />;

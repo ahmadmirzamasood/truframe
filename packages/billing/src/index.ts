@@ -1,6 +1,9 @@
 /** Plans, limits, usage counters. Payments (Polar) arrive in P10. */
 export {
   assertWithinLimit,
+  codeAccess,
+  type FeatureKey,
+  featureFor,
   LimitError,
   type LimitKey,
   limitFor,
