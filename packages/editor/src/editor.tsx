@@ -452,6 +452,7 @@ export function DesignEditor({ host, backHref, Link }: DesignEditorProps) {
                 spans={projectOutput?.spans}
                 selectedNode={liveSelection.at(-1) ?? null}
                 onPickNode={pickNode}
+                access={host.code}
               />
             </Suspense>
           )}

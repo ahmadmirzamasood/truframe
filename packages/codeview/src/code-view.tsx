@@ -34,6 +34,8 @@ import {
   type TreeEntry,
 } from "./files.ts";
 
+import { type CodeAccess, EditCodeCallToAction, ReadOnlyBadge } from "./read-only.tsx";
+
 const NO_SPANS: readonly Span[] = [];
 
 export type CodeViewProps = {
@@ -50,6 +52,8 @@ export type CodeViewProps = {
   selectedNode?: string | null;
   /** A click in the code picked this layer (null: outside any layer). */
   onPickNode?: (id: string | null) => void;
+  /** What the plan allows with the code; without it, copy is allowed and no call to action. */
+  access?: CodeAccess;
 };
 
 type Row = { entry: TreeEntry; depth: number };
@@ -71,7 +75,9 @@ export function CodeView({
   spans = NO_SPANS,
   selectedNode = null,
   onPickNode,
+  access,
 }: CodeViewProps) {
+  const [copyNotice, setCopyNotice] = useState(false);
   const paths = useMemo(() => Object.keys(files), [files]);
   const tree = useMemo(() => buildFileTree(paths), [paths]);
   const [chosen, setChosen] = useState<string | null>(null);
@@ -187,8 +193,27 @@ export function CodeView({
           <p className="min-w-0 truncate font-mono text-xs" data-testid="code-path">
             {openPath ?? "No files"}
           </p>
-          <div className="ml-auto flex shrink-0 items-center gap-2">{header}</div>
+          <div className="ml-auto flex shrink-0 items-center gap-2">
+            {header}
+            <ReadOnlyBadge />
+            {access ? <EditCodeCallToAction access={access} /> : null}
+          </div>
         </div>
+        {copyNotice ? (
+          <p
+            role="status"
+            className="flex items-center gap-2 border-b bg-amber-50 px-3 py-1.5 text-xs text-amber-900"
+          >
+            Copying code is part of Pro. On Free you can view all of it here.
+            <button
+              type="button"
+              className="ml-auto underline"
+              onClick={() => setCopyNotice(false)}
+            >
+              Dismiss
+            </button>
+          </p>
+        ) : null}
         {error ? (
           <p
             role="alert"
@@ -204,6 +229,8 @@ export function CodeView({
               text={files[openPath] ?? ""}
               reveal={reveal}
               onPick={pick}
+              copyAllowed={access?.copy ?? true}
+              onCopyBlocked={() => setCopyNotice(true)}
             />
           ) : (
             <p className="grid h-full place-items-center text-sm text-muted-foreground">

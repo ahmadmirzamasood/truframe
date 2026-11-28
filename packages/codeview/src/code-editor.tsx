@@ -43,7 +43,21 @@ export type CodeEditorProps = {
   reveal?: Reveal | null;
   /** Called when the user clicks in the code (reveal in design). */
   onPick?: (offset: number) => void;
+  /** False on plans without code copy (BILLING §2): copy, cut and drag do nothing. */
+  copyAllowed?: boolean;
+  /** Told when a copy was refused, so the view can say why. */
+  onCopyBlocked?: () => void;
 };
+
+/** Copy, cut and dragging text out are refused; a soft deterrent, not a protection. */
+function blockCopy(onBlocked: { current: (() => void) | undefined }): Extension {
+  const refuse = (e: Event) => {
+    e.preventDefault();
+    onBlocked.current?.();
+    return true;
+  };
+  return EditorView.domEventHandlers({ copy: refuse, cut: refuse, dragstart: refuse });
+}
 
 const setRevealed = StateEffect.define<{ from: number; to: number } | null>();
 const revealed = StateField.define<DecorationSet>({
@@ -120,10 +134,22 @@ function baseExtensions(path: string, onPick: { current: CodeEditorProps["onPick
   ];
 }
 
-export function CodeEditor({ path, text, reveal, onPick }: CodeEditorProps) {
+export function CodeEditor({
+  path,
+  text,
+  reveal,
+  onPick,
+  copyAllowed = true,
+  onCopyBlocked,
+}: CodeEditorProps) {
   const host = useRef<HTMLDivElement>(null);
   const view = useRef<EditorView | null>(null);
   const language = useRef(new Compartment());
+  const copyGuard = useRef(new Compartment());
+  const blocked = useRef(onCopyBlocked);
+  blocked.current = onCopyBlocked;
+  const copyRef = useRef(copyAllowed);
+  copyRef.current = copyAllowed;
   const pick = useRef(onPick);
   pick.current = onPick;
   const shownPath = useRef<string | null>(null);
@@ -152,6 +178,7 @@ export function CodeEditor({ path, text, reveal, onPick }: CodeEditorProps) {
           extensions: [
             ...baseExtensions(path, pick),
             language.current.of(languageExtension(languageFor(path))),
+            copyGuard.current.of(copyRef.current ? [] : blockCopy(blocked)),
           ],
         }),
       );
@@ -174,6 +201,12 @@ export function CodeEditor({ path, text, reveal, onPick }: CodeEditorProps) {
     }
     v.dispatch({ changes: { from: start, to: endOld, insert: text.slice(start, endNew) } });
   }, [path, text]);
+
+  useEffect(() => {
+    view.current?.dispatch({
+      effects: copyGuard.current.reconfigure(copyAllowed ? [] : blockCopy(blocked)),
+    });
+  }, [copyAllowed]);
 
   useEffect(() => {
     const v = view.current;

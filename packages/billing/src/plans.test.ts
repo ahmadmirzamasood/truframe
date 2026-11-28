@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
 import {
   assertWithinLimit,
+  codeAccess,
+  featureFor,
   LimitError,
   limitFor,
   PLANS,
@@ -62,5 +64,13 @@ describe("planForWorkspace and usagePeriod", () => {
   it("uses UTC months", () => {
     expect(usagePeriod(new Date("2026-11-30T23:59:59Z"))).toBe("2026-11");
     expect(usagePeriod(new Date("2026-12-01T00:00:00Z"))).toBe("2026-12");
+  });
+});
+
+describe("code access (P6-4)", () => {
+  it("lets Pro copy, export and push generated code, and Free only view it", () => {
+    expect(codeAccess("free")).toEqual({ copy: false, export: false, githubPush: false });
+    expect(codeAccess("pro")).toEqual({ copy: true, export: true, githubPush: true });
+    expect(featureFor("free", "codeCopy")).toBe(false);
   });
 });
