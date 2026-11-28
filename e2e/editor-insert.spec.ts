@@ -40,10 +40,8 @@ test("insert tools add Stack, Grid, Text, Image, Button and Icon layers", async 
   await expect(button).toHaveCSS("background-color", "rgb(17, 24, 39)");
   // The button is selected and can hold an icon (a link can't hold another button).
   await tool(page, "Icon").click();
-  await expect(button.locator(':scope > span[aria-hidden="true"] img')).toHaveAttribute(
-    "src",
-    /lucide\/star\.svg/,
-  );
+  // New icons start with a drawing, inlined as <svg> (P5-5).
+  await expect(button.locator(':scope > span[aria-hidden="true"] > svg path')).toHaveCount(1);
   await expect(grid.locator(":scope > *")).toHaveCount(3);
 
   // Every frame shows the new layers, and each insert was one undo step.
