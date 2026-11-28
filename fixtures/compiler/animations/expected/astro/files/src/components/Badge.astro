@@ -1,0 +1,15 @@
+---
+interface Props {
+  class: string;
+}
+
+const props = Astro.props;
+---
+
+<div class={`badge px-2 py-1 rounded-[999px] ${props.class}`}>
+  <span
+    class="badge__badge-text tf-anim tf-load [--tf-opacity:0] [--tf-ease:ease-in]"
+  >
+    New
+  </span>
+</div>

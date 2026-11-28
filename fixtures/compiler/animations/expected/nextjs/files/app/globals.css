@@ -1,0 +1,18 @@
+@import "tailwindcss";
+@import "./tokens.css";
+@import "./animations.css";
+
+/*
+ * Desktop-first breakpoints: unprefixed classes are the desktop design;
+ * `tablet:` and `mobile:` classes override them on smaller screens.
+ * Declared tablet first so mobile wins where both apply.
+ */
+@custom-variant tablet (@media (width < 1200px));
+@custom-variant mobile (@media (width < 810px));
+
+@layer base {
+  :focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+  }
+}

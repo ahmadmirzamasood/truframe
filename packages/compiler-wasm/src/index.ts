@@ -29,7 +29,15 @@ export type CompileOutput = {
    */
   instanceCss?: Record<string, Record<string, NodeCss>>;
   assets: AssetFile[];
+  /** Node id → animation, for every element that plays one. Absent when none do. */
+  animations?: Record<string, NodeAnimation>;
 };
+
+/**
+ * What the canvas needs to replay a layer's animation (P6A-4): base classes
+ * (`tf-anim tf-view-once`), `--tf-*` declarations, and whether it plays at Tablet/Mobile.
+ */
+export type NodeAnimation = { classes: string; vars: string; tablet: boolean; mobile: boolean };
 
 let ready = false;
 

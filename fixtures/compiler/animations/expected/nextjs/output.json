@@ -1,0 +1,276 @@
+{
+  "animations": {
+    "n1": {
+      "classes": "tf-anim tf-view-once",
+      "mobile": true,
+      "tablet": true,
+      "vars": "--tf-opacity: 0;"
+    },
+    "n10": {
+      "classes": "tf-anim tf-load",
+      "mobile": false,
+      "tablet": true,
+      "vars": "--tf-opacity: 0; --tf-ease: linear;"
+    },
+    "n11": {
+      "classes": "tf-anim tf-load",
+      "mobile": true,
+      "tablet": false,
+      "vars": "--tf-opacity: 0; --tf-ease: ease;"
+    },
+    "n12": {
+      "classes": "tf-anim tf-view-once",
+      "mobile": true,
+      "tablet": true,
+      "vars": "--tf-opacity: 0; --tf-y: 24px; --tf-delay: 50ms;"
+    },
+    "n13": {
+      "classes": "tf-anim tf-view-once",
+      "mobile": true,
+      "tablet": true,
+      "vars": "--tf-opacity: 0; --tf-y: 24px; --tf-delay: 150ms;"
+    },
+    "n14": {
+      "classes": "tf-anim tf-view-once",
+      "mobile": true,
+      "tablet": true,
+      "vars": "--tf-opacity: 0; --tf-y: 24px; --tf-delay: 250ms;"
+    },
+    "n16": {
+      "classes": "tf-anim tf-load",
+      "mobile": true,
+      "tablet": true,
+      "vars": "--tf-opacity: 0; --tf-ease: ease-in;"
+    },
+    "n18": {
+      "classes": "tf-anim tf-view-once",
+      "mobile": true,
+      "tablet": true,
+      "vars": "--tf-opacity: 0; --tf-scale: 0.9;"
+    },
+    "n2": {
+      "classes": "tf-anim tf-load",
+      "mobile": true,
+      "tablet": true,
+      "vars": "--tf-opacity: 0; --tf-y: 24px;"
+    },
+    "n3": {
+      "classes": "tf-anim tf-view-once",
+      "mobile": true,
+      "tablet": true,
+      "vars": "--tf-opacity: 0; --tf-x: -40px;"
+    },
+    "n4": {
+      "classes": "tf-anim tf-load",
+      "mobile": true,
+      "tablet": true,
+      "vars": "--tf-opacity: 0; --tf-x: 40px;"
+    },
+    "n5": {
+      "classes": "tf-anim tf-view-once",
+      "mobile": true,
+      "tablet": true,
+      "vars": "--tf-opacity: 0; --tf-scale: 0.9;"
+    },
+    "n6": {
+      "classes": "tf-anim tf-load tf-blur",
+      "mobile": true,
+      "tablet": true,
+      "vars": "--tf-opacity: 0; --tf-blur: 8px;"
+    },
+    "n7": {
+      "classes": "tf-anim tf-view",
+      "mobile": true,
+      "tablet": true,
+      "vars": "--tf-opacity: 0; --tf-y: 40px; --tf-ease: ease-in-out;"
+    },
+    "n8": {
+      "classes": "tf-anim tf-loop",
+      "mobile": true,
+      "tablet": true,
+      "vars": "--tf-scale: 1.05; --tf-duration: 1500ms; --tf-ease: ease-in-out;"
+    },
+    "n9": {
+      "classes": "tf-anim tf-load tf-blur",
+      "mobile": true,
+      "tablet": true,
+      "vars": "--tf-opacity: 0.2; --tf-x: -12px; --tf-y: 8px; --tf-scale: 0.95; --tf-rotate: -4deg; --tf-blur: 2px; --tf-duration: 450ms; --tf-delay: 250ms; --tf-ease: cubic-bezier(0.34,1.56,0.64,1);"
+    }
+  },
+  "assets": [],
+  "css": {
+    "id2": {
+      "desktop": "display: flex; flex-direction: column; width: 100%; height: fit-content;"
+    },
+    "n1": {
+      "desktop": "font-size: 1.5rem; line-height: calc(2 / 1.5);"
+    },
+    "n10": {
+      "desktop": ""
+    },
+    "n11": {
+      "desktop": ""
+    },
+    "n12": {
+      "desktop": "padding: 16px;"
+    },
+    "n13": {
+      "desktop": "padding: 16px;"
+    },
+    "n14": {
+      "desktop": "padding: 16px;"
+    },
+    "n15": {
+      "desktop": "display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px;"
+    },
+    "n16": {
+      "desktop": ""
+    },
+    "n17": {
+      "desktop": "padding-inline: 8px; padding-block: 4px; border-radius: 999px;"
+    },
+    "n18": {
+      "desktop": ""
+    },
+    "n2": {
+      "desktop": "font-size: 1.5rem; line-height: calc(2 / 1.5);"
+    },
+    "n3": {
+      "desktop": "font-size: 1.5rem; line-height: calc(2 / 1.5);"
+    },
+    "n4": {
+      "desktop": "font-size: 1.5rem; line-height: calc(2 / 1.5);"
+    },
+    "n5": {
+      "desktop": "font-size: 1.5rem; line-height: calc(2 / 1.5);"
+    },
+    "n6": {
+      "desktop": "font-size: 1.5rem; line-height: calc(2 / 1.5);"
+    },
+    "n7": {
+      "desktop": ""
+    },
+    "n8": {
+      "desktop": ""
+    },
+    "n9": {
+      "desktop": ""
+    }
+  },
+  "spans": [
+    {
+      "end": 2532,
+      "node": "id2",
+      "path": "app/page.tsx",
+      "start": 188
+    },
+    {
+      "end": 344,
+      "node": "n1",
+      "path": "app/page.tsx",
+      "start": 245
+    },
+    {
+      "end": 476,
+      "node": "n2",
+      "path": "app/page.tsx",
+      "start": 351
+    },
+    {
+      "end": 624,
+      "node": "n3",
+      "path": "app/page.tsx",
+      "start": 483
+    },
+    {
+      "end": 768,
+      "node": "n4",
+      "path": "app/page.tsx",
+      "start": 631
+    },
+    {
+      "end": 908,
+      "node": "n5",
+      "path": "app/page.tsx",
+      "start": 775
+    },
+    {
+      "end": 1048,
+      "node": "n6",
+      "path": "app/page.tsx",
+      "start": 915
+    },
+    {
+      "end": 1197,
+      "node": "n7",
+      "path": "app/page.tsx",
+      "start": 1055
+    },
+    {
+      "end": 1344,
+      "node": "n8",
+      "path": "app/page.tsx",
+      "start": 1204
+    },
+    {
+      "end": 1623,
+      "node": "n9",
+      "path": "app/page.tsx",
+      "start": 1351
+    },
+    {
+      "end": 1783,
+      "node": "n10",
+      "path": "app/page.tsx",
+      "start": 1630
+    },
+    {
+      "end": 1973,
+      "node": "n11",
+      "path": "app/page.tsx",
+      "start": 1790
+    },
+    {
+      "end": 2415,
+      "node": "n15",
+      "path": "app/page.tsx",
+      "start": 1980
+    },
+    {
+      "end": 2150,
+      "node": "n12",
+      "path": "app/page.tsx",
+      "start": 2035
+    },
+    {
+      "end": 2275,
+      "node": "n13",
+      "path": "app/page.tsx",
+      "start": 2159
+    },
+    {
+      "end": 2402,
+      "node": "n14",
+      "path": "app/page.tsx",
+      "start": 2284
+    },
+    {
+      "end": 2520,
+      "node": "n18",
+      "path": "app/page.tsx",
+      "start": 2422
+    },
+    {
+      "end": 329,
+      "node": "n17",
+      "path": "components/Badge.tsx",
+      "start": 111
+    },
+    {
+      "end": 318,
+      "node": "n16",
+      "path": "components/Badge.tsx",
+      "start": 188
+    }
+  ]
+}
