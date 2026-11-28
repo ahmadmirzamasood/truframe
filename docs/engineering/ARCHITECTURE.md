@@ -218,7 +218,7 @@ Editor: a Web Worker runs compile incrementally (per page/component, debounced 5
 - **Code View**: read-only CodeMirror with file tree and search; clicking code selects the layer (via `spans`), selecting a layer reveals its code.
 - **Preview**: full-screen, renders the model with the renderer at the chosen breakpoint width (iframe on usercontent origin for isolation), with real links.
 - **Panels**: Pages, Layers (Desktop/Tablet/Mobile groups → trees), Components, Variables, Assets (left); Inspector, Agent, Comments, History (right). All commands go through a command registry (shortcuts, Cmd+K, menus).
-- **Layout tools** (`packages/layout`): snapping (parent, siblings, equal spacing), "Add auto layout" (infer direction and gap from children), "Group into stack", resize with Fixed/Fill/Fit semantics.
+- **Layout tools** (`packages/layout`): snapping (parent, siblings, equal spacing), "Add auto layout" and "Group into stack" (`inferStack`: direction, gap, row gap, cross-axis align and padding inferred from the children's rendered boxes, children reordered along the direction; the editor applies the result as one transaction), resize with Fixed/Fill/Fit semantics.
 
 ## 9. Agent, Skills and MCP
 - **AgentSession DO** per run: loads the active skills into the system prompt, calls the Anthropic API with streaming and Truframe tools, and applies tool results as ops through ProjectRoom in one transaction per turn. It streams progress to the editor (which node it is touching), honors Stop, and meters credits (`docs/product/BILLING.md`) before and after each model call.
