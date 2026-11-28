@@ -1,2 +1,2 @@
-/** GitHub, Vercel, Unsplash, Iconify, fonts, Resend. Stub until its phase lands. */
-export const packageName = "@truframe/integrations" as const;
+/** Integrations behind small interfaces: assets (uploads, sanitizing, image variants) now; GitHub, Vercel, Unsplash, Iconify, fonts and Resend in their phases. */
+export * from "./assets/index.ts";

@@ -374,6 +374,7 @@ function PageSettings(props: {
   const [title, setTitle] = useState(page.seo.title);
   const [description, setDescription] = useState(page.seo.description);
   const [noindex, setNoindex] = useState(page.seo.noindex);
+  const [ogImage, setOgImage] = useState(page.seo.ogImage);
   const [error, setError] = useState<string | null>(null);
 
   const save = (e: FormEvent) => {
@@ -389,7 +390,11 @@ function PageSettings(props: {
       {
         op: "updatePage",
         pageId: page.id,
-        fields: { name: name.trim(), path, seo: { ...page.seo, title, description, noindex } },
+        fields: {
+          name: name.trim(),
+          path,
+          seo: { ...page.seo, title, description, noindex, ogImage },
+        },
       },
     ]);
     if (failure) return setError(failure.message);
@@ -455,10 +460,16 @@ function PageSettings(props: {
             <Label htmlFor="ps-og">Social image</Label>
             <select
               id="ps-og"
-              disabled
-              className="h-9 rounded-md border bg-transparent px-2 text-sm text-muted-foreground"
+              value={ogImage ?? ""}
+              onChange={(e) => setOgImage(e.target.value || null)}
+              className="h-9 rounded-md border bg-transparent px-2 text-sm"
             >
-              <option>Choose from Assets (available with uploads)</option>
+              <option value="">None</option>
+              {Object.values(props.doc.assets).map((a) => (
+                <option key={a.id} value={a.id}>
+                  {a.name}
+                </option>
+              ))}
             </select>
           </div>
           <label className="flex items-center gap-2 text-sm">

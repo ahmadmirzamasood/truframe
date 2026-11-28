@@ -71,6 +71,9 @@ importers:
       '@truframe/emails':
         specifier: workspace:*
         version: link:../../packages/emails
+      '@truframe/integrations':
+        specifier: workspace:*
+        version: link:../../packages/integrations
       '@truframe/model':
         specifier: workspace:*
         version: link:../../packages/model

@@ -227,3 +227,71 @@ describe("revisionsRepo", () => {
     expect(await theirs.revisions.list(p.id)).toEqual([]);
   });
 });
+
+describe("assetsRepo", () => {
+  const row = (id: string, projectId: string, key: string, bytes: number) => ({
+    id,
+    projectId,
+    r2Key: key,
+    name: `${id}.png`,
+    mime: "image/png",
+    bytes,
+    width: 10,
+    height: 10,
+    sha256: key.slice(7, 71),
+    createdBy: null,
+  });
+  const key = (c: string) => `assets/${c.repeat(64)}.png`;
+
+  it("enforces file count and storage inside the write, counting each stored file once", async () => {
+    await insertTestUser(t.d1, { id: "user-asset", email: "asset@example.com" });
+    const ws = await workspacesRepo(t.db).ensurePersonal({ userId: "user-asset", name: "As" });
+    const repos = forWorkspace(t.db, ws.id);
+    const p = project(
+      await repos.projects.create({
+        name: "A",
+        framework: "nextjs",
+        templateId: "blank",
+        createdBy: "user-asset",
+      }),
+    );
+    const limits = { maxFiles: 2, maxBytes: 1000 };
+    // Concurrent uploads of different files: only two fit.
+    const results = await Promise.all(
+      ["a", "b", "c", "d"].map((c, i) =>
+        repos.assets.createWithinLimits(row(`x${i}`, p.id, key(c), 100), limits),
+      ),
+    );
+    expect(results.filter((r) => "limitReached" in r)).toHaveLength(2);
+    expect(await repos.assets.usage()).toEqual({ bytes: 200, files: 2 });
+    // The same file again (another layer, another project) is free.
+    const stored = results.find((r) => !("limitReached" in r));
+    if (!stored || "limitReached" in stored) throw new Error("none stored");
+    expect(
+      await repos.assets.createWithinLimits(row("dup", p.id, stored.r2Key, 100), limits),
+    ).not.toHaveProperty("limitReached");
+    expect(await repos.assets.usage()).toEqual({ bytes: 200, files: 2 });
+    // Storage bytes: a big file fails even under the file count.
+    const bigger = { maxFiles: 10, maxBytes: 1000 };
+    expect(
+      await repos.assets.createWithinLimits(row("big", p.id, key("e"), 801), bigger),
+    ).toHaveProperty("limitReached");
+    // Deleting one row keeps the object while another row uses it.
+    expect((await repos.assets.delete(p.id, "dup")).keyStillUsed).toBe(true);
+    expect((await repos.assets.delete(p.id, stored.id)).keyStillUsed).toBe(false);
+  });
+
+  it("never reaches another workspace's assets", async () => {
+    const a = await workspacesRepo(t.db).ensurePersonal({ userId: "user-asset", name: "As" });
+    const b = await workspacesRepo(t.db).ensurePersonal({ userId: "user-b", name: "B" });
+    const pa = (await forWorkspace(t.db, a.id).projects.list())[0];
+    if (!pa) throw new Error("no project");
+    const [mine] = await forWorkspace(t.db, a.id).assets.listForProject(pa.id);
+    if (!mine) throw new Error("no asset");
+    const other = forWorkspace(t.db, b.id).assets;
+    expect(await other.get(pa.id, mine.id)).toBeNull();
+    expect(await other.findByKey(pa.id, mine.r2Key)).toBeNull();
+    expect((await other.delete(pa.id, mine.id)).deleted).toBeNull();
+    expect(await forWorkspace(t.db, a.id).assets.get(pa.id, mine.id)).not.toBeNull();
+  });
+});

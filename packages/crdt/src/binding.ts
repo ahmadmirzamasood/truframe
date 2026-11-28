@@ -24,7 +24,13 @@ import {
   type Page,
   type ProjectDocument,
 } from "@truframe/model";
-import { type ApplyResult, applyTransaction, type Op, type OpLimits } from "@truframe/ops";
+import {
+  type ApplyResult,
+  applyTransaction,
+  NULLABLE_NODE_FIELDS,
+  type Op,
+  type OpLimits,
+} from "@truframe/ops";
 import type { LoroDoc, LoroMap, LoroMovableList, LoroTree, LoroTreeNode, TreeID } from "loro-crdt";
 
 type Json = Record<string, unknown>;
@@ -203,7 +209,10 @@ export function applyOpToLoro(doc: LoroDoc, op: Op): void {
     case "setNodeFields": {
       const data = treeNode(doc, op.nodeId).data;
       for (const [key, value] of Object.entries(op.fields)) {
-        if (value === null) data.delete(key);
+        // Same rules as applyTransaction: null on an absent field is a no-op; null removes a
+        // field unless null is its value (an image placeholder).
+        if (value === null && data.get(key) === undefined) continue;
+        if (value === null && !NULLABLE_NODE_FIELDS.has(key)) data.delete(key);
         else if (value !== undefined) data.set(key, value);
       }
       return;
@@ -266,6 +275,12 @@ export function applyOpToLoro(doc: LoroDoc, op: Op): void {
       doc.getMap("components").delete(op.componentId);
       return;
     }
+    case "upsertAsset":
+      doc.getMap("assets").set(op.asset.id, op.asset);
+      return;
+    case "deleteAsset":
+      doc.getMap("assets").delete(op.assetId);
+      return;
     case "setSettings":
       meta(doc).set("settings", op.settings);
       return;

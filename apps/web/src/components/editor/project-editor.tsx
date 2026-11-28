@@ -4,7 +4,7 @@
  * Connects the Design View (`@truframe/editor`) to the synced document store (P2-6): room
  * connection, offline cache and undo/redo live here; the editor only reads and sends ops.
  */
-import { DesignEditor, type EditorHost } from "@truframe/editor";
+import { type AssetHost, DesignEditor, type EditorHost } from "@truframe/editor";
 import type { DocClient, DocState } from "@truframe/sync";
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -13,6 +13,42 @@ async function roomToken(projectId: string) {
   const res = await fetch(`/api/projects/${projectId}/room-token`, { method: "POST" });
   if (!res.ok) throw new Error(`Room token request failed (${res.status})`);
   return (await res.json()) as { token: string; url: string };
+}
+
+/** Uploads go through a signed URL the app issues after checking the plan (P5-4). */
+function assetHost(projectId: string): AssetHost {
+  const errorOf = async (res: Response, fallback: string) => {
+    try {
+      const body = (await res.json()) as { error?: { message?: string } };
+      return body.error?.message ?? fallback;
+    } catch {
+      return fallback;
+    }
+  };
+  return {
+    async upload(file) {
+      const ticket = await fetch(`/api/projects/${projectId}/assets/uploads`, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ name: file.name, bytes: file.size }),
+      });
+      if (!ticket.ok)
+        return { ok: false, message: await errorOf(ticket, "The upload couldn't start.") };
+      const { url } = (await ticket.json()) as { url: string };
+      const put = await fetch(url, { method: "PUT", body: file });
+      if (!put.ok)
+        return { ok: false, message: await errorOf(put, "The upload failed. Try again.") };
+      const { asset } = (await put.json()) as { asset: Parameters<AssetHost["url"]>[0] };
+      return { ok: true, asset };
+    },
+    url: (asset, width) =>
+      `/api/projects/${projectId}/files/${asset.key}${width ? `?w=${width}` : ""}`,
+    async usage() {
+      const res = await fetch(`/api/projects/${projectId}/assets`);
+      if (!res.ok) return null;
+      return ((await res.json()) as { usage: Awaited<ReturnType<AssetHost["usage"]>> }).usage;
+    },
+  };
 }
 
 export function ProjectEditor({
@@ -58,6 +94,7 @@ export function ProjectEditor({
     };
   }, [projectId]);
 
+  const assets = useMemo(() => assetHost(projectId), [projectId]);
   const host = useMemo<EditorHost>(
     () => ({
       projectName,
@@ -76,8 +113,9 @@ export function ProjectEditor({
         client.current ? client.current.apply(ops) : { message: "The editor is still loading." },
       undo: () => client.current?.undo(),
       redo: () => client.current?.redo(),
+      assets,
     }),
-    [projectName, state],
+    [projectName, state, assets],
   );
 
   return <DesignEditor host={host} backHref="/dashboard" Link={Link} />;

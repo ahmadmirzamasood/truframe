@@ -18,6 +18,7 @@ const nextConfig: NextConfig = {
     "@truframe/renderer",
     "@truframe/layout",
     "@truframe/compiler-wasm",
+    "@truframe/integrations",
   ],
   poweredByHeader: false,
 };

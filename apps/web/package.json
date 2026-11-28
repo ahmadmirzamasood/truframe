@@ -23,6 +23,7 @@
     "@truframe/db": "workspace:*",
     "@truframe/editor": "workspace:*",
     "@truframe/emails": "workspace:*",
+    "@truframe/integrations": "workspace:*",
     "@truframe/model": "workspace:*",
     "@truframe/protocol": "workspace:*",
     "@truframe/sync": "workspace:*",

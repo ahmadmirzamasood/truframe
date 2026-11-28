@@ -15,6 +15,13 @@
       "when": 1795526826960,
       "tag": "0001_revisions",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1795815766368,
+      "tag": "0002_assets",
+      "breakpoints": true
     }
   ]
 }

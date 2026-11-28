@@ -3,6 +3,7 @@
  * before it is applied. The `op` field names the operation; payloads reuse the model schemas.
  */
 import {
+  assetSchema,
   BREAKPOINT_IDS,
   componentSchema,
   idSchema,
@@ -70,6 +71,12 @@ export const NODE_FIELDS = [
   "icon",
   "source",
 ] as const;
+
+/**
+ * Node fields whose `null` is a value, not "remove the field": an image with no file is a
+ * placeholder (`assetId: null`). For every other field `null` removes it.
+ */
+export const NULLABLE_NODE_FIELDS: ReadonlySet<string> = new Set(["assetId"]);
 
 export const setNodeFieldsOp = z.strictObject({
   op: z.literal("setNodeFields"),
@@ -143,6 +150,12 @@ export const deleteComponentOp = z.strictObject({
   componentId: idSchema,
 });
 
+/** Adds an uploaded asset, or changes its name, folder or default alt text. */
+export const upsertAssetOp = z.strictObject({ op: z.literal("upsertAsset"), asset: assetSchema });
+
+/** Removes an asset; fails validation while anything still references it. */
+export const deleteAssetOp = z.strictObject({ op: z.literal("deleteAsset"), assetId: idSchema });
+
 export const setSettingsOp = z.strictObject({
   op: z.literal("setSettings"),
   settings: z.strictObject({ lang: z.string() }),
@@ -166,6 +179,8 @@ export const opSchema = z.discriminatedUnion("op", [
   addComponentOp,
   updateComponentOp,
   deleteComponentOp,
+  upsertAssetOp,
+  deleteAssetOp,
   setSettingsOp,
 ]);
 export type Op = z.infer<typeof opSchema>;
