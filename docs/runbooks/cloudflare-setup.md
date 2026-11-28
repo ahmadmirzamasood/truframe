@@ -51,6 +51,7 @@ Run from a Linux or macOS shell, or from CI. OpenNext's build does not work on W
    pnpm deploy:staging   # realtime → agent → jobs → mcp → sites → web
    ```
 5. Smoke test: `curl https://truframe-web-staging.<account-subdomain>.workers.dev/api/health` must return `{"ok":true,...}`.
+6. Preview (P5-7) needs both origins, and they must be on different hosts (cookies are scoped by host, not port; production uses a separate registrable domain, `usercontent.truframe.site`). Set `TRUFRAME_APP_ORIGIN` (the app's exact origin, https) in the sites worker's env `vars`, and `TRUFRAME_USERCONTENT_URL` (the sites worker's exact origin, https) on the web worker. Until both are set, the Preview button is disabled ("Preview isn't configured on this server") and `/preview` answers 503.
 
 ## CI secrets (GitHub environments)
 

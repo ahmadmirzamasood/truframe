@@ -119,9 +119,12 @@ function pickerHost(projectId: string): PickerHost {
 export function ProjectEditor({
   projectId,
   projectName,
+  previewOrigin,
 }: {
   projectId: string;
   projectName: string;
+  /** The usercontent origin for Preview, or null where it isn't configured. */
+  previewOrigin: string | null;
 }) {
   const client = useRef<DocClient | null>(null);
   const [state, setState] = useState<DocState | null>(null);
@@ -162,6 +165,10 @@ export function ProjectEditor({
   const assets = useMemo(() => assetHost(projectId), [projectId]);
   const exports = useMemo(() => exportHost(projectId), [projectId]);
   const pickers = useMemo(() => pickerHost(projectId), [projectId]);
+  const preview = useMemo(
+    () => (previewOrigin ? { origin: previewOrigin } : undefined),
+    [previewOrigin],
+  );
   const host = useMemo<EditorHost>(
     () => ({
       projectName,
@@ -183,8 +190,9 @@ export function ProjectEditor({
       assets,
       exports,
       pickers,
+      preview,
     }),
-    [projectName, state, assets, exports, pickers],
+    [projectName, state, assets, exports, pickers, preview],
   );
 
   return <DesignEditor host={host} backHref="/dashboard" Link={Link} />;

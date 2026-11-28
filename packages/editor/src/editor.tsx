@@ -30,6 +30,7 @@ import { LayersPanel, useLocks } from "./layers-panel.tsx";
 import { measureLayer } from "./measure-dom.ts";
 import { PagesPanel } from "./pages-panel.tsx";
 import { ComingSoon, LeftPanel, type LeftTab, RightPanel, type RightTab } from "./panels.tsx";
+import { PreviewOverlay } from "./preview.tsx";
 import { SelectionLayer } from "./selection-layer.tsx";
 import { VariablesPanel } from "./variables-panel.tsx";
 
@@ -137,6 +138,8 @@ export function DesignEditor({ host, backHref, Link }: DesignEditorProps) {
   const canvasApi = useRef<CanvasApi | null>(null);
   const [paletteOpen, setPaletteOpen] = useState(false);
   const [sheetOpen, setSheetOpen] = useState(false);
+  const [previewing, setPreviewing] = useState(false);
+  const closePreview = useCallback(() => setPreviewing(false), []);
   const commands = useMemo(
     () =>
       editorCommands({
@@ -163,6 +166,7 @@ export function DesignEditor({ host, backHref, Link }: DesignEditorProps) {
         measure: (id) => measureLayer(activeBreakpoint, id),
         openPalette: () => setPaletteOpen(true),
         openShortcuts: () => setSheetOpen(true),
+        openPreview: host.preview ? () => setPreviewing(true) : undefined,
       }),
     [doc, page, liveSelection, activeBreakpoint, host, insert, apply],
   );
@@ -230,6 +234,7 @@ export function DesignEditor({ host, backHref, Link }: DesignEditorProps) {
         backHref={backHref}
         BackLink={Link}
         onOpenCommands={() => setPaletteOpen(true)}
+        onPreview={host.preview ? () => setPreviewing(true) : undefined}
       />
       {host.sync.lastError ? (
         <p role="alert" className="border-b bg-destructive/10 px-3 py-1.5 text-sm text-destructive">
@@ -433,6 +438,16 @@ export function DesignEditor({ host, backHref, Link }: DesignEditorProps) {
       </div>
       <CommandPalette open={paletteOpen} onOpenChange={setPaletteOpen} commands={commands} />
       <ShortcutSheet open={sheetOpen} onOpenChange={setSheetOpen} commands={commands} />
+      {previewing && realDoc && host.preview ? (
+        <PreviewOverlay
+          doc={realDoc}
+          host={host}
+          origin={host.preview.origin}
+          initialPageId={(main ? pageId : activePageId) ?? realDoc.pages[0]?.id ?? ""}
+          treeOptions={treeOptions}
+          onClose={closePreview}
+        />
+      ) : null}
     </div>
   );
 }

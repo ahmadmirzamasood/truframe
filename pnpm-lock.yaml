@@ -204,6 +204,9 @@ importers:
       '@truframe/ops':
         specifier: workspace:*
         version: link:../ops
+      '@truframe/protocol':
+        specifier: workspace:*
+        version: link:../protocol
       '@truframe/renderer':
         specifier: workspace:*
         version: link:../renderer

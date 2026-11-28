@@ -16,8 +16,11 @@
     "port": 8791,
     "inspector_port": 9234
   },
+  // TRUFRAME_APP_ORIGIN: the only origin allowed to frame /preview and post to it. Staging and
+  // production set it when their app hostnames exist (docs/runbooks/cloudflare-setup.md).
   "vars": {
-    "TRUFRAME_ENV": "local"
+    "TRUFRAME_ENV": "local",
+    "TRUFRAME_APP_ORIGIN": "http://localhost:3000"
   },
   "kv_namespaces": [
     {

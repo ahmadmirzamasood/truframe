@@ -7,6 +7,9 @@ const baseURL = process.env.TRUFRAME_E2E_BASE_URL ?? "http://localhost:3000";
 // The realtime worker (8787). Override when that port is taken locally; the web app's
 // TRUFRAME_REALTIME_URL must point at the same place.
 const realtimeURL = process.env.TRUFRAME_E2E_REALTIME_URL ?? "http://127.0.0.1:8787";
+// The sites worker (8791): the usercontent origin Preview frames. The web app's
+// TRUFRAME_USERCONTENT_URL must point at the same place.
+const usercontentURL = process.env.TRUFRAME_E2E_USERCONTENT_URL ?? "http://127.0.0.1:8791";
 
 export default defineConfig({
   testDir: "e2e",
@@ -42,6 +45,15 @@ export default defineConfig({
           command: "pnpm --filter @truframe/worker-realtime dev",
           env: { WRANGLER_REGISTRY_PATH: join(tmpdir(), "truframe-e2e-wrangler-registry") },
           url: `${realtimeURL}/health`,
+          reuseExistingServer: !process.env.CI,
+          stdout: "pipe",
+          timeout: 180_000,
+        },
+        {
+          // The usercontent origin for Preview (P5-7): a static shell, no bindings needed.
+          command: "pnpm --filter @truframe/worker-sites dev",
+          env: { WRANGLER_REGISTRY_PATH: join(tmpdir(), "truframe-e2e-wrangler-registry-sites") },
+          url: `${usercontentURL}/health`,
           reuseExistingServer: !process.env.CI,
           stdout: "pipe",
           timeout: 180_000,

@@ -50,7 +50,7 @@
 |---|---|---|
 | T1 | User B cannot read/write user A's project via API, room socket, R2 URL, MCP, or agent tools | P2, P7 |
 | T2 | Expired/forged room token rejected | P2 |
-| T3 | Embed / snippet script cannot access app cookies, storage or DOM | P6 |
+| T3 | Embed / snippet script cannot access app cookies, storage or DOM | P5-7 for Preview (`e2e/editor-preview.spec.ts`: script in the preview frame gets an opaque origin, and reading `document.cookie`, `localStorage` or `parent.document` and fetching the app all fail); P6 for embeds and snippets |
 | T4 | SVG with `<script>`, `onload`, `foreignObject`, external `href` is sanitized; polyglot upload rejected | P4 |
 | T5 | Build container cannot reach non-allowlisted hosts or read any secret/env; build with infinite loop is killed at the limit | P8 |
 | T6 | Temp link serves `noindex`; password protection works; takedown flag returns 451 | P8 |
