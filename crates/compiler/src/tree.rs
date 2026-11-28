@@ -515,6 +515,25 @@ impl<'a> Builder<'a> {
                 };
                 self.image(id, n, parent_node, *tag, asset_id.as_deref(), &alt, *fit)
             }
+            Node::Icon {
+                svg: Some(svg),
+                tag,
+                ..
+            } => {
+                let class = self.class_attr(id, n, parent_node, &[])?;
+                let mut root = El::new("svg")
+                    .attr(Attr::str("xmlns", "http://www.w3.org/2000/svg"))
+                    .attr(Attr::str("viewBox", svg.view_box.clone()))
+                    .attr(Attr::str(self.flavor.class_attr(), "block size-full"));
+                for el in &svg.body {
+                    root = root.child(Child::El(svg_el(el, self.flavor)));
+                }
+                Ok(El::new(tag.as_str())
+                    .node(id)
+                    .attr(class)
+                    .attr(Attr::str("aria-hidden", "true"))
+                    .child(Child::El(root)))
+            }
             Node::Icon { set, icon, tag, .. } => {
                 let class = self.class_attr(id, n, parent_node, &[])?;
                 let img = El::new("img")
@@ -1153,4 +1172,22 @@ fn parent_of(project: &Project, root: &str, target: &str) -> Result<Option<Strin
         }
     }
     Ok(None)
+}
+
+/// One shape of an inlined icon. JSX spells presentation attributes in camelCase
+/// (`strokeWidth`); Astro keeps the SVG spelling. Attributes print sorted (deterministic).
+fn svg_el(el: &crate::model::SvgEl, flavor: Flavor) -> El {
+    let mut out = El::new(el.tag.as_str());
+    for (name, value) in &el.attrs {
+        let name = if flavor == Flavor::Next {
+            crate::names::camel(name)
+        } else {
+            name.clone()
+        };
+        out = out.attr(Attr::str(&name, value.clone()));
+    }
+    for c in el.children.iter().flatten() {
+        out = out.child(Child::El(svg_el(c, flavor)));
+    }
+    out
 }

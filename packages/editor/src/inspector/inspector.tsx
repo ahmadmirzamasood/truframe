@@ -38,8 +38,9 @@ import {
 import { useEffect, useMemo, useRef, useState } from "react";
 import { checkBreakpointWidth } from "../breakpoints.ts";
 import { deleteOps, duplicateOps, makeAbsoluteOps } from "../gestures.ts";
-import type { AssetHost, ExportHost, ImageExportRequest } from "../host.ts";
+import type { AssetHost, ExportHost, FontOption, ImageExportRequest, PickerHost } from "../host.ts";
 import { BREAKPOINT_LABEL } from "../labels.ts";
+import { IconPicker, SvgPreview } from "../pickers.tsx";
 import { parentMap } from "../tree.ts";
 import { valueAt } from "../variables.ts";
 import {
@@ -113,22 +114,22 @@ const TYPE_ICON: Record<Node["type"], LucideIcon> = {
   instance: ComponentIcon,
 };
 
-const FONT_FAMILIES = [
+/** System families (local stacks in the compiler); web fonts come from the picker host. */
+const SYSTEM_FAMILIES = [
   "Arial",
-  "Georgia",
   "Helvetica",
+  "Georgia",
   "Times New Roman",
   "Courier New",
   "Verdana",
-  "Inter",
-  "Roboto",
-  "Open Sans",
-  "Lato",
-  "Montserrat",
-  "Poppins",
-  "Playfair Display",
-  "Merriweather",
+  "Tahoma",
+  "Trebuchet MS",
 ];
+/** Without a picker host (tests, previews): a few web fonts with the usual weights. */
+const FALLBACK_FONTS: FontOption[] = ["Inter", "Roboto", "Playfair Display"].map((family) => ({
+  family,
+  weights: [400, 700],
+}));
 const WEIGHTS = [100, 200, 300, 400, 500, 600, 700, 800, 900] as const;
 
 type Ctx = {
@@ -137,6 +138,7 @@ type Ctx = {
   bp: BreakpointId;
   apply: (ops: Op[]) => void;
   assets?: AssetHost;
+  pickers?: PickerHost;
 };
 
 /** Unscaled box of a layer in the editing frame, and of its parent. */
@@ -935,6 +937,9 @@ function Typography(props: { ctx: Ctx }) {
   const fontVars = Object.values(ctx.doc.variables).filter((v) => v.type === "font");
   const font = get(ctx, "font");
   const align = get(ctx, "textAlign") ?? "left";
+  const webFonts = ctx.pickers?.fonts ?? FALLBACK_FONTS;
+  const family = get(ctx, "fontFamily");
+  const webFont = webFonts.find((f) => f.family === family);
   return (
     <Section title="Typography">
       <p
@@ -964,17 +969,37 @@ function Typography(props: { ctx: Ctx }) {
       <PropRow ctx={ctx} label="Family" keys={["fontFamily"]}>
         <SelectField
           label="Font family"
-          value={get(ctx, "fontFamily") ?? ""}
+          value={family ?? ""}
           placeholder="Default"
-          options={FONT_FAMILIES.map((f) => ({ value: f, label: f }))}
-          onChange={(f) => set(ctx, "fontFamily", f)}
+          options={[
+            ...SYSTEM_FAMILIES.map((f) => ({ value: f, label: f })),
+            ...webFonts.map((f) => ({ value: f.family, label: f.family })),
+            ...(family && !SYSTEM_FAMILIES.includes(family) && !webFont
+              ? [{ value: family, label: family }]
+              : []),
+          ]}
+          onChange={(f) => {
+            // A web font only has some weights; keep the nearest so the site still builds.
+            const w = get(ctx, "fontWeight") ?? 400;
+            const weights = webFonts.find((o) => o.family === f)?.weights;
+            const nearest = weights?.reduce((a, b) => (Math.abs(b - w) < Math.abs(a - w) ? b : a));
+            ctx.apply([
+              setProp(ctx.node.id, ctx.bp, "fontFamily", f),
+              ...(nearest !== undefined && nearest !== w
+                ? [setProp(ctx.node.id, ctx.bp, "fontWeight", nearest)]
+                : []),
+            ]);
+          }}
         />
       </PropRow>
       <PropRow ctx={ctx} label="Weight" keys={["fontWeight"]}>
         <SelectField
           label="Font weight"
           value={String(get(ctx, "fontWeight") ?? 400) as `${(typeof WEIGHTS)[number]}`}
-          options={WEIGHTS.map((w) => ({ value: String(w) as `${typeof w}`, label: String(w) }))}
+          options={WEIGHTS.filter((w) => !webFont || webFont.weights.includes(w)).map((w) => ({
+            value: String(w) as `${typeof w}`,
+            label: String(w),
+          }))}
           onChange={(w) => set(ctx, "fontWeight", Number(w))}
         />
       </PropRow>
@@ -1335,6 +1360,40 @@ function ImageSection(props: { ctx: Ctx }) {
   );
 }
 
+function IconSection(props: { ctx: Ctx }) {
+  const { ctx } = props;
+  const node = ctx.node;
+  if (node.type !== "icon") return null;
+  return (
+    <Section title="Icon">
+      <div className="flex items-center gap-2">
+        {node.svg ? (
+          <SvgPreview svg={node.svg} />
+        ) : (
+          <span className="size-5 rounded bg-muted" aria-hidden />
+        )}
+        <p className="truncate text-xs" data-testid="icon-name">
+          {node.icon} <span className="text-muted-foreground">({node.set})</span>
+        </p>
+      </div>
+      {ctx.pickers ? (
+        <IconPicker
+          host={ctx.pickers}
+          onPick={(i) =>
+            ctx.apply([
+              {
+                op: "setNodeFields",
+                nodeId: node.id,
+                fields: { set: i.set, icon: i.icon, svg: i.svg },
+              },
+            ])
+          }
+        />
+      ) : null}
+    </Section>
+  );
+}
+
 function LinkSection(props: { ctx: Ctx }) {
   const { node, doc, apply } = props.ctx;
   if (node.type !== "link") return null;
@@ -1669,6 +1728,7 @@ export type InspectorProps = {
   assets?: AssetHost;
   /** Image export, when the app provides it. */
   exports?: ExportHost;
+  pickers?: PickerHost;
 };
 
 export function Inspector(props: InspectorProps) {
@@ -1723,7 +1783,14 @@ export function Inspector(props: InspectorProps) {
       </div>
     );
   }
-  const ctx: Ctx = { doc, node, bp, apply: props.apply, assets: props.assets };
+  const ctx: Ctx = {
+    doc,
+    node,
+    bp,
+    apply: props.apply,
+    assets: props.assets,
+    pickers: props.pickers,
+  };
   const parentId = parents.get(node.id);
   const container = node.type === "frame" || node.type === "link";
   if (node.type === "instance") {
@@ -1782,6 +1849,7 @@ export function Inspector(props: InspectorProps) {
       {node.type === "frame" ? <StyleSection ctx={ctx} /> : null}
       {node.type === "image" ? <ImageSection ctx={ctx} /> : null}
       {node.type === "link" ? <LinkSection ctx={ctx} /> : null}
+      {node.type === "icon" ? <IconSection ctx={ctx} /> : null}
       <PositionSize ctx={ctx} parentId={parentId} text={node.type === "text"} />
       {container ? <Layout ctx={ctx} /> : null}
       {container ? <Padding ctx={ctx} /> : null}

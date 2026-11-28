@@ -148,8 +148,32 @@ export async function receiveUpload(
   const project = await repos.projects.get(c.pid);
   if (!project) throw notFound();
 
-  let bytes = await readCapped(request, c.max);
-  const sniffed = sniffUpload(bytes, c.name);
+  return storeFile(
+    server,
+    repos,
+    project.id,
+    { ws: c.ws, sub: c.sub },
+    c.name,
+    await readCapped(request, c.max),
+    newId,
+  );
+}
+
+/**
+ * Checks, sanitizes and stores one file for a project, then records it within the plan's
+ * storage (uploads, and stock photos copied into the project).
+ */
+export async function storeFile(
+  server: ServerContext,
+  repos: ReturnType<typeof forWorkspace>,
+  projectId: string,
+  c: { ws: string; sub: string },
+  fileName: string,
+  input: Uint8Array,
+  newId: () => string,
+): Promise<Asset> {
+  let bytes = input;
+  const sniffed = sniffUpload(bytes, fileName);
   if (!sniffed.ok)
     throw new ApiFailure("UPLOAD_REJECTED", sniffed.message, 415, { reason: sniffed.code });
   if (sniffed.mime === "image/svg+xml") {
@@ -172,14 +196,14 @@ export async function receiveUpload(
     });
   const l = limits({ workspace: { id: c.ws } });
   const id = newId();
-  const name = [...c.name]
+  const name = [...fileName]
     .filter((ch) => ch.charCodeAt(0) >= 32)
     .join("")
     .slice(0, 255);
   const row = await repos.assets.createWithinLimits(
     {
       id,
-      projectId: project.id,
+      projectId,
       r2Key: key,
       name,
       mime: sniffed.mime,
@@ -193,7 +217,7 @@ export async function receiveUpload(
   );
   if ("limitReached" in row) {
     // The object may be new and now unreferenced; leave it only if another row uses it.
-    if (!(await repos.assets.findByKey(project.id, key))) await server.env.FILES.delete(objectKey);
+    if (!(await repos.assets.findByKey(projectId, key))) await server.env.FILES.delete(objectKey);
     throw storageFull(l, await repos.assets.usage());
   }
   return toAsset(row);

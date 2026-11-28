@@ -210,6 +210,8 @@ pub enum Node {
         style: Style,
         set: String,
         icon: String,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        svg: Option<IconSvg>,
     },
     Embed {
         id: String,
@@ -301,4 +303,51 @@ impl Node {
             _ => &[],
         }
     }
+}
+
+/// An icon's drawing as data (P5-5); tags and attributes are allowlisted by the TS validator.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct IconSvg {
+    #[serde(rename = "viewBox")]
+    pub view_box: String,
+    pub body: Vec<SvgEl>,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "lowercase")]
+pub enum SvgTag {
+    G,
+    Path,
+    Circle,
+    Ellipse,
+    Rect,
+    Line,
+    Polyline,
+    Polygon,
+}
+
+impl SvgTag {
+    pub fn as_str(self) -> &'static str {
+        match self {
+            SvgTag::G => "g",
+            SvgTag::Path => "path",
+            SvgTag::Circle => "circle",
+            SvgTag::Ellipse => "ellipse",
+            SvgTag::Rect => "rect",
+            SvgTag::Line => "line",
+            SvgTag::Polyline => "polyline",
+            SvgTag::Polygon => "polygon",
+        }
+    }
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct SvgEl {
+    pub tag: SvgTag,
+    /// Attribute name (SVG spelling, e.g. `stroke-width`) to value.
+    pub attrs: BTreeMap<String, String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub children: Option<Vec<SvgEl>>,
 }

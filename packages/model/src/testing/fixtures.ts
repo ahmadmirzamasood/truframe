@@ -216,6 +216,22 @@ export function kitchenSink(): ProjectDocument {
     tag: "span",
     set: "lucide",
     icon: "arrow-right",
+    svg: {
+      viewBox: "0 0 24 24",
+      body: [
+        {
+          tag: "g",
+          attrs: {
+            fill: "none",
+            stroke: "currentColor",
+            "stroke-linecap": "round",
+            "stroke-linejoin": "round",
+            "stroke-width": "2",
+          },
+          children: [{ tag: "path", attrs: { d: "M5 12h14m-7-7l7 7l-7 7" } }],
+        },
+      ],
+    },
     style: {
       desktop: {
         position: "absolute",
@@ -308,6 +324,12 @@ export function kitchenSink(): ProjectDocument {
     height: 64,
     bytes: 900,
     key: `assets/${"b".repeat(64)}.svg`,
+    credit: {
+      source: "unsplash",
+      author: "Ada Example",
+      authorUrl: "https://unsplash.com/@ada?utm_source=truframe&utm_medium=referral",
+      sourceUrl: "https://unsplash.com/?utm_source=truframe&utm_medium=referral",
+    },
   };
   return doc;
 }

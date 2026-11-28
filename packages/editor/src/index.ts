@@ -5,7 +5,11 @@ export type {
   AssetUsage,
   EditorHost,
   ExportHost,
+  FontOption,
+  IconOption,
   ImageExportRequest,
+  PhotoOption,
+  PickerHost,
   SyncSummary,
 } from "./host.ts";
 export { LEFT_TABS, type LeftTab, RIGHT_TABS, type RightTab } from "./panels.tsx";

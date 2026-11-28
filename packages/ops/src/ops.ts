@@ -69,6 +69,7 @@ export const NODE_FIELDS = [
   "ariaLabel",
   "set",
   "icon",
+  "svg",
   "source",
 ] as const;
 

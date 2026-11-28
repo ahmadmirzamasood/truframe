@@ -214,6 +214,24 @@ pub struct Asset {
     /// Default alt text for new image layers (editor only).
     #[serde(skip_serializing_if = "Option::is_none")]
     pub alt: Option<String>,
+    /// Stock photo attribution (README credits).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub credit: Option<Credit>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields, rename_all = "camelCase")]
+pub struct Credit {
+    pub source: CreditSource,
+    pub author: String,
+    pub author_url: String,
+    pub source_url: String,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "lowercase")]
+pub enum CreditSource {
+    Unsplash,
 }
 
 /// A whole project document.

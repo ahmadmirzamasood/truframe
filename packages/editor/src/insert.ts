@@ -142,8 +142,25 @@ export function createNodes(tool: InsertTool, id: () => string = newId): Node[] 
           type: "icon",
           name: "Icon",
           tag: "span",
-          set: "lucide",
+          set: "local",
           icon: "star",
+          // A starter drawing so the icon compiles inline before one is picked.
+          svg: {
+            viewBox: "0 0 24 24",
+            body: [
+              {
+                tag: "path",
+                attrs: {
+                  d: "M12 3l2.8 5.7 6.2.9-4.5 4.4 1 6.2L12 17.3 6.5 20.2l1-6.2L3 9.6l6.2-.9z",
+                  fill: "none",
+                  stroke: "currentColor",
+                  "stroke-width": "2",
+                  "stroke-linecap": "round",
+                  "stroke-linejoin": "round",
+                },
+              },
+            ],
+          },
           style: {
             desktop: { width: { type: "fixed", value: 24 }, height: { type: "fixed", value: 24 } },
           },

@@ -75,13 +75,13 @@
       "start": 150
     },
     {
-      "end": 2740,
+      "end": 3009,
       "node": "id2",
       "path": "app/page.tsx",
       "start": 210
     },
     {
-      "end": 2728,
+      "end": 2997,
       "node": "hero",
       "path": "app/page.tsx",
       "start": 267
@@ -123,34 +123,34 @@
       "start": 1655
     },
     {
-      "end": 2125,
+      "end": 2394,
       "node": "icon",
       "path": "app/page.tsx",
       "start": 1782
     },
     {
-      "end": 2406,
+      "end": 2675,
       "node": "map",
       "path": "app/page.tsx",
-      "start": 2134
+      "start": 2403
     },
     {
-      "end": 2441,
+      "end": 2710,
       "node": "widget",
       "path": "app/page.tsx",
-      "start": 2415
+      "start": 2684
     },
     {
-      "end": 2639,
+      "end": 2908,
       "node": "mail",
       "path": "app/page.tsx",
-      "start": 2450
+      "start": 2719
     },
     {
-      "end": 2711,
+      "end": 2980,
       "node": "blankPic",
       "path": "app/page.tsx",
-      "start": 2648
+      "start": 2917
     },
     {
       "end": 517,

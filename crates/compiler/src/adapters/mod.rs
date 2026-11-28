@@ -122,6 +122,24 @@ pub fn readme(project: &Project, framework: Framework) -> String {
     } else {
         s.push_str("This design has no tablet or mobile overrides.\n");
     }
-    s.push_str("\nThe first class on each element (such as `hero-section`) names its layer in the design. It has no styles.\n\nDesign variables are CSS custom properties in `tokens.css`.\n\n---\n\nGenerated with Truframe.\n");
+    s.push_str("\nThe first class on each element (such as `hero-section`) names its layer in the design. It has no styles.\n\nDesign variables are CSS custom properties in `tokens.css`.\n");
+    // Unsplash asks for credit wherever its photos appear (INTEGRATIONS: Unsplash).
+    let credits: Vec<String> = project
+        .assets
+        .values()
+        .filter_map(|a| {
+            a.credit.as_ref().map(|c| {
+                format!(
+                    "- {}: photo by [{}]({}) on [Unsplash]({})\n",
+                    a.name, c.author, c.author_url, c.source_url
+                )
+            })
+        })
+        .collect();
+    if !credits.is_empty() {
+        s.push_str("\n## Photo credits\n\n");
+        s.push_str(&credits.concat());
+    }
+    s.push_str("\n---\n\nGenerated with Truframe.\n");
     s
 }
