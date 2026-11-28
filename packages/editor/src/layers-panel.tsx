@@ -30,7 +30,18 @@ import {
   TypeIcon,
   UnlockIcon,
 } from "lucide-react";
-import { type DragEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+  createContext,
+  type DragEvent,
+  memo,
+  type RefObject,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { reorderOps } from "./gestures.ts";
 import { BREAKPOINT_LABEL } from "./labels.ts";
 import { canContain, isAncestor, parentMap } from "./tree.ts";
@@ -99,8 +110,27 @@ export type LayersPanelProps = {
   onToggleLock: (id: string) => void;
 };
 
+/**
+ * The panel's newest props. Rows are memoized and skip renders when their subtree didn't
+ * change, so their event handlers read the document and callbacks from here, never from a
+ * render that may be several edits old.
+ */
+const LiveProps = createContext<RefObject<LayersPanelProps> | null>(null);
+
 export function LayersPanel(props: LayersPanelProps) {
   const { doc, page } = props;
+  const live = useRef(props);
+  live.current = props;
+  const toggleCollapse = useCallback(
+    (nid: string) =>
+      setCollapsed((c) => {
+        const next = new Set(c);
+        if (next.has(nid)) next.delete(nid);
+        else next.add(nid);
+        return next;
+      }),
+    [],
+  );
   const [open, setOpen] = useState<Partial<Record<BreakpointId, boolean>>>({ desktop: true });
   const [collapsed, setCollapsed] = useState<ReadonlySet<string>>(new Set());
   const [drag, setDrag] = useState<{ id: string; drop: Drop | null } | null>(null);
@@ -112,72 +142,104 @@ export function LayersPanel(props: LayersPanelProps) {
     Boolean(open[bp]) || (props.selection.length > 0 && bp === props.editing);
 
   return (
-    <div className="grid gap-px py-1 text-xs" data-testid="layers-panel">
-      {activeBreakpoints(doc.breakpoints).map((bp) => (
-        <div key={bp}>
-          <button
-            type="button"
-            aria-expanded={isOpen(bp)}
-            onClick={() => setOpen((o) => ({ ...o, [bp]: !isOpen(bp) }))}
-            className={cn(
-              "flex h-7 w-full items-center gap-1 px-2 text-left font-medium hover:bg-accent",
-              bp === props.editing && "text-foreground",
-            )}
-          >
-            <ChevronRightIcon
+    <LiveProps.Provider value={live}>
+      <div className="grid gap-px py-1 text-xs" data-testid="layers-panel">
+        {activeBreakpoints(doc.breakpoints).map((bp) => (
+          <div key={bp}>
+            <button
+              type="button"
+              aria-expanded={isOpen(bp)}
+              onClick={() => setOpen((o) => ({ ...o, [bp]: !isOpen(bp) }))}
               className={cn(
-                "size-3 text-muted-foreground transition-transform",
-                isOpen(bp) && "rotate-90",
+                "flex h-7 w-full items-center gap-1 px-2 text-left font-medium hover:bg-accent",
+                bp === props.editing && "text-foreground",
               )}
-              aria-hidden
-            />
-            {BREAKPOINT_LABEL[bp]}
-            <span className="font-mono text-[10px] text-muted-foreground tabular-nums">
-              {doc.breakpoints[bp]?.width}
-            </span>
-          </button>
-          {isOpen(bp) ? (
-            <div role="tree" aria-label={`${BREAKPOINT_LABEL[bp]} layers`} className="grid">
-              {childrenOf(root).map((id) => (
-                <LayerRow
-                  key={id}
-                  {...props}
-                  id={id}
-                  bp={bp}
-                  depth={1}
-                  collapsed={collapsed}
-                  onToggleCollapse={(nid) =>
-                    setCollapsed((c) => {
-                      const next = new Set(c);
-                      if (next.has(nid)) next.delete(nid);
-                      else next.add(nid);
-                      return next;
-                    })
-                  }
-                  drag={drag}
-                  setDrag={setDrag}
-                />
-              ))}
-            </div>
-          ) : null}
-        </div>
-      ))}
-    </div>
+            >
+              <ChevronRightIcon
+                className={cn(
+                  "size-3 text-muted-foreground transition-transform",
+                  isOpen(bp) && "rotate-90",
+                )}
+                aria-hidden
+              />
+              {BREAKPOINT_LABEL[bp]}
+              <span className="font-mono text-[10px] text-muted-foreground tabular-nums">
+                {doc.breakpoints[bp]?.width}
+              </span>
+            </button>
+            {isOpen(bp) ? (
+              <div role="tree" aria-label={`${BREAKPOINT_LABEL[bp]} layers`} className="grid">
+                {childrenOf(root).map((id) => (
+                  <LayerRow
+                    key={id}
+                    {...props}
+                    id={id}
+                    bp={bp}
+                    depth={1}
+                    collapsed={collapsed}
+                    onToggleCollapse={toggleCollapse}
+                    drag={drag}
+                    setDrag={setDrag}
+                  />
+                ))}
+              </div>
+            ) : null}
+          </div>
+        ))}
+      </div>
+    </LiveProps.Provider>
   );
 }
 
-function LayerRow(
-  props: LayersPanelProps & {
-    id: string;
-    bp: BreakpointId;
-    depth: number;
-    collapsed: ReadonlySet<string>;
-    onToggleCollapse: (id: string) => void;
-    drag: { id: string; drop: Drop | null } | null;
-    setDrag: (d: { id: string; drop: Drop | null } | null) => void;
-  },
-) {
+type RowProps = LayersPanelProps & {
+  id: string;
+  bp: BreakpointId;
+  depth: number;
+  collapsed: ReadonlySet<string>;
+  onToggleCollapse: (id: string) => void;
+  drag: { id: string; drop: Drop | null } | null;
+  setDrag: (d: { id: string; drop: Drop | null } | null) => void;
+};
+
+/**
+ * A row re-renders only when something it shows changed in its own subtree: a layer, a
+ * code class or the selection there, the breakpoints, locks, collapse or drag state. On a
+ * 300-layer page an edit then redraws a handful of rows instead of all of them.
+ */
+function sameRow(a: RowProps, b: RowProps): boolean {
+  if (
+    a.id !== b.id ||
+    a.bp !== b.bp ||
+    a.depth !== b.depth ||
+    a.editing !== b.editing ||
+    a.collapsed !== b.collapsed ||
+    a.drag !== b.drag ||
+    a.locked !== b.locked ||
+    a.doc.breakpoints !== b.doc.breakpoints
+  )
+    return false;
+  const selA = new Set(a.selection);
+  const selB = new Set(b.selection);
+  const stack = [b.id];
+  while (stack.length) {
+    const id = stack.pop() as string;
+    const node = b.doc.nodes[id];
+    if (
+      a.doc.nodes[id] !== node ||
+      a.classes.get(id) !== b.classes.get(id) ||
+      selA.has(id) !== selB.has(id)
+    )
+      return false;
+    if (node) stack.push(...childrenOf(node));
+  }
+  return true;
+}
+
+const LayerRow = memo(function LayerRow(props: RowProps) {
   const { doc, id, bp, depth } = props;
+  const live = useContext(LiveProps);
+  /** The panel's current props, for event handlers (this render may be older). */
+  const now = () => live?.current ?? props;
   const node = doc.nodes[id];
   const [renaming, setRenaming] = useState(false);
   const row = useRef<HTMLDivElement>(null);
@@ -235,8 +297,8 @@ function LayerRow(
           const d = props.drag;
           props.setDrag(null);
           if (!d?.drop) return;
-          const ops = layerDropOps(doc, d.id, d.drop);
-          if (ops.length) props.apply(ops);
+          const ops = layerDropOps(now().doc, d.id, d.drop);
+          if (ops.length) now().apply(ops);
         }}
         onDragEnd={() => props.setDrag(null)}
         className={cn(
@@ -282,7 +344,7 @@ function LayerRow(
             onBlur={(e) => {
               setRenaming(false);
               if (e.target.value !== node.name)
-                props.apply([
+                now().apply([
                   { op: "setNodeFields", nodeId: id, fields: { name: e.target.value } },
                 ]);
             }}
@@ -295,12 +357,13 @@ function LayerRow(
           <button
             type="button"
             onClick={(e) => {
+              const { selection, onSelect } = now();
               const ids = e.shiftKey
-                ? props.selection.includes(id)
-                  ? props.selection.filter((s) => s !== id)
-                  : [...props.selection, id]
+                ? selection.includes(id)
+                  ? selection.filter((s) => s !== id)
+                  : [...selection, id]
                 : [id];
-              props.onSelect(ids, bp);
+              onSelect(ids, bp);
             }}
             onDoubleClick={() => setRenaming(true)}
             className="flex min-w-0 flex-1 items-center gap-1.5 text-left outline-none focus-visible:underline"
@@ -320,7 +383,7 @@ function LayerRow(
           type="button"
           aria-label={`${locked ? "Unlock" : "Lock"} ${label}`}
           aria-pressed={locked}
-          onClick={() => props.onToggleLock(id)}
+          onClick={() => now().onToggleLock(id)}
           className={cn(
             "grid size-5 shrink-0 place-items-center rounded text-muted-foreground hover:text-foreground",
             !locked && "opacity-0 group-hover:opacity-100 focus-visible:opacity-100",
@@ -333,7 +396,7 @@ function LayerRow(
           aria-label={`${hidden ? "Show" : "Hide"} ${label} on ${BREAKPOINT_LABEL[bp]}`}
           aria-pressed={hidden}
           onClick={() =>
-            props.apply([
+            now().apply([
               {
                 op: "setNodeFields",
                 nodeId: id,
@@ -359,7 +422,7 @@ function LayerRow(
       ) : null}
     </div>
   );
-}
+}, sameRow);
 
 /** Locks are an editing aid kept per browser and project; they don't change the site. */
 export function useLocks(projectId: string | undefined) {

@@ -1,6 +1,6 @@
 "use client";
 
-import { type BreakpointId, newId } from "@truframe/model";
+import { type BreakpointId, newId, type ProjectDocument } from "@truframe/model";
 import type { Op } from "@truframe/ops";
 import { fontFamilies, RenderedFrame } from "@truframe/renderer";
 import {
@@ -34,13 +34,14 @@ import type { EditorHost } from "./host.ts";
 import { createNodes, type InsertTool, insertOps, insertTarget } from "./insert.ts";
 import { InsertToolbar } from "./insert-toolbar.tsx";
 import type { ComponentActions } from "./inspector/component-sections.tsx";
-import { Inspector } from "./inspector/inspector.tsx";
+import { CanvasPaint, Inspector } from "./inspector/inspector.tsx";
 import { LayersPanel, useLocks } from "./layers-panel.tsx";
 import { measureLayer } from "./measure-dom.ts";
 import { PagesPanel } from "./pages-panel.tsx";
 import { ComingSoon, LeftPanel, type LeftTab, RightPanel, type RightTab } from "./panels.tsx";
 import { PreviewOverlay } from "./preview.tsx";
 import { SelectionLayer } from "./selection-layer.tsx";
+import { shareDoc } from "./share-doc.ts";
 import { VariablesPanel } from "./variables-panel.tsx";
 
 const EMPTY_CLASSES: ReadonlyMap<string, string> = new Map();
@@ -59,7 +60,13 @@ export type DesignEditorProps = {
 };
 
 export function DesignEditor({ host, backHref, Link }: DesignEditorProps) {
-  const realDoc = host.doc;
+  // Unchanged layers keep their identity between versions, so memoized rows skip them and an
+  // identical version (the room confirming our own change) doesn't recompile.
+  const sharedDoc = useRef<ProjectDocument | null>(null);
+  const realDoc = useMemo(() => {
+    sharedDoc.current = shareDoc(sharedDoc.current, host.doc);
+    return sharedDoc.current;
+  }, [host.doc]);
   /** The main component being edited on the canvas, and the variant shown. */
   const [editingMain, setEditingMain] = useState<{
     componentId: string;
@@ -116,7 +123,12 @@ export function DesignEditor({ host, backHref, Link }: DesignEditorProps) {
   const activeBreakpoint = doc?.breakpoints[breakpoint] ? breakpoint : "desktop";
 
   const page = doc?.pages.find((p) => p.id === activePageId);
-  const compiled = useCompiled(doc);
+  // The project compiles once and feeds Code View, Preview and (normally) the canvas; while a
+  // main component is edited, the canvas shows its view document, compiled on its own channel.
+  const projectCompiled = useCompiled(realDoc);
+  const viewCompiled = useCompiled(viewDoc, "main-component");
+  const compiled = viewDoc ? viewCompiled : projectCompiled;
+  const projectOutput = projectCompiled.status === "loading" ? null : projectCompiled.output;
   const locks = useLocks(doc?.id);
   // Layers removed by undo or by someone else drop out of the selection.
   const liveSelection = useMemo(
@@ -411,11 +423,11 @@ export function DesignEditor({ host, backHref, Link }: DesignEditorProps) {
               }
             >
               <CodeView
-                files={output?.files ?? {}}
+                files={projectOutput?.files ?? {}}
                 defaultPath={
-                  (page && output?.spans.find((sp) => sp.node === page.root)?.path) ?? null
+                  (page && projectOutput?.spans.find((sp) => sp.node === page.root)?.path) ?? null
                 }
-                error={compiled.status === "error" ? compiled.message : null}
+                error={projectCompiled.status === "error" ? projectCompiled.message : null}
               />
             </Suspense>
           )}
@@ -427,23 +439,25 @@ export function DesignEditor({ host, backHref, Link }: DesignEditorProps) {
             content={{
               inspect:
                 doc && page ? (
-                  <Inspector
-                    doc={doc}
-                    page={page}
-                    selection={liveSelection}
-                    bp={activeBreakpoint}
-                    onBreakpointChange={setBreakpoint}
-                    onSelectionChange={setSelection}
-                    apply={(ops) => {
-                      apply(ops);
-                    }}
-                    guides={guides}
-                    onGuidesChange={setGuides}
-                    components={componentActions}
-                    assets={host.assets}
-                    exports={host.exports}
-                    pickers={host.pickers}
-                  />
+                  <CanvasPaint.Provider value={output}>
+                    <Inspector
+                      doc={doc}
+                      page={page}
+                      selection={liveSelection}
+                      bp={activeBreakpoint}
+                      onBreakpointChange={setBreakpoint}
+                      onSelectionChange={setSelection}
+                      apply={(ops) => {
+                        apply(ops);
+                      }}
+                      guides={guides}
+                      onGuidesChange={setGuides}
+                      components={componentActions}
+                      assets={host.assets}
+                      exports={host.exports}
+                      pickers={host.pickers}
+                    />
+                  </CanvasPaint.Provider>
                 ) : null,
               agent: (
                 <ComingSoon title="Agent">The design agent arrives in a later update.</ComingSoon>
@@ -465,6 +479,7 @@ export function DesignEditor({ host, backHref, Link }: DesignEditorProps) {
       {previewing && realDoc && host.preview ? (
         <PreviewOverlay
           doc={realDoc}
+          compiled={projectCompiled}
           host={host}
           origin={host.preview.origin}
           initialPageId={(main ? pageId : activePageId) ?? realDoc.pages[0]?.id ?? ""}
