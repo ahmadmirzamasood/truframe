@@ -61,7 +61,7 @@
 - [x] **P5-7** Preview: full-screen on usercontent origin, Desktop/Tablet/Mobile/side by side, links between pages. *Done when* e2e passes and T3 isolation test passes. (`e2e/editor-preview.spec.ts`, T3 for Preview. Locally only: staging/production need the app and usercontent hostnames, see `docs/runbooks/cloudflare-setup.md` step 6.)
 
 ## P6 Code View (read-only, live)
-- [ ] **P6-1** Code View: file tree, read-only CodeMirror 6 (TSX, Astro, CSS, JSON), search across files. *Done when* shows the compiled project for both frameworks.
+- [x] **P6-1** Code View: file tree, read-only CodeMirror 6 (TSX, Astro, CSS, JSON), search across files. *Done when* shows the compiled project for both frameworks.
 - [ ] **P6-2** Live compile in a Web Worker, incremental per page/component. *Done when* design→code < 300 ms p50 on a 300-layer page.
 - [ ] **P6-3** Reveal in design (click code → select layer) and reveal in code (select layer → scroll to code) using `spans`. *Done when* e2e both directions.
 - [ ] **P6-4** Read-only UX: lock indicator, copy rules per plan (see `docs/product/BILLING.md`), "Export / push to GitHub to edit code" call to action. *Done when* e2e.
