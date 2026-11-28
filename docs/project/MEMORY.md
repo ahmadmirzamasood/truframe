@@ -183,6 +183,7 @@
 - 2026-11-28: The Windows `next dev` reload loop came back after every branch switch and after restarting the sites worker under a running web server; restarting the web server (workers already up) fixed it each time.
 
 - 2026-11-28: Animation model (P6A-1). An animation is a node field edited with `setNodeFields`, not a new op: validation, undo and the Loro binding (which stores whole field values) come for free. A shape error in a field becomes `INVALID_OP`; an integrity rule (stagger on a non-container) becomes `INVALID_DOCUMENT`. Integrity rules that depend on children counts would make deleting the last child invalid, so stagger is a node-type rule.
+- 2026-11-28: Animation output (P6A-2). Tailwind v4 (lightningcss) keeps `@keyframes` inside `@media` inside `@layer base` from an imported file, and `@supports (animation-timeline: view())`, but rewrites values (`600ms` → `.6s`, `entry 0% cover 35%` → `entry cover 35%`): check built CSS by meaning, not text. `@media (scripting: enabled)` replaces a "JS is here" class on `<html>`, which in Next.js would need an inline head script and `suppressHydrationWarning`. In this environment's Bash, heredocs fed to Python lost backslashes and non-ASCII (stdin read as cp1252): write helper scripts with the Write tool and read stdin as UTF-8.
 
 ## Dependencies added (name, license, why)
 - turbo 2.11.13 (MIT): task runner. typescript 5.9.3 (Apache-2.0). wrangler 4.166.0 (MIT OR Apache-2.0): Workers dev/deploy. [P0-1]

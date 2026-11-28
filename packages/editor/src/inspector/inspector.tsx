@@ -45,6 +45,7 @@ import { measureLayer } from "../measure-dom.ts";
 import { IconPicker, SvgPreview } from "../pickers.tsx";
 import { parentMap } from "../tree.ts";
 import { valueAt } from "../variables.ts";
+import { AnimationSection } from "./animation-section.tsx";
 import { EmbedSection, PageCodeSection } from "./code-sections.tsx";
 import {
   type ComponentActions,
@@ -1817,6 +1818,7 @@ export function Inspector(props: InspectorProps) {
         />
         <PositionSize ctx={ctx} parentId={parentId} />
         <LayerSection ctx={ctx} />
+        <AnimationSection doc={doc} node={node} apply={props.apply} />
         <Accessibility ctx={ctx} />
       </div>
     );
@@ -1884,6 +1886,7 @@ export function Inspector(props: InspectorProps) {
       ) : null}
       <Shadow ctx={ctx} />
       {container ? <LayerSection ctx={ctx} /> : null}
+      <AnimationSection doc={doc} node={node} apply={props.apply} />
       <Accessibility ctx={ctx} />
       {node.type === "image" ? (
         <Arrange ctx={ctx} onSelectionChange={props.onSelectionChange} />

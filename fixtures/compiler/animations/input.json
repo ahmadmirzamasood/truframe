@@ -1,0 +1,536 @@
+{
+  "schemaVersion": 1,
+  "id": "0199a0b2-7c3d-7e4f-8a5b-6c7d8e9f0a1b",
+  "framework": "nextjs",
+  "settings": {
+    "lang": "en"
+  },
+  "breakpoints": {
+    "desktop": {
+      "width": 1200
+    },
+    "tablet": {
+      "width": 810
+    },
+    "mobile": {
+      "width": 390
+    }
+  },
+  "pages": [
+    {
+      "id": "id1",
+      "name": "Home",
+      "path": "/",
+      "seo": {
+        "title": "Home",
+        "description": "",
+        "ogImage": null,
+        "noindex": false
+      },
+      "root": "id2"
+    }
+  ],
+  "nodes": {
+    "id2": {
+      "id": "id2",
+      "type": "frame",
+      "name": "Body",
+      "tag": "main",
+      "style": {
+        "desktop": {
+          "display": "stack",
+          "direction": "column",
+          "width": {
+            "type": "fill"
+          },
+          "height": {
+            "type": "fit"
+          }
+        }
+      },
+      "children": [
+        "n1",
+        "n2",
+        "n3",
+        "n4",
+        "n5",
+        "n6",
+        "n7",
+        "n8",
+        "n9",
+        "n10",
+        "n11",
+        "n15",
+        "n18"
+      ]
+    },
+    "n1": {
+      "type": "text",
+      "name": "Fade in",
+      "tag": "h2",
+      "style": {
+        "desktop": {
+          "fontSize": 24
+        }
+      },
+      "content": [
+        {
+          "text": "Fade in"
+        }
+      ],
+      "id": "n1",
+      "animation": {
+        "trigger": "inView",
+        "from": {
+          "opacity": 0
+        },
+        "duration": 600,
+        "delay": 0,
+        "easing": "ease-out",
+        "once": true,
+        "disabledOn": []
+      }
+    },
+    "n2": {
+      "type": "text",
+      "name": "Slide up",
+      "tag": "h2",
+      "style": {
+        "desktop": {
+          "fontSize": 24
+        }
+      },
+      "content": [
+        {
+          "text": "Slide up"
+        }
+      ],
+      "id": "n2",
+      "animation": {
+        "trigger": "load",
+        "from": {
+          "opacity": 0,
+          "y": 24
+        },
+        "duration": 600,
+        "delay": 0,
+        "easing": "ease-out",
+        "once": true,
+        "disabledOn": []
+      }
+    },
+    "n3": {
+      "type": "text",
+      "name": "Slide in left",
+      "tag": "h2",
+      "style": {
+        "desktop": {
+          "fontSize": 24
+        }
+      },
+      "content": [
+        {
+          "text": "Slide in left"
+        }
+      ],
+      "id": "n3",
+      "animation": {
+        "trigger": "inView",
+        "from": {
+          "opacity": 0,
+          "x": -40
+        },
+        "duration": 600,
+        "delay": 0,
+        "easing": "ease-out",
+        "once": true,
+        "disabledOn": []
+      }
+    },
+    "n4": {
+      "type": "text",
+      "name": "Slide in right",
+      "tag": "h2",
+      "style": {
+        "desktop": {
+          "fontSize": 24
+        }
+      },
+      "content": [
+        {
+          "text": "Slide in right"
+        }
+      ],
+      "id": "n4",
+      "animation": {
+        "trigger": "load",
+        "from": {
+          "opacity": 0,
+          "x": 40
+        },
+        "duration": 600,
+        "delay": 0,
+        "easing": "ease-out",
+        "once": true,
+        "disabledOn": []
+      }
+    },
+    "n5": {
+      "type": "text",
+      "name": "Scale in",
+      "tag": "h2",
+      "style": {
+        "desktop": {
+          "fontSize": 24
+        }
+      },
+      "content": [
+        {
+          "text": "Scale in"
+        }
+      ],
+      "id": "n5",
+      "animation": {
+        "trigger": "inView",
+        "from": {
+          "opacity": 0,
+          "scale": 0.9
+        },
+        "duration": 600,
+        "delay": 0,
+        "easing": "ease-out",
+        "once": true,
+        "disabledOn": []
+      }
+    },
+    "n6": {
+      "type": "text",
+      "name": "Blur in",
+      "tag": "h2",
+      "style": {
+        "desktop": {
+          "fontSize": 24
+        }
+      },
+      "content": [
+        {
+          "text": "Blur in"
+        }
+      ],
+      "id": "n6",
+      "animation": {
+        "trigger": "load",
+        "from": {
+          "opacity": 0,
+          "blur": 8
+        },
+        "duration": 600,
+        "delay": 0,
+        "easing": "ease-out",
+        "once": true,
+        "disabledOn": []
+      }
+    },
+    "n7": {
+      "type": "text",
+      "name": "Every time",
+      "tag": "p",
+      "style": {
+        "desktop": {}
+      },
+      "content": [
+        {
+          "text": "Every time"
+        }
+      ],
+      "id": "n7",
+      "animation": {
+        "trigger": "inView",
+        "from": {
+          "opacity": 0,
+          "y": 40
+        },
+        "duration": 600,
+        "delay": 0,
+        "easing": "ease-in-out",
+        "once": false,
+        "disabledOn": []
+      }
+    },
+    "n8": {
+      "type": "text",
+      "name": "Loop",
+      "tag": "p",
+      "style": {
+        "desktop": {}
+      },
+      "content": [
+        {
+          "text": "Loop"
+        }
+      ],
+      "id": "n8",
+      "animation": {
+        "trigger": "loop",
+        "from": {
+          "scale": 1.05
+        },
+        "duration": 1500,
+        "delay": 0,
+        "easing": "ease-in-out",
+        "once": true,
+        "disabledOn": []
+      }
+    },
+    "n9": {
+      "type": "text",
+      "name": "Custom",
+      "tag": "p",
+      "style": {
+        "desktop": {}
+      },
+      "content": [
+        {
+          "text": "Custom"
+        }
+      ],
+      "id": "n9",
+      "animation": {
+        "trigger": "load",
+        "from": {
+          "opacity": 0.2,
+          "x": -12,
+          "y": 8,
+          "scale": 0.95,
+          "rotate": -4,
+          "blur": 2
+        },
+        "duration": 450,
+        "delay": 250,
+        "easing": "back-out",
+        "once": true,
+        "disabledOn": []
+      }
+    },
+    "n10": {
+      "type": "text",
+      "name": "Off on mobile",
+      "tag": "p",
+      "style": {
+        "desktop": {}
+      },
+      "content": [
+        {
+          "text": "Off on mobile"
+        }
+      ],
+      "id": "n10",
+      "animation": {
+        "trigger": "load",
+        "from": {
+          "opacity": 0
+        },
+        "duration": 600,
+        "delay": 0,
+        "easing": "linear",
+        "once": true,
+        "disabledOn": [
+          "mobile"
+        ]
+      }
+    },
+    "n11": {
+      "type": "text",
+      "name": "Off on tablet",
+      "tag": "p",
+      "style": {
+        "desktop": {}
+      },
+      "content": [
+        {
+          "text": "Off on tablet"
+        }
+      ],
+      "id": "n11",
+      "animation": {
+        "trigger": "load",
+        "from": {
+          "opacity": 0
+        },
+        "duration": 600,
+        "delay": 0,
+        "easing": "ease",
+        "once": true,
+        "disabledOn": [
+          "tablet"
+        ]
+      }
+    },
+    "n12": {
+      "type": "frame",
+      "name": "One",
+      "tag": "div",
+      "style": {
+        "desktop": {
+          "padding": {
+            "top": 16,
+            "right": 16,
+            "bottom": 16,
+            "left": 16
+          }
+        }
+      },
+      "children": [],
+      "id": "n12"
+    },
+    "n13": {
+      "type": "frame",
+      "name": "Two",
+      "tag": "div",
+      "style": {
+        "desktop": {
+          "padding": {
+            "top": 16,
+            "right": 16,
+            "bottom": 16,
+            "left": 16
+          }
+        }
+      },
+      "children": [],
+      "id": "n13"
+    },
+    "n14": {
+      "type": "frame",
+      "name": "Three",
+      "tag": "div",
+      "style": {
+        "desktop": {
+          "padding": {
+            "top": 16,
+            "right": 16,
+            "bottom": 16,
+            "left": 16
+          }
+        }
+      },
+      "children": [],
+      "id": "n14"
+    },
+    "n15": {
+      "type": "frame",
+      "name": "Cards",
+      "tag": "div",
+      "style": {
+        "desktop": {
+          "display": "grid",
+          "gridColumns": 3,
+          "gap": 16
+        }
+      },
+      "children": [
+        "n12",
+        "n13",
+        "n14"
+      ],
+      "id": "n15",
+      "animation": {
+        "trigger": "inView",
+        "from": {
+          "opacity": 0,
+          "y": 24
+        },
+        "duration": 600,
+        "delay": 50,
+        "easing": "ease-out",
+        "once": true,
+        "disabledOn": [],
+        "staggerChildren": 100
+      }
+    },
+    "n16": {
+      "type": "text",
+      "name": "Badge text",
+      "tag": "span",
+      "style": {
+        "desktop": {}
+      },
+      "content": [
+        {
+          "text": "New"
+        }
+      ],
+      "id": "n16",
+      "animation": {
+        "trigger": "load",
+        "from": {
+          "opacity": 0
+        },
+        "duration": 600,
+        "delay": 0,
+        "easing": "ease-in",
+        "once": true,
+        "disabledOn": []
+      }
+    },
+    "n17": {
+      "type": "frame",
+      "name": "Badge",
+      "tag": "div",
+      "style": {
+        "desktop": {
+          "padding": {
+            "top": 4,
+            "right": 8,
+            "bottom": 4,
+            "left": 8
+          },
+          "radius": 999
+        }
+      },
+      "children": [
+        "n16"
+      ],
+      "id": "n17"
+    },
+    "n18": {
+      "type": "instance",
+      "name": "Badge",
+      "tag": "div",
+      "style": {
+        "desktop": {}
+      },
+      "componentId": "badge",
+      "overrides": {
+        "variant": {},
+        "props": {},
+        "nodes": {}
+      },
+      "id": "n18",
+      "animation": {
+        "trigger": "inView",
+        "from": {
+          "opacity": 0,
+          "scale": 0.9
+        },
+        "duration": 600,
+        "delay": 0,
+        "easing": "ease-out",
+        "once": true,
+        "disabledOn": []
+      }
+    }
+  },
+  "components": {
+    "badge": {
+      "id": "badge",
+      "name": "Badge",
+      "root": "n17",
+      "props": [],
+      "variantProps": [],
+      "variants": {}
+    }
+  },
+  "variables": {},
+  "assets": {}
+}

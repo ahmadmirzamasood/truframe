@@ -1,4 +1,60 @@
 {
+  "animations": {
+    "blankPic": {
+      "classes": "tf-anim tf-view tf-blur",
+      "mobile": false,
+      "tablet": false,
+      "vars": "--tf-opacity: 0; --tf-x: -40px; --tf-y: 24px; --tf-scale: 0.9; --tf-rotate: -5deg; --tf-blur: 8px; --tf-delay: 740ms; --tf-ease: cubic-bezier(0.34,1.56,0.64,1);"
+    },
+    "card": {
+      "classes": "tf-anim tf-view tf-blur",
+      "mobile": false,
+      "tablet": false,
+      "vars": "--tf-opacity: 0; --tf-x: -40px; --tf-y: 24px; --tf-scale: 0.9; --tf-rotate: -5deg; --tf-blur: 8px; --tf-delay: 340ms; --tf-ease: cubic-bezier(0.34,1.56,0.64,1);"
+    },
+    "cta": {
+      "classes": "tf-anim tf-view tf-blur",
+      "mobile": false,
+      "tablet": false,
+      "vars": "--tf-opacity: 0; --tf-x: -40px; --tf-y: 24px; --tf-scale: 0.9; --tf-rotate: -5deg; --tf-blur: 8px; --tf-delay: 260ms; --tf-ease: cubic-bezier(0.34,1.56,0.64,1);"
+    },
+    "icon": {
+      "classes": "tf-anim tf-view tf-blur",
+      "mobile": false,
+      "tablet": false,
+      "vars": "--tf-opacity: 0; --tf-x: -40px; --tf-y: 24px; --tf-scale: 0.9; --tf-rotate: -5deg; --tf-blur: 8px; --tf-delay: 420ms; --tf-ease: cubic-bezier(0.34,1.56,0.64,1);"
+    },
+    "mail": {
+      "classes": "tf-anim tf-loop",
+      "mobile": true,
+      "tablet": true,
+      "vars": "--tf-scale: 1.05; --tf-duration: 1200ms; --tf-ease: ease-in-out;"
+    },
+    "map": {
+      "classes": "tf-anim tf-view tf-blur",
+      "mobile": false,
+      "tablet": false,
+      "vars": "--tf-opacity: 0; --tf-x: -40px; --tf-y: 24px; --tf-scale: 0.9; --tf-rotate: -5deg; --tf-blur: 8px; --tf-delay: 500ms; --tf-ease: cubic-bezier(0.34,1.56,0.64,1);"
+    },
+    "pic": {
+      "classes": "tf-anim tf-view tf-blur",
+      "mobile": false,
+      "tablet": false,
+      "vars": "--tf-opacity: 0; --tf-x: -40px; --tf-y: 24px; --tf-scale: 0.9; --tf-rotate: -5deg; --tf-blur: 8px; --tf-delay: 180ms; --tf-ease: cubic-bezier(0.34,1.56,0.64,1);"
+    },
+    "title": {
+      "classes": "tf-anim tf-view tf-blur",
+      "mobile": false,
+      "tablet": false,
+      "vars": "--tf-opacity: 0; --tf-x: -40px; --tf-y: 24px; --tf-scale: 0.9; --tf-rotate: -5deg; --tf-blur: 8px; --tf-delay: 100ms; --tf-ease: cubic-bezier(0.34,1.56,0.64,1);"
+    },
+    "widget": {
+      "classes": "tf-anim tf-view tf-blur",
+      "mobile": false,
+      "tablet": false,
+      "vars": "--tf-opacity: 0; --tf-x: -40px; --tf-y: 24px; --tf-scale: 0.9; --tf-rotate: -5deg; --tf-blur: 8px; --tf-delay: 580ms; --tf-ease: cubic-bezier(0.34,1.56,0.64,1);"
+    }
+  },
   "assets": [
     {
       "assetId": "photo",
@@ -75,82 +131,82 @@
       "start": 150
     },
     {
-      "end": 3616,
+      "end": 5507,
       "node": "id2",
       "path": "app/page.tsx",
       "start": 389
     },
     {
-      "end": 3602,
+      "end": 5493,
       "node": "hero",
       "path": "app/page.tsx",
       "start": 448
     },
     {
-      "end": 1515,
+      "end": 1724,
       "node": "title",
       "path": "app/page.tsx",
       "start": 1217
     },
     {
-      "end": 1699,
+      "end": 2117,
       "node": "pic",
       "path": "app/page.tsx",
-      "start": 1526
+      "start": 1735
     },
     {
-      "end": 1817,
+      "end": 2479,
       "node": "cta",
       "path": "app/page.tsx",
-      "start": 1710
+      "start": 2128
     },
     {
-      "end": 1799,
+      "end": 2461,
       "node": "ctaLabel",
       "path": "app/page.tsx",
-      "start": 1759
+      "start": 2421
     },
     {
-      "end": 1998,
+      "end": 2892,
       "node": "card",
       "path": "app/page.tsx",
-      "start": 1828
+      "start": 2490
     },
     {
-      "end": 1981,
+      "end": 2875,
       "node": "cardTitle",
       "path": "app/page.tsx",
-      "start": 1874
+      "start": 2768
     },
     {
-      "end": 2659,
+      "end": 3762,
       "node": "icon",
       "path": "app/page.tsx",
-      "start": 2009
+      "start": 2903
     },
     {
-      "end": 2956,
+      "end": 4291,
       "node": "map",
       "path": "app/page.tsx",
-      "start": 2670
+      "start": 3773
     },
     {
-      "end": 3297,
+      "end": 4864,
       "node": "widget",
       "path": "app/page.tsx",
-      "start": 2967
+      "start": 4302
     },
     {
-      "end": 3509,
+      "end": 5157,
       "node": "mail",
       "path": "app/page.tsx",
-      "start": 3308
+      "start": 4875
     },
     {
-      "end": 3583,
+      "end": 5474,
       "node": "blankPic",
       "path": "app/page.tsx",
-      "start": 3520
+      "start": 5168
     },
     {
       "end": 517,

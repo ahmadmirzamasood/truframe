@@ -8,6 +8,8 @@
  */
 import { createHash } from "node:crypto";
 import {
+  ANIMATION_PRESETS,
+  type Animation,
   createDocument,
   type Node,
   type Page,
@@ -711,6 +713,76 @@ export function compilerFixtures(): Record<string, ProjectDocument> {
         ),
       ),
     ]),
+
+    // P6A-2: every trigger and preset, stagger, per-breakpoint switches, a component layer and
+    // an instance.
+    animations: build((b) => {
+      const anim = (
+        trigger: Animation["trigger"],
+        from: Animation["from"],
+        more: Partial<Animation> = {},
+      ): Animation => ({
+        trigger,
+        from,
+        duration: 600,
+        delay: 0,
+        easing: "ease-out",
+        once: true,
+        disabledOn: [],
+        ...more,
+      });
+      const presets = ANIMATION_PRESETS.map((p, i) => {
+        const id = b.text(p.name, p.name, { fontSize: 24 }, "h2");
+        const node = b.doc.nodes[id];
+        if (node) node.animation = anim(i % 2 ? "load" : "inView", p.from);
+        return id;
+      });
+      const every = b.text("Every time", "Every time");
+      const loop = b.text("Loop", "Loop");
+      const custom = b.text("Custom", "Custom");
+      const off = b.text("Off on mobile", "Off on mobile");
+      const offTablet = b.text("Off on tablet", "Off on tablet");
+      const cards = ["One", "Two", "Three"].map((t) => b.frame(t, { padding: pad(16, 16) }, []));
+      const grid = b.frame("Cards", { display: "grid", gridColumns: 3, gap: 16 }, cards);
+      const badgeText = b.text("Badge text", "New", {}, "span");
+      const badge = b.frame("Badge", { padding: pad(4, 8), radius: 999 }, [badgeText]);
+      b.doc.components.badge = {
+        id: "badge",
+        name: "Badge",
+        root: badge,
+        props: [],
+        variantProps: [],
+        variants: {},
+      };
+      const instance = b.add({
+        type: "instance",
+        name: "Badge",
+        tag: "div",
+        style: { desktop: {} },
+        componentId: "badge",
+        overrides: { variant: {}, props: {}, nodes: {} },
+      });
+      const set = (id: string, a: Animation) => {
+        const node = b.doc.nodes[id];
+        if (node) node.animation = a;
+      };
+      set(every, anim("inView", { opacity: 0, y: 40 }, { once: false, easing: "ease-in-out" }));
+      set(loop, anim("loop", { scale: 1.05 }, { duration: 1500, easing: "ease-in-out" }));
+      set(
+        custom,
+        anim(
+          "load",
+          { opacity: 0.2, x: -12, y: 8, scale: 0.95, rotate: -4, blur: 2 },
+          { duration: 450, delay: 250, easing: "back-out" },
+        ),
+      );
+      set(off, anim("load", { opacity: 0 }, { disabledOn: ["mobile"], easing: "linear" }));
+      set(offTablet, anim("load", { opacity: 0 }, { disabledOn: ["tablet"], easing: "ease" }));
+      set(grid, anim("inView", { opacity: 0, y: 24 }, { staggerChildren: 100, delay: 50 }));
+      set(badgeText, anim("load", { opacity: 0 }, { easing: "ease-in" }));
+      set(instance, anim("inView", { opacity: 0, scale: 0.9 }));
+      return [...presets, every, loop, custom, off, offTablet, grid, instance];
+    }),
 
     "special-characters": build((b) => {
       b.doc.settings.lang = "de-CH";

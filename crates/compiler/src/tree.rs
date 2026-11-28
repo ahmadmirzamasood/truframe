@@ -3,6 +3,7 @@
 use std::cell::RefCell;
 use std::collections::{BTreeMap, BTreeSet};
 
+use crate::animation;
 use crate::model::{
     AssetMime, Component, EmbedSource, Hidden, ImageFit, InstanceOverrides, LinkTarget, Node,
     NodeOverride, Position, Project, PropField, PropType, PropValue, Props, Style, StyleOverride,
@@ -14,7 +15,7 @@ use crate::style::{
     AssetUrls, Bp, BpInput, Env, NodeInfo, ParentLayout, SlotFilter, apply_override, effective,
     merge, style_element,
 };
-use crate::{CompileError, NodeCss};
+use crate::{CompileError, NodeAnimation, NodeCss};
 
 /// What an HTML embed's frame may do on the published site: run scripts, submit forms and
 /// open popups, never share the page's origin.
@@ -241,6 +242,8 @@ pub struct Builder<'a> {
     pub css: BTreeMap<String, NodeCss>,
     /// Canvas CSS of component layers per instance (see `Output::instance_css`).
     pub instance_css: BTreeMap<String, BTreeMap<String, NodeCss>>,
+    /// Animations of the elements built so far (see `Output::animations`).
+    pub animations: BTreeMap<String, NodeAnimation>,
     pub asset_names: BTreeMap<String, String>,
     pub imports: Imports,
     pub assets_used: RefCell<BTreeSet<(String, AssetUse)>>,
@@ -267,6 +270,7 @@ impl<'a> Builder<'a> {
             classes,
             css: BTreeMap::new(),
             instance_css: BTreeMap::new(),
+            animations: BTreeMap::new(),
             asset_names: asset_file_names(project),
             imports: Imports::default(),
             assets_used: RefCell::new(BTreeSet::new()),
@@ -356,6 +360,24 @@ impl<'a> Builder<'a> {
         Ok((s.classes, s.css))
     }
 
+    /// Animation classes of a layer (P6A-2), recorded for the canvas on the way.
+    fn anim_classes(&mut self, id: &str, n: &Node, parent: Option<(&str, &Node)>) -> Vec<String> {
+        let Some((a, delay)) = animation::of(id, n, parent.map(|(_, p)| p)) else {
+            return Vec::new();
+        };
+        let bps = &self.project.breakpoints;
+        let (tablet, mobile) = animation::enabled(a, bps);
+        self.animations
+            .entry(id.to_string())
+            .or_insert_with(|| NodeAnimation {
+                classes: animation::base_classes(a).join(" "),
+                vars: animation::canvas_vars(a, delay),
+                tablet,
+                mobile,
+            });
+        animation::classes(a, delay, bps)
+    }
+
     fn is_component_root(&self, id: &str) -> bool {
         self.component.as_ref().is_some_and(|c| c.root == id)
     }
@@ -380,6 +402,7 @@ impl<'a> Builder<'a> {
         let (classes, mut css) = self.styled(n, &style, hidden.as_ref(), parent, filter)?;
         let mut list = vec![self.classes.get(id).cloned().unwrap_or_default()];
         list.extend(classes);
+        list.extend(self.anim_classes(id, n, parent));
         for (class, prop, value) in extra {
             list.push((*class).to_string());
             if !css.desktop.is_empty() {
@@ -723,6 +746,7 @@ impl<'a> Builder<'a> {
         self.css.entry(id.to_string()).or_insert(css);
         let mut class = vec![self.classes.get(id).cloned().unwrap_or_default()];
         class.extend(outer);
+        class.extend(self.anim_classes(id, n, parent));
         let class = class.join(" ");
 
         if !overrides.nodes.is_empty() {
@@ -1079,6 +1103,7 @@ impl<'a> Builder<'a> {
                 let (classes, _) = self.styled(n, &style, n.hidden(), parent_node, filter)?;
                 let mut list = vec![self.classes.get(&nid).cloned().unwrap_or_default()];
                 list.extend(classes);
+                list.extend(self.anim_classes(&nid, n, parent_node));
                 let (k, v) = (js_string(key), js_string(&list.join(" ")));
                 let one = format!("  {k}: {v},");
                 if one.len() <= crate::printer::PRINT_WIDTH {

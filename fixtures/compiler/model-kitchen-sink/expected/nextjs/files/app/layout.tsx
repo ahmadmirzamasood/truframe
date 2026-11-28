@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { Inter } from "next/font/google";
+import InView from "@/components/InView";
 import "./globals.css";
 
 const inter = Inter({
@@ -11,7 +12,10 @@ const inter = Inter({
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" className={`${inter.variable}`}>
-      <body>{children}</body>
+      <body>
+        <InView />
+        {children}
+      </body>
     </html>
   );
 }
