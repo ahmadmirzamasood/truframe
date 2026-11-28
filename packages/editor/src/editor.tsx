@@ -42,6 +42,7 @@ import { ComingSoon, LeftPanel, type LeftTab, RightPanel, type RightTab } from "
 import { PreviewOverlay } from "./preview.tsx";
 import { SelectionLayer } from "./selection-layer.tsx";
 import { shareDoc } from "./share-doc.ts";
+import { ownerOf } from "./tree.ts";
 import { VariablesPanel } from "./variables-panel.tsx";
 
 const EMPTY_CLASSES: ReadonlyMap<string, string> = new Map();
@@ -224,6 +225,26 @@ export function DesignEditor({ host, backHref, Link }: DesignEditorProps) {
         },
       }
     : undefined;
+  /**
+   * Reveal in design (P6-3): a click in the code selects that layer. A layer of another page
+   * opens that page; a layer of a component opens the main component, as in Design View.
+   */
+  const pickNode = (id: string | null) => {
+    if (!id || !realDoc) return;
+    const owner = ownerOf(realDoc, id);
+    if (owner?.kind === "page") {
+      setEditingMain(null);
+      setPageId(owner.id);
+    } else if (owner?.kind === "component") {
+      const c = realDoc.components[owner.id];
+      if (!c) return;
+      if (!main) setPageId(activePageId);
+      setEditingMain((m) =>
+        m?.componentId === c.id ? m : { componentId: c.id, variantKey: defaultVariantKey(c) },
+      );
+    } else return;
+    setSelection([id]);
+  };
   const insertInstance = (componentId: string) => {
     const c = realDoc?.components[componentId];
     if (!doc || !page || !c) return;
@@ -428,6 +449,9 @@ export function DesignEditor({ host, backHref, Link }: DesignEditorProps) {
                   (page && projectOutput?.spans.find((sp) => sp.node === page.root)?.path) ?? null
                 }
                 error={projectCompiled.status === "error" ? projectCompiled.message : null}
+                spans={projectOutput?.spans}
+                selectedNode={liveSelection.at(-1) ?? null}
+                onPickNode={pickNode}
               />
             </Suspense>
           )}

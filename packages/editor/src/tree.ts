@@ -50,3 +50,15 @@ function containsLink(doc: ProjectDocument, id: string): boolean {
 export function nodeAt(doc: ProjectDocument, id: string): Node | undefined {
   return doc.nodes[id];
 }
+
+/** The page or main component whose tree holds a layer (reveal in design, P6-3). */
+export type Owner = { kind: "page"; id: string } | { kind: "component"; id: string };
+
+export function ownerOf(doc: ProjectDocument, id: string, parents = parentMap(doc)): Owner | null {
+  if (!doc.nodes[id]) return null;
+  const root = pathTo(parents, id)[0];
+  const page = doc.pages.find((p) => p.root === root);
+  if (page) return { kind: "page", id: page.id };
+  const component = Object.values(doc.components).find((c) => c.root === root);
+  return component ? { kind: "component", id: component.id } : null;
+}

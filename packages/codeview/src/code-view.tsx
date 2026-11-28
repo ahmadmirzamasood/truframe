@@ -17,11 +17,16 @@ import { type KeyboardEvent, type ReactNode, useEffect, useMemo, useRef, useStat
 import { CodeEditor, type Reveal } from "./code-editor.tsx";
 import {
   buildFileTree,
+  nodeAt,
   parentFolders,
   type SearchResult,
+  type Span,
   searchFiles,
+  spanFor,
   type TreeEntry,
 } from "./files.ts";
+
+const NO_SPANS: readonly Span[] = [];
 
 export type CodeViewProps = {
   files: Readonly<Record<string, string>>;
@@ -31,6 +36,12 @@ export type CodeViewProps = {
   header?: ReactNode;
   /** Shown instead of the code when the last compile failed. */
   error?: string | null;
+  /** Where each layer's element is (reveal in code / reveal in design, P6-3). */
+  spans?: readonly Span[];
+  /** The selected layer: its code is revealed when the selection changes. */
+  selectedNode?: string | null;
+  /** A click in the code picked this layer (null: outside any layer). */
+  onPickNode?: (id: string | null) => void;
 };
 
 type Row = { entry: TreeEntry; depth: number };
@@ -44,7 +55,15 @@ function visibleRows(entries: TreeEntry[], open: ReadonlySet<string>, depth = 0)
   ]);
 }
 
-export function CodeView({ files, defaultPath, header, error }: CodeViewProps) {
+export function CodeView({
+  files,
+  defaultPath,
+  header,
+  error,
+  spans = NO_SPANS,
+  selectedNode = null,
+  onPickNode,
+}: CodeViewProps) {
   const paths = useMemo(() => Object.keys(files), [files]);
   const tree = useMemo(() => buildFileTree(paths), [paths]);
   const [chosen, setChosen] = useState<string | null>(null);
@@ -67,13 +86,40 @@ export function CodeView({ files, defaultPath, header, error }: CodeViewProps) {
   const [reveal, setReveal] = useState<Reveal | null>(null);
   const seq = useRef(0);
 
-  const openFile = (path: string, range?: { from: number; to: number }) => {
+  const openFile = (path: string, range?: { from: number; to: number }, move = true) => {
     setChosen(path);
     setOpen((prev) => new Set([...prev, ...parentFolders(path)]));
     if (range) {
       seq.current += 1;
-      setReveal({ ...range, seq: seq.current });
+      setReveal({ ...range, seq: seq.current, move });
     } else setReveal(null);
+  };
+
+  // Reveal in code: when the selected layer changes, show its element, preferring the open
+  // file, then the page's file. A layer picked in the code is only marked, not jumped to.
+  const revealed = useRef<string | null>(null);
+  const picked = useRef<string | null>(null);
+  const openRef = useRef(openPath);
+  openRef.current = openPath;
+  useEffect(() => {
+    if (!selectedNode) {
+      revealed.current = null;
+      return;
+    }
+    if (selectedNode === revealed.current) return;
+    const span = spanFor(spans, selectedNode, [openRef.current, defaultPath]);
+    if (!span) return;
+    revealed.current = selectedNode;
+    const move = picked.current !== selectedNode;
+    picked.current = null;
+    openFile(span.path, { from: span.start, to: span.end }, move);
+  }, [selectedNode, spans, defaultPath]);
+
+  const pick = (offset: number) => {
+    if (!openPath) return;
+    const id = nodeAt(spans, openPath, offset);
+    picked.current = id;
+    onPickNode?.(id);
   };
 
   return (
@@ -142,7 +188,12 @@ export function CodeView({ files, defaultPath, header, error }: CodeViewProps) {
         ) : null}
         <div className="min-h-0 flex-1">
           {openPath ? (
-            <CodeEditor path={openPath} text={files[openPath] ?? ""} reveal={reveal} />
+            <CodeEditor
+              path={openPath}
+              text={files[openPath] ?? ""}
+              reveal={reveal}
+              onPick={pick}
+            />
           ) : (
             <p className="grid h-full place-items-center text-sm text-muted-foreground">
               Compiling the project…

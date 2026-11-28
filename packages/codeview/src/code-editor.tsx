@@ -30,8 +30,12 @@ import { useEffect, useRef } from "react";
 import { languageFor } from "./files.ts";
 import { languageExtension } from "./languages.ts";
 
-/** A range to select and scroll to; `seq` makes repeated reveals of the same range work. */
-export type Reveal = { from: number; to: number; seq: number };
+/**
+ * A range to highlight; `seq` makes repeated reveals of the same range work. With `move`
+ * (the default) the cursor goes there and it scrolls into view; without, it is only marked
+ * (the user just clicked inside it).
+ */
+export type Reveal = { from: number; to: number; seq: number; move?: boolean };
 
 export type CodeEditorProps = {
   path: string;
@@ -96,6 +100,9 @@ function baseExtensions(path: string, onPick: { current: CodeEditorProps["onPick
       "aria-label": `${path} (read-only)`,
     }),
     lineNumbers(),
+    // Tailwind class lists make long lines; wrapping keeps a revealed element in view
+    // without horizontal scrolling.
+    EditorView.lineWrapping,
     highlightActiveLineGutter(),
     highlightActiveLine(),
     drawSelection(),
@@ -174,6 +181,10 @@ export function CodeEditor({ path, text, reveal, onPick }: CodeEditorProps) {
     const len = v.state.doc.length;
     const from = Math.min(reveal.from, len);
     const to = Math.min(reveal.to, len);
+    if (reveal.move === false) {
+      v.dispatch({ effects: setRevealed.of({ from, to }) });
+      return;
+    }
     v.dispatch({
       selection: EditorSelection.cursor(from),
       effects: [setRevealed.of({ from, to }), EditorView.scrollIntoView(from, { y: "center" })],

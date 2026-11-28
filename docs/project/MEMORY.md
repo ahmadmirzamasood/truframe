@@ -175,6 +175,8 @@
 - 2026-11-28: Under `next dev`, React 19.2 logs every component render to the Performance track with a **deep diff of changed props** (`addObjectDiffToProperties`), so passing the whole document as a prop makes every editor re-render expensive in dev only. On a 300-layer page a text edit took ~1,100 ms to reach Code View in dev, most of it that logging plus all ~300 Layers rows re-rendering, and the room's confirmation causing a second render and compile. Fixes: `shareDoc` (identical versions are the same object) and memoized Layers rows. Measure performance budgets on a production build: `NEXT_PUBLIC_TRUFRAME_TEST_HOOKS=1 next build`, then `next start` (local bindings work under `next start` too), and `TRUFRAME_E2E_PRODUCTION=1` for `e2e/editor-code-perf.spec.ts`. Delete `apps/web/.next` before going back to `next dev`.
 - 2026-11-28: `window.__truframeApply(ops)` (next to `__truframeDoc`) applies a transaction from e2e; it exists in dev, and in a production build only with `NEXT_PUBLIC_TRUFRAME_TEST_HOOKS=1`.
 
+- 2026-11-28: CodeMirror draws a multi-line mark decoration as one span per line, so e2e must join `.cm-tf-revealed` texts (`allTextContents`) instead of `toHaveText` on the locator. Layers rows' accessible names include the code class (`Button .button`), so match them with a regex.
+
 ## Dependencies added (name, license, why)
 - turbo 2.11.13 (MIT): task runner. typescript 5.9.3 (Apache-2.0). wrangler 4.166.0 (MIT OR Apache-2.0): Workers dev/deploy. [P0-1]
 - @biomejs/biome 2.6.8 (MIT OR Apache-2.0), vitest 5.1.1 (MIT), @playwright/test 1.65.1 (Apache-2.0), @types/node 22.20.5 (MIT). cargo-deny (MIT OR Apache-2.0) is a dev tool installed with `cargo install cargo-deny --locked`. [P0-2]
