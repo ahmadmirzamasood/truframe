@@ -38,7 +38,7 @@ import {
 import { useEffect, useMemo, useRef, useState } from "react";
 import { checkBreakpointWidth } from "../breakpoints.ts";
 import { deleteOps, duplicateOps, makeAbsoluteOps } from "../gestures.ts";
-import type { AssetHost } from "../host.ts";
+import type { AssetHost, ExportHost, ImageExportRequest } from "../host.ts";
 import { BREAKPOINT_LABEL } from "../labels.ts";
 import { parentMap } from "../tree.ts";
 import { valueAt } from "../variables.ts";
@@ -1432,6 +1432,83 @@ function Arrange(props: { ctx: Ctx; onSelectionChange: (ids: string[]) => void }
 
 // ——— Page (nothing selected) ———
 
+/** Page Export: format and scale (up to the plan's largest), exported at the editing breakpoint. */
+function ExportSection(props: {
+  exports?: ExportHost;
+  pageId: string;
+  pageName: string;
+  bp: BreakpointId;
+}) {
+  const { exports } = props;
+  const [format, setFormat] = useState<ImageExportRequest["format"]>("png");
+  const [scale, setScale] = useState(1);
+  const [maxScale, setMaxScale] = useState<number | null>(null);
+  const [status, setStatus] = useState<{ busy: boolean; problem: string | null }>({
+    busy: false,
+    problem: null,
+  });
+  useEffect(() => {
+    let live = true;
+    void exports?.maxScale().then((m) => {
+      if (live) setMaxScale(m);
+    });
+    return () => {
+      live = false;
+    };
+  }, [exports]);
+  const run = async () => {
+    if (!exports) return;
+    setStatus({ busy: true, problem: null });
+    const r = await exports.image({ pageId: props.pageId, breakpoint: props.bp, format, scale });
+    if (!r.ok) return setStatus({ busy: false, problem: r.message });
+    setStatus({ busy: false, problem: null });
+    const a = document.createElement("a");
+    a.href = r.url;
+    a.download = `${props.pageName}-${props.bp}@${scale}x.${format === "jpeg" ? "jpg" : format}`;
+    a.click();
+  };
+  return (
+    <Section title="Export">
+      <div className="grid grid-cols-2 gap-1">
+        <SelectField
+          label="Export format"
+          value={format}
+          options={[
+            { value: "png", label: "PNG" },
+            { value: "jpeg", label: "JPEG" },
+            { value: "webp", label: "WebP" },
+          ]}
+          onChange={(f) => setFormat(f as ImageExportRequest["format"])}
+        />
+        <SelectField
+          label="Export scale"
+          value={String(scale)}
+          options={[1, 2, 3, 4].map((s) => ({
+            value: String(s),
+            label: maxScale !== null && s > maxScale ? `${s}× (upgrade)` : `${s}×`,
+            disabled: maxScale !== null && s > maxScale,
+          }))}
+          onChange={(s) => setScale(Number(s))}
+        />
+      </div>
+      <Button
+        variant="outline"
+        size="sm"
+        className="h-7"
+        disabled={!exports || status.busy}
+        onClick={run}
+      >
+        {status.busy ? "Exporting…" : `Export ${props.pageName} (${BREAKPOINT_LABEL[props.bp]})`}
+      </Button>
+      {status.problem ? (
+        <p role="alert" className="text-[11px] text-destructive">
+          {status.problem}
+        </p>
+      ) : null}
+    </Section>
+  );
+}
+
 function PageInspector(props: InspectorProps & { page: Page }) {
   const { doc, page, bp } = props;
   const root = doc.nodes[page.root];
@@ -1569,39 +1646,7 @@ function PageInspector(props: InspectorProps & { page: Page }) {
           Show column guides on {BREAKPOINT_LABEL[bp]}
         </label>
       </Section>
-      <Section title="Export">
-        <div className="grid grid-cols-2 gap-1">
-          <SelectField
-            label="Export format"
-            value="png"
-            options={[
-              { value: "png", label: "PNG" },
-              { value: "jpeg", label: "JPEG" },
-              { value: "webp", label: "WebP" },
-            ]}
-            onChange={() => {}}
-          />
-          <SelectField
-            label="Export scale"
-            value="1"
-            options={[
-              { value: "1", label: "1×" },
-              { value: "2", label: "2×" },
-              { value: "3", label: "3×" },
-            ]}
-            onChange={() => {}}
-          />
-        </div>
-        <Button
-          variant="outline"
-          size="sm"
-          className="h-7"
-          disabled
-          title="Image export arrives with publishing"
-        >
-          Export {page.name}
-        </Button>
-      </Section>
+      <ExportSection exports={props.exports} pageId={page.id} pageName={page.name} bp={bp} />
       <Checks doc={doc} rootId={page.root} onSelect={(id) => props.onSelectionChange([id])} />
     </>
   );
@@ -1622,6 +1667,8 @@ export type InspectorProps = {
   components?: ComponentActions;
   /** Uploads and file URLs, when the app provides them. */
   assets?: AssetHost;
+  /** Image export, when the app provides it. */
+  exports?: ExportHost;
 };
 
 export function Inspector(props: InspectorProps) {

@@ -259,7 +259,7 @@ export function Segmented<T extends string>(props: {
 export function SelectField<T extends string>(props: {
   label: string;
   value: T | "";
-  options: readonly { value: T; label: string }[];
+  options: readonly { value: T; label: string; disabled?: boolean }[];
   onChange: (value: T) => void;
   placeholder?: string;
 }) {
@@ -272,7 +272,7 @@ export function SelectField<T extends string>(props: {
     >
       {props.value === "" ? <option value="">{props.placeholder ?? "—"}</option> : null}
       {props.options.map((o) => (
-        <option key={o.value} value={o.value}>
+        <option key={o.value} value={o.value} disabled={o.disabled}>
           {o.label}
         </option>
       ))}

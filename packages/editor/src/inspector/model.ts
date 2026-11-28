@@ -273,15 +273,54 @@ function colorsIn(p: Props): string[] {
   return out.filter((c): c is string => typeof c === "string");
 }
 
-/** Every literal color on a page (Selection colors) with how often it is used, most used first. */
+/** Style overrides set on the layers inside an instance (they are the page's colors too). */
+function instanceOverrideStyles(n: Node) {
+  if (n.type !== "instance") return [];
+  return Object.entries(n.overrides.nodes).flatMap(([layer, o]) =>
+    o.style ? [{ layer, override: o, style: o.style }] : [],
+  );
+}
+
+/**
+ * Every literal color on a page (Selection colors) with how often it is used, most used first:
+ * layer styles at every breakpoint and the style overrides of component instances. Colors
+ * inside a component's main belong to the component, not the page.
+ */
 export function pageColors(doc: ProjectDocument, rootId: string): [string, number][] {
   const counts = new Map<string, number>();
+  const count = (p: Props | undefined) => {
+    if (p) for (const c of colorsIn(p)) counts.set(c, (counts.get(c) ?? 0) + 1);
+  };
   for (const n of subtree(doc, rootId))
     for (const bp of BREAKPOINTS) {
-      const p = n.style[bp];
-      if (p) for (const c of colorsIn(p)) counts.set(c, (counts.get(c) ?? 0) + 1);
+      count(n.style[bp]);
+      for (const o of instanceOverrideStyles(n)) count(o.style[bp]);
     }
   return [...counts.entries()].sort((a, b) => b[1] - a[1] || (a[0] < b[0] ? -1 : 1));
+}
+
+/** The color props of `p` with one literal color swapped; unchanged keys are left out. */
+function swapColorProps(p: Props, from: string, to: string): Partial<Props> {
+  const swap = <T>(c: T): T => (c === from ? (to as T) : c);
+  const out: Partial<Props> = {};
+  const set = <K extends PropKey>(key: K, before: Props[K], after: Props[K]) => {
+    if (JSON.stringify(before) !== JSON.stringify(after)) out[key] = after;
+  };
+  if (p.textColor !== undefined) set("textColor", p.textColor, swap(p.textColor));
+  if (p.fill?.type === "solid") set("fill", p.fill, { ...p.fill, color: swap(p.fill.color) });
+  if (p.fill?.type === "linearGradient")
+    set("fill", p.fill, {
+      ...p.fill,
+      stops: p.fill.stops.map((s) => ({ ...s, color: swap(s.color) })),
+    });
+  if (p.border) set("border", p.border, { ...p.border, color: swap(p.border.color) });
+  if (p.shadows)
+    set(
+      "shadows",
+      p.shadows,
+      p.shadows.map((s) => ({ ...s, color: swap(s.color) })),
+    );
+  return out;
 }
 
 /** Replaces one literal color everywhere on the page, in one transaction. */
@@ -291,31 +330,36 @@ export function replaceColorOps(
   from: string,
   to: string,
 ): Op[] {
-  const swap = <T>(c: T): T => (c === from ? (to as T) : c);
   const ops: Op[] = [];
-  for (const n of subtree(doc, rootId))
+  for (const n of subtree(doc, rootId)) {
     for (const bp of BREAKPOINTS) {
       const p = n.style[bp];
       if (!p) continue;
-      const set = (key: PropKey, before: unknown, after: unknown) => {
-        if (JSON.stringify(before) !== JSON.stringify(after))
-          ops.push({ op: "setProp", nodeId: n.id, breakpoint: bp, key, value: after });
-      };
-      if (p.textColor !== undefined) set("textColor", p.textColor, swap(p.textColor));
-      if (p.fill?.type === "solid") set("fill", p.fill, { ...p.fill, color: swap(p.fill.color) });
-      if (p.fill?.type === "linearGradient")
-        set("fill", p.fill, {
-          ...p.fill,
-          stops: p.fill.stops.map((s) => ({ ...s, color: swap(s.color) })),
-        });
-      if (p.border) set("border", p.border, { ...p.border, color: swap(p.border.color) });
-      if (p.shadows)
-        set(
-          "shadows",
-          p.shadows,
-          p.shadows.map((s) => ({ ...s, color: swap(s.color) })),
-        );
+      for (const [key, value] of Object.entries(swapColorProps(p, from, to)))
+        ops.push({ op: "setProp", nodeId: n.id, breakpoint: bp, key: key as PropKey, value });
     }
+    for (const { layer, override, style } of instanceOverrideStyles(n)) {
+      let changed = false;
+      const next = { ...style };
+      for (const bp of BREAKPOINTS) {
+        const p = style[bp];
+        if (!p) continue;
+        const swapped = swapColorProps(p, from, to);
+        if (Object.keys(swapped).length) {
+          next[bp] = { ...p, ...swapped };
+          changed = true;
+        }
+      }
+      if (changed)
+        ops.push({
+          op: "setInstanceOverride",
+          nodeId: n.id,
+          kind: "nodes",
+          key: layer,
+          value: { ...override, style: next },
+        });
+    }
+  }
   return ops;
 }
 

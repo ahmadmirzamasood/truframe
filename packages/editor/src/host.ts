@@ -33,6 +33,23 @@ export type AssetHost = {
   usage: () => Promise<AssetUsage | null>;
 };
 
+/** One page exported as an image (Page inspector, Export section). */
+export type ImageExportRequest = {
+  pageId: string;
+  breakpoint: "desktop" | "tablet" | "mobile";
+  format: "png" | "jpeg" | "webp";
+  scale: number;
+};
+
+/** Image export (P5-9); the plan's largest scale is enforced server-side. */
+export type ExportHost = {
+  /** The largest scale the plan allows, or null when it can't be read. */
+  maxScale: () => Promise<number | null>;
+  image: (
+    input: ImageExportRequest,
+  ) => Promise<{ ok: true; url: string } | { ok: false; message: string }>;
+};
+
 export type EditorHost = {
   projectName: string;
   doc: ProjectDocument | null;
@@ -43,4 +60,6 @@ export type EditorHost = {
   redo: () => void;
   /** Absent where uploads aren't available (tests, previews). */
   assets?: AssetHost;
+  /** Absent where image export isn't available. */
+  exports?: ExportHost;
 };
