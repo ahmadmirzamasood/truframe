@@ -302,6 +302,13 @@ export function checkIntegrity(doc: ProjectDocument): Issue[] {
     const path = ["nodes", id];
     checkStyle(node.style, [...path, "style"]);
     checkNode(doc, node, path, add);
+    // A type rule, not "has children": deleting the last child must stay valid.
+    if (
+      node.animation?.staggerChildren !== undefined &&
+      node.type !== "frame" &&
+      node.type !== "link"
+    )
+      add([...path, "animation", "staggerChildren"], "Only frames and links can stagger children");
     if (node.type === "link") {
       // A link inside a link is invalid HTML (nested interactive content).
       const stack = [...node.children];

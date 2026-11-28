@@ -1,4 +1,5 @@
 /** The design document model (ARCHITECTURE §5): zod schemas, integrity checks and defaults. */
+export * from "./animation.ts";
 export * from "./breakpoints.ts";
 export * from "./defaults.ts";
 export * from "./document.ts";

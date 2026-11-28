@@ -68,7 +68,7 @@
 - [x] **P6-5** Embed node (sanitized HTML or URL) + page head/body snippets, rendered in sandboxed iframes on the usercontent origin. *Done when* T3 green.
 
 ## P6A Animation: entrance and scroll-in effects
-- [ ] **P6A-1** Model + ops: `animation` field per `docs/engineering/ARCHITECTURE.md §5` with validation. *Done when* property tests include animation ops.
+- [x] **P6A-1** Model + ops: `animation` field per `docs/engineering/ARCHITECTURE.md §5` with validation. *Done when* property tests include animation ops. `animationSchema` in `@truframe/model` (TS reference, Rust mirror, parity fixtures incl. two invalid ones); set/changed/removed through `setNodeFields`; the ops property test (and the Loro one, same generator) applies valid animations, removals and refused ones and asserts both set and remove were applied; `apply.test.ts` round-trips undo/redo. `set_animation` tool schema + `setAnimationOps` in `@truframe/agent-tools` (wired in P7).
 - [ ] **P6A-2** Compiler: `animations.css` keyframes, classes with CSS variables, `view()` timeline behind `@supports`, IntersectionObserver fallback (Next.js client component, Astro inline script), stagger, per-breakpoint disable, reduced-motion wrapper. *Done when* goldens for every trigger and preset in both frameworks.
 - [ ] **P6A-3** Inspector Animation section (Trigger, From state, Duration, Delay, Easing, Once, Stagger children, presets, disable on Tablet/Mobile). *Done when* e2e per control.
 - [ ] **P6A-4** Canvas ▶ Play for the selection and real playback in Preview. *Done when* e2e.

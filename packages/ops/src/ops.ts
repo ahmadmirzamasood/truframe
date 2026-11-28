@@ -72,6 +72,7 @@ export const NODE_FIELDS = [
   "icon",
   "svg",
   "source",
+  "animation",
 ] as const;
 
 /**
