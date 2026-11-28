@@ -36,6 +36,27 @@ describe("truframe-sites worker", () => {
     expect(res.headers.get("content-security-policy")).toContain(`'sha256-${hash}'`);
   });
 
+  it("lets the preview frame only this origin's embed shell", async () => {
+    const csp = (await get("/preview")).headers.get("content-security-policy") ?? "";
+    expect(csp).toContain("frame-src http://127.0.0.1:8791");
+  });
+
+  it("serves the embed shell sandboxed without same-origin", async () => {
+    const res = await get("/embed?k=1");
+    expect(res.status).toBe(200);
+    const csp = res.headers.get("content-security-policy") ?? "";
+    expect(csp).toContain(
+      "sandbox allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox",
+    );
+    expect(csp).not.toContain("allow-same-origin");
+    // Preview frames it from an opaque origin, which frame-ancestors can't name.
+    expect(csp).not.toContain("frame-ancestors");
+    expect(res.headers.get("x-content-type-options")).toBe("nosniff");
+    // The content comes from the fragment only: nothing from the query is echoed.
+    expect(await (await get("/embed?k=%3Cscript%3E")).text()).not.toContain("<script>alert");
+    expect((await get("/embed", { TRUFRAME_ENV: "staging" } as Env)).status).toBe(503);
+  });
+
   it("refuses to serve the preview without a valid app origin", async () => {
     const res = await get("/preview", { TRUFRAME_ENV: "staging" } as Env);
     expect(res.status).toBe(503);

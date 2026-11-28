@@ -5,6 +5,7 @@ use crate::fonts::{WebFont, web_fonts};
 use crate::model::{Component, Page, Project};
 use crate::names::{pascal, path_segments};
 use crate::printer::{Writer, js_string};
+use crate::snippets::print_html;
 use crate::tree::{Builder, Flavor, code_classes};
 use crate::{CompileError, Framework};
 
@@ -139,6 +140,14 @@ fn layout(project: &Project, fonts: &[WebFont]) -> String {
             &format!("<Font cssVariable=\"{}\" preload />", f.variable),
         );
     }
+    // Pages with head code (P6-5) fill this slot.
+    if project
+        .pages
+        .iter()
+        .any(|p| p.code.as_ref().is_some_and(|c| !c.head.is_empty()))
+    {
+        w.line(4, "<slot name=\"head\" />");
+    }
     w.line(2, "</head>");
     w.line(2, "<body>");
     w.line(4, "<slot />");
@@ -190,7 +199,23 @@ fn page_file(project: &Project, page: &Page, out: &mut Emit) -> Result<(), Compi
     }
     open.push('>');
     w.line(0, &open);
+    let code = page.code.as_ref();
+    if let Some(head) = code.map(|c| &c.head).filter(|h| !h.is_empty()) {
+        w.line(
+            2,
+            &format!(
+                "<Fragment slot=\"head\" set:html={{{}}} />",
+                js_string(&print_html(head))
+            ),
+        );
+    }
     w.element(&root, 2, Flavor::Astro.syntax());
+    if let Some(body) = code.map(|c| &c.body).filter(|b| !b.is_empty()) {
+        w.line(
+            2,
+            &format!("<Fragment set:html={{{}}} />", js_string(&print_html(body))),
+        );
+    }
     w.line(0, "</Base>");
 
     out.output.css.append(&mut b.css);

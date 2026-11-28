@@ -75,6 +75,51 @@ pub struct Page {
     pub path: String,
     pub seo: Seo,
     pub root: String,
+    /// Head/body code snippets (P6-5), stored as allowlisted elements, never as markup.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub code: Option<PageCode>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct PageCode {
+    pub head: Vec<SnippetElement>,
+    pub body: Vec<SnippetElement>,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "lowercase")]
+pub enum SnippetTag {
+    Script,
+    Style,
+    Meta,
+    Link,
+    Noscript,
+}
+
+impl SnippetTag {
+    pub fn as_str(self) -> &'static str {
+        match self {
+            SnippetTag::Script => "script",
+            SnippetTag::Style => "style",
+            SnippetTag::Meta => "meta",
+            SnippetTag::Link => "link",
+            SnippetTag::Noscript => "noscript",
+        }
+    }
+
+    pub fn is_void(self) -> bool {
+        matches!(self, SnippetTag::Meta | SnippetTag::Link)
+    }
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct SnippetElement {
+    pub tag: SnippetTag,
+    /// In the order written; a boolean attribute has the value "".
+    pub attrs: Vec<(String, String)>,
+    pub text: String,
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]

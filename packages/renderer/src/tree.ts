@@ -27,7 +27,19 @@ export type RElement = {
 export type TreeOptions = {
   /** URL of an uploaded asset (the compiler's `assets[].path` minus `public`, or a CDN URL). */
   assetUrl?: (assetId: string) => string | null;
+  /**
+   * Where the editor shows an embed (P6-5): a sandboxed frame on the usercontent origin, or
+   * null where there is none (then the embed is a labelled placeholder). Without this option
+   * (Node, parity) embeds render as the compiler emits them.
+   */
+  embedUrl?: (source: EmbedSource) => string | null;
 };
+
+type EmbedSource = Extract<Node, { type: "embed" }>["source"];
+
+/** The compiler's sandbox for HTML embeds on the published site (tree.rs EMBED_SANDBOX). */
+export const EMBED_SANDBOX =
+  "allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox";
 
 const el = (tag: string, attrs: RElement["attrs"] = {}, children: RChild[] = []): RElement => ({
   tag,
@@ -45,6 +57,8 @@ function svgElement(e: SvgElement): RElement {
 
 /** Fixed classes the compiler puts on inner elements, as inline styles. */
 const FILL = "display:block;width:100%;height:100%";
+const EMBED_PLACEHOLDER =
+  "display:grid;place-items:center;background:#f4f4f5;color:#71717a;font:12px system-ui,sans-serif";
 const FIT_CSS = { fill: "cover", crop: "cover", fit: "contain", tile: "none" } as const;
 
 function linkHref(doc: ProjectDocument, target: LinkNode["target"]): string {
@@ -133,21 +147,25 @@ class Builder {
             style: FILL,
           }),
         ]);
-      case "embed":
-        return el(
-          n.tag,
-          mark,
+      case "embed": {
+        const title = n.name.trim() || "Embedded content";
+        const frame = { title, loading: "lazy", style: `${FILL};border:0` };
+        if (this.options.embedUrl) {
+          const src = this.options.embedUrl(n.source);
+          return el(n.tag, mark, [
+            src
+              ? el("iframe", { ...frame, src, sandbox: EMBED_SANDBOX, "data-tf-embed": "" })
+              : el("div", { "data-tf-embed": "", style: `${FILL};${EMBED_PLACEHOLDER}` }, [
+                  "Embed (shown in Preview and on the site)",
+                ]),
+          ]);
+        }
+        return el(n.tag, mark, [
           n.source.type === "url"
-            ? [
-                el("iframe", {
-                  src: n.source.url,
-                  title: n.name.trim() || "Embedded content",
-                  loading: "lazy",
-                  style: `${FILL};border:0`,
-                }),
-              ]
-            : [],
-        );
+            ? el("iframe", { ...frame, src: n.source.url })
+            : el("iframe", { ...frame, srcDoc: n.source.html, sandbox: EMBED_SANDBOX }),
+        ]);
+      }
       case "instance":
         return this.instance(n);
     }

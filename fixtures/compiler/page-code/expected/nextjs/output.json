@@ -1,0 +1,43 @@
+{
+  "assets": [],
+  "css": {
+    "id2": {
+      "desktop": "display: flex; flex-direction: column; width: 100%; height: fit-content;"
+    },
+    "n1": {
+      "desktop": ""
+    },
+    "n2": {
+      "desktop": "display: flex; flex-direction: column;"
+    },
+    "n3": {
+      "desktop": ""
+    }
+  },
+  "spans": [
+    {
+      "end": 251,
+      "node": "n2",
+      "path": "app/about/page.tsx",
+      "start": 159
+    },
+    {
+      "end": 237,
+      "node": "n1",
+      "path": "app/about/page.tsx",
+      "start": 205
+    },
+    {
+      "end": 812,
+      "node": "id2",
+      "path": "app/page.tsx",
+      "start": 703
+    },
+    {
+      "end": 798,
+      "node": "n3",
+      "path": "app/page.tsx",
+      "start": 762
+    }
+  ]
+}

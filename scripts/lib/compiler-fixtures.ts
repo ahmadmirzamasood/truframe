@@ -624,6 +624,56 @@ export function compilerFixtures(): Record<string, ProjectDocument> {
       return [b.text("Title", "SEO", {}, "h1")];
     }),
 
+    // P6-5: head/body code on two pages; scripts through next/script, data scripts plain.
+    "page-code": build((b) => {
+      const home = b.doc.pages[0];
+      if (home)
+        home.code = {
+          head: [
+            {
+              tag: "script",
+              attrs: [
+                ["defer", ""],
+                ["data-domain", "example.com"],
+                ["src", "https://plausible.io/js/script.js"],
+              ],
+              text: "",
+            },
+            {
+              tag: "meta",
+              attrs: [
+                ["name", "google-site-verification"],
+                ["content", "abc123"],
+              ],
+              text: "",
+            },
+            {
+              tag: "link",
+              attrs: [
+                ["rel", "preconnect"],
+                ["href", "https://fonts.gstatic.com"],
+                ["crossorigin", ""],
+              ],
+              text: "",
+            },
+            {
+              tag: "script",
+              attrs: [["type", "application/ld+json"]],
+              text: '{"@context":"https://schema.org","@type":"Organization","name":"Acme \\"Q\\""}',
+            },
+          ],
+          body: [
+            { tag: "script", attrs: [], text: "window.tfLoaded = true;" },
+            { tag: "noscript", attrs: [], text: '<img src="https://px.example.com/1.gif" alt="">' },
+          ],
+        };
+      b.page("About", "/about", [b.text("Title", "About", {}, "h1")]);
+      const about = b.doc.pages[1];
+      if (about)
+        about.code = { head: [], body: [{ tag: "style", attrs: [], text: "body{margin:0}" }] };
+      return [b.text("Title", "Page code", {}, "h1")];
+    }),
+
     "embed-and-icons": build((b) => [
       b.add({
         type: "embed",

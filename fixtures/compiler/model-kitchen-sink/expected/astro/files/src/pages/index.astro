@@ -5,6 +5,7 @@ import photoPng from "../assets/photo.png";
 ---
 
 <Base title="Home">
+  <Fragment slot="head" set:html={"<script async src=\"https://analytics.example.com/a.js\"></script>"} />
   <main class="body flex flex-col w-full h-fit">
     <section
       class="hero flex gap-(--spacing-md) pt-2 pr-2 pb-(--spacing-md) pl-2 relative bg-(--colors-brand) tablet:hidden tablet:items-stretch tablet:justify-between tablet:grid-cols-2 tablet:grid-rows-3 tablet:gap-y-3 tablet:flex-none tablet:h-160 tablet:min-w-25 tablet:max-w-250 tablet:min-h-2.5 tablet:max-h-225 tablet:overflow-clip tablet:bg-transparent tablet:bg-[linear-gradient(45deg,#000000_0%,var(--colors-brand)_100%)] tablet:border-0 tablet:border-t tablet:border-b tablet:border-dashed tablet:border-[#11223344] tablet:rounded-tl-sm tablet:rounded-tr-lg tablet:rounded-br-none tablet:rounded-bl-[2.5px] tablet:shadow-[0px_4px_12px_-2px_var(--colors-brand)] tablet:opacity-90 tablet:mix-blend-color-dodge tablet:blur-[2px]"
@@ -52,7 +53,16 @@ import photoPng from "../assets/photo.png";
         >
         </iframe>
       </figure>
-      <div class="widget"></div>
+      <div class="widget">
+        <iframe
+          srcdoc={"<div class=\"w\">Hi</div>"}
+          sandbox="allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox"
+          title="Widget"
+          loading="lazy"
+          class="block size-full border-0"
+        >
+        </iframe>
+      </div>
       <a
         href="mailto:hi@example.com"
         target="_blank"
@@ -64,4 +74,5 @@ import photoPng from "../assets/photo.png";
       <div class="placeholder bg-[#e5e5e5]" aria-hidden="true"></div>
     </section>
   </main>
+  <Fragment set:html={"<script type=\"application/ld+json\">{}</script>"} />
 </Base>

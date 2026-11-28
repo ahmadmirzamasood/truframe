@@ -316,6 +316,21 @@ export function kitchenSink(): ProjectDocument {
     });
   }
   card.overrides.props.showTitle = false;
+  const home = doc.pages[0];
+  if (home)
+    home.code = {
+      head: [
+        {
+          tag: "script",
+          attrs: [
+            ["async", ""],
+            ["src", "https://analytics.example.com/a.js"],
+          ],
+          text: "",
+        },
+      ],
+      body: [{ tag: "script", attrs: [["type", "application/ld+json"]], text: "{}" }],
+    };
   doc.assets.logo = {
     id: "logo",
     name: "logo.svg",

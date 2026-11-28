@@ -4,7 +4,8 @@
 use crate::fonts::{WebFont, web_fonts};
 use crate::model::{Component, Page, Project};
 use crate::names::{pascal, path_segments};
-use crate::printer::{PRINT_WIDTH, Writer, js_string};
+use crate::printer::{Child, El, PRINT_WIDTH, Writer, js_string};
+use crate::snippets::{Slot, next_elements};
 use crate::tree::{Builder, Flavor, code_classes};
 use crate::{CompileError, Framework};
 
@@ -124,10 +125,35 @@ fn page_file(project: &Project, page: &Page, out: &mut Emit) -> Result<(), Compi
         Flavor::Next,
         code_classes(project, &page.root, None)?,
     );
-    let root = b.element(&page.root, None)?;
+    let mut root = b.element(&page.root, None)?;
+    // Page code (P6-5): head elements before the body, body elements after it, in a fragment.
+    // React hoists metas and links into <head>; scripts load through next/script.
+    let mut uses_script = false;
+    if let Some(code) = page
+        .code
+        .as_ref()
+        .filter(|c| !c.head.is_empty() || !c.body.is_empty())
+    {
+        let key = page_key(page);
+        let (head, h) = next_elements(&code.head, Slot::Head, &key);
+        let (body, bd) = next_elements(&code.body, Slot::Body, &key);
+        uses_script = h || bd;
+        let mut fragment = El::new("");
+        for e in head {
+            fragment = fragment.child(Child::El(e));
+        }
+        fragment = fragment.child(Child::El(root));
+        for e in body {
+            fragment = fragment.child(Child::El(e));
+        }
+        root = fragment;
+    }
 
     let mut w = Writer::new();
     w.line(0, "import type { Metadata } from \"next\";");
+    if uses_script {
+        w.line(0, "import Script from \"next/script\";");
+    }
     imports(&mut w, &b, "@/components/");
     w.line(0, "");
     w.line(0, "export const metadata: Metadata = {");
@@ -157,6 +183,15 @@ fn page_file(project: &Project, page: &Page, out: &mut Emit) -> Result<(), Compi
     out.assets(&b.take_assets(), project);
     out.writer(&page_path(page), w);
     Ok(())
+}
+
+/// `/` → `home`, `/blog/first-post` → `blog-first-post`: unique per page, so next/script ids
+/// don't collide across client-side navigation.
+fn page_key(page: &Page) -> String {
+    match page.path.trim_matches('/') {
+        "" => "home".to_string(),
+        p => p.replace('/', "-"),
+    }
 }
 
 /// `About us` → `AboutUsPage`.

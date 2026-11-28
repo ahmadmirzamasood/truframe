@@ -9,6 +9,7 @@ mod fonts;
 pub mod model;
 pub mod names;
 pub mod printer;
+mod snippets;
 pub mod style;
 mod tokens;
 mod tree;

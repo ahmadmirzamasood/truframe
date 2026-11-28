@@ -232,8 +232,10 @@ function applyOp(doc: ProjectDocument, op: Op): Op[] {
       const undo: Record<string, unknown> = {};
       for (const [key, value] of Object.entries(op.fields)) {
         if (value === undefined) continue;
-        undo[key] = page[key];
-        page[key] = value;
+        // Optional fields come back as null in the inverse, which removes them again.
+        undo[key] = page[key] ?? null;
+        if (value === null) delete page[key];
+        else page[key] = value;
       }
       return Object.keys(undo).length
         ? [{ op: "updatePage", pageId: op.pageId, fields: undo as never }]

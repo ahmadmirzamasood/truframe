@@ -28,7 +28,7 @@
   },
   "spans": [
     {
-      "end": 1387,
+      "end": 1651,
       "node": "id2",
       "path": "src/pages/index.astro",
       "start": 73
@@ -46,34 +46,34 @@
       "start": 373
     },
     {
-      "end": 649,
+      "end": 913,
       "node": "n3",
       "path": "src/pages/index.astro",
       "start": 599
     },
     {
-      "end": 1377,
+      "end": 1641,
       "node": "n7",
       "path": "src/pages/index.astro",
-      "start": 654
+      "start": 918
     },
     {
-      "end": 910,
+      "end": 1174,
       "node": "n4",
       "path": "src/pages/index.astro",
-      "start": 691
+      "start": 955
     },
     {
-      "end": 1138,
+      "end": 1402,
       "node": "n5",
       "path": "src/pages/index.astro",
-      "start": 917
+      "start": 1181
     },
     {
-      "end": 1366,
+      "end": 1630,
       "node": "n6",
       "path": "src/pages/index.astro",
-      "start": 1145
+      "start": 1409
     }
   ]
 }

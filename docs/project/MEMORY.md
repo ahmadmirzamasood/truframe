@@ -179,6 +179,9 @@
 
 - 2026-11-28: Plan features reach the editor as props from the server page (`codeAccess(planForWorkspace(workspace))` → `EditorHost.code`), like the image export limit. Every workspace is Free until P10, so Pro-only UI paths can't be e2e-tested yet; their rules are unit-tested in `packages/billing`.
 
+- 2026-11-28: Embeds and page code (P6-5). CSP `frame-ancestors` can't name an opaque origin, so a page framed from inside a sandboxed frame (the embed shell inside Preview) is refused by any `frame-ancestors` list; the embed shell has none (it holds no data). Embeds use `loading="lazy"`, so in Preview an embed below the fold loads only when scrolled to (e2e scrolls first). CodeMirror draws only visible lines: assert far-down generated code through Code View search, not `.cm-content` text. React types `crossOrigin` as a string: snippet boolean attributes become `{true}` only for real booleans (async, defer, nomodule, itemscope, hidden). Page code is stored as data (like icons) because Next.js can't place a raw HTML string in `<head>`.
+- 2026-11-28: The Windows `next dev` reload loop came back after every branch switch and after restarting the sites worker under a running web server; restarting the web server (workers already up) fixed it each time.
+
 ## Dependencies added (name, license, why)
 - turbo 2.11.13 (MIT): task runner. typescript 5.9.3 (Apache-2.0). wrangler 4.166.0 (MIT OR Apache-2.0): Workers dev/deploy. [P0-1]
 - @biomejs/biome 2.6.8 (MIT OR Apache-2.0), vitest 5.1.1 (MIT), @playwright/test 1.65.1 (Apache-2.0), @types/node 22.20.5 (MIT). cargo-deny (MIT OR Apache-2.0) is a dev tool installed with `cargo install cargo-deny --locked`. [P0-2]

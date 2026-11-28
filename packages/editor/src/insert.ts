@@ -6,7 +6,7 @@
 import { childrenOf, type Node, newId, type ProjectDocument } from "@truframe/model";
 import type { Op } from "@truframe/ops";
 
-export const INSERT_TOOLS = ["stack", "grid", "text", "image", "button", "icon"] as const;
+export const INSERT_TOOLS = ["stack", "grid", "text", "image", "button", "icon", "embed"] as const;
 export type InsertTool = (typeof INSERT_TOOLS)[number];
 
 export const INSERT_LABEL: Record<InsertTool, string> = {
@@ -16,6 +16,7 @@ export const INSERT_LABEL: Record<InsertTool, string> = {
   image: "Image",
   button: "Button",
   icon: "Icon",
+  embed: "Embed",
 };
 
 /** Single-key shortcuts while the canvas has focus (also listed in the command registry). */
@@ -163,6 +164,20 @@ export function createNodes(tool: InsertTool, id: () => string = newId): Node[] 
           },
           style: {
             desktop: { width: { type: "fixed", value: 24 }, height: { type: "fixed", value: 24 } },
+          },
+        },
+      ];
+    // Third-party markup (P6-5): empty until code or a URL is added in the inspector.
+    case "embed":
+      return [
+        {
+          id: id(),
+          type: "embed",
+          name: "Embed",
+          tag: "div",
+          source: { type: "html", html: "" },
+          style: {
+            desktop: { width: { type: "fill" }, height: { type: "fixed", value: 240 } },
           },
         },
       ];

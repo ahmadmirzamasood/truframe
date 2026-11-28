@@ -68,7 +68,7 @@ async function sha256(text: string): Promise<string> {
   return btoa(String.fromCharCode(...new Uint8Array(digest)));
 }
 
-export async function previewShell(appOrigin: string): Promise<Response> {
+export async function previewShell(appOrigin: string, selfOrigin: string): Promise<Response> {
   const js = script(appOrigin);
   const html = `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Preview</title><style>body{margin:0;background:#fff}</style><style id="tf-fonts"></style></head><body><script>${js}</script></body></html>`;
   const csp = [
@@ -79,6 +79,8 @@ export async function previewShell(appOrigin: string): Promise<Response> {
     "img-src blob: data:",
     "font-src blob: data:",
     "media-src blob:",
+    // Embeds on the page are frames of this origin's /embed shell (P6-5).
+    `frame-src ${selfOrigin}`,
     "base-uri 'none'",
     "form-action 'none'",
     `frame-ancestors ${appOrigin}`,

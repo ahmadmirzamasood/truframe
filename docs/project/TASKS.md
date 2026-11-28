@@ -65,7 +65,7 @@
 - [x] **P6-2** Live compile in a Web Worker, incremental per page/component. *Done when* design→code < 300 ms p50 on a 300-layer page.
 - [x] **P6-3** Reveal in design (click code → select layer) and reveal in code (select layer → scroll to code) using `spans`. *Done when* e2e both directions.
 - [x] **P6-4** Read-only UX: lock indicator, copy rules per plan (see `docs/product/BILLING.md`), "Export / push to GitHub to edit code" call to action. *Done when* e2e.
-- [ ] **P6-5** Embed node (sanitized HTML or URL) + page head/body snippets, rendered in sandboxed iframes on the usercontent origin. *Done when* T3 green.
+- [x] **P6-5** Embed node (sanitized HTML or URL) + page head/body snippets, rendered in sandboxed iframes on the usercontent origin. *Done when* T3 green.
 
 ## P6A Animation: entrance and scroll-in effects
 - [ ] **P6A-1** Model + ops: `animation` field per `docs/engineering/ARCHITECTURE.md §5` with validation. *Done when* property tests include animation ops.

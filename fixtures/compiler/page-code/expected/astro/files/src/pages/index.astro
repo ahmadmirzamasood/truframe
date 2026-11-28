@@ -1,0 +1,11 @@
+---
+import Base from "../layouts/Base.astro";
+---
+
+<Base title="Home">
+  <Fragment slot="head" set:html={"<script defer data-domain=\"example.com\" src=\"https://plausible.io/js/script.js\"></script>\n<meta name=\"google-site-verification\" content=\"abc123\">\n<link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\n<script type=\"application/ld+json\">{\"@context\":\"https://schema.org\",\"@type\":\"Organization\",\"name\":\"Acme \\\"Q\\\"\"}</script>"} />
+  <main class="body flex flex-col w-full h-fit">
+    <h1 class="title">Page code</h1>
+  </main>
+  <Fragment set:html={"<script>window.tfLoaded = true;</script>\n<noscript><img src=\"https://px.example.com/1.gif\" alt=\"\"></noscript>"} />
+</Base>

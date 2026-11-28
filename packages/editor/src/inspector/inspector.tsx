@@ -45,6 +45,7 @@ import { measureLayer } from "../measure-dom.ts";
 import { IconPicker, SvgPreview } from "../pickers.tsx";
 import { parentMap } from "../tree.ts";
 import { valueAt } from "../variables.ts";
+import { EmbedSection, PageCodeSection } from "./code-sections.tsx";
 import {
   type ComponentActions,
   CreateComponent,
@@ -1620,6 +1621,7 @@ function PageInspector(props: InspectorProps & { page: Page }) {
           />
         </Row>
       </Section>
+      <PageCodeSection page={page} apply={props.apply} />
       <Section title="Size and Position">
         <Row label="Width">
           <NumberField
@@ -1853,6 +1855,7 @@ export function Inspector(props: InspectorProps) {
       {node.type === "image" ? <ImageSection ctx={ctx} /> : null}
       {node.type === "link" ? <LinkSection ctx={ctx} /> : null}
       {node.type === "icon" ? <IconSection ctx={ctx} /> : null}
+      {node.type === "embed" ? <EmbedSection node={node} apply={props.apply} /> : null}
       <PositionSize ctx={ctx} parentId={parentId} text={node.type === "text"} />
       {container ? <Layout ctx={ctx} /> : null}
       {container ? <Padding ctx={ctx} /> : null}

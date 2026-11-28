@@ -2,7 +2,9 @@
  * Nodes (layers). Nodes live in one flat map per document; frames and links list their
  * children by id. A node's code class is derived from its name (PRD F27) and is not stored.
  */
+
 import { z } from "zod";
+import { EMBED_HTML_MAX, sanitizeEmbedHtml } from "./embed.ts";
 import { hrefSchema, httpsUrlSchema, idSchema, richTextSchema } from "./primitives.ts";
 import { styleOverrideSchema, styleSchema } from "./style.ts";
 
@@ -170,9 +172,18 @@ export const iconNodeSchema = z.strictObject({
 
 export const embedNodeSchema = z.strictObject({
   ...base("embed"),
-  /** Raw HTML is stored as typed and sanitized when rendered or compiled (P6). */
+  /**
+   * HTML is stored sanitized (`sanitizeEmbedHtml`, P6-5) and only ever runs in a sandboxed
+   * iframe: on the usercontent origin in the editor, as a sandboxed `srcdoc` frame on the site.
+   */
   source: z.discriminatedUnion("type", [
-    z.strictObject({ type: z.literal("html"), html: z.string().max(100_000) }),
+    z.strictObject({
+      type: z.literal("html"),
+      html: z
+        .string()
+        .max(EMBED_HTML_MAX)
+        .refine((h) => sanitizeEmbedHtml(h) === h, "Embed HTML must be sanitized first"),
+    }),
     z.strictObject({ type: z.literal("url"), url: httpsUrlSchema }),
   ]),
 });
@@ -213,6 +224,7 @@ export type TextNode = z.infer<typeof textNodeSchema>;
 export type ImageNode = z.infer<typeof imageNodeSchema>;
 export type LinkNode = z.infer<typeof linkNodeSchema>;
 export type InstanceNode = z.infer<typeof instanceNodeSchema>;
+export type EmbedNode = z.infer<typeof embedNodeSchema>;
 export type NodeOverride = z.infer<typeof nodeOverrideSchema>;
 
 /** Node types that hold children. */
