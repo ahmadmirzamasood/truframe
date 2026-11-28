@@ -35,7 +35,7 @@ import {
   Trash2Icon,
   TypeIcon,
 } from "lucide-react";
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { checkBreakpointWidth } from "../breakpoints.ts";
 import { deleteOps, duplicateOps, makeAbsoluteOps } from "../gestures.ts";
 import type { AssetHost } from "../host.ts";
@@ -77,6 +77,7 @@ import {
   distributeOps,
   effective,
   isOverridden,
+  type MeasureLayer,
   paddingSides,
   pageColors,
   replaceColorOps,
@@ -1089,13 +1090,50 @@ function Accessibility(props: { ctx: Ctx }) {
           />
         </Row>
       ) : null}
+      {node.type === "link" ? (
+        // The generated focus ring uses the link's own text color (`currentColor`), so this
+        // is the link's text color; labels with their own color keep it.
+        <PropRow ctx={props.ctx} label="Focus ring" keys={["textColor"]}>
+          <ColorField
+            resolveVariable={(id) => variableColor(props.ctx.doc, props.ctx.bp, id)}
+            variableName={(id) => props.ctx.doc.variables[id]?.name}
+            label="Focus ring"
+            value={get(props.ctx, "textColor") ?? "#000000"}
+            onCommit={(c) => set(props.ctx, "textColor", c)}
+            bind={colorBind(props.ctx, (id) => set(props.ctx, "textColor", { var: id }))}
+          />
+        </PropRow>
+      ) : null}
     </Section>
   );
 }
 
+/** Rendered layer sizes from the canvas frames (offset sizes ignore the canvas zoom). */
+const measureOnCanvas: MeasureLayer = (nodeId, bp) => {
+  const el = document.querySelector<HTMLElement>(
+    `[data-frame="${bp}"] [data-tf-node="${CSS.escape(nodeId)}"]`,
+  );
+  return el ? { w: el.offsetWidth, h: el.offsetHeight } : null;
+};
+
 function Checks(props: { doc: ProjectDocument; rootId: string; onSelect: (id: string) => void }) {
   const parents = useMemo(() => parentMap(props.doc), [props.doc]);
-  const checks = accessibilityChecks(props.doc, props.rootId, parents);
+  // Measure after the canvas has rendered this document.
+  const [painted, setPainted] = useState<ProjectDocument | null>(null);
+  useEffect(() => {
+    const raf = requestAnimationFrame(() => setPainted(props.doc));
+    return () => cancelAnimationFrame(raf);
+  }, [props.doc]);
+  const checks = useMemo(
+    () =>
+      accessibilityChecks(
+        props.doc,
+        props.rootId,
+        parents,
+        painted === props.doc ? measureOnCanvas : undefined,
+      ),
+    [props.doc, props.rootId, parents, painted],
+  );
   return (
     <Section title="Accessibility Checks">
       {checks.length === 0 ? (

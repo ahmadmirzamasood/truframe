@@ -8,3 +8,10 @@
  */
 @custom-variant tablet (@media (width < 1200px));
 @custom-variant mobile (@media (width < 810px));
+
+@layer base {
+  :focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+  }
+}

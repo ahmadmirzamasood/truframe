@@ -16,6 +16,7 @@ import {
   effective,
   hexAlpha,
   isOverridden,
+  type MeasureLayer,
   pageColors,
   replaceColorOps,
   resetProp,
@@ -165,5 +166,75 @@ describe("accessibility checks", () => {
     });
     expect(checks.some((c) => c.nodeId === "x1" && c.bp === "desktop")).toBe(false);
     expect(checks).toContainEqual({ nodeId: "x2", bp: null, message: "Image has no alt text" });
+  });
+});
+
+describe("focus ring and tap target checks", () => {
+  const setup = (ops: (link: string, root: string) => Op[]) => {
+    let doc = createDocument({ id: ID, framework: "nextjs" });
+    const root = doc.pages[0]?.root as string;
+    const ids = counter("b");
+    doc = commit(doc, insertOps(createNodes("button", ids), { parentId: root, index: 0 }));
+    doc = commit(doc, ops("b1", root));
+    return { doc, root, link: "b1" };
+  };
+  const messages = (doc: ProjectDocument, root: string, measure?: MeasureLayer) =>
+    accessibilityChecks(doc, root, parentMap(doc), measure).filter((c) => c.nodeId === "b1");
+
+  it("passes the default button on a white page", () => {
+    const { doc, root } = setup(() => []);
+    expect(messages(doc, root)).toEqual([]);
+  });
+
+  it("flags a focus ring that matches a dark page background, per breakpoint", () => {
+    const { doc, root } = setup((_, r) => [
+      setProp(r, "tablet", "fill", { type: "solid", color: "#111111" }),
+    ]);
+    const m = messages(doc, root);
+    expect(m.map((c) => c.bp)).toEqual(["tablet", "mobile"]);
+    expect(m[0]?.message).toMatch(/^Focus ring contrast [\d.]+:1 is below 3:1$/);
+  });
+
+  it("passes once the focus ring color contrasts with the parent", () => {
+    const { doc, root } = setup((l, r) => [
+      setProp(r, "desktop", "fill", { type: "solid", color: "#111111" }),
+      setProp(l, "desktop", "textColor", "#ffffff"),
+    ]);
+    expect(messages(doc, root)).toEqual([]);
+  });
+
+  it("uses the parent background, not the button's own fill", () => {
+    // A white ring on the button's dark fill would pass; on the white page it doesn't.
+    const { doc, root } = setup((l) => [setProp(l, "desktop", "textColor", "#ffffff")]);
+    expect(messages(doc, root).map((c) => c.bp)).toEqual(["desktop", "tablet", "mobile"]);
+  });
+
+  it("flags tap targets under 24 px on mobile from fixed sizes", () => {
+    const { doc, root } = setup((l) => [
+      setProp(l, "mobile", "height", { type: "fixed", value: 20 }),
+      setProp(l, "mobile", "width", { type: "fixed", value: 80 }),
+    ]);
+    expect(messages(doc, root)).toEqual([
+      { nodeId: "b1", bp: "mobile", message: "Tap target 80 × 20 px is under 24 px" },
+    ]);
+  });
+
+  it("uses measured sizes from the canvas when given", () => {
+    const { doc, root } = setup(() => []);
+    const small: MeasureLayer = (id, bp) =>
+      id === "b1" && bp === "mobile" ? { w: 23, h: 40 } : null;
+    expect(messages(doc, root, small)).toEqual([
+      { nodeId: "b1", bp: "mobile", message: "Tap target 23 × 40 px is under 24 px" },
+    ]);
+    const fine: MeasureLayer = () => ({ w: 24, h: 24 });
+    expect(messages(doc, root, fine)).toEqual([]);
+  });
+
+  it("skips tap targets hidden on mobile", () => {
+    const { doc, root } = setup((l) => [
+      setProp(l, "mobile", "height", { type: "fixed", value: 10 }),
+      { op: "setNodeFields", nodeId: l, fields: { hidden: { mobile: true } } },
+    ]);
+    expect(messages(doc, root)).toEqual([]);
   });
 });
