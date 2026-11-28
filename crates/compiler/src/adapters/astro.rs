@@ -18,16 +18,26 @@ const GITIGNORE: &str = include_str!("../../templates/astro/gitignore");
 
 pub fn emit(project: &Project, out: &mut Emit) -> Result<(), CompileError> {
     let fonts = web_fonts(project)?;
+    let anim = crate::animation::uses(project);
     out.file("package.json", PACKAGE_JSON);
     out.file("package-lock.json", PACKAGE_LOCK);
     out.file("tsconfig.json", TSCONFIG);
     out.file(".gitignore", GITIGNORE);
     out.file("README.md", readme(project, Framework::Astro));
     out.file("astro.config.mjs", config(&fonts));
-    out.file("src/layouts/Base.astro", layout(project, &fonts));
+    out.file(
+        "src/layouts/Base.astro",
+        layout(project, &fonts, anim.in_view),
+    );
+    if anim.any {
+        out.file(
+            "src/styles/animations.css",
+            crate::animation::animations_css(),
+        );
+    }
     out.file(
         "src/styles/global.css",
-        crate::tokens::global_css(project, "./tokens.css"),
+        crate::tokens::global_css(project, "./tokens.css", anim.any),
     );
     out.file("src/styles/tokens.css", crate::tokens::tokens_css(project));
     for c in project.components.values() {
@@ -95,7 +105,7 @@ fn config(fonts: &[WebFont]) -> String {
     w.out
 }
 
-fn layout(project: &Project, fonts: &[WebFont]) -> String {
+fn layout(project: &Project, fonts: &[WebFont], in_view: bool) -> String {
     let mut w = Writer::new();
     w.line(0, "---");
     if !fonts.is_empty() {
@@ -151,6 +161,11 @@ fn layout(project: &Project, fonts: &[WebFont]) -> String {
     w.line(2, "</head>");
     w.line(2, "<body>");
     w.line(4, "<slot />");
+    if in_view {
+        for line in crate::animation::astro_in_view_lines() {
+            w.line(4, &line);
+        }
+    }
     w.line(2, "</body>");
     w.line(0, "</html>");
     w.out
@@ -220,6 +235,7 @@ fn page_file(project: &Project, page: &Page, out: &mut Emit) -> Result<(), Compi
 
     out.output.css.append(&mut b.css);
     out.output.instance_css.append(&mut b.instance_css);
+    out.output.animations.append(&mut b.animations);
     out.assets(&b.take_assets(), project);
     out.writer(&page_path(page), w);
     Ok(())
@@ -278,6 +294,7 @@ fn component_file(project: &Project, c: &Component, out: &mut Emit) -> Result<()
 
     out.output.css.append(&mut b.css);
     out.output.instance_css.append(&mut b.instance_css);
+    out.output.animations.append(&mut b.animations);
     out.assets(&b.take_assets(), project);
     out.writer(&format!("src/components/{name}.astro"), w);
     Ok(())

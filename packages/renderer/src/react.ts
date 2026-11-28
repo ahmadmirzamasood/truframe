@@ -4,7 +4,7 @@
  */
 import type { BreakpointId, ProjectDocument } from "@truframe/model";
 import { type CSSProperties, createElement, type ReactNode, useMemo } from "react";
-import { frameStylesheet, type NodeCss } from "./css.ts";
+import { frameStylesheet, type NodeAnimation, type NodeCss } from "./css.ts";
 import { buildPageTree, type RChild, type RElement, type TreeOptions } from "./tree.ts";
 
 function styleObject(style: string): CSSProperties {
@@ -34,6 +34,9 @@ export type CompiledCss = {
   css: Record<string, NodeCss>;
   instanceCss?: Record<string, Record<string, NodeCss>>;
   tokens?: string;
+  /** Per-element animations and the generated `animations.css` (P6A-4). */
+  animations?: Record<string, NodeAnimation>;
+  animationsCss?: string;
 };
 
 export type RenderedFrameProps = {

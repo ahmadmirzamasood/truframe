@@ -13,6 +13,30 @@ const script = (appOrigin: string) => `(() => {
   const APP = ${JSON.stringify(appOrigin)};
   let urls = [];
   const fonts = document.getElementById("tf-fonts");
+  // In view animations (P6A-4): the generated site's IntersectionObserver fallback, so
+  // Preview plays them as the site does.
+  let io = null;
+  const watch = () => {
+    if (io) io.disconnect();
+    if (!("IntersectionObserver" in window)) return;
+    const view = CSS.supports("animation-timeline: view()");
+    io = new IntersectionObserver((entries) => {
+      for (const { target: el, isIntersecting } of entries) {
+        const once = el.classList.contains("tf-view-once");
+        if (isIntersecting) {
+          el.classList.add("tf-in");
+          if (once) io.unobserve(el);
+        } else if (!once && el.classList.contains("tf-in")) {
+          el.classList.remove("tf-in");
+          el.style.animation = "none";
+          void el.offsetWidth;
+          el.style.animation = "";
+        }
+      }
+    }, { threshold: 0.15 });
+    const selector = view ? ".tf-view-once" : ".tf-view-once, .tf-view";
+    for (const el of document.querySelectorAll(selector)) io.observe(el);
+  };
   addEventListener("message", (e) => {
     if (e.source !== parent || e.origin !== APP) return;
     const m = e.data;
@@ -34,6 +58,7 @@ const script = (appOrigin: string) => `(() => {
     document.title = typeof m.title === "string" ? m.title : "Preview";
     fonts.textContent = css;
     document.body.innerHTML = html;
+    watch();
   });
   document.addEventListener("click", (e) => {
     const a = e.target instanceof Element ? e.target.closest("a[href]") : null;

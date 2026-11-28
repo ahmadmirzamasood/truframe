@@ -124,7 +124,11 @@ export function PreviewOverlay(props: {
     return async (bp: BreakpointId): Promise<PreviewRender> => {
       // Out of the current render or effect: flushSync can't render while React is busy.
       await Promise.resolve();
-      const html = previewMarkup(doc, output, page.id, bp, treeOptions);
+      // Preview plays animations for real: elements carry the site's classes (P6A-4).
+      const html = previewMarkup(doc, output, page.id, bp, {
+        ...treeOptions,
+        animationClass: (id) => output.animations?.[id]?.classes,
+      });
       const urls = new Set<string>(cssFileUrls(fontCss));
       for (const a of Object.values(doc.assets)) {
         const u = treeOptions.assetUrl?.(a.id);

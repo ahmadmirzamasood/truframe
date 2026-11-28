@@ -77,6 +77,9 @@ fn meta(output: &Output) -> String {
     if !output.instance_css.is_empty() {
         v["instanceCss"] = serde_json::json!(output.instance_css);
     }
+    if !output.animations.is_empty() {
+        v["animations"] = serde_json::json!(output.animations);
+    }
     serde_json::to_string_pretty(&v).unwrap_or_default() + "\n"
 }
 

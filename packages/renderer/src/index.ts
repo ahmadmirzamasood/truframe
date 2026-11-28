@@ -5,6 +5,7 @@ export {
   fontSlug,
   frameScope,
   frameStylesheet,
+  type NodeAnimation,
   type NodeCss,
   parseTokens,
 } from "./css.ts";

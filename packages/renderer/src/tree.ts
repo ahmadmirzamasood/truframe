@@ -33,6 +33,11 @@ export type TreeOptions = {
    * (Node, parity) embeds render as the compiler emits them.
    */
   embedUrl?: (source: EmbedSource) => string | null;
+  /**
+   * Animation classes of a layer as on the site (`tf-anim tf-view-once`), for Preview, which
+   * plays animations for real (P6A-4). The canvas leaves them off and adds them on ▶ Play.
+   */
+  animationClass?: (id: string) => string | undefined;
 };
 
 type EmbedSource = Extract<Node, { type: "embed" }>["source"];
@@ -113,6 +118,8 @@ class Builder {
     if (overlay.removed) return null;
     const mark: RElement["attrs"] = ctx.component ? { "data-tf-c": id } : { "data-tf-node": id };
     if (overlay.hidden) mark.hidden = "hidden";
+    const anim = this.options.animationClass?.(id);
+    if (anim) mark.className = anim;
     const kids = (ids: readonly string[]) =>
       ids.map((c) => this.node(c, ctx)).filter((c): c is RElement => c !== null);
     switch (n.type) {
@@ -241,6 +248,8 @@ class Builder {
     const root = this.node(c.root, { component: c, overlay });
     if (!root) return null;
     root.attrs["data-tf-node"] = n.id;
+    const anim = this.options.animationClass?.(n.id);
+    if (anim) root.attrs.className = [root.attrs.className, anim].filter(Boolean).join(" ");
     return root;
   }
 }

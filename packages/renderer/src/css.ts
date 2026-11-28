@@ -8,6 +8,34 @@ import { activeBreakpoints, type BreakpointId, type ProjectDocument } from "@tru
 
 export type NodeCss = { desktop: string; tablet?: string; mobile?: string };
 
+/** The compiler's `animations` entry for one element (P6A-2). */
+export type NodeAnimation = { classes: string; vars: string; tablet: boolean; mobile: boolean };
+
+/**
+ * Animation rules for a frame (P6A-4): the site's own `animations.css` (keyframes and the
+ * `tf-*` classes, inside its reduced-motion query), then each element's `--tf-*` values, and
+ * `animation: none` where the animation is switched off at this frame's breakpoint. Elements
+ * only animate while they carry the classes: always in Preview, on ▶ Play on the canvas.
+ */
+function animationRules(
+  scope: string,
+  breakpoint: BreakpointId,
+  animations: Record<string, NodeAnimation>,
+  sheet: string | undefined,
+): string[] {
+  const ids = Object.keys(animations).sort();
+  if (!ids.length) return [];
+  const out = sheet ? [sheet] : [];
+  for (const id of ids) {
+    const a = animations[id] as NodeAnimation;
+    const el = `${scope} :is([data-tf-node="${id}"],[data-tf-c="${id}"])`;
+    if (a.vars) out.push(`${el}{${a.vars}}`);
+    if ((breakpoint === "tablet" && !a.tablet) || (breakpoint === "mobile" && !a.mobile))
+      out.push(`${el}.tf-anim{animation:none}`);
+  }
+  return out;
+}
+
 /** Breakpoints whose declarations apply inside a frame, in cascade order. */
 export function cascadeFor(doc: ProjectDocument, breakpoint: BreakpointId): BreakpointId[] {
   const active = activeBreakpoints(doc.breakpoints);
@@ -104,6 +132,8 @@ export function frameStylesheet(
     css: Record<string, NodeCss>;
     instanceCss?: Record<string, Record<string, NodeCss>>;
     tokens?: string;
+    animations?: Record<string, NodeAnimation>;
+    animationsCss?: string;
   },
   breakpoint: BreakpointId,
 ): string {
@@ -147,6 +177,7 @@ export function frameStylesheet(
       if (d && !componentNodes.has(id)) out.push(`${scope} [data-tf-node="${id}"]{${d}}`);
     }
   }
+  out.push(...animationRules(scope, breakpoint, output.animations ?? {}, output.animationsCss));
   return out.join("\n");
 }
 

@@ -1,0 +1,68 @@
+/*
+ * Layer animations. An animated element plays from the values in its --tf-*
+ * properties to its own style. Only transform, opacity and filter animate, and only
+ * for visitors who haven't asked their system for reduced motion.
+ *
+ * tf-load: on load. tf-loop: back and forth forever. tf-view-once: the first time it
+ * scrolls into view. tf-view: every time it scrolls into view (driven by scrolling where
+ * the browser supports animation-timeline: view()). In view layers wait for the
+ * IntersectionObserver script to add tf-in.
+ */
+@layer base {
+  @media (prefers-reduced-motion: no-preference) {
+    @keyframes tf-in {
+      from {
+        opacity: var(--tf-opacity);
+        transform: translate(var(--tf-x), var(--tf-y)) scale(var(--tf-scale))
+          rotate(var(--tf-rotate));
+      }
+    }
+    @keyframes tf-in-blur {
+      from {
+        opacity: var(--tf-opacity);
+        transform: translate(var(--tf-x), var(--tf-y)) scale(var(--tf-scale))
+          rotate(var(--tf-rotate));
+        filter: blur(var(--tf-blur));
+      }
+    }
+    .tf-anim {
+      --tf-opacity: 1;
+      --tf-x: 0px;
+      --tf-y: 0px;
+      --tf-scale: 1;
+      --tf-rotate: 0deg;
+      --tf-blur: 0px;
+      --tf-duration: 600ms;
+      --tf-delay: 0ms;
+      --tf-ease: ease-out;
+      animation: tf-in var(--tf-duration) var(--tf-ease) var(--tf-delay) both;
+    }
+    .tf-anim.tf-blur {
+      animation-name: tf-in-blur;
+    }
+    .tf-anim.tf-loop {
+      animation-direction: alternate;
+      animation-iteration-count: infinite;
+    }
+    @media (scripting: enabled) {
+      .tf-anim.tf-view-once:not(.tf-in) {
+        animation-play-state: paused;
+      }
+    }
+    @supports (animation-timeline: view()) {
+      .tf-anim.tf-view {
+        animation-delay: 0s;
+        animation-duration: auto;
+        animation-range: entry 0% cover 35%;
+        animation-timeline: view();
+      }
+    }
+    @supports not (animation-timeline: view()) {
+      @media (scripting: enabled) {
+        .tf-anim.tf-view:not(.tf-in) {
+          animation-play-state: paused;
+        }
+      }
+    }
+  }
+}
