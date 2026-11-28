@@ -53,5 +53,8 @@ test("editor shell shows the top bar and both panels", async ({ page, context })
   await expect(left.getByRole("tab", { name: "Pages" })).toHaveAttribute("aria-selected", "true");
 
   await top.getByRole("button", { name: "Code" }).click();
-  await expect(page.getByRole("main", { name: "Code" })).toContainText("read-only");
+  await expect(page.getByRole("main", { name: "Code" }).locator(".cm-content")).toHaveAttribute(
+    "aria-readonly",
+    "true",
+  );
 });
