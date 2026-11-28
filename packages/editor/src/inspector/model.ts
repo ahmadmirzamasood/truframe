@@ -353,11 +353,28 @@ function resolveColor(doc: ProjectDocument, v: unknown, bp: BreakpointId): strin
 
 export type Check = { nodeId: string; bp: BreakpointId | null; message: string };
 
-/** Contrast (WCAG AA), missing alt text and heading order, for a subtree. */
+/** Rendered size of a layer at a breakpoint, when the canvas can measure it. */
+export type MeasureLayer = (nodeId: string, bp: BreakpointId) => { w: number; h: number } | null;
+
+/** WCAG 2.2 target size (minimum) and non-text contrast for the focus ring. */
+export const MIN_TAP_TARGET = 24;
+const FOCUS_RING_CONTRAST = 3;
+
+function fixedSize(doc: ProjectDocument, n: Node, bp: BreakpointId, key: "width" | "height") {
+  const s = effective(doc, n, bp, key);
+  return s?.type === "fixed" && typeof s.value === "number" ? s.value : null;
+}
+
+/**
+ * Text and focus-ring contrast (WCAG AA) at every breakpoint, missing alt text, heading order,
+ * unnamed links/buttons and mobile tap targets, for a subtree. `measure` supplies rendered
+ * sizes from the canvas; without it only fixed sizes are checked.
+ */
 export function accessibilityChecks(
   doc: ProjectDocument,
   rootId: string,
   parents: Map<string, string>,
+  measure?: MeasureLayer,
 ): Check[] {
   const checks: Check[] = [];
   const headings: { id: string; level: number }[] = [];
@@ -404,6 +421,37 @@ export function accessibilityChecks(
       checks.push({ nodeId: id, bp: null, message: "Image has no alt text" });
     if (n.type === "link" && !n.ariaLabel && !hasText(doc, id))
       checks.push({ nodeId: id, bp: null, message: "Link or button has no accessible name" });
+    if (n.type === "link") {
+      // Generated sites draw the focus ring in the link's text color, 2 px outside it, so it
+      // sits on the parent's background.
+      const parent = parents.get(id);
+      for (const bp of activeBreakpoints(doc.breakpoints)) {
+        if (n.hidden?.[bp]) continue;
+        const ring = textColor(id, bp);
+        const ratio = contrastRatio(ring, parent ? background(parent, bp) : "#ffffff");
+        if (ratio < FOCUS_RING_CONTRAST)
+          checks.push({
+            nodeId: id,
+            bp,
+            message: `Focus ring contrast ${ratio}:1 is below ${FOCUS_RING_CONTRAST}:1`,
+          });
+      }
+      if (activeBreakpoints(doc.breakpoints).includes("mobile") && !n.hidden?.mobile) {
+        const m = measure?.(id, "mobile");
+        const w = m?.w ?? fixedSize(doc, n, "mobile", "width");
+        const h = m?.h ?? fixedSize(doc, n, "mobile", "height");
+        const small = [w, h].filter((v): v is number => v !== null && v < MIN_TAP_TARGET);
+        if (small.length)
+          checks.push({
+            nodeId: id,
+            bp: "mobile",
+            message:
+              w !== null && h !== null
+                ? `Tap target ${Math.round(w)} × ${Math.round(h)} px is under ${MIN_TAP_TARGET} px`
+                : `Tap target is under ${MIN_TAP_TARGET} px`,
+          });
+      }
+    }
     for (const c of childrenOf(n)) walk(c);
   };
   walk(rootId);

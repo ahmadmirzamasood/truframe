@@ -205,5 +205,15 @@ pub fn global_css(project: &Project, tokens_import: &str) -> String {
     if let Some(q) = mobile {
         css.push_str(&format!("@custom-variant mobile (@media {q});\n"));
     }
+    // PRD F28: a visible focus ring for keyboard users, in the element's text color, outside
+    // the element. Truframe's Accessibility Checks test its contrast on the parent background.
+    css.push_str(concat!(
+        "\n@layer base {\n",
+        "  :focus-visible {\n",
+        "    outline: 2px solid currentColor;\n",
+        "    outline-offset: 2px;\n",
+        "  }\n",
+        "}\n",
+    ));
     css
 }

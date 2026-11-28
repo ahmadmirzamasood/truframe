@@ -7,3 +7,10 @@
  * Declared tablet first so mobile wins where both apply.
  */
 @custom-variant mobile (@media (width < 1200px));
+
+@layer base {
+  :focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+  }
+}
