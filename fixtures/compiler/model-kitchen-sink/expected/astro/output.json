@@ -1,4 +1,60 @@
 {
+  "animations": {
+    "blankPic": {
+      "classes": "tf-anim tf-view tf-blur",
+      "mobile": false,
+      "tablet": false,
+      "vars": "--tf-opacity: 0; --tf-x: -40px; --tf-y: 24px; --tf-scale: 0.9; --tf-rotate: -5deg; --tf-blur: 8px; --tf-delay: 740ms; --tf-ease: cubic-bezier(0.34,1.56,0.64,1);"
+    },
+    "card": {
+      "classes": "tf-anim tf-view tf-blur",
+      "mobile": false,
+      "tablet": false,
+      "vars": "--tf-opacity: 0; --tf-x: -40px; --tf-y: 24px; --tf-scale: 0.9; --tf-rotate: -5deg; --tf-blur: 8px; --tf-delay: 340ms; --tf-ease: cubic-bezier(0.34,1.56,0.64,1);"
+    },
+    "cta": {
+      "classes": "tf-anim tf-view tf-blur",
+      "mobile": false,
+      "tablet": false,
+      "vars": "--tf-opacity: 0; --tf-x: -40px; --tf-y: 24px; --tf-scale: 0.9; --tf-rotate: -5deg; --tf-blur: 8px; --tf-delay: 260ms; --tf-ease: cubic-bezier(0.34,1.56,0.64,1);"
+    },
+    "icon": {
+      "classes": "tf-anim tf-view tf-blur",
+      "mobile": false,
+      "tablet": false,
+      "vars": "--tf-opacity: 0; --tf-x: -40px; --tf-y: 24px; --tf-scale: 0.9; --tf-rotate: -5deg; --tf-blur: 8px; --tf-delay: 420ms; --tf-ease: cubic-bezier(0.34,1.56,0.64,1);"
+    },
+    "mail": {
+      "classes": "tf-anim tf-loop",
+      "mobile": true,
+      "tablet": true,
+      "vars": "--tf-scale: 1.05; --tf-duration: 1200ms; --tf-ease: ease-in-out;"
+    },
+    "map": {
+      "classes": "tf-anim tf-view tf-blur",
+      "mobile": false,
+      "tablet": false,
+      "vars": "--tf-opacity: 0; --tf-x: -40px; --tf-y: 24px; --tf-scale: 0.9; --tf-rotate: -5deg; --tf-blur: 8px; --tf-delay: 500ms; --tf-ease: cubic-bezier(0.34,1.56,0.64,1);"
+    },
+    "pic": {
+      "classes": "tf-anim tf-view tf-blur",
+      "mobile": false,
+      "tablet": false,
+      "vars": "--tf-opacity: 0; --tf-x: -40px; --tf-y: 24px; --tf-scale: 0.9; --tf-rotate: -5deg; --tf-blur: 8px; --tf-delay: 180ms; --tf-ease: cubic-bezier(0.34,1.56,0.64,1);"
+    },
+    "title": {
+      "classes": "tf-anim tf-view tf-blur",
+      "mobile": false,
+      "tablet": false,
+      "vars": "--tf-opacity: 0; --tf-x: -40px; --tf-y: 24px; --tf-scale: 0.9; --tf-rotate: -5deg; --tf-blur: 8px; --tf-delay: 100ms; --tf-ease: cubic-bezier(0.34,1.56,0.64,1);"
+    },
+    "widget": {
+      "classes": "tf-anim tf-view tf-blur",
+      "mobile": false,
+      "tablet": false,
+      "vars": "--tf-opacity: 0; --tf-x: -40px; --tf-y: 24px; --tf-scale: 0.9; --tf-rotate: -5deg; --tf-blur: 8px; --tf-delay: 580ms; --tf-ease: cubic-bezier(0.34,1.56,0.64,1);"
+    }
+  },
   "assets": [
     {
       "assetId": "photo",
@@ -92,82 +148,82 @@
       "start": 74
     },
     {
-      "end": 3115,
+      "end": 4996,
       "node": "id2",
       "path": "src/pages/index.astro",
       "start": 262
     },
     {
-      "end": 3105,
+      "end": 4986,
       "node": "hero",
       "path": "src/pages/index.astro",
       "start": 313
     },
     {
-      "end": 1344,
+      "end": 1553,
       "node": "title",
       "path": "src/pages/index.astro",
       "start": 1066
     },
     {
-      "end": 1416,
+      "end": 1864,
       "node": "pic",
       "path": "src/pages/index.astro",
-      "start": 1351
+      "start": 1560
     },
     {
-      "end": 1508,
+      "end": 2188,
       "node": "cta",
       "path": "src/pages/index.astro",
-      "start": 1423
+      "start": 1871
     },
     {
-      "end": 1497,
+      "end": 2177,
       "node": "ctaLabel",
       "path": "src/pages/index.astro",
-      "start": 1461
+      "start": 2141
     },
     {
-      "end": 1661,
+      "end": 2565,
       "node": "card",
       "path": "src/pages/index.astro",
-      "start": 1515
+      "start": 2195
     },
     {
-      "end": 1648,
+      "end": 2552,
       "node": "cardTitle",
       "path": "src/pages/index.astro",
-      "start": 1553
+      "start": 2457
     },
     {
-      "end": 2242,
+      "end": 3355,
       "node": "icon",
       "path": "src/pages/index.astro",
-      "start": 1668
+      "start": 2572
     },
     {
-      "end": 2516,
+      "end": 3853,
       "node": "map",
       "path": "src/pages/index.astro",
-      "start": 2249
+      "start": 3362
     },
     {
-      "end": 2830,
+      "end": 4391,
       "node": "widget",
       "path": "src/pages/index.astro",
-      "start": 2523
+      "start": 3860
     },
     {
-      "end": 3020,
+      "end": 4662,
       "node": "mail",
       "path": "src/pages/index.astro",
-      "start": 2837
+      "start": 4398
     },
     {
-      "end": 3090,
+      "end": 4971,
       "node": "blankPic",
       "path": "src/pages/index.astro",
-      "start": 3027
+      "start": 4669
     }
   ]
 }

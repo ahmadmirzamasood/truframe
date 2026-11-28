@@ -5,6 +5,7 @@
 //! every layer (`spans`, for reveal-in-code) and per-layer canvas CSS (`css`, for the renderer).
 
 mod adapters;
+pub mod animation;
 mod fonts;
 pub mod model;
 pub mod names;
@@ -47,6 +48,16 @@ pub struct NodeCss {
     pub mobile: Option<String>,
 }
 
+/// What the canvas needs to replay a layer's animation (P6A-4): its base classes
+/// (`tf-anim tf-view-once`), its `--tf-*` declarations and where it is switched on.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize)]
+pub struct NodeAnimation {
+    pub classes: String,
+    pub vars: String,
+    pub tablet: bool,
+    pub mobile: bool,
+}
+
 /// An uploaded asset the generated project needs, and where the build must put it.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -71,6 +82,9 @@ pub struct Output {
     #[serde(rename = "instanceCss", skip_serializing_if = "BTreeMap::is_empty")]
     pub instance_css: BTreeMap<String, BTreeMap<String, NodeCss>>,
     pub assets: Vec<AssetFile>,
+    /// Node id → animation, for every element that plays one (staggered children included).
+    #[serde(skip_serializing_if = "BTreeMap::is_empty")]
+    pub animations: BTreeMap<String, NodeAnimation>,
 }
 
 /// Why a document couldn't be compiled. Documents are validated before they reach the

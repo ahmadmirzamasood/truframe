@@ -19,6 +19,7 @@ const TSCONFIG: &str = include_str!("../../templates/next/tsconfig.json");
 const GITIGNORE: &str = include_str!("../../templates/next/gitignore");
 
 pub fn emit(project: &Project, out: &mut Emit) -> Result<(), CompileError> {
+    let anim = crate::animation::uses(project);
     out.file("package.json", PACKAGE_JSON);
     out.file("package-lock.json", PACKAGE_LOCK);
     out.file("next.config.ts", NEXT_CONFIG);
@@ -26,10 +27,19 @@ pub fn emit(project: &Project, out: &mut Emit) -> Result<(), CompileError> {
     out.file("tsconfig.json", TSCONFIG);
     out.file(".gitignore", GITIGNORE);
     out.file("README.md", readme(project, Framework::Next));
-    out.file("app/layout.tsx", layout(project, &web_fonts(project)?));
+    out.file(
+        "app/layout.tsx",
+        layout(project, &web_fonts(project)?, anim.in_view),
+    );
+    if anim.any {
+        out.file("app/animations.css", crate::animation::animations_css());
+    }
+    if anim.in_view {
+        out.file("components/InView.tsx", crate::animation::next_in_view());
+    }
     out.file(
         "app/globals.css",
-        crate::tokens::global_css(project, "./tokens.css"),
+        crate::tokens::global_css(project, "./tokens.css", anim.any),
     );
     out.file("app/tokens.css", crate::tokens::tokens_css(project));
     for c in project.components.values() {
@@ -52,7 +62,7 @@ pub fn page_path(page: &Page) -> String {
     p
 }
 
-fn layout(project: &Project, fonts: &[WebFont]) -> String {
+fn layout(project: &Project, fonts: &[WebFont], in_view: bool) -> String {
     let mut w = Writer::new();
     w.line(0, "import type { ReactNode } from \"react\";");
     if !fonts.is_empty() {
@@ -64,6 +74,9 @@ fn layout(project: &Project, fonts: &[WebFont]) -> String {
                 names.join(", ")
             ),
         );
+    }
+    if in_view {
+        w.line(0, "import InView from \"@/components/InView\";");
     }
     w.line(0, "import \"./globals.css\";");
     w.line(0, "");
@@ -100,7 +113,14 @@ fn layout(project: &Project, fonts: &[WebFont]) -> String {
             w.line(4, ">");
         }
     }
-    w.line(6, "<body>{children}</body>");
+    if in_view {
+        w.line(6, "<body>");
+        w.line(8, "<InView />");
+        w.line(8, "{children}");
+        w.line(6, "</body>");
+    } else {
+        w.line(6, "<body>{children}</body>");
+    }
     w.line(4, "</html>");
     w.line(2, ");");
     w.line(0, "}");
@@ -180,6 +200,7 @@ fn page_file(project: &Project, page: &Page, out: &mut Emit) -> Result<(), Compi
 
     out.output.css.append(&mut b.css);
     out.output.instance_css.append(&mut b.instance_css);
+    out.output.animations.append(&mut b.animations);
     out.assets(&b.take_assets(), project);
     out.writer(&page_path(page), w);
     Ok(())
@@ -249,6 +270,7 @@ fn component_file(project: &Project, c: &Component, out: &mut Emit) -> Result<()
 
     out.output.css.append(&mut b.css);
     out.output.instance_css.append(&mut b.instance_css);
+    out.output.animations.append(&mut b.animations);
     out.assets(&b.take_assets(), project);
     out.writer(&format!("components/{name}.tsx"), w);
     Ok(())

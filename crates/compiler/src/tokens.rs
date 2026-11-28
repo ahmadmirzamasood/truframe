@@ -186,10 +186,13 @@ fn css_name(v: &Variable) -> &str {
 }
 
 /// The Tailwind entry stylesheet: Tailwind, the tokens and the breakpoint variants.
-pub fn global_css(project: &Project, tokens_import: &str) -> String {
+pub fn global_css(project: &Project, tokens_import: &str, animations: bool) -> String {
     let (tablet, mobile) = media(&project.breakpoints);
     let mut css = String::from("@import \"tailwindcss\";\n");
     css.push_str(&format!("@import \"{tokens_import}\";\n"));
+    if animations {
+        css.push_str("@import \"./animations.css\";\n");
+    }
     if tablet.is_some() || mobile.is_some() {
         css.push_str(concat!(
             "\n/*\n",

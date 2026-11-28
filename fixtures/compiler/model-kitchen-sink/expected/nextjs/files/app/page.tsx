@@ -20,7 +20,7 @@ export default function HomePage() {
           className="hero flex gap-(--spacing-md) pt-2 pr-2 pb-(--spacing-md) pl-2 relative bg-(--colors-brand) tablet:hidden tablet:items-stretch tablet:justify-between tablet:grid-cols-2 tablet:grid-rows-3 tablet:gap-y-3 tablet:flex-none tablet:h-160 tablet:min-w-25 tablet:max-w-250 tablet:min-h-2.5 tablet:max-h-225 tablet:overflow-clip tablet:bg-transparent tablet:bg-[linear-gradient(45deg,#000000_0%,var(--colors-brand)_100%)] tablet:border-0 tablet:border-t tablet:border-b tablet:border-dashed tablet:border-[#11223344] tablet:rounded-tl-sm tablet:rounded-tr-lg tablet:rounded-br-none tablet:rounded-bl-[2.5px] tablet:shadow-[0px_4px_12px_-2px_var(--colors-brand)] tablet:opacity-90 tablet:mix-blend-color-dodge tablet:blur-[2px]"
         >
           <h1
-            className="text font-(family-name:--tf-font-inter) text-5xl font-bold leading-[1.1] tracking-[-0.02em] text-center line-through uppercase truncate text-[#111111]"
+            className="text font-(family-name:--tf-font-inter) text-5xl font-bold leading-[1.1] tracking-[-0.02em] text-center line-through uppercase truncate text-[#111111] tf-anim tf-view tf-blur [--tf-opacity:0] [--tf-x:-40px] [--tf-y:24px] [--tf-scale:0.9] [--tf-rotate:-5deg] [--tf-blur:8px] [--tf-delay:100ms] [--tf-ease:cubic-bezier(0.34,1.56,0.64,1)] tablet:[animation:none]"
           >
             Hello <strong>world</strong><a href="https://example.com"><em><u>!</u></em></a>
           </h1>
@@ -29,18 +29,23 @@ export default function HomePage() {
             alt="A photo"
             width={800}
             height={600}
-            className="image object-cover"
+            className="image tf-anim tf-view tf-blur [--tf-opacity:0] [--tf-x:-40px] [--tf-y:24px] [--tf-scale:0.9] [--tf-rotate:-5deg] [--tf-blur:8px] [--tf-delay:180ms] [--tf-ease:cubic-bezier(0.34,1.56,0.64,1)] tablet:[animation:none] object-cover"
           />
-          <Link href="/about" className="cta">
+          <Link
+            href="/about"
+            className="cta tf-anim tf-view tf-blur [--tf-opacity:0] [--tf-x:-40px] [--tf-y:24px] [--tf-scale:0.9] [--tf-rotate:-5deg] [--tf-blur:8px] [--tf-delay:260ms] [--tf-ease:cubic-bezier(0.34,1.56,0.64,1)] tablet:[animation:none]"
+          >
             <span className="text-el-2">About</span>
           </Link>
-          <div className="card p-8 card-2">
+          <div
+            className="card p-8 card-2 tf-anim tf-view tf-blur [--tf-opacity:0] [--tf-x:-40px] [--tf-y:24px] [--tf-scale:0.9] [--tf-rotate:-5deg] [--tf-blur:8px] [--tf-delay:340ms] [--tf-ease:cubic-bezier(0.34,1.56,0.64,1)] tablet:[animation:none]"
+          >
             <h3 className="card__title tablet:text-[#ffffff] mobile:hidden">
               Overridden
             </h3>
           </div>
           <span
-            className="arrow absolute -top-1 right-0 bottom-0 left-2.5 z-2 w-6 aspect-square tablet:col-span-2 tablet:row-span-1"
+            className="arrow absolute -top-1 right-0 bottom-0 left-2.5 z-2 w-6 aspect-square tablet:col-span-2 tablet:row-span-1 tf-anim tf-view tf-blur [--tf-opacity:0] [--tf-x:-40px] [--tf-y:24px] [--tf-scale:0.9] [--tf-rotate:-5deg] [--tf-blur:8px] [--tf-delay:420ms] [--tf-ease:cubic-bezier(0.34,1.56,0.64,1)] tablet:[animation:none]"
             aria-hidden="true"
           >
             <svg
@@ -59,7 +64,9 @@ export default function HomePage() {
               </g>
             </svg>
           </span>
-          <figure className="map bg-[url(/assets/photo.png)] bg-auto bg-repeat">
+          <figure
+            className="map bg-[url(/assets/photo.png)] bg-auto bg-repeat tf-anim tf-view tf-blur [--tf-opacity:0] [--tf-x:-40px] [--tf-y:24px] [--tf-scale:0.9] [--tf-rotate:-5deg] [--tf-blur:8px] [--tf-delay:500ms] [--tf-ease:cubic-bezier(0.34,1.56,0.64,1)] tablet:[animation:none]"
+          >
             <iframe
               src="https://maps.example.com/embed?q=1"
               title="Map"
@@ -67,7 +74,9 @@ export default function HomePage() {
               className="block size-full border-0"
             />
           </figure>
-          <div className="widget">
+          <div
+            className="widget tf-anim tf-view tf-blur [--tf-opacity:0] [--tf-x:-40px] [--tf-y:24px] [--tf-scale:0.9] [--tf-rotate:-5deg] [--tf-blur:8px] [--tf-delay:580ms] [--tf-ease:cubic-bezier(0.34,1.56,0.64,1)] tablet:[animation:none]"
+          >
             <iframe
               srcDoc={"<div class=\"w\">Hi</div>"}
               sandbox="allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox"
@@ -80,10 +89,13 @@ export default function HomePage() {
             href="mailto:hi@example.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="mail rounded-[999px]"
+            className="mail rounded-[999px] tf-anim tf-loop [--tf-scale:1.05] [--tf-duration:1200ms] [--tf-ease:ease-in-out]"
             aria-label="Email us"
           />
-          <div className="placeholder bg-[#e5e5e5]" aria-hidden="true" />
+          <div
+            className="placeholder tf-anim tf-view tf-blur [--tf-opacity:0] [--tf-x:-40px] [--tf-y:24px] [--tf-scale:0.9] [--tf-rotate:-5deg] [--tf-blur:8px] [--tf-delay:740ms] [--tf-ease:cubic-bezier(0.34,1.56,0.64,1)] tablet:[animation:none] bg-[#e5e5e5]"
+            aria-hidden="true"
+          />
         </section>
       </main>
       <script

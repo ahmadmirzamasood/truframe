@@ -1,0 +1,276 @@
+{
+  "animations": {
+    "n1": {
+      "classes": "tf-anim tf-view-once",
+      "mobile": true,
+      "tablet": true,
+      "vars": "--tf-opacity: 0;"
+    },
+    "n10": {
+      "classes": "tf-anim tf-load",
+      "mobile": false,
+      "tablet": true,
+      "vars": "--tf-opacity: 0; --tf-ease: linear;"
+    },
+    "n11": {
+      "classes": "tf-anim tf-load",
+      "mobile": true,
+      "tablet": false,
+      "vars": "--tf-opacity: 0; --tf-ease: ease;"
+    },
+    "n12": {
+      "classes": "tf-anim tf-view-once",
+      "mobile": true,
+      "tablet": true,
+      "vars": "--tf-opacity: 0; --tf-y: 24px; --tf-delay: 50ms;"
+    },
+    "n13": {
+      "classes": "tf-anim tf-view-once",
+      "mobile": true,
+      "tablet": true,
+      "vars": "--tf-opacity: 0; --tf-y: 24px; --tf-delay: 150ms;"
+    },
+    "n14": {
+      "classes": "tf-anim tf-view-once",
+      "mobile": true,
+      "tablet": true,
+      "vars": "--tf-opacity: 0; --tf-y: 24px; --tf-delay: 250ms;"
+    },
+    "n16": {
+      "classes": "tf-anim tf-load",
+      "mobile": true,
+      "tablet": true,
+      "vars": "--tf-opacity: 0; --tf-ease: ease-in;"
+    },
+    "n18": {
+      "classes": "tf-anim tf-view-once",
+      "mobile": true,
+      "tablet": true,
+      "vars": "--tf-opacity: 0; --tf-scale: 0.9;"
+    },
+    "n2": {
+      "classes": "tf-anim tf-load",
+      "mobile": true,
+      "tablet": true,
+      "vars": "--tf-opacity: 0; --tf-y: 24px;"
+    },
+    "n3": {
+      "classes": "tf-anim tf-view-once",
+      "mobile": true,
+      "tablet": true,
+      "vars": "--tf-opacity: 0; --tf-x: -40px;"
+    },
+    "n4": {
+      "classes": "tf-anim tf-load",
+      "mobile": true,
+      "tablet": true,
+      "vars": "--tf-opacity: 0; --tf-x: 40px;"
+    },
+    "n5": {
+      "classes": "tf-anim tf-view-once",
+      "mobile": true,
+      "tablet": true,
+      "vars": "--tf-opacity: 0; --tf-scale: 0.9;"
+    },
+    "n6": {
+      "classes": "tf-anim tf-load tf-blur",
+      "mobile": true,
+      "tablet": true,
+      "vars": "--tf-opacity: 0; --tf-blur: 8px;"
+    },
+    "n7": {
+      "classes": "tf-anim tf-view",
+      "mobile": true,
+      "tablet": true,
+      "vars": "--tf-opacity: 0; --tf-y: 40px; --tf-ease: ease-in-out;"
+    },
+    "n8": {
+      "classes": "tf-anim tf-loop",
+      "mobile": true,
+      "tablet": true,
+      "vars": "--tf-scale: 1.05; --tf-duration: 1500ms; --tf-ease: ease-in-out;"
+    },
+    "n9": {
+      "classes": "tf-anim tf-load tf-blur",
+      "mobile": true,
+      "tablet": true,
+      "vars": "--tf-opacity: 0.2; --tf-x: -12px; --tf-y: 8px; --tf-scale: 0.95; --tf-rotate: -4deg; --tf-blur: 2px; --tf-duration: 450ms; --tf-delay: 250ms; --tf-ease: cubic-bezier(0.34,1.56,0.64,1);"
+    }
+  },
+  "assets": [],
+  "css": {
+    "id2": {
+      "desktop": "display: flex; flex-direction: column; width: 100%; height: fit-content;"
+    },
+    "n1": {
+      "desktop": "font-size: 1.5rem; line-height: calc(2 / 1.5);"
+    },
+    "n10": {
+      "desktop": ""
+    },
+    "n11": {
+      "desktop": ""
+    },
+    "n12": {
+      "desktop": "padding: 16px;"
+    },
+    "n13": {
+      "desktop": "padding: 16px;"
+    },
+    "n14": {
+      "desktop": "padding: 16px;"
+    },
+    "n15": {
+      "desktop": "display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px;"
+    },
+    "n16": {
+      "desktop": ""
+    },
+    "n17": {
+      "desktop": "padding-inline: 8px; padding-block: 4px; border-radius: 999px;"
+    },
+    "n18": {
+      "desktop": ""
+    },
+    "n2": {
+      "desktop": "font-size: 1.5rem; line-height: calc(2 / 1.5);"
+    },
+    "n3": {
+      "desktop": "font-size: 1.5rem; line-height: calc(2 / 1.5);"
+    },
+    "n4": {
+      "desktop": "font-size: 1.5rem; line-height: calc(2 / 1.5);"
+    },
+    "n5": {
+      "desktop": "font-size: 1.5rem; line-height: calc(2 / 1.5);"
+    },
+    "n6": {
+      "desktop": "font-size: 1.5rem; line-height: calc(2 / 1.5);"
+    },
+    "n7": {
+      "desktop": ""
+    },
+    "n8": {
+      "desktop": ""
+    },
+    "n9": {
+      "desktop": ""
+    }
+  },
+  "spans": [
+    {
+      "end": 256,
+      "node": "n17",
+      "path": "src/components/Badge.astro",
+      "start": 74
+    },
+    {
+      "end": 249,
+      "node": "n16",
+      "path": "src/components/Badge.astro",
+      "start": 139
+    },
+    {
+      "end": 2296,
+      "node": "id2",
+      "path": "src/pages/index.astro",
+      "start": 120
+    },
+    {
+      "end": 262,
+      "node": "n1",
+      "path": "src/pages/index.astro",
+      "start": 171
+    },
+    {
+      "end": 380,
+      "node": "n2",
+      "path": "src/pages/index.astro",
+      "start": 267
+    },
+    {
+      "end": 514,
+      "node": "n3",
+      "path": "src/pages/index.astro",
+      "start": 385
+    },
+    {
+      "end": 644,
+      "node": "n4",
+      "path": "src/pages/index.astro",
+      "start": 519
+    },
+    {
+      "end": 770,
+      "node": "n5",
+      "path": "src/pages/index.astro",
+      "start": 649
+    },
+    {
+      "end": 896,
+      "node": "n6",
+      "path": "src/pages/index.astro",
+      "start": 775
+    },
+    {
+      "end": 1031,
+      "node": "n7",
+      "path": "src/pages/index.astro",
+      "start": 901
+    },
+    {
+      "end": 1164,
+      "node": "n8",
+      "path": "src/pages/index.astro",
+      "start": 1036
+    },
+    {
+      "end": 1429,
+      "node": "n9",
+      "path": "src/pages/index.astro",
+      "start": 1169
+    },
+    {
+      "end": 1575,
+      "node": "n10",
+      "path": "src/pages/index.astro",
+      "start": 1434
+    },
+    {
+      "end": 1751,
+      "node": "n11",
+      "path": "src/pages/index.astro",
+      "start": 1580
+    },
+    {
+      "end": 2191,
+      "node": "n15",
+      "path": "src/pages/index.astro",
+      "start": 1756
+    },
+    {
+      "end": 1924,
+      "node": "n12",
+      "path": "src/pages/index.astro",
+      "start": 1805
+    },
+    {
+      "end": 2051,
+      "node": "n13",
+      "path": "src/pages/index.astro",
+      "start": 1931
+    },
+    {
+      "end": 2180,
+      "node": "n14",
+      "path": "src/pages/index.astro",
+      "start": 2058
+    },
+    {
+      "end": 2286,
+      "node": "n18",
+      "path": "src/pages/index.astro",
+      "start": 2196
+    }
+  ]
+}
