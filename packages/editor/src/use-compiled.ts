@@ -2,13 +2,14 @@
 
 /**
  * Compiles the document in the browser so the canvas uses the compiler's own CSS
- * (ARCHITECTURE §6.1 "Parity"). Runs on the main thread for now: one page compiles in about
- * 12 ms; the incremental Web Worker compile is P6.
+ * (ARCHITECTURE §6.1 "Parity"), and Code View shows the same output. The compile runs in a
+ * Web Worker (ARCHITECTURE §6.3).
  */
-import type { Span } from "@truframe/compiler-wasm";
+import type { CompileOutput, Span } from "@truframe/compiler-wasm";
 import type { ProjectDocument } from "@truframe/model";
 import type { CompiledCss } from "@truframe/renderer";
 import { useEffect, useState } from "react";
+import { listenCompile, requestCompile, workersAvailable } from "./compile-client.ts";
 
 /**
  * The compiler's CSS plus each layer's code class (PRD F27), read from its output, and the
@@ -48,31 +49,59 @@ export function codeClasses(
 
 const TOKENS = { nextjs: "app/tokens.css", astro: "src/styles/tokens.css" } as const;
 
-export function useCompiled(doc: ProjectDocument | null): CompileState {
+function toCompiled(out: CompileOutput, framework: ProjectDocument["framework"]): Compiled {
+  return {
+    css: out.css,
+    instanceCss: out.instanceCss,
+    tokens: out.files[TOKENS[framework]],
+    classes: codeClasses(out.files, out.spans),
+    files: out.files,
+    spans: out.spans,
+  };
+}
+
+/**
+ * Compiles `doc` in the compile worker (P6-2) and keeps the last good output on error.
+ * `channel` separates documents that are compiled side by side (the project and the
+ * main component being edited), so each keeps its own file diff in the worker.
+ */
+export function useCompiled(doc: ProjectDocument | null, channel = "project"): CompileState {
   const [state, setState] = useState<CompileState>({ status: "loading" });
+  const key = doc ? `${channel}:${doc.id}` : null;
+  const framework = doc?.framework;
+
   useEffect(() => {
-    if (!doc) return;
+    if (!key || !framework || !workersAvailable()) return;
+    return listenCompile(key, (r) =>
+      setState((prev) =>
+        r.ok
+          ? { status: "ready", output: toCompiled(r.output, framework) }
+          : // Keep showing the last good output; the message explains why it's stale.
+            {
+              status: "error",
+              message: r.message,
+              output: prev.status === "loading" ? null : prev.output,
+            },
+      ),
+    );
+  }, [key, framework]);
+
+  useEffect(() => {
+    if (!doc || !key) return;
+    if (workersAvailable()) {
+      requestCompile(key, doc);
+      return;
+    }
+    // No workers (tests, very old browsers): compile on the main thread.
     let cancelled = false;
     void import("@truframe/compiler-wasm/browser")
       .then(async ({ loadCompiler, compile }) => {
         await loadCompiler();
-        if (cancelled) return;
-        const out = compile(doc);
-        setState({
-          status: "ready",
-          output: {
-            css: out.css,
-            instanceCss: out.instanceCss,
-            tokens: out.files[TOKENS[doc.framework]],
-            classes: codeClasses(out.files, out.spans),
-            files: out.files,
-            spans: out.spans,
-          },
-        });
+        if (!cancelled)
+          setState({ status: "ready", output: toCompiled(compile(doc), doc.framework) });
       })
       .catch((error: unknown) => {
         if (cancelled) return;
-        // Keep showing the last good output; the message explains why it's stale.
         setState((prev) => ({
           status: "error",
           message: error instanceof Error ? error.message : String(error),
@@ -82,6 +111,6 @@ export function useCompiled(doc: ProjectDocument | null): CompileState {
     return () => {
       cancelled = true;
     };
-  }, [doc]);
+  }, [doc, key]);
   return state;
 }

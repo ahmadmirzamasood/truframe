@@ -32,7 +32,7 @@ import { flushSync } from "react-dom";
 import { createRoot } from "react-dom/client";
 import type { EditorHost } from "./host.ts";
 import { BREAKPOINT_LABEL } from "./labels.ts";
-import { type Compiled, useCompiled } from "./use-compiled.ts";
+import type { Compiled, CompileState } from "./use-compiled.ts";
 
 export type PreviewMode = BreakpointId | "all";
 
@@ -81,6 +81,8 @@ function useFileCache() {
 
 export function PreviewOverlay(props: {
   doc: ProjectDocument;
+  /** The editor's compile of `doc`, shared rather than compiled again. */
+  compiled: CompileState;
   host: EditorHost;
   origin: string;
   initialPageId: string;
@@ -88,7 +90,7 @@ export function PreviewOverlay(props: {
   onClose: () => void;
 }) {
   const { doc, host, origin, treeOptions } = props;
-  const compiled = useCompiled(doc);
+  const { compiled } = props;
   const output = compiled.status === "loading" ? null : compiled.output;
   const breakpoints = activeBreakpoints(doc.breakpoints);
   const [mode, setMode] = useState<PreviewMode>("desktop");

@@ -143,10 +143,20 @@ export function ProjectEditor({
         cache: indexedDbCache(),
       });
       client.current = c;
-      // Local development and e2e only: lets tests read the document they built in the UI.
-      if (process.env.NODE_ENV !== "production")
-        (window as unknown as { __truframeDoc?: () => unknown }).__truframeDoc = () =>
-          c.state().doc;
+      // Local development and e2e only: lets tests read the document they built in the UI,
+      // and apply ops directly (performance tests build large pages this way). A production
+      // build gets them only when built with NEXT_PUBLIC_TRUFRAME_TEST_HOOKS=1 (local perf runs).
+      if (
+        process.env.NODE_ENV !== "production" ||
+        process.env.NEXT_PUBLIC_TRUFRAME_TEST_HOOKS === "1"
+      ) {
+        const w = window as unknown as {
+          __truframeDoc?: () => unknown;
+          __truframeApply?: (ops: unknown) => unknown;
+        };
+        w.__truframeDoc = () => c.state().doc;
+        w.__truframeApply = (ops) => c.apply(ops as Parameters<typeof c.apply>[0]);
+      }
       unsubscribe = c.subscribe(setState);
       await c.start();
     });
